@@ -1,0 +1,15 @@
+
+CMakeFiles/*
+*.dir
+x64/*
+ipch/*
+*.db
+*.opendb
+*.suo
+*.generated.h
+*.ipch
+./*.vcxproj
+*.filters
+*.user
+.vscode/ipch
+build/*
