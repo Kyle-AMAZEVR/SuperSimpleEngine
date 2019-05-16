@@ -14,6 +14,7 @@
 #include <memory.h>
 #include <tchar.h>
 
+#include "d3d11.h"
 #include "DXWindow.h"
 
 #define MAX_LOADSTRING 100
@@ -119,6 +120,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
+
+   //
+   D3D_FEATURE_LEVEL featureLevel;
+   ID3D11Device* d3dDevice;
+   ID3D11DeviceContext* d3dImmediateContext;
+   HRESULT hr = D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG,0,0,D3D11_SDK_VERSION, &d3dDevice,&featureLevel, &d3dImmediateContext);
 
    return TRUE;
 }
