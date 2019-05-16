@@ -8,7 +8,7 @@
             "name": "(lldb) Launch",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/CMakeTest.exe",
+            "program": "${workspaceFolder}/build/DXRenderer.exe",
             "args": [],
             "cwd": "${workspaceFolder}",                      
             

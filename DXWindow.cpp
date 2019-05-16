@@ -1,161 +1,192 @@
+// DXEngine.cpp : Defines the entry point for the application.
+//
+//#include "stdafx.h"
+
+#include "targetver.h"
+
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+// Windows Header Files
+#include <windows.h>
+
+// C RunTime Header Files
+#include <stdlib.h>
+#include <malloc.h>
+#include <memory.h>
+#include <tchar.h>
 
 #include "DXWindow.h"
-#include "resource.h"
 
+#define MAX_LOADSTRING 100
 
+// Global Variables:
+HINSTANCE hInst;                                // current instance
+WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
+WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-OpenGLWindow::OpenGLWindow(HINSTANCE _hInstance, int nCmdShow)	
-	: InstanceHandle(_hInstance)
+// Forward declarations of functions included in this code module:
+ATOM                MyRegisterClass(HINSTANCE hInstance);
+BOOL                InitInstance(HINSTANCE, int);
+LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+                     _In_opt_ HINSTANCE hPrevInstance,
+                     _In_ LPWSTR    lpCmdLine,
+                     _In_ int       nCmdShow)
 {
-	MsgHandlerMap[WM_PAINT]		= &OpenGLWindow::OnPaint;
-	MsgHandlerMap[WM_SIZE]		= &OpenGLWindow::OnSize;
-	MsgHandlerMap[WM_CREATE]	= &OpenGLWindow::OnCreate;	
-	MsgHandlerMap[WM_DESTROY]	= &OpenGLWindow::OnDestroy;
-	MsgHandlerMap[WM_KEYDOWN] = &OpenGLWindow::OnKeyDown;
-	MsgHandlerMap[WM_LBUTTONDOWN] = &OpenGLWindow::OnMouseLDown;
-	MsgHandlerMap[WM_LBUTTONUP] = &OpenGLWindow::OnMouseLUp;
-	MsgHandlerMap[WM_MOUSEMOVE] = &OpenGLWindow::OnMouseMove;
-	MsgHandlerMap[WM_ENTERSIZEMOVE] = &OpenGLWindow::OnEnterSizeMoveStart;
-	MsgHandlerMap[WM_EXITSIZEMOVE] = &OpenGLWindow::OnEnterSizeMoveEnd;
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
 
-	LoadStringW(_hInstance, IDS_APP_TITLE, szTitle, 256);
-	LoadStringW(_hInstance, IDC_MODERNOPENGL, szWindowClass, 256);
+    // TODO: Place code here.
 
-	Title = szTitle;
-	ClassName = szWindowClass;
+    // Initialize global strings
+    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_DXENGINE, szWindowClass, MAX_LOADSTRING);
+    MyRegisterClass(hInstance);
 
-	auto Result = RegisterWindowClass(_hInstance);
+    // Perform application initialization:
+    if (!InitInstance (hInstance, nCmdShow))
+    {
+        return FALSE;
+    }
 
-	InitInstance(_hInstance, nCmdShow);	
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
+
+    MSG msg;
+
+    // Main message loop:
+    while (GetMessage(&msg, nullptr, 0, 0))
+    {
+        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
+
+    return (int) msg.wParam;
 }
 
-void OpenGLWindow::OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
+
+
+//
+//  FUNCTION: MyRegisterClass()
+//
+//  PURPOSE: Registers the window class.
+//
+ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-	DefWindowProc(hWnd, message, wParam, lParam);	
+    WNDCLASSEXW wcex;
+
+    wcex.cbSize = sizeof(WNDCLASSEX);
+
+    wcex.style          = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc    = WndProc;
+    wcex.cbClsExtra     = 0;
+    wcex.cbWndExtra     = 0;
+    wcex.hInstance      = hInstance;
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_DXENGINE));
+    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_DXENGINE);
+    wcex.lpszClassName  = szWindowClass;
+    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+
+    return RegisterClassExW(&wcex);
 }
 
-void OpenGLWindow::OnMouseMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+//
+//   FUNCTION: InitInstance(HINSTANCE, int)
+//
+//   PURPOSE: Saves instance handle and creates main window
+//
+//   COMMENTS:
+//
+//        In this function, we save the instance handle in a global variable and
+//        create and display the main program window.
+//
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-	
+   hInst = hInstance; // Store instance handle in our global variable
+
+   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+
+   if (!hWnd)
+   {
+      return FALSE;
+   }
+
+   ShowWindow(hWnd, nCmdShow);
+   UpdateWindow(hWnd);
+
+   return TRUE;
 }
 
-void OpenGLWindow::OnEnterSizeMoveStart(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+//
+//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
+//
+//  PURPOSE: Processes messages for the main window.
+//
+//  WM_COMMAND  - process the application menu
+//  WM_PAINT    - Paint the main window
+//  WM_DESTROY  - post a quit message and return
+//
+//
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-
+    switch (message)
+    {
+    case WM_COMMAND:
+        {
+            int wmId = LOWORD(wParam);
+            // Parse the menu selections:
+            switch (wmId)
+            {
+            case IDM_ABOUT:
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+                break;
+            case IDM_EXIT:
+                DestroyWindow(hWnd);
+                break;
+            default:
+                return DefWindowProc(hWnd, message, wParam, lParam);
+            }
+        }
+        break;
+    case WM_PAINT:
+        {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hWnd, &ps);
+            // TODO: Add any drawing code that uses hdc here...
+            EndPaint(hWnd, &ps);
+        }
+        break;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    return 0;
 }
 
-void OpenGLWindow::OnEnterSizeMoveEnd(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+// Message handler for about box.
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        return (INT_PTR)TRUE;
 
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
 }
-
-void OpenGLWindow::OnMouseLDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	
-}
-
-void OpenGLWindow::OnMouseLUp(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	
-}
-
-void OpenGLWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
-{
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hWnd, &ps);
-	
-	
-	
-	EndPaint(hWnd, &ps);
-}
-
-void OpenGLWindow::OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
-{
-
-}
-
-void OpenGLWindow::OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	
-
-	PostQuitMessage(0);	
-}
-
-void OpenGLWindow::OnKeyDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	
-}
-
-LRESULT CALLBACK OpenGLWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	auto iter = MsgHandlerMap[message];
-
-	if (iter == nullptr)
-	{
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-	else
-	{		
-		//iter((*MyEngine->MainWindow.get()), hWnd, message, wParam, lParam);
-	}
-
-	return 0;
-}
-
-int OpenGLWindow::Run()
-{
-	HACCEL hAccelTable = LoadAccelerators(InstanceHandle, MAKEINTRESOURCE(IDC_MODERNOPENGL));
-
-	MSG msg{};
-
-	// Main message loop:
-	while (GetMessage(&msg, nullptr, 0, 0))
-	{				
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);		
-		}		
-	}
-	
-	return (int)msg.wParam;
-}
-
-BOOL OpenGLWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
-{	
-	WindowHandle = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-
-	if (!WindowHandle)
-	{
-		return FALSE;
-	}	
-	
-	ShowWindow(WindowHandle, nCmdShow);
-	UpdateWindow(WindowHandle);
-
-	return TRUE;
-}
-
-WORD OpenGLWindow::RegisterWindowClass(HINSTANCE hInstance)
-{	
-	WNDCLASSEXW wcex;
-
-	wcex.cbSize = sizeof(WNDCLASSEX);
-
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = &OpenGLWindow::WndProc;
-	wcex.cbClsExtra = 0;
-	wcex.cbWndExtra = 0;
-	wcex.hInstance = hInstance;
- 	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MODERNOPENGL));	
- 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
- 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
- 	wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_MODERNOPENGL);
-	wcex.lpszClassName = szWindowClass;
- 	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-
-	return RegisterClassExW(&wcex);	
-}
-
-std::map<unsigned int, OpenGLWindow::MsgHandlerType> OpenGLWindow::MsgHandlerMap;
