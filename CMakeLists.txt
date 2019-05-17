@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(CMakeTest VERSION 0.1.0)
+project(DXEngine)
 
 set(CMAKE_EXE_LINKER_FLAGS "/machine:x64")
 set(CMAKE_MODULE_LINKER_FLAGS "/machine:x64")
@@ -9,8 +9,25 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories("lib/dx/x64/Include")
 
-file(TO_CMAKE_PATH "$ENV{ProgramFiles}" _progFilePath)
-message("${_progFilePath}/Windows Kits/10/Include/${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
+###########################################################
+################ Engine					 ################
+file(GLOB SOURCES "Engine/*.cpp")
+file(GLOB HEADERS "Engine/*.h")
+
+include_directories("Engine")
+
+foreach(src_file ${SOURCES})
+	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuEngine.h")
+endforeach(src_file ${SOURCES})
+
+
+set_source_files_properties("Engine/Engine.cpp" PROPERTIES COMPILE_FLAGS "/YcEngine.h")
+
+add_library(Engine ${SOURCES} ${HEADERS})
+
+target_compile_definitions(Engine PRIVATE ENGINE_EXPORTS)
+target_compile_definitions(Engine INTERFACE ENGINE_IMPORTS)
+###########################################################
 
 add_executable(DXRenderer resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
 
@@ -23,6 +40,7 @@ set (DXLIBPATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/dx/x64/Lib")
 message("${DXLIBPATH}")
 
 target_link_libraries(DXRenderer 
+Engine
 ${DXLIBPATH}/d3d11.lib 
 ${DXLIBPATH}/d3dcompiler.lib
 ${DXLIBPATH}/DxErr.lib
