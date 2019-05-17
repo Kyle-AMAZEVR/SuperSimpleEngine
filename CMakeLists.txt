@@ -17,16 +17,15 @@ file(GLOB HEADERS "Engine/*.h")
 include_directories("Engine")
 
 foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuEngine.h")
+	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")
 endforeach(src_file ${SOURCES})
 
+set_source_files_properties("Engine/Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
 
-set_source_files_properties("Engine/Engine.cpp" PROPERTIES COMPILE_FLAGS "/YcEngine.h")
+add_library(Core SHARED ${SOURCES} ${HEADERS})
 
-add_library(Engine ${SOURCES} ${HEADERS})
-
-target_compile_definitions(Engine PRIVATE ENGINE_EXPORTS)
-target_compile_definitions(Engine INTERFACE ENGINE_IMPORTS)
+target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
+target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
 ###########################################################
 
 add_executable(DXRenderer resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
@@ -40,7 +39,7 @@ set (DXLIBPATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/dx/x64/Lib")
 message("${DXLIBPATH}")
 
 target_link_libraries(DXRenderer 
-Engine
+
 ${DXLIBPATH}/d3d11.lib 
 ${DXLIBPATH}/d3dcompiler.lib
 ${DXLIBPATH}/DxErr.lib
