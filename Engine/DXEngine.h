@@ -3,7 +3,7 @@
 
 #include "Singleton.h"
 
-class ENGINE_API DXEngine 
+class ENGINE_API DXEngine : public Singleton<DXEngine>
 {
 public:    
     bool Initialize(HWND windowHandle);
@@ -17,5 +17,6 @@ private:
 
 private:
     ID3D11Device* mDevice = nullptr;
+    ID3D11DeviceContext* mDeviceContext;
     IDXGISwapChain* mSwapChain = nullptr;
 };

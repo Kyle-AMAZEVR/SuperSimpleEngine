@@ -7,7 +7,7 @@ template<class T>
 class Singleton
 {
 public:
-    T& Get() 
+    static T& Get() 
     { 
         if(mInstance == nullptr)
         {
@@ -16,5 +16,8 @@ public:
         return *mInstance; 
     }
 private:
-    T* mInstance = nullptr;
+    static T* mInstance;
 };
+
+template<class T>
+T* Singleton<T>::mInstance = nullptr;
