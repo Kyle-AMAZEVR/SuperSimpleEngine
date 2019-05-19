@@ -20,7 +20,7 @@ file(GLOB HEADERS "Engine/*.h")
 include_directories("Engine")
 
 foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")
+	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
 endforeach(src_file ${SOURCES})
 
 set_source_files_properties("Engine/Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")

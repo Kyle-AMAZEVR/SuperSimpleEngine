@@ -1,11 +1,12 @@
 
 #pragma once
 
-class ENGINE_API DXEngine
+#include "Singleton.h"
+
+class ENGINE_API DXEngine 
 {
 public:    
     bool Initialize(HWND windowHandle);
-    
 
 private:
     bool CreateDevice();

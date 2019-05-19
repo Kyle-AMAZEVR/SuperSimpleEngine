@@ -16,6 +16,7 @@
 
 #include "d3d11.h"
 #include "DXWindow.h"
+#include "Core.h"
 #include "Engine/DXEngine.h"
 
 #define MAX_LOADSTRING 100
