@@ -13,3 +13,11 @@ ipch/*
 *.user
 .vscode/ipch
 build/*
+Win32
+x64
+*.filters
+*.user
+*.vcxproj
+.vs
+Debug
+*.sln
