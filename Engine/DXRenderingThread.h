@@ -6,4 +6,6 @@ class ENGINE_API DXRenderingThread
 {
 public:
 
+protected:
+    
 };

@@ -1,0 +1,19 @@
+
+
+#pragma once
+
+class DXViewport 
+{
+public:
+    int GetWidth() const { return mWidth; }
+    void Resize(int newWidth, int newHeight);
+
+protected:
+    int mWidth = 0;
+    int mHeight = 0;
+    
+    ID3D11Texture2D* mDepthStencilBuffer = nullptr;
+	ID3D11RenderTargetView* mRenderTargetView = nullptr;
+	ID3D11DepthStencilView* mDepthStencilView = nullptr;
+    D3D11_VIEWPORT mScreenViewport;
+};
