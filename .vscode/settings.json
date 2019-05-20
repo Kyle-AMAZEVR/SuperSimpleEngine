@@ -5,5 +5,10 @@
         "DXEngine.ico" : true,
         "small.ico" : true,
         "lib/dx/x64/Lib" : true,
+        "targetver.h" : true,
+        "resource.h" : true,
+        "DXWindow.rc" : true,
+        ".vscode/ipch" : true,
+        "build" : true
     }
 }
