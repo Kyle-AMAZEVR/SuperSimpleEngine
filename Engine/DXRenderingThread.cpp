@@ -47,4 +47,17 @@ bool DXRenderingThread::IsInRenderingThread()
     }
 }
 
+void DXRenderingThread::ExecuteInRenderingThread(std::function<void()>&& lambdaFunction)
+{
+    if(IsInRenderingThread())
+    {
+        lambdaFunction();
+    }
+    else
+    {
+        std::lock_guard guard(mCommandQueueMutex);
+        mCommandQueue.emplace_back(std::move(lambdaFunction));
+    }    
+}
+
 std::thread::id DXRenderingThread::mRenderingThreadId;
