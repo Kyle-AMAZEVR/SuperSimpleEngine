@@ -140,6 +140,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static int width = 0;
+    static int height = 0;
     switch (message)
     {
     case WM_COMMAND:
@@ -166,6 +168,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // TODO: Add any drawing code that uses hdc here...
             DXEngine::Get().DrawScene();
             EndPaint(hWnd, &ps);
+        }
+        break;
+
+    case WM_SIZE:
+        {
+            width = static_cast<int>(LOWORD(lParam));
+            height = static_cast<int>(HIWORD(lParam));
+            DXEngine::Get().OnWindowResize(width, height);
         }
         break;
 
