@@ -2,6 +2,7 @@
 #pragma once
 
 #include "Singleton.h"
+#include "DXViewport.h"
 
 class ENGINE_API DXEngine : public Singleton<DXEngine>
 {
@@ -19,6 +20,8 @@ public:
 protected:
     int mBufferWidth = 1024;
     int mBufferHeight = 768;
+    
+    DXViewport mViewport;
 
 private:
     bool CreateDevice();

@@ -1,14 +1,13 @@
 {
-    "configurations": [
+    "configurations": 
+    [
         {
             "intelliSenseMode": "clang-x64",
-            "compilerPath": "E:/Program Files/LLVM/bin/clang-cl.exe",
+            "compilerPath": "C:/Program Files/LLVM/bin/clang-cl.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
+            "includePath": ["${workspaceFolder}"]
         }
-    ],
+    ], 
     "version": 4
 }

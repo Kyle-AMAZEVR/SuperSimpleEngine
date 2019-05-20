@@ -2,6 +2,19 @@
 #include "DXEngine.h"
 #include "DXViewport.h"
 
+void DXViewport::Clear()
+{
+    float Color[4] { 0.0f, 0.0f, 1.0f, 1.0f};
+    
+    auto* dxDeviceContext = DXEngine::Get().GetDeviceContext();
+
+    if(dxDeviceContext != nullptr)
+    {
+        dxDeviceContext->ClearRenderTargetView(mRenderTargetView, Color);
+        dxDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    }
+}
+
 void DXViewport::Resize(int newWidth, int newHeight)
 {
     auto* dxDevice = DXEngine::Get().GetDevice();
