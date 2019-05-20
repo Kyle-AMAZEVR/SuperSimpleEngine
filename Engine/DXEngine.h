@@ -20,7 +20,7 @@ public:
 protected:
     int mBufferWidth = 1024;
     int mBufferHeight = 768;
-    
+
     DXViewport mViewport;
 
 private:
@@ -35,10 +35,5 @@ private:
 private:
     ID3D11Device* mDevice = nullptr;
     ID3D11DeviceContext* mDeviceContext = nullptr;
-    IDXGISwapChain* mSwapChain = nullptr;    
-    ID3D11Texture2D* mDepthStencilBuffer = nullptr;
-	ID3D11RenderTargetView* mRenderTargetView = nullptr;
-	ID3D11DepthStencilView* mDepthStencilView = nullptr;
-	D3D11_VIEWPORT mScreenViewport;
-
+    IDXGISwapChain* mSwapChain = nullptr;
 };

@@ -73,7 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
-
+    renderingThread.RequestExit();
     renderingThread.Join();
 
     return (int) msg.wParam;

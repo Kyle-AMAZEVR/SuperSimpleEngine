@@ -14,6 +14,8 @@ void DXRenderingThread::Start(HWND handle)
 
 void DXRenderingThread::Run()
 {
+    mRenderingThreadId = std::this_thread::get_id();
+
     // init engine
     DXEngine::Get().Initialize(mWindowHandle);
 
@@ -23,7 +25,7 @@ void DXRenderingThread::Run()
 
         if(bRequestExit)
         {
-            break;
+            return;
         }
     }
 }
@@ -32,3 +34,17 @@ void DXRenderingThread::Join()
 {
     mThreadInstance.join();
 }
+
+bool DXRenderingThread::IsInRenderingThread()
+{
+    if(mRenderingThreadId == std::this_thread::get_id())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+std::thread::id DXRenderingThread::mRenderingThreadId;
