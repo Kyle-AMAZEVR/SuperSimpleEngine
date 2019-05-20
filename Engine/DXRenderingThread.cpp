@@ -20,7 +20,20 @@ void DXRenderingThread::Run()
     DXEngine::Get().Initialize(mWindowHandle);
 
     while(1)
-    {
+    {   
+        // consume command queue
+        {
+            std::lock_guard guard(mCommandQueueMutex);
+            if(mCommandQueue.empty() == false)
+            {
+                for(auto iter = mCommandQueue.begin(); iter != mCommandQueue.end(); iter++)
+                {
+                    (*iter)();
+                }
+                mCommandQueue.clear();
+            }
+        }
+
         DXEngine::Get().DrawScene();
 
         if(bRequestExit)
@@ -56,7 +69,7 @@ void DXRenderingThread::ExecuteInRenderingThread(std::function<void()>&& lambdaF
     else
     {
         std::lock_guard guard(mCommandQueueMutex);
-        mCommandQueue.emplace_back(std::move(lambdaFunction));
+        mCommandQueue.push_back(std::move(lambdaFunction));
     }    
 }
 
