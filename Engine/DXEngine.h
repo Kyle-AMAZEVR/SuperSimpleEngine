@@ -7,7 +7,12 @@ class ENGINE_API DXEngine : public Singleton<DXEngine>
 {
 public:    
     bool Initialize(HWND windowHandle);
+    void UnInitialize();
     void OnWindowResize(int newWidth, int newHeight);
+
+    ID3D11Device* GetDevice() { return mDevice; }
+
+    void DrawScene();
 
 protected:
     int mBufferWidth = 1024;
@@ -19,6 +24,8 @@ private:
 
     HWND mWindowHandle;
     UINT m4xMSAAQuality;
+
+    bool bInitialized = false;
 
 private:
     ID3D11Device* mDevice = nullptr;

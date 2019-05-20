@@ -1,6 +1,8 @@
 
 #include "Core.h"
+#include "Util.h"
 #include "DXEngine.h"
+
 
 bool DXEngine::Initialize(HWND windowHandle)
 {
@@ -8,6 +10,7 @@ bool DXEngine::Initialize(HWND windowHandle)
     CreateDevice();
     CreateSwapChain();
     OnWindowResize(1024,768);
+    bInitialized = true;
     return true;
 }
 
@@ -25,6 +28,8 @@ void DXEngine::OnWindowResize(int newWidth, int newHeight)
     assert(mDeviceContext);
 	assert(mDevice);
 	assert(mSwapChain);
+
+    check ( newWidth > 0 && newHeight > 0 );
 
 	// Release the old views, as they hold references to the buffers we
 	// will be destroying.  Also release the old depth/stencil buffer.
@@ -122,4 +127,21 @@ bool DXEngine::CreateSwapChain()
     ReleaseCOM(dxgiFactory);
 
     return true;
+}
+
+
+void DXEngine::DrawScene()
+{
+    if(bInitialized == false)
+    {
+        return;
+    }
+    
+    check(mDeviceContext != nullptr);
+
+    float Color[4] { 1.0f, 0.0f, 0.0f, 1.0f};
+    mDeviceContext->ClearRenderTargetView(mRenderTargetView, Color);
+    mDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+    HR(mSwapChain->Present(0,0));
 }
