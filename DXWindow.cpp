@@ -18,6 +18,7 @@
 #include "DXWindow.h"
 #include "Core.h"
 #include "Engine/DXEngine.h"
+#include "Engine/DXRenderingThread.h"
 
 #define MAX_LOADSTRING 100
 
@@ -25,6 +26,8 @@
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+
+HWND WindowHandle;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -53,6 +56,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
+    // start rendering thread
+    DXRenderingThread renderingThread;
+    renderingThread.Start(WindowHandle);
+
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
 
     MSG msg;
@@ -66,6 +73,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
+
+    renderingThread.Join();
 
     return (int) msg.wParam;
 }
@@ -121,10 +130,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    }
 
    ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
-
-   DXEngine::Get().Initialize(hWnd);
-
+   UpdateWindow(hWnd);   
+   WindowHandle = hWnd;
    return TRUE;
 }
 
@@ -165,8 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            DXEngine::Get().DrawScene();
+            // TODO: Add any drawing code that uses hdc here...            
             EndPaint(hWnd, &ps);
         }
         break;
@@ -175,7 +181,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             width = static_cast<int>(LOWORD(lParam));
             height = static_cast<int>(HIWORD(lParam));
-            DXEngine::Get().OnWindowResize(width, height);
+            
         }
         break;
 

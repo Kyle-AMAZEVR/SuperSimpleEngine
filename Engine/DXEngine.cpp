@@ -25,17 +25,11 @@ bool DXEngine::CreateDevice()
 
 void DXEngine::OnWindowResize(int newWidth, int newHeight)
 {
-    if(bInitialized == false)
-    {
-        return;
-    }
-
     assert(mDeviceContext);
 	assert(mDevice);
 	assert(mSwapChain);
 
-    check ( newWidth > 0 && newHeight > 0 );
-    
+    check ( newWidth > 0 && newHeight > 0 );    
     mViewport.Resize(newWidth, newHeight);
 }
 
