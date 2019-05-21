@@ -9,6 +9,7 @@
 
 #include <d3d11.h>
 #include <dxgi.h>
+#include "d3dcompiler.h"
 #include <cassert>
 
 #define check(expression)\
@@ -31,7 +32,6 @@ if(!(expression))\
 	#define HR(x) (x)
 	#endif
 #endif
-
 
 
 #define ReleaseCOM(x) { if(x){ x->Release(); x = nullptr; } }

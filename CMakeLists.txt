@@ -7,10 +7,11 @@ set(CMAKE_SHARED_LINKER_FLAGS "/machine:x64")
 set(CMAKE_STATIC_LINKER_FLAGS "/machine:x64")
 set(CMAKE_CXX_STANDARD 17)
 
-set (DXLIBPATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/dx/x64/Lib")
+
+set (DXLIBPATH "${CMAKE_CURRENT_SOURCE_DIR}/DirectX/Lib/x64")
 message("${DXLIBPATH}")
 
-include_directories("lib/dx/x64/Include")
+include_directories("DirectX/Include")
 
 ###########################################################
 ################ Engine					 ################
