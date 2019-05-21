@@ -38,5 +38,5 @@ bool DXShaderCompiler::CompilePixelShader(std::wstring filename)
         return false;
     }
 
-    return true;
+    return true;    
 }
