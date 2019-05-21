@@ -9,6 +9,7 @@
         "resource.h" : true,
         "DXWindow.rc" : true,
         ".vscode/ipch" : true,
-        "build" : true
+        "build" : true,
+        "DirectX" : true,
     }
 }

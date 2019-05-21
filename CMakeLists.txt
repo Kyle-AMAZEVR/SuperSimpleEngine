@@ -27,7 +27,7 @@ set_source_files_properties("Engine/Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(Core ${DXLIBPATH}/d3d11.lib)
+target_link_libraries(Core ${DXLIBPATH}/d3d11.lib ${DXLIBPATH}/d3dcompiler.lib)
 
 target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
@@ -44,6 +44,5 @@ endif(WIN32)
 
 target_link_libraries(DXRenderer 
 Core
-${DXLIBPATH}/d3dcompiler.lib
 ${DXLIBPATH}/DxErr.lib
  )
