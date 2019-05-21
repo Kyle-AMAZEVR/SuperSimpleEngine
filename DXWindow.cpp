@@ -14,6 +14,8 @@
 #include <memory.h>
 #include <tchar.h>
 
+
+
 #include "d3d11.h"
 #include "DXWindow.h"
 #include "Core.h"
