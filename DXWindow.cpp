@@ -57,7 +57,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     // start rendering thread
-    DXRenderingThread::Get().Start(WindowHandle);
+    DXRenderingThread renderingThread;
+    renderingThread.Start(WindowHandle);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
 
@@ -72,8 +73,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
-    DXRenderingThread::Get().RequestExit();
-    DXRenderingThread::Get().Join();
+    renderingThread.RequestExit();
+    renderingThread.Join();
 
     return (int) msg.wParam;
 }
@@ -179,12 +180,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_SIZE:
         {
             width = static_cast<int>(LOWORD(lParam));
-            height = static_cast<int>(HIWORD(lParam));            
+            height = static_cast<int>(HIWORD(lParam));
             
-            DXRenderingThread::Get().ExecuteInRenderingThread([]()
-            {                
-                DXEngine::Get().OnWindowResize(width, height);
-            });
         }
         break;
 
