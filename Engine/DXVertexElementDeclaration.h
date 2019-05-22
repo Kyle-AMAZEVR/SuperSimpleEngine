@@ -6,10 +6,10 @@ class ENGINE_API DXVertexElementDeclaration
 {
 public:
     // POSTION, COLOR
-    static D3D11_INPUT_ELEMENT_DESC PositionColor[2];
+    static const D3D11_INPUT_ELEMENT_DESC PositionColor[2];
 
-    // POSITION, TEXCOORD, NORMAL
-    static D3D11_INPUT_ELEMENT_DESC PositionTexcoordNormal[3];
+    // POSITION, NORMAL, TEXCOORD
+    static const D3D11_INPUT_ELEMENT_DESC PositionNormalTexcoord[3];
 
-    
+
 };
