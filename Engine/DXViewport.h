@@ -2,7 +2,7 @@
 
 #pragma once
 
-class DXViewport 
+class ENGINE_API DXViewport 
 {
 public:
     int GetWidth() const { return mWidth; }

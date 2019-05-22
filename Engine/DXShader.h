@@ -7,6 +7,8 @@ public:
     virtual ~DXShader() {}
 protected:
     virtual bool CompileFromFile(std::wstring filepath) { return true; }
+	
+    void PrintCompileError(const char* errorMessage, unsigned long buffSize);
 };
 
 // vertex shader

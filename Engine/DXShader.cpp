@@ -4,12 +4,29 @@
 #include "DXEngine.h"
 #include "DXVertexElementDeclaration.h"
 #include <filesystem>
+#include <fstream>
+
+void DXShader::PrintCompileError(const char* errorMessage, unsigned long buffSize)
+{	
+	char* compileErrBuffer = nullptr;
+
+	compileErrBuffer = new char[buffSize + 1];
+
+	strcpy_s(compileErrBuffer, buffSize, errorMessage);
+
+	OutputDebugStringA(compileErrBuffer);
+
+	delete[] compileErrBuffer;
+}
+
 
 //@ vertex shader implementation
  DXVertexShader::~DXVertexShader()
  {
      ReleaseCOM(mVertexShader);
  }
+
+ 
 
  bool DXVertexShader::CompileFromFile(std::wstring filepath)
  {
@@ -22,11 +39,16 @@
 
     if(errorMsg != nullptr)
     {
+		PrintCompileError((const char*)errorMsg->GetBufferPointer(), errorMsg->GetBufferSize());
+    	
+		ReleaseCOM(errorMsg);
+
         return false;
     }
 
     auto* dxDevice = DXEngine::Get().GetDevice();
-    HR(dxDevice->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
+    
+	HR(dxDevice->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
 
     return true;
  }
