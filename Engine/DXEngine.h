@@ -23,6 +23,7 @@ protected:
 
     DXViewport mViewport;
 
+    void TestCompileShader();
 private:
     bool CreateDevice();
     bool CreateSwapChain();

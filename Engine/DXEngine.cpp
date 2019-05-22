@@ -2,6 +2,7 @@
 #include "Core.h"
 #include "Util.h"
 #include "DXEngine.h"
+#include "DXShader.h"
 
 
 bool DXEngine::Initialize(HWND windowHandle)
@@ -11,7 +12,15 @@ bool DXEngine::Initialize(HWND windowHandle)
     CreateSwapChain();
     OnWindowResize(1024,768);
     bInitialized = true;
+
+    TestCompileShader();
     return true;
+}
+
+void DXEngine::TestCompileShader()
+{
+    DXVertexShader shader;
+    shader.CompileFromFile(L"./Shader/BasicShader.vs");
 }
 
 bool DXEngine::CreateDevice()
