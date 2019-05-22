@@ -12,6 +12,7 @@
 #include "d3dcompiler.h"
 #include "d3d11shader.h"
 #include <cassert>
+#include <string>
 
 #define check(expression)\
 if(!(expression))\
