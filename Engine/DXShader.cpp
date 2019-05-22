@@ -2,6 +2,7 @@
 #include "Core.h"
 #include "DXShader.h"
 #include "DXEngine.h"
+#include "DXVertexElementDeclaration.h"
 #include <filesystem>
 
 //@ vertex shader implementation
