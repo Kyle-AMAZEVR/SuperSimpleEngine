@@ -8,7 +8,7 @@ public:
 protected:
     virtual bool CompileFromFile(std::wstring filepath) { return true; }
 	
-    void PrintCompileError(const char* errorMessage, unsigned long buffSize);
+    void PrintCompileError(ID3D10Blob* errorMsg);
 };
 
 // vertex shader

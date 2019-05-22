@@ -26,7 +26,7 @@ PixelInputType VSMain(VertexInputType input)
     // Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = mul(input.position, World);
     output.position = mul(output.position, View);
-    output.position = mul(output.position, Projection);
+    output.position = mul(output.position, Projection);    
     
     // Store the input color for the pixel shader to use.
     output.color = input.color;

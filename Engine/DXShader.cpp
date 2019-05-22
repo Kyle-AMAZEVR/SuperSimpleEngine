@@ -6,15 +6,19 @@
 #include <filesystem>
 #include <fstream>
 
-void DXShader::PrintCompileError(const char* errorMessage, unsigned long buffSize)
+void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 {	
-	char* compileErrBuffer = nullptr;
+    auto buffSize = errorMessage->GetBufferSize();
 
-	compileErrBuffer = new char[buffSize + 1];
+    const char* errorMsgPtr = (const char*) errorMessage->GetBufferPointer();    
 
-	strcpy_s(compileErrBuffer, buffSize, errorMessage);
+	char* compileErrBuffer = new char[buffSize + 1];
 
+	strcpy_s(compileErrBuffer, buffSize, errorMsgPtr);
+
+    OutputDebugStringA("============= Shader Compile Error =============\n");
 	OutputDebugStringA(compileErrBuffer);
+    OutputDebugStringA("============= Shader Compile Error =============\n");
 
 	delete[] compileErrBuffer;
 }
@@ -26,7 +30,6 @@ void DXShader::PrintCompileError(const char* errorMessage, unsigned long buffSiz
      ReleaseCOM(mVertexShader);
  }
 
- 
 
  bool DXVertexShader::CompileFromFile(std::wstring filepath)
  {
@@ -39,7 +42,7 @@ void DXShader::PrintCompileError(const char* errorMessage, unsigned long buffSiz
 
     if(errorMsg != nullptr)
     {
-		PrintCompileError((const char*)errorMsg->GetBufferPointer(), errorMsg->GetBufferSize());
+		PrintCompileError(errorMsg);
     	
 		ReleaseCOM(errorMsg);
 
@@ -53,6 +56,7 @@ void DXShader::PrintCompileError(const char* errorMessage, unsigned long buffSiz
     return true;
  }
 
+#pragma region PixelShader
 DXPixelShader::~DXPixelShader()
 {
     ReleaseCOM(mPixelShader);
@@ -69,6 +73,7 @@ bool DXPixelShader::CompileFromFile(std::wstring filepath)
 
     if(errorMsg != nullptr)
     {
+        PrintCompileError(errorMsg);
         return false;
     }
 
@@ -77,3 +82,4 @@ bool DXPixelShader::CompileFromFile(std::wstring filepath)
 
     return true;
 }
+#pragma endregion
