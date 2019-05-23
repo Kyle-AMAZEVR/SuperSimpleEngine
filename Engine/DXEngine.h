@@ -37,4 +37,5 @@ private:
     ID3D11Device* mDevice = nullptr;
     ID3D11DeviceContext* mDeviceContext = nullptr;
     IDXGISwapChain* mSwapChain = nullptr;
+    ID3D11Debug* mDebug = nullptr;
 };

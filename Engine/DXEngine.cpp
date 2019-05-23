@@ -21,14 +21,15 @@ void DXEngine::TestCompileShader()
 {
     DXVertexShader shader;
     shader.CompileFromFile(L"./Shader/BasicShader.vs");
+
+    mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
 
 bool DXEngine::CreateDevice()
 {
     //
     D3D_FEATURE_LEVEL featureLevel;        
-    HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, &mDevice, &featureLevel, &mDeviceContext)); 
-    
+    HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, &mDevice, &featureLevel, &mDeviceContext));     
     return true;
 }
 
@@ -68,9 +69,11 @@ bool DXEngine::CreateSwapChain()
     sd.Windowed = true;
     sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     sd.Flags = 0;
+
+    HR(mDevice->QueryInterface(__uuidof(ID3D11Debug) , (void**) &mDebug));
     
     IDXGIDevice* dxgiDevice = nullptr;
-    HR(mDevice->QueryInterface(__uuidof(IDXGIDevice), (void**) &dxgiDevice));
+    HR(mDevice->QueryInterface(__uuidof(IDXGIDevice), (void**) &dxgiDevice));    
 
     IDXGIAdapter* dxgiAdaptor = nullptr;
     HR(dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**) &dxgiAdaptor));
