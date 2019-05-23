@@ -30,15 +30,28 @@ void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
      ReleaseCOM(mVertexShader);
  }
 
+ID3D11InputLayout* DXVertexShader::CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* inputDesc)
+{
+    check(inputDesc != nullptr);
+
+    auto* dxDevice = DXEngine::Get().GetDevice();
+    
+    check(dxDevice != nullptr);
+
+    ID3D11InputLayout* resultInputLayout = nullptr;
+
+    HR(dxDevice->CreateInputLayout(inputDesc, sizeof(inputDesc) / sizeof(inputDesc[0]), mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout));
+
+    return resultInputLayout;
+}
 
  bool DXVertexShader::CompileFromFile(std::wstring filepath)
  {
-    ID3D10Blob* vertexShaderBuffer = nullptr;
     ID3D10Blob* errorMsg = nullptr;
 
     check(std::filesystem::exists(filepath));
 
-    D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "VSMain", "vs_5_0", 0, 0, &vertexShaderBuffer, &errorMsg);
+    D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "VSMain", "vs_5_0", 0, 0, &mShaderBuffer, &errorMsg);
 
     if(errorMsg != nullptr)
     {
@@ -51,7 +64,7 @@ void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 
     auto* dxDevice = DXEngine::Get().GetDevice();
     
-	HR(dxDevice->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
+	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
 
     return true;
  }
@@ -63,13 +76,12 @@ DXPixelShader::~DXPixelShader()
 }
 
 bool DXPixelShader::CompileFromFile(std::wstring filepath)
-{
-    ID3D10Blob* pixelShaderBuffer = nullptr;
+{    
     ID3D10Blob* errorMsg = nullptr;
 
     check(std::filesystem::exists(filepath));
 
-    D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "PSMain", "ps_5_0", 0, 0, &pixelShaderBuffer, &errorMsg);
+    D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "PSMain", "ps_5_0", 0, 0, &mShaderBuffer, &errorMsg);
 
     if(errorMsg != nullptr)
     {
@@ -78,7 +90,7 @@ bool DXPixelShader::CompileFromFile(std::wstring filepath)
     }
 
     auto* dxDevice = DXEngine::Get().GetDevice();
-    HR(dxDevice->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
+    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
 
     return true;
 }

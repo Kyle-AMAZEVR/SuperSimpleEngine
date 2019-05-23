@@ -6,9 +6,9 @@ class ENGINE_API DXShader
 public:
     virtual ~DXShader() {}
 protected:
-    virtual bool CompileFromFile(std::wstring filepath) { return true; }
-	
+    virtual bool CompileFromFile(std::wstring filepath) { return true; }	
     void PrintCompileError(ID3D10Blob* errorMsg);
+    ID3DBlob* mShaderBuffer = nullptr;  
 };
 
 // vertex shader
@@ -19,7 +19,10 @@ public:
     virtual ~DXVertexShader();
     virtual bool CompileFromFile(std::wstring filepath) override;
     ID3D11VertexShader* GetShader() { return mVertexShader; }
+    ID3D11InputLayout* CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* inputDesc);
+
 protected:
+
     ID3D11VertexShader* mVertexShader = nullptr;
 };
 
