@@ -34,6 +34,7 @@ void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 {
     auto* dxDevice = DXEngine::Get().GetDevice();
+    auto* dxDeviceContext = DXEngine::Get().GetDeviceContext();
     
     check(dxDevice != nullptr);
 
@@ -43,7 +44,7 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 
     HR(dxDevice->CreateInputLayout(DXVertexElementDeclaration::PositionColor, 
     inputDescElementLength, 
-    mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout));
+    mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout));        
 
     return resultInputLayout;
 }

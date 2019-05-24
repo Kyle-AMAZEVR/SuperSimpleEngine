@@ -4,7 +4,16 @@
 
 
 COMWrapper::COMWrapper(IUnknown* object)
+: mObject(object)
 {
-    object->AddRef();
+    mObject->AddRef();
 }
 
+COMWrapper::~COMWrapper()
+{
+    if(mObject)
+    {
+        mObject->Release();
+        mObject = nullptr;
+    }
+}

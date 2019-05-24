@@ -4,9 +4,9 @@
 
 class ENGINE_API COMWrapper
 {
-public : 
+public:
     COMWrapper(IUnknown* object);
-
+    ~COMWrapper();
 protected:
-    IUnknown* object = nullptr;
+    IUnknown* mObject = nullptr;
 };
