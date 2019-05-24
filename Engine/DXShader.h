@@ -19,7 +19,7 @@ public:
     virtual ~DXVertexShader();
     virtual bool CompileFromFile(std::wstring filepath) override;
     ID3D11VertexShader* GetShader() { return mVertexShader; }
-    ID3D11InputLayout* CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* inputDesc);
+    ID3D11InputLayout* CreateInputLayout();
 
 protected:
 

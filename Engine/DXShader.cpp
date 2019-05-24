@@ -5,6 +5,7 @@
 #include "DXVertexElementDeclaration.h"
 #include <filesystem>
 #include <fstream>
+#include "Templates.h"
 
 void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 {	
@@ -30,17 +31,19 @@ void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
      ReleaseCOM(mVertexShader);
  }
 
-ID3D11InputLayout* DXVertexShader::CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* inputDesc)
+ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 {
-    check(inputDesc != nullptr);
-
     auto* dxDevice = DXEngine::Get().GetDevice();
     
     check(dxDevice != nullptr);
 
     ID3D11InputLayout* resultInputLayout = nullptr;
 
-    HR(dxDevice->CreateInputLayout(inputDesc, sizeof(inputDesc) / sizeof(inputDesc[0]), mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout));
+    auto inputDescElementLength = sizeof_array(DXVertexElementDeclaration::PositionColor);
+
+    HR(dxDevice->CreateInputLayout(DXVertexElementDeclaration::PositionColor, 
+    inputDescElementLength, 
+    mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout));
 
     return resultInputLayout;
 }

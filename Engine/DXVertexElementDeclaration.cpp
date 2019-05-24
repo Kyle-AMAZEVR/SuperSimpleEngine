@@ -1,6 +1,7 @@
 
 
 #include "Core.h"
+#include "DXVertexTypes.h"
 #include "DXVertexElementDeclaration.h"
 
 const D3D11_INPUT_ELEMENT_DESC DXVertexElementDeclaration::PositionColor[2]
