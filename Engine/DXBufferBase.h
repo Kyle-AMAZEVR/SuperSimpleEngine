@@ -8,3 +8,8 @@ protected:
 
 
 
+class DXConstantBuffer : public DXBufferBase
+{
+public:
+    DXConstantBuffer();
+};
