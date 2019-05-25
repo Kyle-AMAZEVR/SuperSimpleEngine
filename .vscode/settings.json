@@ -11,5 +11,12 @@
         ".vscode/ipch" : true,
         "build" : true,
         "DirectX" : true,
-    }
+        "*.vcxproj" : true, 
+        "*.filters" : true,
+        "*.user": true,
+        "CMakeFiles/*" : true,
+        "Win32/*" : true,
+        "x64/*" : true,
+    },
+
 }

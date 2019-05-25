@@ -21,3 +21,5 @@ x64
 .vs
 Debug
 *.sln
+CMakeCache.txt
+*.cmake
