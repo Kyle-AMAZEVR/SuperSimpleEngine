@@ -1,7 +1,8 @@
 #pragma once
 
+#include "DXRenderResource.h"
 
-class ENGINE_API DXShader
+class ENGINE_API DXShader : public DXRenderResource
 {
 public:
     virtual ~DXShader() {}

@@ -14,7 +14,7 @@ public:
 
     void ExecuteInRenderingThread(std::function<void()>&& lambdaFunction);
 
-    static bool IsInRenderingThread();
+    static inline bool IsInRenderingThread();
 
 protected:
     void Run();   

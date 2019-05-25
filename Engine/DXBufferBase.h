@@ -1,9 +1,12 @@
 #pragma once
 
-class DXBufferBase
+#include "DXRenderResource.h"
+
+class DXBufferBase : public DXRenderResource
 {
 protected:
     D3D11_BUFFER_DESC mBufferDescription;
+    
 };
 
 

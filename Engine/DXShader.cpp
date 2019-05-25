@@ -33,8 +33,7 @@ void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 
 ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 {
-    auto* dxDevice = DXEngine::Get().GetDevice();
-    auto* dxDeviceContext = DXEngine::Get().GetDeviceContext();
+    auto* dxDevice = DXEngine::Get().GetDevice();    
     
     check(dxDevice != nullptr);
 
