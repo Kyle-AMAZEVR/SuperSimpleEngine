@@ -3,20 +3,35 @@
 
 #include "DXBufferBase.h"
 
+template<class TBufferType>
 class DXConstantBuffer : public DXBufferBase
 {
 public:
     DXConstantBuffer();
     
-    template<class T>
-    void Write(const T& data);
+    void Write(const TBufferType& data);
 
 protected:
 
 };
 
-template<class T>
-void DXConstantBuffer::Write(const T& data)
+
+template<class TBufferType>
+DXConstantBuffer<TBufferType>::DXConstantBuffer()
+{
+    mBufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
+    mBufferDescription.MiscFlags = 0;
+    mBufferDescription.StructureByteStride = 0;
+    mBufferDescription.ByteWidth = sizeof(TBufferType);
+
+    HR(DXEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
+}
+
+
+template<class TBufferType>
+void DXConstantBuffer<TBufferType>::Write(const TBufferType& data)
 {
     check(mpBuffer != nullptr);
 
