@@ -11,9 +11,9 @@ public:
     void UnInitialize();
     void OnWindowResize(int newWidth, int newHeight);
 
-    ID3D11Device* GetDevice() { return mDevice; }
-    ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
-    IDXGISwapChain* GetSwapChain() {return mSwapChain;}    
+    inline ID3D11Device* GetDevice() { return mDevice; }
+    inline ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
+    inline IDXGISwapChain* GetSwapChain() {return mSwapChain;}    
 
     void DrawScene();
 

@@ -1,4 +1,6 @@
 
+
+
 #include "Core.h"
 #include "DXShader.h"
 #include "DXEngine.h"
@@ -6,6 +8,8 @@
 #include <filesystem>
 #include <fstream>
 #include "Templates.h"
+
+
 
 void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 {	
@@ -43,7 +47,8 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 
     HR(dxDevice->CreateInputLayout(DXVertexElementDeclaration::PositionColor, 
     inputDescElementLength, 
-    mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout));        
+    mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout)); 
+
 
     return resultInputLayout;
 }
@@ -68,6 +73,19 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
     auto* dxDevice = DXEngine::Get().GetDevice();
     
 	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
+
+    // Shader Reflection
+    ID3D11ShaderReflection* vertexShaderReflection = nullptr;    
+    HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection));    
+
+    D3D11_SHADER_DESC shaderDescription;
+    vertexShaderReflection->GetDesc(&shaderDescription);
+
+    for(unsigned int i = 0; i < shaderDescription.ConstantBuffers; ++i)
+    {
+        ID3D11ShaderReflectionConstantBuffer* constantBuffer = vertexShaderReflection->GetConstantBufferByIndex(i);
+        
+    }
 
     return true;
  }

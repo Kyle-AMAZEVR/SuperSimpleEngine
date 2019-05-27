@@ -8,6 +8,7 @@ protected:
     virtual ~DXBufferBase();
     D3D11_BUFFER_DESC mBufferDescription;
     ID3D11Buffer* mpBuffer = nullptr;
+    std::string mBufferName;
 };
 
 

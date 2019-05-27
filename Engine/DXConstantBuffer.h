@@ -41,5 +41,6 @@ void DXConstantBuffer<TBufferType>::Write(const TBufferType& data)
     
     memcpy(mappedResource.pData, &data, sizeof(data));
 
-    HR(DXEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0));
+    HR(DXEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0));   
+    
 }
