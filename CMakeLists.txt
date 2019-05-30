@@ -7,10 +7,6 @@ set(CMAKE_SHARED_LINKER_FLAGS "/machine:x64")
 set(CMAKE_STATIC_LINKER_FLAGS "/machine:x64")
 set(CMAKE_CXX_STANDARD 17)
 
-set (DXLIBPATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/dx/x64")
-message("${DXLIBPATH}")
-
-include_directories("lib/dx/Include")
 
 ###########################################################
 ################ Engine					 ################
@@ -27,7 +23,7 @@ set_source_files_properties("Engine/Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(Core ${DXLIBPATH}/d3d11.lib ${DXLIBPATH}/d3dcompiler.lib ${DXLIBPATH}/dxguid.lib)
+target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib)
 
 target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
@@ -44,5 +40,4 @@ endif(WIN32)
 
 target_link_libraries(DXRenderer 
 Core
-${DXLIBPATH}/DxErr.lib
  )

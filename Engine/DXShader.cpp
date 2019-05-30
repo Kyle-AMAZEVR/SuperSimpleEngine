@@ -72,11 +72,23 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 
     auto* dxDevice = DXEngine::Get().GetDevice();
     
-	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
+	HRESULT compileResult = dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader);
 
     // Shader Reflection
     ID3D11ShaderReflection* vertexShaderReflection = nullptr;    
-    HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection));    
+    HRESULT hr = D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection);  
+
+    if(FAILED(hr))  
+    {
+        if(hr == E_NOINTERFACE)
+        {
+            OutputDebugStringW(L"Failed");
+        }
+        else if(hr == E_NOTIMPL)
+        {
+            OutputDebugStringW(L"Failed");
+        }
+    }
 
     D3D11_SHADER_DESC shaderDescription;
     vertexShaderReflection->GetDesc(&shaderDescription);
@@ -84,7 +96,17 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
     for(unsigned int i = 0; i < shaderDescription.ConstantBuffers; ++i)
     {
         ID3D11ShaderReflectionConstantBuffer* constantBuffer = vertexShaderReflection->GetConstantBufferByIndex(i);
-        
+		D3D11_SHADER_BUFFER_DESC bufferDesc;
+		constantBuffer->GetDesc(&bufferDesc);		
+		// 
+		bufferDesc.Name;
+    }
+
+
+    for (auto i = 0; i < shaderDescription.InputParameters; ++i)
+    {
+        D3D11_SIGNATURE_PARAMETER_DESC inputDesc;
+        vertexShaderReflection->GetInputParameterDesc(i, &inputDesc);        
     }
 
     return true;
