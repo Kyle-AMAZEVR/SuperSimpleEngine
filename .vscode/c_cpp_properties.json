@@ -1,27 +1,21 @@
 {
-    "env" : {
+    "env": {
         "myDefaultIncludePath": [
             "E:/Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/um"
         ]
     },
-    
-    "configurations": 
-    [        
-        
+    "configurations": [
         {
-            
-            "intelliSenseMode": "clang-x64",
+            "intelliSenseMode": "${default}",
             "compilerPath": "E:/Program Files/LLVM/bin/clang-cl.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
-
-            "includePath": 
-            [
+            "includePath": [
                 "${workspaceRoot}",
                 "E:/Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/um",
                 "${workspaceRoot}/Engine"
             ]
         }
-    ],     
+    ],
     "version": 4
 }
