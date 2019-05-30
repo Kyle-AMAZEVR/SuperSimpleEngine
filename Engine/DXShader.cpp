@@ -72,23 +72,11 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 
     auto* dxDevice = DXEngine::Get().GetDevice();
     
-	HRESULT compileResult = dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader);
+	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
 
     // Shader Reflection
     ID3D11ShaderReflection* vertexShaderReflection = nullptr;    
-    HRESULT hr = D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection);  
-
-    if(FAILED(hr))  
-    {
-        if(hr == E_NOINTERFACE)
-        {
-            OutputDebugStringW(L"Failed");
-        }
-        else if(hr == E_NOTIMPL)
-        {
-            OutputDebugStringW(L"Failed");
-        }
-    }
+    HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection));  
 
     D3D11_SHADER_DESC shaderDescription;
     vertexShaderReflection->GetDesc(&shaderDescription);
@@ -97,16 +85,37 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
     {
         ID3D11ShaderReflectionConstantBuffer* constantBuffer = vertexShaderReflection->GetConstantBufferByIndex(i);
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
-		constantBuffer->GetDesc(&bufferDesc);		
+		constantBuffer->GetDesc(&bufferDesc);
+        
+        
 		// 
-		bufferDesc.Name;
+        for(unsigned int j = 0; j < bufferDesc.Variables; ++j)
+        {
+			ID3D11ShaderReflectionVariable* variableReflection = constantBuffer->GetVariableByIndex(j);
+			D3D11_SHADER_VARIABLE_DESC variableDesc;
+			variableReflection->GetDesc(&variableDesc);
+
+            
+			ID3D11ShaderReflectionType* variableType = variableReflection->GetType();
+			D3D11_SHADER_TYPE_DESC typeDesc;
+			variableType->GetDesc(&typeDesc);
+
+			OutputDebugString("======\n");
+			OutputDebugString(variableDesc.Name);
+			OutputDebugString("\n");
+			auto startOffset = variableDesc.StartOffset;
+			auto size = variableDesc.Size;            
+			OutputDebugString("======\n");
+        }		
     }
 
 
     for (auto i = 0; i < shaderDescription.InputParameters; ++i)
     {
         D3D11_SIGNATURE_PARAMETER_DESC inputDesc;
-        vertexShaderReflection->GetInputParameterDesc(i, &inputDesc);        
+        vertexShaderReflection->GetInputParameterDesc(i, &inputDesc);     
+
+		OutputDebugString("SDFSDf");
     }
 
     return true;
