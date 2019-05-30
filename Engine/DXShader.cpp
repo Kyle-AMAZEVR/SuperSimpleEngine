@@ -87,7 +87,6 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
         
-        
 		// 
         for(unsigned int j = 0; j < bufferDesc.Variables; ++j)
         {
