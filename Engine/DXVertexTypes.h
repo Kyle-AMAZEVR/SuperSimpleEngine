@@ -46,7 +46,7 @@ struct VertexType<T1, T2, T3, T4, T5>
     T5 VertexAttribute5;
 };
 
-//using VT_PositionColor = VertexType<DirectX::XMFLOAT3, DirectX::XMFLOAT4>;
+using VT_PositionColor = VertexType<DirectX::XMFLOAT3, DirectX::XMFLOAT4>;
 
 
 

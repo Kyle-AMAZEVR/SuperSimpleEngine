@@ -11,7 +11,7 @@
 //#include "dxgi.h"
 
 #include "d3dcompiler.h"
-//#include "DirectXMath.h"
+#include "DirectXMath.h"
 #include <cassert>
 #include <string>
 

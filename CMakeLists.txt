@@ -14,6 +14,7 @@ file(GLOB SOURCES "Engine/*.cpp")
 file(GLOB HEADERS "Engine/*.h")
 
 include_directories("Engine")
+include_directories("lib/DirectXMath/Include")
 
 foreach(src_file ${SOURCES})
 	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
