@@ -53,6 +53,25 @@ DXGI_FORMAT Translator::GetVertexShaderInputType(D3D11_SIGNATURE_PARAMETER_DESC 
         }                
     }
 
+    else if(desc.ComponentType == D3D_REGISTER_COMPONENT_SINT32)
+    {
+        switch(nComponentCount)
+        {
+            case 4:
+                return DXGI_FORMAT_R32G32B32A32_SINT;
+                break;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_SINT;
+                break;
+            case 2:
+                return DXGI_FORMAT_R32G32_SINT;
+                break;
+            case 1:
+                return DXGI_FORMAT_R32_SINT;
+                break;
+        }                
+    }
+
 
     return DXGI_FORMAT_R32_FLOAT;
 }

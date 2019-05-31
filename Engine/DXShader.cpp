@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <fstream>
 #include "Templates.h"
-
+#include "Translator.h"
 
 
 void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
@@ -93,13 +93,16 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
 			ID3D11ShaderReflectionVariable* variableReflection = constantBuffer->GetVariableByIndex(j);
 			D3D11_SHADER_VARIABLE_DESC variableDesc;
 			variableReflection->GetDesc(&variableDesc);
-
             
 			ID3D11ShaderReflectionType* variableType = variableReflection->GetType();
 			D3D11_SHADER_TYPE_DESC typeDesc;
 			variableType->GetDesc(&typeDesc);
 
+            
+
 			OutputDebugString("======\n");
+            OutputDebugString(typeDesc.Name);
+            OutputDebugString("======\n");
 			OutputDebugString(variableDesc.Name);
 			OutputDebugString("\n");
 			auto startOffset = variableDesc.StartOffset;
@@ -114,7 +117,7 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
         D3D11_SIGNATURE_PARAMETER_DESC inputDesc;
         vertexShaderReflection->GetInputParameterDesc(i, &inputDesc);     
 
-		OutputDebugString("SDFSDf");
+		Translator::GetVertexShaderInputType(inputDesc);
     }
 
     return true;

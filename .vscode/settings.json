@@ -16,7 +16,10 @@
         "*.user": true,
         "CMakeFiles/*" : true,
         "Win32/*" : true,
-        "x64/*" : true,
+        "x64/*" : true,        
     },
+    "folders.exclude" : {
+        "Core.Dir" : true
+    }
 
 }
