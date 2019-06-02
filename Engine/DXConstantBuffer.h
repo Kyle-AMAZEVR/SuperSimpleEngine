@@ -58,44 +58,21 @@ struct VariableInConstantBufferInfo
     std::string Name;
 };
 
-template<unsigned int bufferSize>
 class DXGenericConstantBuffer : public DXBufferBase
 {
 public:
-    DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer)
-    {
-        static_assert(bufferSize > 0);
-        check(constantBuffer != nullptr);       
-        
-        D3D11_SHADER_BUFFER_DESC bufferDesc;
-        constantBuffer->GetDesc(&bufferDesc);
-        
-        // 
-        for(unsigned int i = 0; i < bufferDesc.Variables; ++i)
-        {
-            ID3D11ShaderReflectionVariable* variableReflection = constantBuffer->GetVariableByIndex(i);
-            D3D11_SHADER_VARIABLE_DESC variableDesc;
-            variableReflection->GetDesc(&variableDesc);
-            
-            ID3D11ShaderReflectionType* variableType = variableReflection->GetType();
-            D3D11_SHADER_TYPE_DESC typeDesc;
-            variableType->GetDesc(&typeDesc);
-
-            VariableInConstantBufferInfo info 
-            {
-                static_cast<USHORT>(variableDesc.StartOffset),
-                static_cast<USHORT>(variableDesc.Size),
-                static_cast<BYTE>(i),
-                variableDesc.Name
-            };
-
-            mVariableInfoArray.push_back(info);
-        }        
-    }
-
+    DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer);    
     
+    template<class T>
+    void SetConstantBufferData(std::string name, const T& value);
 
 protected:
-    unsigned char mBufferData[bufferSize] = { 0 };
+    BYTE* mBufferData = nullptr;
     std::vector<VariableInConstantBufferInfo> mVariableInfoArray;
 };
+
+template<class T>
+void SetConstantBufferData(std::string name , const T& value)
+{
+	
+}
