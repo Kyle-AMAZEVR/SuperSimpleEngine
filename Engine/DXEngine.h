@@ -3,6 +3,8 @@
 
 #include "Singleton.h"
 #include "DXViewport.h"
+#include "DXVertexBuffer.h"
+#include "DXIndexBuffer.h"
 
 class ENGINE_API DXEngine : public Singleton<DXEngine>
 {
@@ -38,4 +40,6 @@ private:
     ID3D11DeviceContext* mDeviceContext = nullptr;
     IDXGISwapChain* mSwapChain = nullptr;
     ID3D11Debug* mDebug = nullptr;
+
+
 };

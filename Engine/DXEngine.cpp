@@ -102,5 +102,7 @@ void DXEngine::DrawScene()
 
     mViewport.Clear();
 
+
+
     HR(mSwapChain->Present(0,0));
 }
