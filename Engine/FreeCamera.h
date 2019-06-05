@@ -10,12 +10,12 @@ using namespace DirectX;
 class ENGINE_API FreeCamera : public CameraBase
 {
 public:
-
+    FreeCamera();
 protected:
     virtual void UpdateViewMatrix() override;
-    virtual void UpdateProjMatrix() override;
+    virtual void UpdateProjMatrix() override;    
 
-    FXMVECTOR mEyePosition;
-    FXMVECTOR mUp;
-    FXMVECTOR mLookAtPosition;
+    XMFLOAT3 mEyePosition;
+    XMFLOAT3 mUp;
+    XMFLOAT3 mLookAtPosition;    
 };

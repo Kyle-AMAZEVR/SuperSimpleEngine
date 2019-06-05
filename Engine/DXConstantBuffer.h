@@ -62,6 +62,7 @@ class DXGenericConstantBuffer : public DXBufferBase
 {
 public:
     DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer);    
+    virtual ~DXGenericConstantBuffer() override;
     
     template<class T>
     void SetConstantBufferData(std::string name, const T& value);
@@ -74,5 +75,13 @@ protected:
 template<class T>
 void SetConstantBufferData(std::string name , const T& value)
 {
-	
+    for(auto& iter : mVariableInfoArray)
+    {
+        if(iter->Name == name)
+        {
+            check(iter->Size == sizeof(T));
+                       
+			memcpy_s(mBufferData + iter->StartOffset, iter->Size, &value, iter->Size);
+        }
+    }
 }

@@ -20,6 +20,8 @@ public:
 
 	virtual DirectX::XMMATRIX GetView() const { return mView; }
 	virtual DirectX::XMMATRIX GetProj() const { return mProj; }
+
+	
 	
 protected:
 
