@@ -61,7 +61,7 @@ struct VariableInConstantBufferInfo
 class DXGenericConstantBuffer : public DXBufferBase
 {
 public:
-    DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer);    
+    DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer);
     virtual ~DXGenericConstantBuffer() override;
     
     template<class T>

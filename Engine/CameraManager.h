@@ -2,6 +2,7 @@
 #pragma once
 
 #include "Camera.h"
+#include "Singleton.h"
 
 class ENGINE_API CameraManager : public Singleton<CameraManager>
 {
