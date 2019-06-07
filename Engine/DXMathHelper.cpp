@@ -6,15 +6,15 @@
 
 using namespace DirectX;
 
-XMFLOAT4 DXMathHelper::UnitX { 1,0,0,0 };
-XMFLOAT4 DXMathHelper::UnitY { 1,0,0,0 };
-XMFLOAT4 DXMathHelper::UnitZ { 1,0,0,0 };
-XMFLOAT4 DXMathHelper::UnitW { 1,0,0,0 };
+XMFLOAT4 DXMathHelper::UnitX4 { 1,0,0,0 };
+XMFLOAT4 DXMathHelper::UnitY4 { 0,1,0,0 };
+XMFLOAT4 DXMathHelper::UnitZ4 { 0,0,1,0 };
+XMFLOAT4 DXMathHelper::UnitW4 { 0,0,0,1 };
 
-DirectX::XMMATRIX DXMathHelper::IdentityMatrix
+DirectX::XMMATRIX DXMathHelper::IdentityMatrix4X4
 {
-    XMLoadFloat4(&UnitX),
-    XMLoadFloat4(&UnitY),
-    XMLoadFloat4(&UnitZ),
-    XMLoadFloat4(&UnitW)
+    XMLoadFloat4(&UnitX4),
+    XMLoadFloat4(&UnitY4),
+    XMLoadFloat4(&UnitZ4),
+    XMLoadFloat4(&UnitW4)
 };
