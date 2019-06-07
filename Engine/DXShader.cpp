@@ -7,9 +7,11 @@
 #include "DXVertexElementDeclaration.h"
 #include <filesystem>
 #include <fstream>
+#include <map>
 #include "Templates.h"
 #include "Translator.h"
 
+#pragma region DXShaderImplementation
 
 void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 {	
@@ -27,6 +29,20 @@ void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
 
 	delete[] compileErrBuffer;
 }
+
+ID3D11Buffer* DXShader::GetConstantBuffer(std::string bufferName)
+{
+    if(mConstantBufferMap.count(bufferName) > 0)
+    {
+        return mConstantBufferMap[bufferName]->GetBufferPointer();
+    }
+
+    return nullptr;
+}
+
+
+
+#pragma endregion
 
 
 //@ vertex shader implementation

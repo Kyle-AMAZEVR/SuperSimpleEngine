@@ -8,7 +8,11 @@ class ENGINE_API DXShader : public DXRenderResource
 {
 public:
     virtual ~DXShader() {}
+
+    template<class T>
+    void SetConstantBufferData(std::string bufferName, const T& data);
     
+    virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
 protected:
     virtual bool CompileFromFile(std::wstring filepath) { return true; }	
@@ -16,6 +20,18 @@ protected:
     ID3DBlob* mShaderBuffer = nullptr;  
     std::map<std::string, std::shared_ptr<DXGenericConstantBuffer>> mConstantBufferMap;
 };
+
+template<class T>
+void DXShader::SetConstantBufferData(std::string bufferName, const T& data)
+{
+    if(mConstantBufferMap.count(bufferName) > 0)
+    {
+        mConstantBufferMap[bufferName]->SetBufferData<T>(data);
+    }
+}
+
+
+
 
 // vertex shader
 class ENGINE_API DXVertexShader : public DXShader
