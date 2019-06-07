@@ -4,43 +4,56 @@
 #include "DXEngine.h"
 #include "DXShader.h"
 #include "DXVertexTypes.h"
+#include "DXVertexElementDeclaration.h"
 
+bool DXEngine::bInitialized = false;
 
 bool DXEngine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;
     CreateDevice();
     CreateSwapChain();
-    OnWindowResize(1024,768);
+    OnWindowResize(1024,768);   
     bInitialized = true;
 
+
     TestCompileShader();
+    TestCreateResources();
+
     return true;
 }
 
 void DXEngine::TestCreateResources()
 {   
+    mTestVertexBuffer = std::make_shared<DXVertexBuffer>();
+    mTestIndexBuffer = std::make_shared<DXIndexBuffer>();
+
     std::vector<VT_PositionColor> VertexArray =
     {
         
-        {DirectX::XMFLOAT3(-1, -1, -1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT3(-1,  1, -1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT3( 1,  1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4(-1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
 
-        {DirectX::XMFLOAT3(-1, -1, -1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT3( 1,  1, -1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT3( 1, -1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
         
     };
-    mTestVertexBuffer.SetVertexData<VT_PositionColor>(VertexArray);
-    
+
+    std::vector<UINT> IndexArray = 
+    {
+        0,1,2,3,4,5
+    };
+
+    mTestVertexBuffer->SetVertexData<VT_PositionColor>(VertexArray);
+    mTestIndexBuffer->SetIndexBufferData(IndexArray);
 }
 
 void DXEngine::TestCompileShader()
-{
-    DXVertexShader shader;
-    shader.CompileFromFile(L"./Shader/BasicShader.vs");
-
+{    
+    mTestVertexShader = std::make_shared<DXVertexShader>();
+    mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs");
     mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
 
@@ -121,7 +134,20 @@ void DXEngine::DrawScene()
 
     mViewport.Clear();
 
+    UINT stride = sizeof(VT_PositionColor);
+    UINT offset = 0;
 
+    mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
+
+    mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);    
+
+    mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
+
+    mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+
+    mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    
 
     HR(mSwapChain->Present(0,0));
 }

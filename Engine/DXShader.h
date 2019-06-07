@@ -22,11 +22,13 @@ public:
     DXVertexShader() = default;
     virtual ~DXVertexShader();
     virtual bool CompileFromFile(std::wstring filepath) override;
-    ID3D11VertexShader* GetShader() { return mVertexShader; }
-    ID3D11InputLayout* CreateInputLayout();
+    ID3D11VertexShader* GetShader() { return mVertexShader; } 
+    ID3D11InputLayout* GetInputLayout() { return mInputLayout; }
 
 protected:
-    ID3D11VertexShader* mVertexShader = nullptr;    
+    void CreateInputLayout();
+    ID3D11VertexShader* mVertexShader = nullptr;
+    ID3D11InputLayout* mInputLayout = nullptr;
 };
 
 

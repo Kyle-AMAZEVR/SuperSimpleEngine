@@ -6,7 +6,7 @@
 void DXIndexBuffer::SetIndexBufferData(const std::vector<unsigned int> indexData)
 {
     mBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    mBufferDescription.CPUAccessFlags = 0;
+    mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE ;
     mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
     mBufferDescription.MiscFlags = 0;
     mBufferDescription.StructureByteStride = 0;

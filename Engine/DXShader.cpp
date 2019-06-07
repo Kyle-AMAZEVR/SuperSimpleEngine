@@ -35,22 +35,17 @@ void DXShader::PrintCompileError(ID3D10Blob* errorMessage)
      ReleaseCOM(mVertexShader);
  }
 
-ID3D11InputLayout* DXVertexShader::CreateInputLayout()
+void DXVertexShader::CreateInputLayout()
 {
     auto* dxDevice = DXEngine::Get().GetDevice();    
     
-    check(dxDevice != nullptr);
-
-    ID3D11InputLayout* resultInputLayout = nullptr;
+    check(dxDevice != nullptr);    
 
     auto inputDescElementLength = sizeof_array(DXVertexElementDeclaration::PositionColor);
 
     HR(dxDevice->CreateInputLayout(DXVertexElementDeclaration::PositionColor, 
     inputDescElementLength, 
-    mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &resultInputLayout)); 
-
-
-    return resultInputLayout;
+    mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &mInputLayout));     
 }
 
  bool DXVertexShader::CompileFromFile(std::wstring filepath)
@@ -74,7 +69,7 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
     
 	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
 
-    // constant buffer reflection
+    // @constant buffer reflection
     ID3D11ShaderReflection* vertexShaderReflection = nullptr;    
     HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection));  
 
@@ -91,7 +86,10 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
     }
     //
 
-    
+    // @InputLayout creation
+    CreateInputLayout();
+    //
+
     for (auto i = 0; i < shaderDescription.InputParameters; ++i)
     {
         D3D11_SIGNATURE_PARAMETER_DESC inputDesc;

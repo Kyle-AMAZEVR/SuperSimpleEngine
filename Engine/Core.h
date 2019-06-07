@@ -18,6 +18,9 @@
 #define check(expression)\
 if(!(expression))\
 {\
+    OutputDebugStringA("FAILED : ");\
+    OutputDebugStringA(#expression);\
+    OutputDebugStringA("\n");\
 	__debugbreak();\
 }
 

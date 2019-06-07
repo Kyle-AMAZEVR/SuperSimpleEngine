@@ -6,6 +6,6 @@
 
 DXRenderResource::DXRenderResource()
 {
-    check(DXEngine::Get().GetDevice() != nullptr);
+    check(DXEngine::IsInitialized() == true);
     check(DXRenderingThread::IsInRenderingThread() == true);
 }

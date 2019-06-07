@@ -85,7 +85,7 @@ struct DXGIFormatToNativeType<DXGI_FORMAT_R32_FLOAT>
     using type = float;    
 };
 
-using VT_PositionColor = VertexType<DirectX::XMFLOAT3, DirectX::XMFLOAT4>;
+using VT_PositionColor = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT4>;
 
 
 
