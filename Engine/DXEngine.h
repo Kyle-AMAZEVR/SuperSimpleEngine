@@ -47,6 +47,7 @@ private:
 
     // 
     std::shared_ptr<DXVertexBuffer> mTestVertexBuffer;
+    std::shared_ptr<DXPixelShader> mTestPixelShader;
     std::shared_ptr<DXIndexBuffer> mTestIndexBuffer;
     std::shared_ptr<DXVertexShader> mTestVertexShader;
     //

@@ -54,6 +54,10 @@ void DXEngine::TestCompileShader()
 {    
     mTestVertexShader = std::make_shared<DXVertexShader>();
     mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs");
+    
+    mTestPixelShader = std::make_shared<DXPixelShader>();
+    mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps");
+    
     mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
 
@@ -141,7 +145,11 @@ void DXEngine::DrawScene()
 
     mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);    
 
+    
+
     mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
+
+    
 
     mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 

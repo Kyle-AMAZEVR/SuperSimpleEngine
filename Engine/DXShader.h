@@ -35,6 +35,7 @@ protected:
 // pixel shader
 class ENGINE_API DXPixelShader : public DXShader
 {
+public:
     DXPixelShader() = default;
     virtual ~DXPixelShader();
     virtual bool CompileFromFile(std::wstring filepath) override;
