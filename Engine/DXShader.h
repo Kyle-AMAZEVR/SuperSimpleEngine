@@ -8,6 +8,8 @@ class ENGINE_API DXShader : public DXRenderResource
 {
 public:
     virtual ~DXShader() {}
+    
+
 protected:
     virtual bool CompileFromFile(std::wstring filepath) { return true; }	
     void PrintCompileError(ID3D10Blob* errorMsg);

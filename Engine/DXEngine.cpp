@@ -33,18 +33,28 @@ void DXEngine::TestCreateResources()
     {
         
         {DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4(-1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4(-1,  1, -1, 1), DirectX::XMFLOAT4(0,1,0,1)},
+        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(0,0,1,1)},
 
         {DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
         {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
         {DirectX::XMFLOAT4( 1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        
+
+        {DirectX::XMFLOAT4( 1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1,  1,  1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+
+        {DirectX::XMFLOAT4( 1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1,  1,  1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1, -1,  1, 1), DirectX::XMFLOAT4(1,0,0,1)},
     };
 
     std::vector<UINT> IndexArray = 
     {
-        0,1,2,3,4,5
+        0,1,2,
+        3,4,5,
+        6,7,8,
+        9,10,11
     };
 
     mTestVertexBuffer->SetVertexData<VT_PositionColor>(VertexArray);
@@ -143,12 +153,14 @@ void DXEngine::DrawScene()
     UINT offset = 0;
 
     mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
+    mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);   
     mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);    
     
-    mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
-    mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);    
     mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);    
+
+    
 
     mDeviceContext->DrawIndexed(6,0,0);
 
