@@ -5,6 +5,7 @@
 #include "DXShader.h"
 #include "DXVertexTypes.h"
 #include "DXVertexElementDeclaration.h"
+#include "CameraManager.h"
 
 bool DXEngine::bInitialized = false;
 
@@ -142,20 +143,15 @@ void DXEngine::DrawScene()
     UINT offset = 0;
 
     mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
-
-    mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);    
+    mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);   
+    mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);
 
     
-
     mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
-
-    
-
-    mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
-
     mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);    
 
-    
+    mDeviceContext->DrawIndexed(6,0,0);
 
     HR(mSwapChain->Present(0,0));
 }

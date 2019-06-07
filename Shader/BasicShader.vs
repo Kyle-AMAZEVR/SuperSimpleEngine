@@ -2,7 +2,7 @@
 
 cbuffer Transform
 {
-    matrix World;
+    matrix Model;
     matrix View;
     matrix Projection;
 };
@@ -24,7 +24,7 @@ PixelInputType VSMain(VertexInputType input)
     PixelInputType output;
 
     // Calculate the position of the vertex against the world, view, and projection matrices.
-    output.position = mul(input.position, World);
+    output.position = mul(input.position, Model);
     output.position = mul(output.position, View);
     output.position = mul(output.position, Projection);    
     
