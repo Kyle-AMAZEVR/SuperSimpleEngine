@@ -14,3 +14,4 @@ public:
     static const D3D11_INPUT_ELEMENT_DESC PositionNormalTexcoord[3];
     
 };
+

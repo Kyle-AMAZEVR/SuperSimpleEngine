@@ -8,7 +8,7 @@
 class DXVertexBuffer : public DXBufferBase
 {
 public:
-    DXVertexBuffer();   
+    DXVertexBuffer(){}
     
     template<class T>
     void SetVertexData(const std::vector<T>& vertexData);

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "DXRenderResource.h"
+#include "DXConstantBuffer.h"
+#include <map>
 
 class ENGINE_API DXShader : public DXRenderResource
 {
@@ -10,6 +12,7 @@ protected:
     virtual bool CompileFromFile(std::wstring filepath) { return true; }	
     void PrintCompileError(ID3D10Blob* errorMsg);
     ID3DBlob* mShaderBuffer = nullptr;  
+    std::map<std::string, std::shared_ptr<DXGenericConstantBuffer>> mConstantBufferMap;
 };
 
 // vertex shader
@@ -23,8 +26,7 @@ public:
     ID3D11InputLayout* CreateInputLayout();
 
 protected:
-
-    ID3D11VertexShader* mVertexShader = nullptr;
+    ID3D11VertexShader* mVertexShader = nullptr;    
 };
 
 

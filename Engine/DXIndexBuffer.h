@@ -7,9 +7,9 @@
 class DXIndexBuffer : public DXBufferBase
 {
 public:
-    DXIndexBuffer();
-
-    void SetIndexBufferData(const std::vector<unsigned int> indexData);
+    DXIndexBuffer(){}
+    void SetIndexBufferData(const std::vector<UINT> indexData);
+    
 protected:
     
 };

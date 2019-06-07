@@ -26,6 +26,8 @@ protected:
     DXViewport mViewport;
 
     void TestCompileShader();
+    void TestCreateResources();
+
 private:
     bool CreateDevice();
     bool CreateSwapChain();
@@ -41,5 +43,7 @@ private:
     IDXGISwapChain* mSwapChain = nullptr;
     ID3D11Debug* mDebug = nullptr;
 
+    DXVertexBuffer mTestVertexBuffer;
+    DXIndexBuffer mTestIndexBuffer;
 
 };

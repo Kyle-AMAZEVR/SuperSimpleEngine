@@ -15,13 +15,23 @@ struct VertexType
 template<class T1, class T2>    
 struct VertexType<T1, T2>
 {    
+    VertexType(const T1& param1, const T2& param2)
+    : VertexAttribute1(param1), VertexAttribute2(param2)
+    {        
+    }
+
     T1 VertexAttribute1;
     T2 VertexAttribute2;
 };
 
 template<class T1, class T2, class T3>
 struct VertexType<T1, T2, T3>
-{    
+{   
+    VertexType(const T1& param1, const T2& param2, const T3& param3) 
+    : VertexAttribute1(param1), VertexAttribute2(param2), VertexAttribute3(param3)
+    {        
+    }
+
     T1 VertexAttribute1;
     T2 VertexAttribute2;
     T3 VertexAttribute3;
@@ -75,7 +85,7 @@ struct DXGIFormatToNativeType<DXGI_FORMAT_R32_FLOAT>
     using type = float;    
 };
 
-using VT_PositionColor = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT4>;
+using VT_PositionColor = VertexType<DirectX::XMFLOAT3, DirectX::XMFLOAT4>;
 
 
 

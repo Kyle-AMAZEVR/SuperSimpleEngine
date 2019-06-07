@@ -74,7 +74,7 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
     
 	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
 
-    // Shader Reflection
+    // constant buffer reflection
     ID3D11ShaderReflection* vertexShaderReflection = nullptr;    
     HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection));  
 
@@ -85,33 +85,13 @@ ID3D11InputLayout* DXVertexShader::CreateInputLayout()
     {
         ID3D11ShaderReflectionConstantBuffer* constantBuffer = vertexShaderReflection->GetConstantBufferByIndex(i);
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
-		constantBuffer->GetDesc(&bufferDesc);
-        
-		// 
-        for(unsigned int j = 0; j < bufferDesc.Variables; ++j)
-        {
-			ID3D11ShaderReflectionVariable* variableReflection = constantBuffer->GetVariableByIndex(j);
-			D3D11_SHADER_VARIABLE_DESC variableDesc;
-			variableReflection->GetDesc(&variableDesc);
-            
-			ID3D11ShaderReflectionType* variableType = variableReflection->GetType();
-			D3D11_SHADER_TYPE_DESC typeDesc;
-			variableType->GetDesc(&typeDesc);
-
-            
-
-			OutputDebugString("======\n");
-            OutputDebugString(typeDesc.Name);
-            OutputDebugString("======\n");
-			OutputDebugString(variableDesc.Name);
-			OutputDebugString("\n");
-			auto startOffset = variableDesc.StartOffset;
-			auto size = variableDesc.Size;            
-			OutputDebugString("======\n");
-        }		
+		constantBuffer->GetDesc(&bufferDesc);        
+	
+        mConstantBufferMap[bufferDesc.Name] = std::shared_ptr<DXGenericConstantBuffer>(new DXGenericConstantBuffer(constantBuffer));
     }
+    //
 
-
+    
     for (auto i = 0; i < shaderDescription.InputParameters; ++i)
     {
         D3D11_SIGNATURE_PARAMETER_DESC inputDesc;

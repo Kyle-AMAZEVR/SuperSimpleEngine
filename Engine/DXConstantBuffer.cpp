@@ -38,7 +38,7 @@ DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantB
 
     // alloc
     auto bufferSize = mVariableInfoArray[bufferDesc.Variables - 1].StartOffset +  mVariableInfoArray[bufferDesc.Variables - 1].Size;
-    mBufferData = new BYTE[bufferSize];
+    mBufferData = new BYTE[bufferSize] {0};
 }
 
 DXGenericConstantBuffer::~DXGenericConstantBuffer()

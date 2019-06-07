@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "DXEngine.h"
 #include "DXShader.h"
+#include "DXVertexTypes.h"
 
 
 bool DXEngine::Initialize(HWND windowHandle)
@@ -15,6 +16,24 @@ bool DXEngine::Initialize(HWND windowHandle)
 
     TestCompileShader();
     return true;
+}
+
+void DXEngine::TestCreateResources()
+{   
+    std::vector<VT_PositionColor> VertexArray =
+    {
+        
+        {DirectX::XMFLOAT3(-1, -1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT3(-1,  1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT3( 1,  1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+
+        {DirectX::XMFLOAT3(-1, -1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT3( 1,  1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT3( 1, -1, -1), DirectX::XMFLOAT4(1,0,0,1)},
+        
+    };
+    mTestVertexBuffer.SetVertexData<VT_PositionColor>(VertexArray);
+    
 }
 
 void DXEngine::TestCompileShader()
