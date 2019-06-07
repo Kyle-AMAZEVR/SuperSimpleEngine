@@ -5,6 +5,7 @@
 #include "DXShader.h"
 #include "DXVertexTypes.h"
 #include "DXVertexElementDeclaration.h"
+#include "FreqUsedConstantBufferTypes.h"
 #include "CameraManager.h"
 
 bool DXEngine::bInitialized = false;
@@ -159,6 +160,9 @@ void DXEngine::DrawScene()
     
     mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);    
     mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);    
+
+    
+    
 
     
 
