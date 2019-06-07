@@ -144,8 +144,7 @@ void DXEngine::DrawScene()
 
     mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
     mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);   
-    mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);
-
+    mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);    
     
     mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
     mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

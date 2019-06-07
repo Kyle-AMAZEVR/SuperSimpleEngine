@@ -61,14 +61,14 @@ struct VariableInConstantBufferInfo
 class DXGenericConstantBuffer : public DXBufferBase
 {
 public:
-    DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer);
+    DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);
     virtual ~DXGenericConstantBuffer() override;
     
     template<class T>
     void SetConstantBufferData(std::string name, const T& value);
 
 protected:
-    BYTE* mBufferData = nullptr;
+    BYTE* mBufferData = nullptr;    
     std::vector<VariableInConstantBufferInfo> mVariableInfoArray;
 };
 
