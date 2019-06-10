@@ -7,10 +7,12 @@
 // trigger compile
 
 
-DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer)
+DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index)
 {
-    check(constantBuffer != nullptr);       
-    
+    mBufferIndex = index;
+
+    check(constantBuffer != nullptr);
+
     D3D11_SHADER_BUFFER_DESC bufferDesc;
     constantBuffer->GetDesc(&bufferDesc);
     
@@ -37,6 +39,33 @@ DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     }
 
     // alloc
-    auto bufferSize = mVariableInfoArray[bufferDesc.Variables - 1].StartOffset +  mVariableInfoArray[bufferDesc.Variables - 1].Size;
-    mBufferData = new BYTE[bufferSize];
+    mBufferSize = mVariableInfoArray[bufferDesc.Variables - 1].StartOffset +  mVariableInfoArray[bufferDesc.Variables - 1].Size;
+    mBufferData = new BYTE[mBufferSize] {0};
+
+    // now create constant buffer
+    mBufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
+    mBufferDescription.MiscFlags = 0;
+    mBufferDescription.StructureByteStride = 0;
+    mBufferDescription.ByteWidth = mBufferSize;
+
+    HR(DXEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));    
+}
+
+DXGenericConstantBuffer::~DXGenericConstantBuffer()
+{
+    if(mBufferData != nullptr)
+    {
+        delete [] mBufferData;
+        mBufferData = nullptr;
+    }
+}
+
+void DXGenericConstantBuffer::SubmitDataToDevice()
+{ 
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    HR(DXEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE, 0, &mappedResource));    
+    memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
+    DXEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0);
 }
