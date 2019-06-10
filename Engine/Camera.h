@@ -23,8 +23,8 @@ public:
 	
 protected:
 
-	virtual void UpdateViewMatrix();
-	virtual void UpdateProjMatrix();
+	virtual void UpdateViewMatrix(){}
+	virtual void UpdateProjMatrix(){}
 	
 	float mFOV;
 	float mAspectRatio;
