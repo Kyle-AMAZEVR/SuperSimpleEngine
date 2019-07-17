@@ -2,55 +2,60 @@
 #include "Core.h"
 #include "DXRenderingThread.h"
 #include "DXEngine.h"
+#include "Windows.h"
 
 void DXRenderingThread::Start(HWND handle)
 {
     mWindowHandle = handle;
-
-    std::thread t{&DXRenderingThread::Run, this};
-    
-    mThreadInstance = std::move(t);
+	mThreadHandle = CreateThread(nullptr, 0, &DXRenderingThread::Run, this, 0, &mRenderingThreadId);
+	InitializeCriticalSection(&mCriticalSection);
 }
 
-void DXRenderingThread::Run()
+DWORD DXRenderingThread::Run()
 {
-    mRenderingThreadId = std::this_thread::get_id();
+	// init engine
+	DXEngine::Get().Initialize(mWindowHandle);
 
-    // init engine
-    DXEngine::Get().Initialize(mWindowHandle);
+	while (1)
+	{
+		// consume command queue
+		{
+			EnterCriticalSection(&mCriticalSection);
+			if (mCommandQueue.empty() == false)
+			{
+				for (auto iter = mCommandQueue.begin(); iter != mCommandQueue.end(); iter++)
+				{
+					(*iter)();
+				}
+				mCommandQueue.clear();
+			}
+			LeaveCriticalSection(&mCriticalSection);
+		}
 
-    while(1)
-    {   
-        // consume command queue
-        {
-            std::lock_guard guard(mCommandQueueMutex);
-            if(mCommandQueue.empty() == false)
-            {
-                for(auto iter = mCommandQueue.begin(); iter != mCommandQueue.end(); iter++)
-                {
-                    (*iter)();
-                }
-                mCommandQueue.clear();
-            }
-        }
+		DXEngine::Get().DrawScene();
 
-        DXEngine::Get().DrawScene();
+		if (bRequestExit)
+		{
+			return 0;
+		}
+	}	
+}
 
-        if(bRequestExit)
-        {
-            return;
-        }
-    }
+DWORD DXRenderingThread::Run(LPVOID param)
+{
+	DXRenderingThread* threadInstance = (DXRenderingThread*)param;
+	return threadInstance->Run();
 }
 
 void DXRenderingThread::Join()
 {
-    mThreadInstance.join();
+	DWORD waitResult = WaitForSingleObject(mThreadHandle, INFINITE);
+	check(waitResult == WAIT_OBJECT_0);
 }
 
 bool DXRenderingThread::IsInRenderingThread()
 {
-    if(mRenderingThreadId == std::this_thread::get_id())
+    if(mRenderingThreadId == GetCurrentThreadId())
     {
         return true;
     }
@@ -67,10 +72,11 @@ void DXRenderingThread::ExecuteInRenderingThread(std::function<void()>&& lambdaF
         lambdaFunction();
     }
     else
-    {
-        std::lock_guard guard(mCommandQueueMutex);
+    {        
+		EnterCriticalSection(&mCriticalSection);
         mCommandQueue.push_back(std::move(lambdaFunction));
+		LeaveCriticalSection(&mCriticalSection);
     }    
 }
 
-std::thread::id DXRenderingThread::mRenderingThreadId;
+DWORD DXRenderingThread::mRenderingThreadId = 0;

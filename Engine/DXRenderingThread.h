@@ -1,9 +1,10 @@
 #pragma once
 
-#include <thread>
+
 #include <functional>
 #include <mutex>
 #include <deque>
+
 
 class ENGINE_API DXRenderingThread 
 {
@@ -17,17 +18,15 @@ public:
     static inline bool IsInRenderingThread();
 
 protected:
-    void Run();   
+	HANDLE mThreadHandle = nullptr;
+	static DWORD mRenderingThreadId;
+    static DWORD Run(LPVOID param);
+	DWORD Run();
 
     //
-    std::mutex mCommandQueueMutex; 
-    std::deque<std::function<void()>> mCommandQueue; 
-    //
-
-    //
-    std::thread mThreadInstance;
-    static std::thread::id mRenderingThreadId;
-    //
+	CRITICAL_SECTION mCriticalSection;
+    std::deque<std::function<void()>> mCommandQueue;
+	//    
 
     HWND mWindowHandle;
     bool bRequestExit = false;

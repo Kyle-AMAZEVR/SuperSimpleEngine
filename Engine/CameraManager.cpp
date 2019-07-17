@@ -1,11 +1,11 @@
 
 #include "Core.h"
-#include "FreeCamera.h"
+#include "DXFreeCamera.h"
 #include "CameraManager.h"
 
 CameraManager::CameraManager()
 {
-    mCurrentCamera = new FreeCamera();
+    mCurrentCamera = new DXFreeCamera();
 }
 
 CameraManager::~CameraManager()
