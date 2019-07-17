@@ -9,7 +9,7 @@ public:
 
 
 protected:
-	virtual void UpdateViewMatrix() override;
+	virtual void UpdateViewMatrix() override {}
 	DirectX::XMFLOAT3 mEyeLocation;
 	DirectX::XMFLOAT3 mLookAt;
 };

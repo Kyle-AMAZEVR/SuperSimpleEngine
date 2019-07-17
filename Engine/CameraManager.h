@@ -7,7 +7,7 @@
 class ENGINE_API CameraManager : public Singleton<CameraManager>
 {
 public:
-    CameraManager();
+	CameraManager();
     ~CameraManager();
 
     class CameraBase* GetCurrentCamera() { return mCurrentCamera; }

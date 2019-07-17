@@ -68,4 +68,6 @@ void DXGenericConstantBuffer::SubmitDataToDevice()
     HR(DXEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE, 0, &mappedResource));    
     memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
     DXEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0);
+
+    
 }
