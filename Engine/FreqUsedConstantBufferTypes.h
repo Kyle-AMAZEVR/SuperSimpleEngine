@@ -8,3 +8,4 @@ struct Transform
 	DirectX::XMMATRIX View;
 	DirectX::XMMATRIX Proj;
 };
+

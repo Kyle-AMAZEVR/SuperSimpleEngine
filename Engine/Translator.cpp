@@ -1,7 +1,34 @@
 
 #include "Core.h"
-
 #include "Translator.h"
+
+UINT Translator::GetDXGIFormatByteSize(DXGI_FORMAT format)
+{
+	switch(format)
+	{
+	case DXGI_FORMAT_R32G32B32A32_FLOAT:
+		return sizeof(float) * 4;
+	case DXGI_FORMAT_R32G32B32_FLOAT:
+		return sizeof(float) * 3;
+	case DXGI_FORMAT_R32G32_FLOAT:
+		return sizeof(float) * 2;
+	case DXGI_FORMAT_R32_FLOAT:
+		return sizeof(float);
+
+	case DXGI_FORMAT_R32G32B32A32_UINT:
+		return sizeof(UINT) * 4;
+	case DXGI_FORMAT_R32G32B32_UINT:
+		return sizeof(UINT) * 3;
+	case DXGI_FORMAT_R32G32_UINT:
+		return sizeof(UINT) * 2;
+	case DXGI_FORMAT_R32_UINT:
+		return sizeof(UINT);
+
+	
+	}
+
+	return 0;
+}
 
 
 DXGI_FORMAT Translator::GetVertexShaderInputType(D3D11_SIGNATURE_PARAMETER_DESC desc)

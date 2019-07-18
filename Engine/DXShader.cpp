@@ -100,19 +100,35 @@ void DXVertexShader::CreateInputLayout()
 	
         mConstantBufferMap[bufferDesc.Name] = std::shared_ptr<DXGenericConstantBuffer>(new DXGenericConstantBuffer(constantBuffer, i));
     }
-    //
+    
+	// @input layout creation
+	UINT inputParamCount = shaderDescription.InputParameters;
+	D3D11_INPUT_ELEMENT_DESC* inputDescriptions = new D3D11_INPUT_ELEMENT_DESC[inputParamCount];
+	UINT byteOffset = 0;
 
-    // @InputLayout creation
-    CreateInputLayout();
-    //
-
-    for (auto i = 0; i < shaderDescription.InputParameters; ++i)
+    for (UINT i = 0; i < shaderDescription.InputParameters; ++i)
     {
-        D3D11_SIGNATURE_PARAMETER_DESC inputDesc;
-        vertexShaderReflection->GetInputParameterDesc(i, &inputDesc);     
+		auto* dxDevice = DXEngine::Get().GetDevice();
 
-		Translator::GetVertexShaderInputType(inputDesc);
+		check(dxDevice != nullptr);
+
+        D3D11_SIGNATURE_PARAMETER_DESC inputDesc;
+        vertexShaderReflection->GetInputParameterDesc(i, &inputDesc);
+
+		auto format = Translator::GetVertexShaderInputType(inputDesc);
+		inputDescriptions[i].SemanticName = inputDesc.SemanticName;
+		inputDescriptions[i].Format = format;
+		inputDescriptions[i].InputSlotClass = D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA;
+		inputDescriptions[i].SemanticIndex = 0;
+		inputDescriptions[i].InstanceDataStepRate = 0;
+		inputDescriptions[i].InputSlot = 0;
+		inputDescriptions[i].AlignedByteOffset = byteOffset;
+
+		byteOffset += Translator::GetDXGIFormatByteSize(format);
     }
+
+	HR(dxDevice->CreateInputLayout(inputDescriptions, inputParamCount,
+		mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &mInputLayout));
 
     return true;
  }

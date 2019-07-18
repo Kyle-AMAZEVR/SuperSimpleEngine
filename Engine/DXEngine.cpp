@@ -70,7 +70,7 @@ void DXEngine::TestCompileShader()
     mTestPixelShader = std::make_shared<DXPixelShader>();
     mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps");
     
-    mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+    //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
 
 bool DXEngine::CreateDevice()
@@ -162,8 +162,7 @@ void DXEngine::DrawScene()
     mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);    
 
     
-    
-
+    //mDeviceContext->VSSetConstantBuffers(0, 1, )
     
 
     mDeviceContext->DrawIndexed(6,0,0);
