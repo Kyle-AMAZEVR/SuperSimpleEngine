@@ -156,6 +156,24 @@ bool DXPixelShader::CompileFromFile(std::wstring filepath)
     auto* dxDevice = DXEngine::Get().GetDevice();
     HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
 
+
+	// @constant buffer reflection
+	ID3D11ShaderReflection* pixelShaderReflection = nullptr;
+	HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pixelShaderReflection));
+
+	D3D11_SHADER_DESC shaderDescription;
+	pixelShaderReflection->GetDesc(&shaderDescription);
+
+	for (unsigned int i = 0; i < shaderDescription.ConstantBuffers; ++i)
+	{
+		ID3D11ShaderReflectionConstantBuffer* constantBuffer = pixelShaderReflection->GetConstantBufferByIndex(i);
+		D3D11_SHADER_BUFFER_DESC bufferDesc;
+		constantBuffer->GetDesc(&bufferDesc);
+
+		mConstantBufferMap[bufferDesc.Name] = std::shared_ptr<DXGenericConstantBuffer>(new DXGenericConstantBuffer(constantBuffer, i));
+	}
+
+
     return true;
 }
 #pragma endregion

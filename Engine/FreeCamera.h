@@ -12,6 +12,7 @@ class ENGINE_API FreeCamera : public CameraBase
 public:
     FreeCamera();
     virtual ~FreeCamera(){}
+	
 protected:
     virtual void UpdateViewMatrix() override;
     virtual void UpdateProjMatrix() override;    

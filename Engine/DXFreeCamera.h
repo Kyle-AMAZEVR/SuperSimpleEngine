@@ -8,7 +8,7 @@ class ENGINE_API DXFreeCamera : public CameraBase
 {
 public:
 	DXFreeCamera();
-
+	virtual void Update() override;
 protected:
 	virtual void UpdateViewMatrix() override;
 	virtual void UpdateProjMatrix() override;

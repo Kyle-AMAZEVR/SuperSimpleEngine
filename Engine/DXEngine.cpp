@@ -7,6 +7,8 @@
 #include "DXVertexElementDeclaration.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "CameraManager.h"
+#include "DXMathHelper.h"
+#include "DXFreeCamera.h"
 
 bool DXEngine::bInitialized = false;
 
@@ -15,7 +17,7 @@ bool DXEngine::Initialize(HWND windowHandle)
     mWindowHandle = windowHandle;
     CreateDevice();
     CreateSwapChain();
-    OnWindowResize(1024,768);   
+    OnWindowResize(960,480);   
     bInitialized = true;
 
 
@@ -161,9 +163,16 @@ void DXEngine::DrawScene()
     mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);    
     mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);    
 
-    
-    //mDeviceContext->VSSetConstantBuffers(0, 1, )
-    
+	CameraBase* currentCamera = CameraManager::Get().GetCurrentCamera();	
+	currentCamera->Update();
+
+	Transform testTransform;
+	testTransform.Model = DXMathHelper::IdentityMatrix4X4;	
+	testTransform.Proj = currentCamera->GetProj();
+	testTransform.View = currentCamera->GetView();
+
+	mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);	
+	mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitX4);
 
     mDeviceContext->DrawIndexed(6,0,0);
 

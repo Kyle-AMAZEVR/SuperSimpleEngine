@@ -25,3 +25,9 @@ void DXFreeCamera::UpdateProjMatrix()
 {
 	mProj = XMMatrixPerspectiveFovLH(mFOV, mAspectRatio, mNear, mFar);
 }
+
+void DXFreeCamera::Update()
+{
+	UpdateViewMatrix();
+	UpdateProjMatrix();
+}

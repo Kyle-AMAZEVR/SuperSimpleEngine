@@ -22,7 +22,9 @@ public:
 	virtual DirectX::XMMATRIX GetProj() const { return mProj; }
 
 	virtual ~CameraBase() {}
-	
+
+	virtual void Update(){}
+
 protected:
 
 	virtual void UpdateViewMatrix(){}
