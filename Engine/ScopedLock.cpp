@@ -1,5 +1,5 @@
 
-
+#include "Core.h"
 #include "ScopedLock.h"
 
 ScopedLock::ScopedLock()
