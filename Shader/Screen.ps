@@ -1,0 +1,19 @@
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float4 color : COLOR;
+};
+
+
+cbuffer Color
+{
+    float4 outputColor;
+};
+
+
+float4 PSMain(PixelInputType input) : SV_TARGET
+{
+    //return input.color;
+    return outputColor;
+}

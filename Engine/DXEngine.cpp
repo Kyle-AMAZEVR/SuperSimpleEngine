@@ -35,29 +35,19 @@ void DXEngine::TestCreateResources()
     std::vector<VT_PositionColor> VertexArray =
     {
         
-        {DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4(-1,  1, -1, 1), DirectX::XMFLOAT4(0,1,0,1)},
-        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(0,0,1,1)},
+        {DirectX::XMFLOAT4(-1, -1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4(-1,  1, 0, 1), DirectX::XMFLOAT4(0,1,0,1)},
+        {DirectX::XMFLOAT4( 1,  1, 0, 1), DirectX::XMFLOAT4(0,0,1,1)},
 
-        {DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-
-        {DirectX::XMFLOAT4( 1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1,  1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1,  1,  1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-
-        {DirectX::XMFLOAT4( 1, -1, -1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1,  1,  1, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1, -1,  1, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4(-1, -1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1,  1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4( 1, -1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
     };
 
     std::vector<UINT> IndexArray = 
     {
         0,1,2,
-        3,4,5,
-        6,7,8,
-        9,10,11
+        3,4,5
     };
 
     mTestVertexBuffer->SetVertexData<VT_PositionColor>(VertexArray);
@@ -67,10 +57,10 @@ void DXEngine::TestCreateResources()
 void DXEngine::TestCompileShader()
 {    
     mTestVertexShader = std::make_shared<DXVertexShader>();
-    mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs");
+    assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
     
     mTestPixelShader = std::make_shared<DXPixelShader>();
-    mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps");
+    assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -156,12 +146,16 @@ void DXEngine::DrawScene()
     UINT offset = 0;
 
     mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
-    mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);	
     mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);   
     mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);    
     
-    mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);    
-    mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);    
+    mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
+    mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);	
+
+	mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitY4);
+	ID3D11Buffer* cbuffer = mTestPixelShader->GetConstantBuffer("Color");
+	mDeviceContext->PSSetConstantBuffers(0, 1, &cbuffer);
 
 	CameraBase* currentCamera = CameraManager::Get().GetCurrentCamera();	
 	currentCamera->Update();
@@ -171,8 +165,7 @@ void DXEngine::DrawScene()
 	testTransform.Proj = currentCamera->GetProj();
 	testTransform.View = currentCamera->GetView();
 
-	mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);	
-	mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitX4);
+	//mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);		
 
     mDeviceContext->DrawIndexed(6,0,0);
 

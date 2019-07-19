@@ -37,7 +37,7 @@ void DXVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData
     mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
     mBufferDescription.MiscFlags = 0;
     mBufferDescription.StructureByteStride = 0;
-    mBufferDescription.ByteWidth = sizeof(T) * vertexData.size();
+    mBufferDescription.ByteWidth = static_cast<UINT>(sizeof(T) * vertexData.size());
 
     D3D11_SUBRESOURCE_DATA vertexSubresourceData;
 

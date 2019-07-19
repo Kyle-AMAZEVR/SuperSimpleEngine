@@ -9,11 +9,8 @@
 
 class ENGINE_API DXEngine : public Singleton<DXEngine>
 {
-public:    
-
+public:
 	DXEngine() = default;
-	DXEngine(const DXEngine&) = delete;
-	DXEngine& operator=(const DXEngine&) = delete;
 
     bool Initialize(HWND windowHandle);
     void UnInitialize();
