@@ -132,6 +132,18 @@ bool DXEngine::CreateSwapChain()
     return true;
 }
 
+void DXEngine::SetVertexShader(std::weak_ptr<DXVertexShader> vs)
+{
+	if (vs.expired() == false)
+	{
+		auto sharedVS = vs.lock();
+		mDeviceContext->VSSetShader(sharedVS->GetShader(), nullptr, 0);
+	}
+}
+void DXEngine::SetPixelShader(std::weak_ptr<DXPixelShader> ps)
+{
+	
+}
 
 void DXEngine::DrawScene()
 {

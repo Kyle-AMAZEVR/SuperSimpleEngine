@@ -16,6 +16,9 @@ public:
     void OnWindowResize(int newWidth, int newHeight);
     static bool IsInitialized() { return bInitialized; }
 
+	void SetVertexShader(std::weak_ptr<DXVertexShader> vs);
+	void SetPixelShader(std::weak_ptr<DXPixelShader> ps);
+
     inline ID3D11Device* GetDevice() { return mDevice; }
     inline ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
     inline IDXGISwapChain* GetSwapChain() {return mSwapChain;}    

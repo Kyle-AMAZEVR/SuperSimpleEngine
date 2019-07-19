@@ -8,6 +8,11 @@
 
 SSCube::SSCube()
 {
+	if (bIsInitialized == false)
+	{
+		InternalCreate();
+		bIsInitialized = true;
+	}
 }
 
 void SSCube::InternalCreate()
@@ -42,9 +47,16 @@ void SSCube::InternalCreate()
 		{DirectX::XMFLOAT4(1,   1, -1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,0)},
 		{DirectX::XMFLOAT4(1,  -1, -1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,1)},
 		{DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(0,1)},
+
+
 	};
 
 	std::vector<UINT> indexArray;
+
+	for (auto i = 0; i < indexArray.size(); ++i)
+	{
+		indexArray.push_back(i);
+	}
 
 	mCubeVB = std::make_unique<DXVertexBuffer>();
 	mCubeVB->SetVertexBufferData(vertexArray);
@@ -53,5 +65,5 @@ void SSCube::InternalCreate()
 	mCubeIB->SetIndexBufferData(indexArray);
 }
 // 
-std::unique_ptr<DXIndexBuffer> SSCube::mCubeIB;
-std::unique_ptr<DXVertexBuffer> SSCube::mCubeVB;
+std::shared_ptr<DXIndexBuffer> SSCube::mCubeIB;
+std::shared_ptr<DXVertexBuffer> SSCube::mCubeVB;
