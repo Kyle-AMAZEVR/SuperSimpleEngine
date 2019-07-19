@@ -9,3 +9,9 @@ DXRenderResource::DXRenderResource()
     check(DXEngine::IsInitialized() == true);
     check(DXRenderingThread::IsInRenderingThread() == true);
 }
+
+DXRenderResource::~DXRenderResource()
+{
+	check(DXEngine::IsInitialized() == true);
+	check(DXRenderingThread::IsInRenderingThread() == true);
+}

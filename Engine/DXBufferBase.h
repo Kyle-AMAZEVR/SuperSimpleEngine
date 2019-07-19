@@ -4,7 +4,9 @@
 
 class DXBufferBase : public DXRenderResource
 {
-public:
+public:	
+	virtual void Destroy() override;
+
     ID3D11Buffer*& GetBufferPointerRef() { return mpBuffer; }
     ID3D11Buffer* GetBufferPointer() { return mpBuffer;}
     virtual UINT GetBufferIndex() { return mBufferIndex;}

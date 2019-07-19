@@ -4,6 +4,7 @@
 class ENGINE_API DXRenderResource
 {
 public:
-    DXRenderResource();
-
+	DXRenderResource();
+	virtual ~DXRenderResource();
+	virtual void Destroy(){}
 };

@@ -6,9 +6,14 @@
 
 DXBufferBase::~DXBufferBase()
 {
-    if(mpBuffer != nullptr)
-    {
-        mpBuffer->Release();
-        mpBuffer = nullptr;
-    }
+	Destroy();
+}
+
+void DXBufferBase::Destroy()
+{
+	if (mpBuffer != nullptr)
+	{
+		mpBuffer->Release();
+		mpBuffer = nullptr;
+	}
 }
