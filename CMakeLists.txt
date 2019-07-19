@@ -30,15 +30,15 @@ target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
 ###########################################################
 
-add_executable(DXRenderer resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
+add_executable(SuperSimpleEngine resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
 
 if(WIN32)
-	set_target_properties(DXRenderer PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")
-	set_target_properties(DXRenderer PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
+	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")
+	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
 endif(WIN32)
 
 
 
-target_link_libraries(DXRenderer 
+target_link_libraries(SuperSimpleEngine 
 Core
  )

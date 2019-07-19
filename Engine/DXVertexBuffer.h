@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "DXBufferBase.h"
+#include "DXEngine.h"
 
 class DXVertexBuffer : public DXBufferBase
 {
@@ -11,7 +12,7 @@ public:
     DXVertexBuffer(){}
     
     template<class T>
-    void SetVertexData(const std::vector<T>& vertexData);
+    void SetVertexBufferData(const std::vector<T>& vertexData);
 
 protected:
     template<class T>
@@ -21,7 +22,7 @@ protected:
 };
 
 template<class T>
-void DXVertexBuffer::SetVertexData(const std::vector<T>& vertexData)
+void DXVertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
 {
     if(mpBuffer == nullptr)
     {

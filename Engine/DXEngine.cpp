@@ -9,6 +9,8 @@
 #include "CameraManager.h"
 #include "DXMathHelper.h"
 #include "DXFreeCamera.h"
+#include "DXVertexBuffer.h"
+#include "DXIndexBuffer.h"
 
 bool DXEngine::bInitialized = false;
 
@@ -50,7 +52,7 @@ void DXEngine::TestCreateResources()
         3,4,5
     };
 
-    mTestVertexBuffer->SetVertexData<VT_PositionColor>(VertexArray);
+    mTestVertexBuffer->SetVertexBufferData<VT_PositionColor>(VertexArray);
     mTestIndexBuffer->SetIndexBufferData(IndexArray);
 }
 

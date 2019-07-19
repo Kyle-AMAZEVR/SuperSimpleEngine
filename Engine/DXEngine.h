@@ -3,8 +3,7 @@
 
 #include "Singleton.h"
 #include "DXViewport.h"
-#include "DXVertexBuffer.h"
-#include "DXIndexBuffer.h"
+
 #include "DXShader.h"
 
 class ENGINE_API DXEngine : public Singleton<DXEngine>
@@ -48,9 +47,9 @@ private:
     ID3D11Debug* mDebug = nullptr;
 
     // 
-    std::shared_ptr<DXVertexBuffer> mTestVertexBuffer;
-    std::shared_ptr<DXPixelShader> mTestPixelShader;
-    std::shared_ptr<DXIndexBuffer> mTestIndexBuffer;
-    std::shared_ptr<DXVertexShader> mTestVertexShader;
+    std::shared_ptr<class DXVertexBuffer> mTestVertexBuffer;
+    std::shared_ptr<class DXPixelShader> mTestPixelShader;
+    std::shared_ptr<class DXIndexBuffer> mTestIndexBuffer;
+    std::shared_ptr<class DXVertexShader> mTestVertexShader;
     //
 };
