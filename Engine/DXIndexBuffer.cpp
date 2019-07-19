@@ -3,8 +3,11 @@
 #include "DXIndexBuffer.h"
 
 
-void DXIndexBuffer::SetIndexBufferData(const std::vector<unsigned int> indexData)
+void DXIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_PRIMITIVE_TOPOLOGY ePrimitiveType )
 {
+	mPrimitiveType = ePrimitiveType;
+	mIndexCount = indexData.size();
+
     mBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
     mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE ;
     mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
