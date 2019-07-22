@@ -10,6 +10,8 @@ public:
 
 	bool LoadFromFile(std::string filename);
 	bool Release();
+	UINT GetWidth() { return mWidth; }
+	UINT GetHeight() { return mHeight; }
 
 protected:
 	UINT mWidth = 0;
