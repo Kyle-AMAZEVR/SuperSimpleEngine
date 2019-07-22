@@ -11,8 +11,8 @@ public:
 	virtual void Do();
 
 protected:
-	std::shared_ptr<class DXVertexShader> mVS;
-	std::shared_ptr<class DXPixelShader> mPS;
+	std::shared_ptr<class SSVertexShader> mVS;
+	std::shared_ptr<class SSPixelShader> mPS;
 	std::shared_ptr<class SSVertexBuffer> mVB;
 	std::shared_ptr<class SSIndexBuffer> mIB;	
 

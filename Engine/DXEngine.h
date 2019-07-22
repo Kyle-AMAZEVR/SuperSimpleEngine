@@ -16,8 +16,8 @@ public:
     void OnWindowResize(int newWidth, int newHeight);
     static bool IsInitialized() { return bInitialized; }
 
-	void SetVertexShader(std::weak_ptr<DXVertexShader> vs);
-	void SetPixelShader(std::weak_ptr<DXPixelShader> ps);
+	void SetVertexShader(std::weak_ptr<SSVertexShader> vs);
+	void SetPixelShader(std::weak_ptr<SSPixelShader> ps);
 
     inline ID3D11Device* GetDevice() { return mDevice; }
     inline ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
@@ -51,8 +51,10 @@ private:
 
     // 
     std::shared_ptr<class SSVertexBuffer> mTestVertexBuffer;
-    std::shared_ptr<class DXPixelShader> mTestPixelShader;
+    std::shared_ptr<class SSPixelShader> mTestPixelShader;
     std::shared_ptr<class SSIndexBuffer> mTestIndexBuffer;
-    std::shared_ptr<class DXVertexShader> mTestVertexShader;
+    std::shared_ptr<class SSVertexShader> mTestVertexShader;
+	std::shared_ptr<class SSTexture2D> mTestTexture;
+
     //
 };

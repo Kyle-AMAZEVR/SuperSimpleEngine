@@ -43,12 +43,12 @@ ID3D11Buffer* DXShader::GetConstantBuffer(std::string bufferName)
 
 
 //@ vertex shader implementation
- DXVertexShader::~DXVertexShader()
+ SSVertexShader::~SSVertexShader()
  {
      ReleaseCOM(mVertexShader);
  }
 
-void DXVertexShader::CreateInputLayout()
+void SSVertexShader::CreateInputLayout()
 {
     auto* dxDevice = DXEngine::Get().GetDevice();    
     
@@ -61,7 +61,7 @@ void DXVertexShader::CreateInputLayout()
     mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &mInputLayout));     
 }
 
- bool DXVertexShader::CompileFromFile(std::wstring filepath)
+ bool SSVertexShader::CompileFromFile(std::wstring filepath)
  {
     ID3D10Blob* errorMsg = nullptr;
 
@@ -131,12 +131,12 @@ void DXVertexShader::CreateInputLayout()
  }
 
 #pragma region PixelShader
-DXPixelShader::~DXPixelShader()
+SSPixelShader::~SSPixelShader()
 {
     ReleaseCOM(mPixelShader);
 }
 
-bool DXPixelShader::CompileFromFile(std::wstring filepath)
+bool SSPixelShader::CompileFromFile(std::wstring filepath)
 {    
     ID3D10Blob* errorMsg = nullptr;
 

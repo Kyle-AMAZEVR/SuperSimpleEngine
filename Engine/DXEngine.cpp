@@ -11,6 +11,7 @@
 #include "DXFreeCamera.h"
 #include "DXVertexBuffer.h"
 #include "SSIndexBuffer.h"
+#include "SSTexture2D.h"
 
 bool DXEngine::bInitialized = false;
 
@@ -33,6 +34,7 @@ void DXEngine::TestCreateResources()
 {   
     mTestVertexBuffer = std::make_shared<SSVertexBuffer>();
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
+	mTestTexture = std::make_shared<SSTexture2D>();
 
     std::vector<VT_PositionColor> VertexArray =
     {
@@ -54,14 +56,15 @@ void DXEngine::TestCreateResources()
 
     mTestVertexBuffer->SetVertexBufferData<VT_PositionColor>(VertexArray);
     mTestIndexBuffer->SetIndexBufferData(IndexArray);
+	mTestTexture->LoadFromFile("./Resource/Tex/bamboo-wood-semigloss-albedo.png");
 }
 
 void DXEngine::TestCompileShader()
 {    
-    mTestVertexShader = std::make_shared<DXVertexShader>();
+    mTestVertexShader = std::make_shared<SSVertexShader>();
     assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
     
-    mTestPixelShader = std::make_shared<DXPixelShader>();
+    mTestPixelShader = std::make_shared<SSPixelShader>();
     assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
@@ -132,7 +135,7 @@ bool DXEngine::CreateSwapChain()
     return true;
 }
 
-void DXEngine::SetVertexShader(std::weak_ptr<DXVertexShader> vs)
+void DXEngine::SetVertexShader(std::weak_ptr<SSVertexShader> vs)
 {
 	if (vs.expired() == false)
 	{
@@ -140,7 +143,7 @@ void DXEngine::SetVertexShader(std::weak_ptr<DXVertexShader> vs)
 		mDeviceContext->VSSetShader(sharedVS->GetShader(), nullptr, 0);
 	}
 }
-void DXEngine::SetPixelShader(std::weak_ptr<DXPixelShader> ps)
+void DXEngine::SetPixelShader(std::weak_ptr<SSPixelShader> ps)
 {
 	
 }
@@ -174,10 +177,8 @@ void DXEngine::DrawScene()
 	CameraBase* currentCamera = CameraManager::Get().GetCurrentCamera();	
 	currentCamera->Update();
 
-	Transform testTransform;
-	testTransform.Model = DXMathHelper::IdentityMatrix4X4;	
-	testTransform.Proj = currentCamera->GetProj();
-	testTransform.View = currentCamera->GetView();
+	
+
 
 	//mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);		
 

@@ -34,11 +34,11 @@ void DXShader::SetConstantBufferData(std::string bufferName, const T& data)
 
 
 // vertex shader
-class ENGINE_API DXVertexShader : public DXShader
+class ENGINE_API SSVertexShader : public DXShader
 {
 public:
-    DXVertexShader() = default;
-    virtual ~DXVertexShader();
+    SSVertexShader() = default;
+    virtual ~SSVertexShader();
     virtual bool CompileFromFile(std::wstring filepath) override;
     ID3D11VertexShader* GetShader() { return mVertexShader; } 
     ID3D11InputLayout* GetInputLayout() { return mInputLayout; }
@@ -51,11 +51,11 @@ protected:
 
 
 // pixel shader
-class ENGINE_API DXPixelShader : public DXShader
+class ENGINE_API SSPixelShader : public DXShader
 {
 public:
-    DXPixelShader() = default;
-    virtual ~DXPixelShader();
+    SSPixelShader() = default;
+    virtual ~SSPixelShader();
     virtual bool CompileFromFile(std::wstring filepath) override;
     ID3D11PixelShader* GetShader() { return mPixelShader; }
 protected:

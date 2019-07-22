@@ -24,13 +24,22 @@ if(!(expression))\
 	__debugbreak();\
 }
 
+#define checkMsg(expression,msg)\
+if(!(expression))\
+{\
+    OutputDebugStringA("FAILED : ");\
+    OutputDebugStringA(#msg);\
+    OutputDebugStringA("\n");\
+	__debugbreak();\
+}
+
 //#if defined(DEBUG) | defined(_DEBUG)
 #if 1
 	#ifndef HR
     #define HR(x)									\
         {       									\
             HRESULT hr = (x);						\
-            check(SUCCEEDED(hr))                    \
+            checkMsg(SUCCEEDED(hr),x)                    \
         }
     #endif
 #else
