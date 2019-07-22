@@ -8,5 +8,5 @@ public:
 
 	SSRenderTarget2D(const UINT width, const UINT height, DXGI_FORMAT eFormat);
 protected:
-
+	ID3D11ShaderResourceView* mShaderResourceView = nullptr;
 };
