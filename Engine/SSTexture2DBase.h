@@ -10,6 +10,8 @@ public:
 	UINT GetHeight() {	return mHeight; }
 	ID3D11Texture2D* GetTexturePtr() { return mTexturePtr; }
 
+	virtual void Resize(const UINT newWidth, const UINT newHeight){}
+
 protected:
 	UINT mWidth;
 	UINT mHeight;

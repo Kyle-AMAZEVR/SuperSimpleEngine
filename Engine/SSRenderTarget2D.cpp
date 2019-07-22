@@ -5,6 +5,10 @@
 
 SSRenderTarget2D::SSRenderTarget2D(const UINT width, const UINT height, DXGI_FORMAT format)
 {
+	InternalCreate(width, height, format);
+}
+void SSRenderTarget2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format)
+{
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth = width;
 	description.Height = mHeight = height;
@@ -14,7 +18,31 @@ SSRenderTarget2D::SSRenderTarget2D(const UINT width, const UINT height, DXGI_FOR
 	description.SampleDesc.Count = 1;
 	description.MipLevels = description.ArraySize = 1;
 	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	description.Format = mTextureFormat = format;
 
 	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
 	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, nullptr, &mShaderResourceView));
+}
+
+void SSRenderTarget2D::Release()
+{
+	if (mTexturePtr != nullptr)
+	{
+		mTexturePtr->Release();
+		mTexturePtr = nullptr;
+	}
+	if (mShaderResourceView != nullptr)
+	{
+		mShaderResourceView->Release();
+		mShaderResourceView = nullptr;
+	}
+}
+
+void SSRenderTarget2D::Resize(const UINT newWidth, const UINT newHeight)
+{
+	if (mWidth != newWidth || mHeight != newHeight)
+	{
+		Release();
+		InternalCreate(newWidth, newHeight, mTextureFormat);
+	}
 }

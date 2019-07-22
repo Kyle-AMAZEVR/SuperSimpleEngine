@@ -12,6 +12,17 @@ SSTexture2D::SSTexture2D()
 
 bool SSTexture2D::Release()
 {
+	if (mTexturePtr != nullptr)
+	{
+		mTexturePtr->Release();
+		mTexturePtr = nullptr;
+	}
+	if (mResourceView != nullptr)
+	{
+		mResourceView->Release();
+		mResourceView = nullptr;
+	}
+
 	return true;
 }
 
@@ -38,6 +49,7 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	description.SampleDesc.Count = 1;
 	description.MipLevels = description.ArraySize = 1;
 	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	//description.Format = 
 	
 	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, &textureData, &mTexturePtr));
 	

@@ -11,7 +11,7 @@ public:
 	bool LoadFromFile(std::string filename);
 	bool Release();
 	UINT GetWidth() { return mWidth; }
-	UINT GetHeight() { return mHeight; }
+	UINT GetHeight() { return mHeight; }	
 
 protected:	
 	
