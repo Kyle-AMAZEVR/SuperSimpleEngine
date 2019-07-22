@@ -1,6 +1,3 @@
-
-
-
 #include "Core.h"
 #include "DXShader.h"
 #include "DXEngine.h"
@@ -156,7 +153,6 @@ bool DXPixelShader::CompileFromFile(std::wstring filepath)
     auto* dxDevice = DXEngine::Get().GetDevice();
     HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
 
-
 	// @constant buffer reflection
 	ID3D11ShaderReflection* pixelShaderReflection = nullptr;
 	HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pixelShaderReflection));
@@ -172,8 +168,6 @@ bool DXPixelShader::CompileFromFile(std::wstring filepath)
 
 		mConstantBufferMap[bufferDesc.Name] = std::shared_ptr<DXGenericConstantBuffer>(new DXGenericConstantBuffer(constantBuffer, i));
 	}
-
-
     return true;
 }
 #pragma endregion

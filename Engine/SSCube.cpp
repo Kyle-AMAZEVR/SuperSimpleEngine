@@ -67,3 +67,4 @@ void SSCube::InternalCreate()
 // 
 std::shared_ptr<DXIndexBuffer> SSCube::mCubeIB;
 std::shared_ptr<DXVertexBuffer> SSCube::mCubeVB;
+bool SSCube::bIsInitialized = false;

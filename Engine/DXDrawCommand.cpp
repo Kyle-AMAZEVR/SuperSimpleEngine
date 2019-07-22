@@ -26,7 +26,7 @@ void SSDrawCommand::Do()
 	deviceContext->IASetPrimitiveTopology(mIB->GetPrimitiveType());
 
 	// @ set vertex shader constant buffers
-	deviceContext->VSSetConstantBuffers(0, 1, );	
+	// deviceContext->VSSetConstantBuffers();
 
 	// @ set 
 
