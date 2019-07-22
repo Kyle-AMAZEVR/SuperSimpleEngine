@@ -3,13 +3,13 @@
 #pragma once
 
 #include <vector>
-#include "DXBufferBase.h"
+#include "SSBufferBase.h"
 #include "DXEngine.h"
 
-class DXVertexBuffer : public SSBufferBase
+class SSVertexBuffer : public SSBufferBase
 {
 public:
-    DXVertexBuffer(){}
+    SSVertexBuffer(){}
     
     template<class T>
     void SetVertexBufferData(const std::vector<T>& vertexData);
@@ -22,7 +22,7 @@ protected:
 };
 
 template<class T>
-void DXVertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
+void SSVertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
 {
     if(mpBuffer == nullptr)
     {
@@ -31,7 +31,7 @@ void DXVertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
 }
 
 template<class T>
-void DXVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData)
+void SSVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData)
 {
     mBufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;

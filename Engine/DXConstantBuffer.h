@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "DXBufferBase.h"
+#include "SSBufferBase.h"
 #include <vector>
 #include <string>
 

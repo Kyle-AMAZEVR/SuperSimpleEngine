@@ -4,7 +4,7 @@
 #include "DXEngine.h"
 #include "DXDrawCommand.h"
 #include "DXVertexBuffer.h"
-#include "DXIndexBuffer.h"
+#include "SSIndexBuffer.h"
 
 void SSDrawCommand::Do()
 {

@@ -3,7 +3,7 @@
 #include "SSCube.h"
 #include "DXVertexTypes.h"
 #include "DXVertexBuffer.h"
-#include "DXIndexBuffer.h"
+#include "SSIndexBuffer.h"
 #include <vector>
 
 SSCube::SSCube()
@@ -58,13 +58,13 @@ void SSCube::InternalCreate()
 		indexArray.push_back(i);
 	}
 
-	mCubeVB = std::make_unique<DXVertexBuffer>();
+	mCubeVB = std::make_unique<SSVertexBuffer>();
 	mCubeVB->SetVertexBufferData(vertexArray);
 
-	mCubeIB = std::make_unique<DXIndexBuffer>();
+	mCubeIB = std::make_unique<SSIndexBuffer>();
 	mCubeIB->SetIndexBufferData(indexArray);
 }
 // 
-std::shared_ptr<DXIndexBuffer> SSCube::mCubeIB;
-std::shared_ptr<DXVertexBuffer> SSCube::mCubeVB;
+std::shared_ptr<SSIndexBuffer> SSCube::mCubeIB;
+std::shared_ptr<SSVertexBuffer> SSCube::mCubeVB;
 bool SSCube::bIsInitialized = false;

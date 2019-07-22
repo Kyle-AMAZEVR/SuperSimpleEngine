@@ -10,7 +10,7 @@
 #include "DXMathHelper.h"
 #include "DXFreeCamera.h"
 #include "DXVertexBuffer.h"
-#include "DXIndexBuffer.h"
+#include "SSIndexBuffer.h"
 
 bool DXEngine::bInitialized = false;
 
@@ -31,8 +31,8 @@ bool DXEngine::Initialize(HWND windowHandle)
 
 void DXEngine::TestCreateResources()
 {   
-    mTestVertexBuffer = std::make_shared<DXVertexBuffer>();
-    mTestIndexBuffer = std::make_shared<DXIndexBuffer>();
+    mTestVertexBuffer = std::make_shared<SSVertexBuffer>();
+    mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
 
     std::vector<VT_PositionColor> VertexArray =
     {
@@ -167,7 +167,7 @@ void DXEngine::DrawScene()
     mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
     mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);	
 
-	mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitY4);
+	mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitZ4);
 	ID3D11Buffer* cbuffer = mTestPixelShader->GetConstantBuffer("Color");
 	mDeviceContext->PSSetConstantBuffers(0, 1, &cbuffer);
 

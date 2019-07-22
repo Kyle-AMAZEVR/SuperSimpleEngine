@@ -13,6 +13,6 @@ public:
 protected:
 	void InternalCreate();
 	static bool bIsInitialized;
-	static std::shared_ptr<class DXVertexBuffer> mCubeVB;
-	static std::shared_ptr<class DXIndexBuffer> mCubeIB;
+	static std::shared_ptr<class SSVertexBuffer> mCubeVB;
+	static std::shared_ptr<class SSIndexBuffer> mCubeIB;
 };

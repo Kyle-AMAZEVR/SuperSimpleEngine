@@ -1,9 +1,9 @@
 #include "Core.h"
 #include "DXEngine.h"
-#include "DXIndexBuffer.h"
+#include "SSIndexBuffer.h"
 
 
-void DXIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_PRIMITIVE_TOPOLOGY ePrimitiveType )
+void SSIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_PRIMITIVE_TOPOLOGY ePrimitiveType )
 {
 	mPrimitiveType = ePrimitiveType;
 	mIndexCount = indexData.size();

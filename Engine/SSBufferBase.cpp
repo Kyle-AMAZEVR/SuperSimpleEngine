@@ -1,6 +1,6 @@
 
 #include "Core.h"
-#include "DXBufferBase.h"
+#include "SSBufferBase.h"
 #include "DXEngine.h"
 
 

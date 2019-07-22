@@ -50,9 +50,9 @@ private:
     ID3D11Debug* mDebug = nullptr;
 
     // 
-    std::shared_ptr<class DXVertexBuffer> mTestVertexBuffer;
+    std::shared_ptr<class SSVertexBuffer> mTestVertexBuffer;
     std::shared_ptr<class DXPixelShader> mTestPixelShader;
-    std::shared_ptr<class DXIndexBuffer> mTestIndexBuffer;
+    std::shared_ptr<class SSIndexBuffer> mTestIndexBuffer;
     std::shared_ptr<class DXVertexShader> mTestVertexShader;
     //
 };
