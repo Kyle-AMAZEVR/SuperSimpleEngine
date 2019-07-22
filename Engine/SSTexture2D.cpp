@@ -29,9 +29,9 @@ bool SSTexture2D::Release()
 bool SSTexture2D::LoadFromFile(std::string filename)
 {
 	int width, height, channels;
-	
+
 	stbi_uc* data = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb_alpha);
-	
+
 	if (data == nullptr)
 	{
 		return false;
@@ -52,8 +52,9 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	description.SampleDesc.Quality = 0;
 	description.MipLevels = 1;
 	description.ArraySize = 1;
-	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	description.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	
+	
+	description.Format = DXGI_FORMAT_R8G8B8A8_UINT;
 	
 	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, &textureData, &mTexturePtr));
 	

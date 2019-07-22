@@ -3,7 +3,7 @@
 struct VertexInputType
 {
     float4 position : POSITION;
-    float4 color : COLOR;    
+    float4 color : COLOR;
 };
 
 struct PixelInputType
@@ -18,7 +18,7 @@ PixelInputType VSMain(VertexInputType input)
 
     // Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = input.position;
-        
+
     // Store the input color for the pixel shader to use.
     output.color = input.color;
     

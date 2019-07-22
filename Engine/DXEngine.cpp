@@ -36,16 +36,16 @@ void DXEngine::TestCreateResources()
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
 	mTestTexture = std::make_shared<SSTexture2D>();
 
-    std::vector<VT_PositionColor> VertexArray =
+    std::vector<VT_PositionTexcoord> VertexArray =
     {
         
-        {DirectX::XMFLOAT4(-1, -1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4(-1,  1, 0, 1), DirectX::XMFLOAT4(0,1,0,1)},
-        {DirectX::XMFLOAT4( 1,  1, 0, 1), DirectX::XMFLOAT4(0,0,1,1)},
+        {DirectX::XMFLOAT4(-1, -1, 0, 1), DirectX::XMFLOAT2(0,1)},
+        {DirectX::XMFLOAT4(-1,  1, 0, 1), DirectX::XMFLOAT2(0,0)},
+        {DirectX::XMFLOAT4( 1,  1, 0, 1), DirectX::XMFLOAT2(1,0)},
 
-        {DirectX::XMFLOAT4(-1, -1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1,  1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
-        {DirectX::XMFLOAT4( 1, -1, 0, 1), DirectX::XMFLOAT4(1,0,0,1)},
+        {DirectX::XMFLOAT4(-1, -1, 0, 1), DirectX::XMFLOAT2(0,1)},
+        {DirectX::XMFLOAT4( 1,  1, 0, 1), DirectX::XMFLOAT2(1,0)},
+        {DirectX::XMFLOAT4( 1, -1, 0, 1), DirectX::XMFLOAT2(0,1)},
     };
 
     std::vector<UINT> IndexArray = 
@@ -174,10 +174,8 @@ void DXEngine::DrawScene()
 	ID3D11Buffer* cbuffer = mTestPixelShader->GetConstantBuffer("Color");
 	mDeviceContext->PSSetConstantBuffers(0, 1, &cbuffer);
 
-	CameraBase* currentCamera = CameraManager::Get().GetCurrentCamera();	
+	CameraBase* currentCamera = CameraManager::Get().GetCurrentCamera();
 	currentCamera->Update();
-
-	
 
 
 	//mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);		
