@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSTexture2DBase.h"
 
-class ENGINE_API SSTexture2D : public DXRenderResource
+class ENGINE_API SSTexture2D : public SSTexture2DBase
 {
 public:
 	SSTexture2D();
