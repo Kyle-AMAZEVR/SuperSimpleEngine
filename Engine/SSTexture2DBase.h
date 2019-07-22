@@ -13,6 +13,7 @@ public:
 protected:
 	UINT mWidth;
 	UINT mHeight;
-	ID3D11Texture2D* mTexturePtr = nullptr;
+	DXGI_FORMAT mTextureFormat;
+	ID3D11Texture2D* mTexturePtr = nullptr;	
 	
 };

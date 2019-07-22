@@ -13,11 +13,7 @@ public:
 	UINT GetWidth() { return mWidth; }
 	UINT GetHeight() { return mHeight; }
 
-protected:
-	UINT mWidth = 0;
-	UINT mHeight = 0;
-	DXGI_FORMAT mTextureFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
+protected:	
 	
-	ID3D11Texture2D* mTexturePtr = nullptr;
 	ID3D11ShaderResourceView* mResourceView = nullptr;
 };

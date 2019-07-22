@@ -26,6 +26,9 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 		return false;
 	}
 
+	D3D11_SUBRESOURCE_DATA textureData;
+	textureData.pSysMem = data;	
+
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth = width;
 	description.Height = mHeight = height;
@@ -36,7 +39,7 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	description.MipLevels = description.ArraySize = 1;
 	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	
-	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));		
+	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, &textureData, &mTexturePtr));
 	
 	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, nullptr, &mResourceView));
 
