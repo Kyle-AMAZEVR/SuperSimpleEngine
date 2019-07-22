@@ -7,6 +7,7 @@ class ENGINE_API SSTexture2D : public SSTexture2DBase
 public:
 	SSTexture2D();
 	ID3D11ShaderResourceView* GetShaderResourceView() { return mResourceView; }
+	ID3D11ShaderResourceView*& GetShaderResourceViewRef() { return mResourceView; }
 
 	bool LoadFromFile(std::string filename);
 	bool Release();

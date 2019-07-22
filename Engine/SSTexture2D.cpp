@@ -54,7 +54,7 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	description.ArraySize = 1;
 	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	
 	
-	description.Format = DXGI_FORMAT_R8G8B8A8_UINT;
+	description.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	
 	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, &textureData, &mTexturePtr));
 	

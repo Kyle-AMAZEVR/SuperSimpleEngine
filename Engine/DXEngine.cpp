@@ -54,9 +54,20 @@ void DXEngine::TestCreateResources()
         3,4,5
     };
 
-    mTestVertexBuffer->SetVertexBufferData<VT_PositionColor>(VertexArray);
+    mTestVertexBuffer->SetVertexBufferData<VT_PositionTexcoord>(VertexArray);
     mTestIndexBuffer->SetIndexBufferData(IndexArray);
 	mTestTexture->LoadFromFile("./Resource/Tex/bamboo-wood-semigloss-albedo.png");
+
+	D3D11_SAMPLER_DESC desc;
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.MipLODBias = 0;
+	desc.MaxAnisotropy = 0;
+	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+
+	HR(mDevice->CreateSamplerState( &desc, &mDefaultSamplerState));
 }
 
 void DXEngine::TestCompileShader()
@@ -177,6 +188,9 @@ void DXEngine::DrawScene()
 	CameraBase* currentCamera = CameraManager::Get().GetCurrentCamera();
 	currentCamera->Update();
 
+	
+	mDeviceContext->PSSetSamplers(0, 1, &mDefaultSamplerState);
+	mDeviceContext->PSSetShaderResources(0, 1, &mTestTexture->GetShaderResourceViewRef());
 
 	//mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);		
 
