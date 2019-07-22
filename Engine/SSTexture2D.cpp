@@ -10,11 +10,16 @@ SSTexture2D::SSTexture2D()
 {
 }
 
+bool SSTexture2D::Release()
+{
+	return true;
+}
+
 bool SSTexture2D::LoadFromFile(std::string filename)
 {
 	int width, height, channels;
 	
-	stbi_uc* data = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb);
+	stbi_uc* data = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 	
 	if (data == nullptr)
 	{
@@ -29,9 +34,11 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	description.Usage = D3D11_USAGE_DYNAMIC;
 	description.SampleDesc.Count = 1;
 	description.MipLevels = description.ArraySize = 1;
-
+	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	
-	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));		
+	
+	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, nullptr, &mResourceView));
 
 	return true;
 }

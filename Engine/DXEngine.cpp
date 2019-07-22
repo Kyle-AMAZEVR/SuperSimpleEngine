@@ -182,6 +182,7 @@ void DXEngine::DrawScene()
 	//mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);		
 
     mDeviceContext->DrawIndexed(6,0,0);
+	
 
     HR(mSwapChain->Present(0,0));
 }
