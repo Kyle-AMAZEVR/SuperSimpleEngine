@@ -4,12 +4,12 @@
 #include "DXEngine.h"
 
 
-DXBufferBase::~DXBufferBase()
+SSBufferBase::~SSBufferBase()
 {
 	Destroy();
 }
 
-void DXBufferBase::Destroy()
+void SSBufferBase::Destroy()
 {
 	if (mpBuffer != nullptr)
 	{

@@ -4,7 +4,7 @@
 #include <vector>
 #include "DXBufferBase.h"
 
-class DXIndexBuffer : public DXBufferBase
+class DXIndexBuffer : public SSBufferBase
 {
 public:
     DXIndexBuffer(){}	

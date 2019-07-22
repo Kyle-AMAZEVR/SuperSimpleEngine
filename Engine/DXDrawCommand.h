@@ -16,6 +16,6 @@ protected:
 	std::shared_ptr<class DXVertexBuffer> mVB;
 	std::shared_ptr<class DXIndexBuffer> mIB;	
 
-	std::vector<std::shared_ptr<class DXBufferBase>> mVertexShaderConstantBufferList;
-	std::vector<std::shared_ptr<class DXBufferBase>> mPixelShaderConstantBufferList;
+	std::vector<std::shared_ptr<class SSBufferBase>> mVertexShaderConstantBufferList;
+	std::vector<std::shared_ptr<class SSBufferBase>> mPixelShaderConstantBufferList;
 };

@@ -6,7 +6,7 @@
 #include <string>
 
 template<class TBufferType>
-class DXTypedConstantBuffer : public DXBufferBase
+class DXTypedConstantBuffer : public SSBufferBase
 {
 public:
     DXTypedConstantBuffer();
@@ -58,7 +58,7 @@ struct VariableInConstantBufferInfo
     std::string Name;
 };
 
-class DXGenericConstantBuffer : public DXBufferBase
+class DXGenericConstantBuffer : public SSBufferBase
 {
 public:
     DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);

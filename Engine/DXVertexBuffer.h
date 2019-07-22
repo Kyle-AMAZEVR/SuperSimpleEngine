@@ -6,7 +6,7 @@
 #include "DXBufferBase.h"
 #include "DXEngine.h"
 
-class DXVertexBuffer : public DXBufferBase
+class DXVertexBuffer : public SSBufferBase
 {
 public:
     DXVertexBuffer(){}

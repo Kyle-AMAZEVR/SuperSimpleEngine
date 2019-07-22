@@ -2,7 +2,7 @@
 
 #include "DXRenderResource.h"
 
-class DXBufferBase : public DXRenderResource
+class SSBufferBase : public DXRenderResource
 {
 public:	
 	virtual void Destroy() override;
@@ -17,7 +17,7 @@ protected:
 
     virtual void SubmitDataToDevice() {}
 
-    virtual ~DXBufferBase();
+    virtual ~SSBufferBase();
     D3D11_BUFFER_DESC mBufferDescription;
     ID3D11Buffer* mpBuffer = nullptr;
     
