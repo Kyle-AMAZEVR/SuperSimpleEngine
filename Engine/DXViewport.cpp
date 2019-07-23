@@ -4,7 +4,7 @@
 
 void DXViewport::Clear()
 {
-    float Color[4] { 0.0f, 0.0f, 1.0f, 1.0f};
+    float Color[4] { 0.0f, 1.0f, 0.0f, 1.0f};
     
     auto* dxDeviceContext = DXEngine::Get().GetDeviceContext();
 

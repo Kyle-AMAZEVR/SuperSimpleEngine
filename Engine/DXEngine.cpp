@@ -20,7 +20,7 @@ bool DXEngine::Initialize(HWND windowHandle)
     mWindowHandle = windowHandle;
     CreateDevice();
     CreateSwapChain();
-    OnWindowResize(960,480);   
+    OnWindowResize(480,240);   
     bInitialized = true;
 
 
@@ -45,7 +45,7 @@ void DXEngine::TestCreateResources()
 
         {DirectX::XMFLOAT4(-1, -1, 0, 1), DirectX::XMFLOAT2(0,1)},
         {DirectX::XMFLOAT4( 1,  1, 0, 1), DirectX::XMFLOAT2(1,0)},
-        {DirectX::XMFLOAT4( 1, -1, 0, 1), DirectX::XMFLOAT2(0,1)},
+        {DirectX::XMFLOAT4( 1, -1, 0, 1), DirectX::XMFLOAT2(1,1)},
     };
 
     std::vector<UINT> IndexArray = 
@@ -59,13 +59,16 @@ void DXEngine::TestCreateResources()
 	mTestTexture->LoadFromFile("./Resource/Tex/bamboo-wood-semigloss-albedo.png");
 
 	D3D11_SAMPLER_DESC desc;
+	ZeroMemory(&desc, sizeof(D3D11_SAMPLER_DESC));
 	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	desc.MipLODBias = 0;
-	desc.MaxAnisotropy = 0;
+	desc.MaxAnisotropy = 1;
 	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+	desc.MinLOD = 0;
+	desc.MaxLOD = D3D11_FLOAT32_MAX;
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
 	HR(mDevice->CreateSamplerState( &desc, &mDefaultSamplerState));
 }
@@ -170,7 +173,7 @@ void DXEngine::DrawScene()
 
     mViewport.Clear();
 
-    UINT stride = sizeof(VT_PositionColor);
+    UINT stride = sizeof(VT_PositionTexcoord);
     UINT offset = 0;
 
     mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
@@ -181,14 +184,13 @@ void DXEngine::DrawScene()
     mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
     mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);	
 
-	mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitZ4);
+	mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitX4);
 	ID3D11Buffer* cbuffer = mTestPixelShader->GetConstantBuffer("Color");
-	mDeviceContext->PSSetConstantBuffers(0, 1, &cbuffer);
+	if (cbuffer)
+	{
+		mDeviceContext->PSSetConstantBuffers(0, 1, &cbuffer);
+	}
 
-	CameraBase* currentCamera = CameraManager::Get().GetCurrentCamera();
-	currentCamera->Update();
-
-	
 	mDeviceContext->PSSetSamplers(0, 1, &mDefaultSamplerState);
 	mDeviceContext->PSSetShaderResources(0, 1, &mTestTexture->GetShaderResourceViewRef());
 

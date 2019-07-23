@@ -3,13 +3,13 @@
 struct VertexInputType
 {
     float4 position : POSITION;
-    float2 texcoord : TEXCOORD;
+    float2 texcoord : TEXCOORD0;
 };
 
 struct PixelInputType
 {
     float4 position : SV_POSITION;
-    float2 texcoord : TEXCOORD;
+    float2 texcoord : TEXCOORD0;
 };
 
 PixelInputType VSMain(VertexInputType input)

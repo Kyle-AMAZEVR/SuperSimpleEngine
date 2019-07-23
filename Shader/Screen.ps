@@ -2,7 +2,7 @@
 struct PixelInputType
 {
     float4 position : SV_POSITION;
-    float2 texcoord : TEXCOORD;
+    float2 texcoord : TEXCOORD0;
 };
 
 
@@ -11,18 +11,14 @@ cbuffer Color
     float4 outputColor;
 };
 
-Texture2D sampleTexture;
+Texture2D sampleTexture : register(t0);
 
-SamplerState DefaultTexSampler
-{
-	Filter=MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;	
-};
+SamplerState DefaultTexSampler : register(s0);
 
 float4 PSMain(PixelInputType input) : SV_TARGET
 {
-    //return input.color;
+    //return float4(input.texcoord,0,0);
+    
     //return outputColor;
     return sampleTexture.Sample(DefaultTexSampler , input.texcoord);
 }
