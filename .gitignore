@@ -23,3 +23,5 @@ Debug
 *.sln
 CMakeCache.txt
 *.cmake
+lib/DirectXTK/Src/Shaders/Compiled/*
+lib/DirectXTK/CMakeFiles/*

@@ -1,10 +1,11 @@
 
-#define STB_IMAGE_IMPLEMENTATION
+
 
 #include "Core.h"
 #include "SSTexture2D.h"
 #include "stb_image.h"
 #include "DXEngine.h"
+#include "DDSTextureLoader.h"
 
 SSTexture2D::SSTexture2D()
 {
@@ -29,8 +30,9 @@ bool SSTexture2D::Release()
 bool SSTexture2D::LoadFromFile(std::string filename)
 {
 	int width, height, channels;
-
-	stbi_uc* data = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+	
+	FILE *f = stbi__fopen(filename.c_str(), "rb");
+	stbi__uint16* data = stbi_load_from_file_16(f, &width, &height, &channels, STBI_rgb);
 
 	if (data == nullptr)
 	{
@@ -55,7 +57,7 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	description.ArraySize = 1;
 	description.CPUAccessFlags = 0;
 
-	description.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	description.Format = DXGI_FORMAT_R16G16B16A16_UNORM;
 	
 	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, &textureData, &mTexturePtr));
 

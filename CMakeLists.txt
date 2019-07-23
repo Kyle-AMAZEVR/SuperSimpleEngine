@@ -24,7 +24,11 @@ set_source_files_properties("Engine/Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib)
+include_directories("lib/DirectXTK/Inc")
+
+add_subdirectory("lib/DirectXTK")
+
+target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib ./bin/CMake/Debug/directxtk ) 
 
 target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
