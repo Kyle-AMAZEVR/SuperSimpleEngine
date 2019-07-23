@@ -8,8 +8,8 @@ public:
 
 	UINT GetWidth() { return mWidth; }
 	UINT GetHeight() {	return mHeight; }
-	//ID3D11Texture2D* GetTexturePtr() { return mTexturePtr; }
-	ID3D11Resource* GetTexturePtr() { return mTexturePtr; }
+	ID3D11Texture2D* GetTexturePtr() { return mTexturePtr; }
+	//ID3D11Resource* GetTexturePtr() { return mTexturePtr; }
 
 	virtual void Resize(const UINT newWidth, const UINT newHeight){}
 
@@ -17,7 +17,7 @@ protected:
 	UINT mWidth;
 	UINT mHeight;
 	DXGI_FORMAT mTextureFormat;
-	//ID3D11Texture2D* mTexturePtr = nullptr;	
-	ID3D11Resource* mTexturePtr = nullptr;
+	ID3D11Texture2D* mTexturePtr = nullptr;	
+	//ID3D11Resource* mTexturePtr = nullptr;
 	
 };

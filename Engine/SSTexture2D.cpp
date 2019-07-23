@@ -41,22 +41,17 @@ bool SSTexture2D::LoadFromFile(std::wstring filename)
 	auto dim = metaData.dimension;
 	auto size = metaData.format;
 
-	/*stbi_uc* data = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb);
-
-	if (data == nullptr)
-	{
-		return false;
-	}
-
+	auto* pImage = image.GetImage(0, 0, 0);
+		
 	D3D11_SUBRESOURCE_DATA textureData;
 	ZeroMemory(&textureData, sizeof(D3D11_SUBRESOURCE_DATA));
-	textureData.pSysMem = data;
-	textureData.SysMemPitch = width * channels;
-	textureData.SysMemSlicePitch = 0;
+	textureData.pSysMem = pImage->pixels;
+	textureData.SysMemPitch = pImage->rowPitch;
+	textureData.SysMemSlicePitch = pImage->slicePitch;
 
 	D3D11_TEXTURE2D_DESC description;
-	description.Width = mWidth = width;
-	description.Height = mHeight = height;
+	description.Width = mWidth = pImage->width;
+	description.Height = mHeight = pImage->height;
 	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	description.MiscFlags = 0;
 	description.Usage = D3D11_USAGE_DEFAULT;
@@ -66,7 +61,7 @@ bool SSTexture2D::LoadFromFile(std::wstring filename)
 	description.ArraySize = 1;
 	description.CPUAccessFlags = 0;
 
-	description.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	description.Format = DirectX::MakeSRGB(metaData.format);
 	
 	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, &textureData, &mTexturePtr));
 
@@ -77,7 +72,7 @@ bool SSTexture2D::LoadFromFile(std::wstring filename)
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 	resourceViewDesc.Texture2D.MipLevels = 1;
 	
-	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mResourceView));*/
+	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mResourceView));
 
 	return true;
 }
