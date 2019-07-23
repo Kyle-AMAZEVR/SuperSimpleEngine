@@ -30,6 +30,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 HWND WindowHandle;
+DXRenderingThread renderingThread;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -59,7 +60,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     // start rendering thread
-    DXRenderingThread renderingThread;
+    
     renderingThread.Start(WindowHandle);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
@@ -183,7 +184,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             width = static_cast<int>(LOWORD(lParam));
             height = static_cast<int>(HIWORD(lParam));
-            
+			if (renderingThread.IsRunning())
+			{
+				renderingThread.ExecuteInRenderingThread([]()
+				{
+					DXEngine::Get().OnWindowResize(width, height);
+				});
+			}
         }
         break;
 

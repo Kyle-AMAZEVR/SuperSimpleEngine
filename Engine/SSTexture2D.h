@@ -9,7 +9,7 @@ public:
 	ID3D11ShaderResourceView* GetShaderResourceView() { return mResourceView; }
 	ID3D11ShaderResourceView*& GetShaderResourceViewRef() { return mResourceView; }
 
-	bool LoadFromFile(std::string filename);
+	bool LoadFromFile(std::wstring filename);
 	bool Release();
 	UINT GetWidth() { return mWidth; }
 	UINT GetHeight() { return mHeight; }	

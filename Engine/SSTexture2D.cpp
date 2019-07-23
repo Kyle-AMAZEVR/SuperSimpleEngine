@@ -6,6 +6,7 @@
 #include "stb_image.h"
 #include "DXEngine.h"
 #include "DDSTextureLoader.h"
+#include "WICTextureLoader.h"
 
 SSTexture2D::SSTexture2D()
 {
@@ -27,12 +28,11 @@ bool SSTexture2D::Release()
 	return true;
 }
 
-bool SSTexture2D::LoadFromFile(std::string filename)
-{
-	int width, height, channels;
+bool SSTexture2D::LoadFromFile(std::wstring filename)
+{		
+	HR(DirectX::CreateDDSTextureFromFile(DXEngine::Get().GetDevice(), filename.c_str(), &mTexturePtr, &mResourceView));
 	
-	FILE *f = stbi__fopen(filename.c_str(), "rb");
-	stbi__uint16* data = stbi_load_from_file_16(f, &width, &height, &channels, STBI_rgb);
+	/*stbi_uc* data = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb);
 
 	if (data == nullptr)
 	{
@@ -57,7 +57,7 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	description.ArraySize = 1;
 	description.CPUAccessFlags = 0;
 
-	description.Format = DXGI_FORMAT_R16G16B16A16_UNORM;
+	description.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	
 	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, &textureData, &mTexturePtr));
 
@@ -68,7 +68,7 @@ bool SSTexture2D::LoadFromFile(std::string filename)
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 	resourceViewDesc.Texture2D.MipLevels = 1;
 	
-	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mResourceView));
+	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mResourceView));*/
 
 	return true;
 }

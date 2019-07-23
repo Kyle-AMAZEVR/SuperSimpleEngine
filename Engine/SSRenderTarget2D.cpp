@@ -20,8 +20,8 @@ void SSRenderTarget2D::InternalCreate(const UINT width, const UINT height, DXGI_
 	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	description.Format = mTextureFormat = format;
 
-	HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
-	HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, nullptr, &mShaderResourceView));
+	//HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+	//HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, nullptr, &mShaderResourceView));
 }
 
 void SSRenderTarget2D::Release()

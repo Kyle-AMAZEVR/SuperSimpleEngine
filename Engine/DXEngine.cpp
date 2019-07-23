@@ -20,9 +20,8 @@ bool DXEngine::Initialize(HWND windowHandle)
     mWindowHandle = windowHandle;
     CreateDevice();
     CreateSwapChain();
-    OnWindowResize(480,240);   
-    bInitialized = true;
-
+	bInitialized = true;
+    OnWindowResize(mBufferWidth, mBufferHeight);
 
     TestCompileShader();
     TestCreateResources();
@@ -56,7 +55,7 @@ void DXEngine::TestCreateResources()
 
     mTestVertexBuffer->SetVertexBufferData<VT_PositionTexcoord>(VertexArray);
     mTestIndexBuffer->SetIndexBufferData(IndexArray);
-	mTestTexture->LoadFromFile("./Resource/Tex/bamboo-wood-semigloss-albedo.png");
+	mTestTexture->LoadFromFile(L"./Resource/Tex/rustediron2_basecolor.dds");
 
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(D3D11_SAMPLER_DESC));
@@ -67,8 +66,8 @@ void DXEngine::TestCreateResources()
 	desc.MaxAnisotropy = 1;
 	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	desc.MinLOD = 0;
-	desc.MaxLOD = D3D11_FLOAT32_MAX;
-	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	desc.MaxLOD = 0;
+	desc.Filter = D3D11_FILTER_ANISOTROPIC;
 
 	HR(mDevice->CreateSamplerState( &desc, &mDefaultSamplerState));
 }
@@ -94,12 +93,19 @@ bool DXEngine::CreateDevice()
 
 void DXEngine::OnWindowResize(int newWidth, int newHeight)
 {
-    assert(mDeviceContext);
-	assert(mDevice);
-	assert(mSwapChain);
+	if (bInitialized)
+	{
+		assert(mDeviceContext);
+		assert(mDevice);
+		assert(mSwapChain);
 
-    check ( newWidth > 0 && newHeight > 0 );    
-    mViewport.Resize(newWidth, newHeight);
+		check(newWidth > 0 && newHeight > 0);
+
+		mBufferWidth = newWidth;
+		mBufferHeight = newHeight;
+
+		mViewport.Resize(newWidth, newHeight);
+	}
 }
 
 

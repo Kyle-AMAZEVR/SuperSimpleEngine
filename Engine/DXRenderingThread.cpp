@@ -16,6 +16,8 @@ DWORD DXRenderingThread::Run()
 	// init engine
 	DXEngine::Get().Initialize(mWindowHandle);
 
+	bIsRunning = true;
+
 	while (1)
 	{
 		// consume command queue

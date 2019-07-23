@@ -13,6 +13,7 @@ public:
     void Join();
     void RequestExit() { bRequestExit = true;}
 
+	bool IsRunning() { return bIsRunning; }
     void ExecuteInRenderingThread(std::function<void()>&& lambdaFunction);
 
     static inline bool IsInRenderingThread();
@@ -22,7 +23,7 @@ protected:
 	static DWORD mRenderingThreadId;
     static DWORD Run(LPVOID param);
 	DWORD Run();
-
+	bool bIsRunning = false;
     //
 	CRITICAL_SECTION mCriticalSection;
     std::deque<std::function<void()>> mCommandQueue;

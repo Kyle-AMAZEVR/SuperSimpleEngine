@@ -15,6 +15,9 @@ file(GLOB HEADERS "Engine/*.h")
 
 include_directories("Engine")
 include_directories("lib/DirectXMath/Include")
+include_directories("lib/DirectXTK/Inc")
+
+add_subdirectory("lib/DirectXTK")
 
 foreach(src_file ${SOURCES})
 	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
@@ -23,10 +26,6 @@ endforeach(src_file ${SOURCES})
 set_source_files_properties("Engine/Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
-
-include_directories("lib/DirectXTK/Inc")
-
-add_subdirectory("lib/DirectXTK")
 
 target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib ./bin/CMake/Debug/directxtk ) 
 

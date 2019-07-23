@@ -20,5 +20,5 @@ float4 PSMain(PixelInputType input) : SV_TARGET
     //return float4(input.texcoord,0,0);
     
     //return outputColor;
-    return sampleTexture.Sample(DefaultTexSampler , input.texcoord);
+    return sampleTexture.SampleLevel(DefaultTexSampler , input.texcoord, 0);
 }
