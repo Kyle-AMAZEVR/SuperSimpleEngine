@@ -5,8 +5,7 @@
 #include "SSTexture2D.h"
 #include "stb_image.h"
 #include "DXEngine.h"
-#include "DDSTextureLoader.h"
-#include "WICTextureLoader.h"
+#include "DirectXTex.h"
 
 SSTexture2D::SSTexture2D()
 {
@@ -31,10 +30,17 @@ bool SSTexture2D::Release()
 bool SSTexture2D::LoadFromFile(std::wstring filename)
 {		
 	//HR(DirectX::CreateDDSTextureFromFile(DXEngine::Get().GetDevice(), filename.c_str(), &mTexturePtr, &mResourceView));
-	HR(DirectX::CreateDDSTextureFromFileEx(
-		DXEngine::Get().GetDevice(), filename.c_str(), 2048, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0,
-		true, &mTexturePtr, &mResourceView));
+	//HR(DirectX::CreateDDSTextureFromFileEx(
+	//	DXEngine::Get().GetDevice(), filename.c_str(), 2048, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0,
+	//	true, &mTexturePtr, &mResourceView));
 	
+	DirectX::TexMetadata metaData;
+	DirectX::ScratchImage image;
+	HR(DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image));
+
+	auto dim = metaData.dimension;
+	auto size = metaData.format;
+
 	/*stbi_uc* data = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb);
 
 	if (data == nullptr)

@@ -25,3 +25,6 @@ CMakeCache.txt
 *.cmake
 lib/DirectXTK/Src/Shaders/Compiled/*
 lib/DirectXTK/CMakeFiles/*
+lib/DirectXTex/DirectXTex/Shaders/Compiled/*
+lib/DirectXTex/CMakeFiles/*
+*.pdb
