@@ -19,7 +19,7 @@
 #include "d3d11.h"
 #include "DXWindow.h"
 #include "Core.h"
-#include "Engine/DXEngine.h"
+#include "Engine/SSEngine.h"
 #include "Engine/DXRenderingThread.h"
 
 #define MAX_LOADSTRING 100
@@ -188,7 +188,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				renderingThread.ExecuteInRenderingThread([]()
 				{
-					DXEngine::Get().OnWindowResize(width, height);
+					SSEngine::Get().OnWindowResize(width, height);
 				});
 			}
         }

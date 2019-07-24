@@ -1,12 +1,12 @@
 #include "Core.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 #include "DXViewport.h"
 
 void DXViewport::Clear()
 {
     float Color[4] { 0.0f, 1.0f, 0.0f, 1.0f};
     
-    auto* dxDeviceContext = DXEngine::Get().GetDeviceContext();
+    auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
 
     if(dxDeviceContext != nullptr)
     {
@@ -17,9 +17,9 @@ void DXViewport::Clear()
 
 void DXViewport::Resize(int newWidth, int newHeight)
 {
-    auto* dxDevice = DXEngine::Get().GetDevice();
-    auto* dxDeviceContext = DXEngine::Get().GetDeviceContext();
-    auto* dxSwapChain = DXEngine::Get().GetSwapChain();
+    auto* dxDevice = SSEngine::Get().GetDevice();
+    auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+    auto* dxSwapChain = SSEngine::Get().GetSwapChain();
     
     assert(dxDevice != nullptr);
 	assert(dxDeviceContext != nullptr);	

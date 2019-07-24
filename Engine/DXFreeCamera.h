@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include "DirectXMath.h"
 
-class ENGINE_API DXFreeCamera : public CameraBase
+class ENGINE_API DXFreeCamera : public SSCameraBase
 {
 public:
 	DXFreeCamera();

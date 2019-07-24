@@ -5,7 +5,7 @@
 using namespace DirectX;
 
 DXFreeCamera::DXFreeCamera()
-	: CameraBase()
+	: SSCameraBase()
 {
 	mEyePosition = XMFLOAT3(-5, 0, 0);
 	mUp = XMFLOAT3(0, 1, 0);

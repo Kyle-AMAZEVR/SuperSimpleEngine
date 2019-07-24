@@ -28,7 +28,7 @@ DXTypedConstantBuffer<TBufferType>::DXTypedConstantBuffer()
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = sizeof(TBufferType);
 
-    HR(DXEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
+    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
 }
 
 
@@ -39,11 +39,11 @@ void DXTypedConstantBuffer<TBufferType>::Write(const TBufferType& data)
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-    HR(DXEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
+    HR(SSEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
     
     memcpy(mappedResource.pData, &data, sizeof(data));
 
-    HR(DXEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0));   
+    HR(SSEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0));   
     
 }
 

@@ -1,6 +1,6 @@
 #include "Core.h"
 #include "DXShader.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 #include "DXVertexElementDeclaration.h"
 #include <filesystem>
 #include <fstream>
@@ -50,7 +50,7 @@ ID3D11Buffer* DXShader::GetConstantBuffer(std::string bufferName)
 
 void SSVertexShader::CreateInputLayout()
 {
-    auto* dxDevice = DXEngine::Get().GetDevice();    
+    auto* dxDevice = SSEngine::Get().GetDevice();    
     
     check(dxDevice != nullptr);    
 
@@ -78,7 +78,7 @@ void SSVertexShader::CreateInputLayout()
         return false;
     }
 
-    auto* dxDevice = DXEngine::Get().GetDevice();
+    auto* dxDevice = SSEngine::Get().GetDevice();
     
 	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
 
@@ -105,7 +105,7 @@ void SSVertexShader::CreateInputLayout()
 
     for (UINT i = 0; i < shaderDescription.InputParameters; ++i)
     {
-		auto* dxDevice = DXEngine::Get().GetDevice();
+		auto* dxDevice = SSEngine::Get().GetDevice();
 
 		check(dxDevice != nullptr);
 
@@ -150,7 +150,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
         return false;
     }
 
-    auto* dxDevice = DXEngine::Get().GetDevice();
+    auto* dxDevice = SSEngine::Get().GetDevice();
     HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
 
 	// @constant buffer reflection

@@ -1,5 +1,5 @@
 #include "Core.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 #include "SSIndexBuffer.h"
 
 
@@ -21,5 +21,5 @@ void SSIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_
 	indexSubresourceData.SysMemPitch = 0;
 	indexSubresourceData.SysMemSlicePitch = 0;
 
-    HR(DXEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &indexSubresourceData, &mpBuffer));
+    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &indexSubresourceData, &mpBuffer));
 }

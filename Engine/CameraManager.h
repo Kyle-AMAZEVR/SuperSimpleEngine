@@ -10,9 +10,9 @@ public:
 	CameraManager();
     ~CameraManager();
 
-    class CameraBase* GetCurrentCamera() { return mCurrentCamera; }
+    class SSCameraBase* GetCurrentCamera() { return mCurrentCamera; }
 
 
 protected:
-    class CameraBase* mCurrentCamera = nullptr;
+    class SSCameraBase* mCurrentCamera = nullptr;
 };

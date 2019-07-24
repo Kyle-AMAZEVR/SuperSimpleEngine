@@ -1,14 +1,14 @@
 
 
 #include "Core.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 #include "DXDrawCommand.h"
 #include "DXVertexBuffer.h"
 #include "SSIndexBuffer.h"
 
 void SSDrawCommand::Do()
 {
-	ID3D11DeviceContext* deviceContext = DXEngine::Get().GetDeviceContext();
+	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetDeviceContext();
 
 	assert(mVS != nullptr);
 	assert(mIB != nullptr);

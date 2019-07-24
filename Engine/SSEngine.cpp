@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "Util.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 #include "DXShader.h"
 #include "DXVertexTypes.h"
 #include "DXVertexElementDeclaration.h"
@@ -13,9 +13,9 @@
 #include "SSIndexBuffer.h"
 #include "SSTexture2D.h"
 
-bool DXEngine::bInitialized = false;
+bool SSEngine::bInitialized = false;
 
-bool DXEngine::Initialize(HWND windowHandle)
+bool SSEngine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;
     CreateDevice();
@@ -29,7 +29,7 @@ bool DXEngine::Initialize(HWND windowHandle)
     return true;
 }
 
-void DXEngine::TestCreateResources()
+void SSEngine::TestCreateResources()
 {   
     mTestVertexBuffer = std::make_shared<SSVertexBuffer>();
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
@@ -55,7 +55,7 @@ void DXEngine::TestCreateResources()
 
     mTestVertexBuffer->SetVertexBufferData<VT_PositionTexcoord>(VertexArray);
     mTestIndexBuffer->SetIndexBufferData(IndexArray);
-	mTestTexture->LoadFromFile(L"./Resource/Tex/rustediron2_basecolor.dds");
+	mTestTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron2_basecolor.dds");
 
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(D3D11_SAMPLER_DESC));
@@ -72,7 +72,7 @@ void DXEngine::TestCreateResources()
 	HR(mDevice->CreateSamplerState( &desc, &mDefaultSamplerState));
 }
 
-void DXEngine::TestCompileShader()
+void SSEngine::TestCompileShader()
 {    
     mTestVertexShader = std::make_shared<SSVertexShader>();
     assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
@@ -83,7 +83,7 @@ void DXEngine::TestCompileShader()
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
 
-bool DXEngine::CreateDevice()
+bool SSEngine::CreateDevice()
 {
     //
     D3D_FEATURE_LEVEL featureLevel;        
@@ -91,7 +91,7 @@ bool DXEngine::CreateDevice()
     return true;
 }
 
-void DXEngine::OnWindowResize(int newWidth, int newHeight)
+void SSEngine::OnWindowResize(int newWidth, int newHeight)
 {
 	if (bInitialized)
 	{
@@ -109,7 +109,7 @@ void DXEngine::OnWindowResize(int newWidth, int newHeight)
 }
 
 
-bool DXEngine::CreateSwapChain()
+bool SSEngine::CreateSwapChain()
 {
     HR(mDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R16G16B16A16_FLOAT,4,&m4xMSAAQuality));    
 
@@ -155,7 +155,7 @@ bool DXEngine::CreateSwapChain()
     return true;
 }
 
-void DXEngine::SetVertexShader(std::weak_ptr<SSVertexShader> vs)
+void SSEngine::SetVertexShader(std::weak_ptr<SSVertexShader> vs)
 {
 	if (vs.expired() == false)
 	{
@@ -163,12 +163,12 @@ void DXEngine::SetVertexShader(std::weak_ptr<SSVertexShader> vs)
 		mDeviceContext->VSSetShader(sharedVS->GetShader(), nullptr, 0);
 	}
 }
-void DXEngine::SetPixelShader(std::weak_ptr<SSPixelShader> ps)
+void SSEngine::SetPixelShader(std::weak_ptr<SSPixelShader> ps)
 {
 	
 }
 
-void DXEngine::DrawScene()
+void SSEngine::DrawScene()
 {
     if(bInitialized == false)
     {

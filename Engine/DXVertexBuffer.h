@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "SSBufferBase.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 
 class SSVertexBuffer : public SSBufferBase
 {
@@ -46,5 +46,5 @@ void SSVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData
 	vertexSubresourceData.SysMemPitch = 0;
 	vertexSubresourceData.SysMemSlicePitch = 0;
 
-    HR(DXEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
+    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
 }

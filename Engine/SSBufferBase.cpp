@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSBufferBase.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 
 
 SSBufferBase::~SSBufferBase()

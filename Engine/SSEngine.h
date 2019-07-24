@@ -6,10 +6,11 @@
 
 #include "DXShader.h"
 
-class ENGINE_API DXEngine : public Singleton<DXEngine>
+// Super Simple
+class ENGINE_API SSEngine : public Singleton<SSEngine>
 {
 public:
-	DXEngine() = default;
+	SSEngine() = default;
 
     bool Initialize(HWND windowHandle);
     void UnInitialize();

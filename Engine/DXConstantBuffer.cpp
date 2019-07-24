@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "DXConstantBuffer.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 #include "DXShader.h"
 
 // trigger compile
@@ -50,7 +50,7 @@ DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = mBufferSize;
 
-    HR(DXEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));    
+    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));    
 }
 
 DXGenericConstantBuffer::~DXGenericConstantBuffer()
@@ -65,7 +65,7 @@ DXGenericConstantBuffer::~DXGenericConstantBuffer()
 void DXGenericConstantBuffer::SubmitDataToDevice()
 { 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    HR(DXEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+    HR(SSEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
     memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
-    DXEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0);
+    SSEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0);
 }

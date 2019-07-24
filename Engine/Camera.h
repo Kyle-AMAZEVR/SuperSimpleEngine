@@ -2,10 +2,10 @@
 #include <DirectXMath.h>
 
 
-class ENGINE_API CameraBase
+class ENGINE_API SSCameraBase
 {
 public:
-	CameraBase()
+	SSCameraBase()
 		: mFOV(DirectX::XM_PI / 6.0f)
 		, mAspectRatio(1.0f)
 		, mNear (10.f)
@@ -13,7 +13,7 @@ public:
 	{
 	}
 
-	CameraBase(float fov, float aspectRatio, float fNear, float fFar)
+	SSCameraBase(float fov, float aspectRatio, float fNear, float fFar)
 		: mFOV(fov), mAspectRatio(aspectRatio), mNear(fNear), mFar(fFar)
 	{		
 	}
@@ -21,7 +21,7 @@ public:
 	virtual DirectX::XMMATRIX GetView() const { return mView; }
 	virtual DirectX::XMMATRIX GetProj() const { return mProj; }
 
-	virtual ~CameraBase() {}
+	virtual ~SSCameraBase() {}
 
 	virtual void Update(){}
 

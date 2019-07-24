@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSRenderTarget2D.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 
 SSRenderTarget2D::SSRenderTarget2D(const UINT width, const UINT height, DXGI_FORMAT format)
 {

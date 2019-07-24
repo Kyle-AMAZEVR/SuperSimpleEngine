@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "DXRenderingThread.h"
-#include "DXEngine.h"
+#include "SSEngine.h"
 #include "Windows.h"
 
 void DXRenderingThread::Start(HWND handle)
@@ -14,7 +14,7 @@ void DXRenderingThread::Start(HWND handle)
 DWORD DXRenderingThread::Run()
 {
 	// init engine
-	DXEngine::Get().Initialize(mWindowHandle);
+	SSEngine::Get().Initialize(mWindowHandle);
 
 	bIsRunning = true;
 
@@ -34,7 +34,7 @@ DWORD DXRenderingThread::Run()
 			LeaveCriticalSection(&mCriticalSection);
 		}
 
-		DXEngine::Get().DrawScene();
+		SSEngine::Get().DrawScene();
 
 		if (bRequestExit)
 		{
