@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "DXConstantBuffer.h"
 #include "SSEngine.h"
-#include "DXShader.h"
+#include "SSShader.h"
 
 // trigger compile
 

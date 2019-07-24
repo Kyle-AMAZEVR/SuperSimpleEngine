@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "Util.h"
 #include "SSEngine.h"
-#include "DXShader.h"
+#include "SSShader.h"
 #include "DXVertexTypes.h"
 #include "DXVertexElementDeclaration.h"
 #include "FreqUsedConstantBufferTypes.h"

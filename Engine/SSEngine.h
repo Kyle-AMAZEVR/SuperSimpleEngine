@@ -4,7 +4,7 @@
 #include "Singleton.h"
 #include "DXViewport.h"
 
-#include "DXShader.h"
+#include "SSShader.h"
 
 // Super Simple
 class ENGINE_API SSEngine : public Singleton<SSEngine>
