@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(DXEngine)
 
+add_compile_options(/wd4251)
+
 set(CMAKE_EXE_LINKER_FLAGS "/machine:x64")
 set(CMAKE_MODULE_LINKER_FLAGS "/machine:x64")
 set(CMAKE_SHARED_LINKER_FLAGS "/machine:x64")

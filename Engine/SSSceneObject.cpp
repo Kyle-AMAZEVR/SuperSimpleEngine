@@ -22,6 +22,21 @@ void SSSceneObject::SetPositionZ(float z)
 	mPosition.z = z;
 }
 
+void SSSceneObject::SetScaleX(float x)
+{
+	
+}
+
+void SSSceneObject::SetScaleY(float y)
+{
+
+}
+
+void SSSceneObject::SetScaleZ(float z)
+{
+
+}
+
 void SSSceneObject::SetPosition(float x, float y, float z)
 {
 	mPosition.x = x; mPosition.y = y; mPosition.z = z;
