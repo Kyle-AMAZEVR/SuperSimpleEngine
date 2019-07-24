@@ -1,14 +1,12 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSSceneObject.h"
 
 // Supser Simple
-class ENGINE_API SSCube : public DXRenderResource
+class ENGINE_API SSCube : public SSSceneObject
 {
 public:
 	SSCube();
-
-
 
 protected:
 	void InternalCreate();

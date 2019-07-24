@@ -54,6 +54,6 @@ if(!(expression))\
 
 #define ReleaseCOM(x) { if(x){ x->Release(); x = nullptr; } }
 
-
+using namespace DirectX;
 
 

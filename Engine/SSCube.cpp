@@ -20,7 +20,7 @@ void SSCube::InternalCreate()
 	std::vector<VT_PositionNormalTexcoord> vertexArray =
 	{
 		// Left
-		{DirectX::XMFLOAT4(-1,   1, 1, 1), DirectX::XMFLOAT3(-1,0,0), DirectX::XMFLOAT2(0,0)},
+		{DirectX::XMFLOAT4(-1,   1, 1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(0,0)},
 		{DirectX::XMFLOAT4(-1,   1,-1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(1,0)},
 		{DirectX::XMFLOAT4(-1,  -1, 1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(0,1)},
 				
@@ -53,16 +53,16 @@ void SSCube::InternalCreate()
 
 	std::vector<UINT> indexArray;
 
-	for (auto i = 0; i < indexArray.size(); ++i)
+	for (auto i = 0; i < vertexArray.size(); ++i)
 	{
 		indexArray.push_back(i);
 	}
 
-	mCubeVB = std::make_unique<SSVertexBuffer>();
+	mCubeVB = std::make_shared<SSVertexBuffer>();
 	mCubeVB->SetVertexBufferData(vertexArray);
 
-	mCubeIB = std::make_unique<SSIndexBuffer>();
-	mCubeIB->SetIndexBufferData(indexArray);
+	mCubeIB = std::make_shared<SSIndexBuffer>();
+	mCubeIB->SetIndexBufferData(indexArray);	
 }
 // 
 std::shared_ptr<SSIndexBuffer> SSCube::mCubeIB;
