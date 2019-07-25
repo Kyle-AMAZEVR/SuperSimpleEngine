@@ -5,7 +5,7 @@
 
 CameraManager::CameraManager()
 {
-    mCurrentCamera = new DXFreeCamera();
+    mCurrentCamera = new SSFreeCamera();
 }
 
 CameraManager::~CameraManager()
@@ -15,3 +15,5 @@ CameraManager::~CameraManager()
         delete mCurrentCamera;
     }
 }
+
+

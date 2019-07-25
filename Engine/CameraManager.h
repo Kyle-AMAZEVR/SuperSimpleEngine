@@ -10,6 +10,11 @@ public:
 	CameraManager();
     ~CameraManager();
 
+	XMMATRIX GetCurrentCameraView() const;
+	XMMATRIX GetCurrentCameraProj() const;
+	XMMATRIX GetCurrentCameraViewProj() const;
+
+
     class SSCameraBase* GetCurrentCamera() { return mCurrentCamera; }
 
 

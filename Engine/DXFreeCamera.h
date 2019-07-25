@@ -4,10 +4,10 @@
 #include "Camera.h"
 #include "DirectXMath.h"
 
-class ENGINE_API DXFreeCamera : public SSCameraBase
+class ENGINE_API SSFreeCamera : public SSCameraBase
 {
 public:
-	DXFreeCamera();
+	SSFreeCamera();
 	virtual void Update() override;
 protected:
 	virtual void UpdateViewMatrix() override;
