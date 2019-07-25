@@ -86,12 +86,12 @@ void SSEngine::TestCreateResources()
 void SSEngine::TestCompileShader()
 {    
     mTestVertexShader = std::make_shared<SSVertexShader>();
-    //assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
-	assert(mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs"));
+    assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
+	//assert(mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs"));
     
     mTestPixelShader = std::make_shared<SSPixelShader>();
-    //assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
-	assert(mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps"));
+    assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
+	//assert(mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -206,28 +206,17 @@ void SSEngine::DrawScene()
 	transform.Proj = SSCameraManager::Get().GetCurrentCameraProj();
 	transform.View = SSCameraManager::Get().GetCurrentCameraView();
 
-	mTestVertexShader->SetConstantBufferData(mDeviceContext, "Transform", transform);
-	mTestPixelShader->SetConstantBufferData(mDeviceContext, "Color", XMFLOAT4(1,0,0,0));
+    mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
+    mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
-    //mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
-    //mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);	
+	mDeviceContext->PSSetSamplers(0, 1, &mDefaultSamplerState);
+	mDeviceContext->PSSetShaderResources(0, 1, &mTestTexture->GetShaderResourceViewRef());
 
-	//mTestPixelShader->SetConstantBufferData<DirectX::XMFLOAT4>("Color", DXMathHelper::UnitX4);
-	//ID3D11Buffer* cbuffer = mTestPixelShader->GetConstantBuffer("Color");
-	//if (cbuffer)
-	//{
-//		mDeviceContext->PSSetConstantBuffers(0, 1, &cbuffer);
-//	}
+	mTestPixelShader->SetConstantBufferData(mDeviceContext, "Color" , XMFLOAT4(1, 0, 0, 0));
 
-
-	//mDeviceContext->PSSetSamplers(0, 1, &mDefaultSamplerState);
-	//mDeviceContext->PSSetShaderResources(0, 1, &mTestTexture->GetShaderResourceViewRef());
-
-	//mTestVertexShader->SetConstantBufferData<Transform>("Transform", testTransform);		
-
-    //mDeviceContext->DrawIndexed(6,0,0);
+    mDeviceContext->DrawIndexed(6,0,0);
 	
-	mTestCube->Draw(mDeviceContext);
+	//mTestCube->Draw(mDeviceContext);
 	
     HR(mSwapChain->Present(0,0));
 }
