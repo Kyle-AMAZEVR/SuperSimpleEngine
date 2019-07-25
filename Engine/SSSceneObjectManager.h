@@ -6,11 +6,12 @@
 class ENGINE_API SSSceneObjectManager : Singleton<SSSceneObjectManager>
 {
 public:
-	void AddSceneObject(class SSSceneObject* object);	
-
+	void AddSceneObject(class SSSceneObject* object);
+	void RemoveSceneObject(UINT id);
+	void Tick(float delta);
 protected:	
 	friend class SSSceneObject;
 	UINT IssueObjectId() { return mNextObjectId++; }	
-	UINT mNextObjectId = 0;
+	UINT mNextObjectId = 1;
 	std::map<UINT, SSSceneObject*> mSceneObjectMap;
 };

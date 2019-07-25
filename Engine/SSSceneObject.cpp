@@ -4,7 +4,16 @@
 
 SSSceneObject::SSSceneObject()
 {
-	
+	mObjectId = SSSceneObjectManager::Get().IssueObjectId();
+	SSSceneObjectManager::Get().AddSceneObject(this);
+
+	mPosition = XMFLOAT3(0, 0, 0);
+	mScale = XMFLOAT3(1, 1, 1);
+}
+
+SSSceneObject::~SSSceneObject()
+{
+	SSSceneObjectManager::Get().RemoveSceneObject(mObjectId);
 }
 
 XMMATRIX SSSceneObject::GetModelTransform()

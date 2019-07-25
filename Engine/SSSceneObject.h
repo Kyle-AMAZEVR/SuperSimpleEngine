@@ -6,8 +6,13 @@ class ENGINE_API SSSceneObject : public DXRenderResource
 {
 public:
 	SSSceneObject();
+	virtual ~SSSceneObject();
+
+	virtual void Tick(float delta){}
 
 	virtual XMMATRIX GetModelTransform();
+
+	UINT GetId() const { return mObjectId; }
 
 	virtual void SetPosition(float x, float y, float z);
 	virtual void SetScale(float x, float y, float z);
