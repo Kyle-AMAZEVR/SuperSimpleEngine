@@ -227,6 +227,6 @@ void SSEngine::DrawScene()
     //mDeviceContext->DrawIndexed(6,0,0);
 	
 	mTestCube->Draw(mDeviceContext);
-
+	
     HR(mSwapChain->Present(0,0));
 }

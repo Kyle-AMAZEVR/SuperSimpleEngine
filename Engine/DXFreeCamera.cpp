@@ -14,10 +14,10 @@ SSFreeCamera::SSFreeCamera()
 
 void SSFreeCamera::UpdateViewMatrix()
 {
-	mView = XMMatrixLookAtLH(
+	mView = XMMatrixLookToLH(
 		XMLoadFloat3(&mEyePosition),
-		XMLoadFloat3(&mUp),
-		XMLoadFloat3(&mLookAtPosition)
+		XMLoadFloat3(&mLookAtPosition),
+		XMLoadFloat3(&mUp)
 	);
 }
 
