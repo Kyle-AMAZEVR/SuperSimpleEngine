@@ -6,10 +6,10 @@ class ENGINE_API SSCameraBase
 {
 public:
 	SSCameraBase()
-		: mFOV(DirectX::XM_PI / 3.0f)
+		: mFOV(DirectX::XM_PI * 0.25f)
 		, mAspectRatio(1.0f)
 		, mNear (0.5f)
-		, mFar (10000.0f)
+		, mFar (1000.0f)
 	{
 	}
 
@@ -21,6 +21,9 @@ public:
 	virtual DirectX::XMMATRIX GetView() const { return mView; }
 	virtual DirectX::XMMATRIX GetProj() const { return mProj; }
 	virtual DirectX::XMMATRIX GetViewProj() const;
+
+	void SetFOV(float fov) { mFOV = fov; }
+	void SetAspectRatio(float ratio) { mAspectRatio = ratio; }
 
 	virtual ~SSCameraBase() {}
 

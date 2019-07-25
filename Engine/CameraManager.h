@@ -13,6 +13,10 @@ public:
 	XMMATRIX GetCurrentCameraView() const;
 	XMMATRIX GetCurrentCameraProj() const;
 	XMMATRIX GetCurrentCameraViewProj() const;
+
+	void SetCurrentCameraFOV(float fov);
+	void SetCurrentCameraAspectRatio(float ratio);
+	
 	void UpdateCurrentCamera();
 
     class SSCameraBase* GetCurrentCamera() { return mCurrentCamera; }

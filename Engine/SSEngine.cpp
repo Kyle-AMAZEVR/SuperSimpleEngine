@@ -86,12 +86,12 @@ void SSEngine::TestCreateResources()
 void SSEngine::TestCompileShader()
 {    
     mTestVertexShader = std::make_shared<SSVertexShader>();
-    assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
-	//assert(mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs"));
+    //assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
+	assert(mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs"));
     
     mTestPixelShader = std::make_shared<SSPixelShader>();
-    assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
-	//assert(mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps"));
+    //assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
+	assert(mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -192,7 +192,7 @@ void SSEngine::DrawScene()
 
     mViewport.Clear();
 
-    UINT stride = sizeof(VT_PositionTexcoord);
+    UINT stride = sizeof(VT_PositionNormalTexcoord);
     UINT offset = 0;
 
     mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
@@ -201,22 +201,37 @@ void SSEngine::DrawScene()
     mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);
 
 	Transform transform;
-	transform.Model = mTestCube->GetModelTransform();
+	XMStoreFloat4x4(&transform.Model, mTestCube->GetModelTransform());
 	SSCameraManager::Get().UpdateCurrentCamera();
-	transform.Proj = SSCameraManager::Get().GetCurrentCameraProj();
-	transform.View = SSCameraManager::Get().GetCurrentCameraView();
+	XMStoreFloat4x4(&transform.View, SSCameraManager::Get().GetCurrentCameraView());
+	XMStoreFloat4x4(&transform.Proj, SSCameraManager::Get().GetCurrentCameraProj());
 
-    mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
-    mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	MVP mvp;
+	mvp.ModelViewProj = mTestCube->GetModelTransform() * SSCameraManager::Get().GetCurrentCameraView() * SSCameraManager::Get().GetCurrentCameraProj();
+
+	auto* cubeVB = mTestCube->GetVB();
+	auto* cubeIB = mTestCube->GetIB();
+
+	//mDeviceContext->IASetVertexBuffers(0, 1, &cubeVB->GetBufferPointerRef(), &stride, &offset);
+	//mDeviceContext->IASetIndexBuffer(cubeIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+
+    //mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
+    //mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 	mDeviceContext->PSSetSamplers(0, 1, &mDefaultSamplerState);
 	mDeviceContext->PSSetShaderResources(0, 1, &mTestTexture->GetShaderResourceViewRef());
 
-	mTestPixelShader->SetConstantBufferData(mDeviceContext, "Color" , XMFLOAT4(1, 0, 0, 0));
+	XMMATRIX testIdentity = DXMathHelper::IdentityMatrix4X4;
 
-    mDeviceContext->DrawIndexed(6,0,0);
+	mTestVertexShader->SetConstantBufferData(mDeviceContext, "MVP", mvp.ModelViewProj);
+
+
+	//mTestPixelShader->SetConstantBufferData(mDeviceContext, "Color" , XMFLOAT4(0, 0, 0, 0));
+	//mTestPixelShader->SetConstantBufferData(mDeviceContext, "TestMatrix", testIdentity);
+
+    //mDeviceContext->DrawIndexed(6,0,0);
 	
-	//mTestCube->Draw(mDeviceContext);
+	mTestCube->Draw(mDeviceContext);
 	
     HR(mSwapChain->Present(0,0));
 }

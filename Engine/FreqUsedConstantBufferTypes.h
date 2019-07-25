@@ -4,8 +4,13 @@
 
 struct Transform
 {
-	DirectX::XMMATRIX Model;
-	DirectX::XMMATRIX View;
-	DirectX::XMMATRIX Proj;
+	DirectX::XMFLOAT4X4 Model;
+	DirectX::XMFLOAT4X4 View;
+	DirectX::XMFLOAT4X4 Proj;
 };
 
+struct MVP
+{
+	DirectX::XMMATRIX ModelViewProj;
+
+};

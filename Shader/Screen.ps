@@ -11,14 +11,21 @@ cbuffer Color
     float4 outputColor;
 };
 
+cbuffer TestMatrix
+{
+    float4x4 test;
+};
+
 Texture2D sampleTexture : register(t0);
 
 SamplerState DefaultTexSampler : register(s0);
+
+
 
 float4 PSMain(PixelInputType input) : SV_TARGET
 {
     //return float4(input.texcoord,0,0);
     
-    return outputColor;
+    return outputColor + test[0];
     //return sampleTexture.SampleLevel(DefaultTexSampler , input.texcoord, 0);
 }

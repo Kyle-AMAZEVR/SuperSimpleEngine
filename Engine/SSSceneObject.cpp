@@ -38,17 +38,17 @@ void SSSceneObject::SetPositionZ(float z)
 
 void SSSceneObject::SetScaleX(float x)
 {
-	
+	mScale.x = x  ;
 }
 
 void SSSceneObject::SetScaleY(float y)
 {
-
+	mScale.y = y;
 }
 
 void SSSceneObject::SetScaleZ(float z)
 {
-
+	mScale.z = z;
 }
 
 void SSSceneObject::SetPosition(float x, float y, float z)

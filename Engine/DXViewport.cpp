@@ -1,6 +1,7 @@
 #include "Core.h"
 #include "SSEngine.h"
 #include "DXViewport.h"
+#include "CameraManager.h"
 
 void DXViewport::Clear()
 {
@@ -83,4 +84,5 @@ void DXViewport::Resize(int newWidth, int newHeight)
 
 	dxDeviceContext->RSSetViewports(1, &mScreenViewport);    
 
+	SSCameraManager::Get().SetCurrentCameraAspectRatio(static_cast<float>(mWidth) / static_cast<float>(mHeight));
 }

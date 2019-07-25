@@ -7,13 +7,13 @@ class ENGINE_API SSCube : public SSSceneObject
 {
 public:
 	SSCube();
-	
+
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
-
-
+	class SSVertexBuffer* GetVB() { return mCubeVB; }
+	class SSIndexBuffer* GetIB() { return mCubeIB; }
 protected:
 	void InternalCreate();
 	static bool bIsInitialized;
-	static std::shared_ptr<class SSVertexBuffer> mCubeVB;
-	static std::shared_ptr<class SSIndexBuffer> mCubeIB;
+	static class SSVertexBuffer* mCubeVB;
+	static class SSIndexBuffer* mCubeIB;
 };

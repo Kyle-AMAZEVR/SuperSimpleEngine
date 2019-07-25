@@ -39,3 +39,16 @@ void SSCameraManager::UpdateCurrentCamera()
 	check(mCurrentCamera != nullptr);
 	mCurrentCamera->Update();
 }
+
+void SSCameraManager::SetCurrentCameraFOV(float fov)
+{
+	check(mCurrentCamera != nullptr);
+	mCurrentCamera->SetFOV(fov);
+}
+
+void SSCameraManager::SetCurrentCameraAspectRatio(float ratio)
+{
+	check(mCurrentCamera != nullptr);
+	mCurrentCamera->SetAspectRatio(ratio);
+}
+

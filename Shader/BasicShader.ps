@@ -13,6 +13,6 @@ SamplerState DefaultTexSampler : register(s0);
 
 float4 PSMain(PixelInputType input) : SV_TARGET
 {    
-    //return sampleTexture.SampleLevel(DefaultTexSampler , input.texcoord, 0);
-    return float4(1,0,0,0);
+    return sampleTexture.SampleLevel(DefaultTexSampler , input.texcoord, 0);    
+    //return float4(1,0,0,0);
 }
