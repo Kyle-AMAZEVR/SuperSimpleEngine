@@ -1,6 +1,11 @@
 #include "Core.h"
 #include "SSSceneObject.h"
+#include "SSSceneObjectManager.h"
 
+SSSceneObject::SSSceneObject()
+{
+	
+}
 
 XMMATRIX SSSceneObject::GetModelTransform()
 {

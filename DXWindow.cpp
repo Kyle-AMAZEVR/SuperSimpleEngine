@@ -14,13 +14,12 @@
 #include <memory.h>
 #include <tchar.h>
 
-
-
 #include "d3d11.h"
 #include "DXWindow.h"
 #include "Core.h"
 #include "Engine/SSEngine.h"
 #include "Engine/DXRenderingThread.h"
+#include "Engine/SSTimer.h"
 
 #define MAX_LOADSTRING 100
 
@@ -67,6 +66,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+	SSGameTimer Timer;
+
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
@@ -75,6 +76,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+		Timer.Tick();
+
     }
     renderingThread.RequestExit();
     renderingThread.Join();

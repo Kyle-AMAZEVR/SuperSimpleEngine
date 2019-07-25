@@ -3,6 +3,7 @@
 #include "DXRenderingThread.h"
 #include "SSEngine.h"
 #include "Windows.h"
+#include "SSTimer.h"
 
 void DXRenderingThread::Start(HWND handle)
 {
@@ -17,6 +18,9 @@ DWORD DXRenderingThread::Run()
 	SSEngine::Get().Initialize(mWindowHandle);
 
 	bIsRunning = true;
+
+	SSGameTimer renderingThreadTimer;
+	renderingThreadTimer.Tick();
 
 	while (1)
 	{
@@ -33,6 +37,10 @@ DWORD DXRenderingThread::Run()
 			}
 			LeaveCriticalSection(&mCriticalSection);
 		}
+		//
+		renderingThreadTimer.Tick();
+
+
 
 		SSEngine::Get().DrawScene();
 

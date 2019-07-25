@@ -9,7 +9,3 @@ public:
 	virtual void Destroy(){}
 };
 
-
-
-UPROPERTY(Replicated)
-int32 HP;
