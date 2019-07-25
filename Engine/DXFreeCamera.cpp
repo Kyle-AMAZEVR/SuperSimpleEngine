@@ -7,9 +7,9 @@ using namespace DirectX;
 SSFreeCamera::SSFreeCamera()
 	: SSCameraBase()
 {
-	mEyePosition = XMFLOAT3(-5, 0, 0);
+	mEyePosition = XMFLOAT3(0, 0, -5);
 	mUp = XMFLOAT3(0, 1, 0);
-	mLookAtPosition = XMFLOAT3(1, 0, 0);
+	mLookAtPosition = XMFLOAT3(0, 0, 1);
 }
 
 void SSFreeCamera::UpdateViewMatrix()

@@ -9,6 +9,7 @@ public:
 	void AddSceneObject(class SSSceneObject* object);
 	void RemoveSceneObject(UINT id);
 	void Tick(float delta);
+	
 protected:	
 	friend class SSSceneObject;
 	UINT IssueObjectId() { return mNextObjectId++; }	

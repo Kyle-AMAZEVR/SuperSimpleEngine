@@ -10,13 +10,15 @@ cbuffer Transform
 struct VertexInputType
 {
     float4 position : POSITION;
-    float4 color : COLOR;    
+    float3 normal : NORMAL;    
+    float2 texcoord : TEXCOORD;
 };
 
 struct PixelInputType
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float3 normal : NORMAL;    
+    float2 texcoord : TEXCOORD;
 };
 
 PixelInputType VSMain(VertexInputType input)
@@ -29,7 +31,8 @@ PixelInputType VSMain(VertexInputType input)
     output.position = mul(output.position, Projection);    
     
     // Store the input color for the pixel shader to use.
-    output.color = input.color;
+    output.normal = input.normal;
+    output.texcoord = input.texcoord;
     
     return output;
 }

@@ -8,6 +8,8 @@ public:
 	SSSceneObject();
 	virtual ~SSSceneObject();
 
+	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
+
 	virtual void Tick(float delta){}
 
 	virtual XMMATRIX GetModelTransform();
@@ -30,5 +32,7 @@ protected:
 	friend class SSSceneObjectManager;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mScale;
+
+	float mYaw = 0;
 	UINT mObjectId = 0;
 };

@@ -8,8 +8,8 @@ public:
 	SSCameraBase()
 		: mFOV(DirectX::XM_PI / 6.0f)
 		, mAspectRatio(1.0f)
-		, mNear (10.f)
-		, mFar (10000.0f)
+		, mNear (0.5f)
+		, mFar (1000.0f)
 	{
 	}
 

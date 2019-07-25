@@ -18,7 +18,7 @@ SSSceneObject::~SSSceneObject()
 
 XMMATRIX SSSceneObject::GetModelTransform()
 {
-	return XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z) * XMMatrixScaling(mScale.x, mScale.y, mScale.z);
+	return XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z) *  XMMatrixRotationY(mYaw) * XMMatrixScaling(mScale.x, mScale.y, mScale.z) ;
 }
 
 void SSSceneObject::SetPositionX(float x)

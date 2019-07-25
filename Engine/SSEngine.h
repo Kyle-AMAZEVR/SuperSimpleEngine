@@ -13,7 +13,7 @@ public:
 	SSEngine() = default;
 
     bool Initialize(HWND windowHandle);
-    void UnInitialize();
+	void Shutdown();
     void OnWindowResize(int newWidth, int newHeight);
     static bool IsInitialized() { return bInitialized; }
 
@@ -50,6 +50,8 @@ private:
     IDXGISwapChain* mSwapChain = nullptr;
     ID3D11Debug* mDebug = nullptr;
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
+
+	std::shared_ptr<class SSCube> mTestCube;
 
     // 
     std::shared_ptr<class SSVertexBuffer> mTestVertexBuffer;

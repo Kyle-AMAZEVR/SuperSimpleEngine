@@ -7,6 +7,9 @@ class ENGINE_API SSCube : public SSSceneObject
 {
 public:
 	SSCube();
+	
+	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
+
 
 protected:
 	void InternalCreate();

@@ -51,7 +51,7 @@ void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
 
-		mConstantBufferMap[bufferDesc.Name] = std::shared_ptr<DXGenericConstantBuffer>(new DXGenericConstantBuffer(constantBuffer, i));
+		mConstantBufferMap[bufferDesc.Name] = new DXGenericConstantBuffer(constantBuffer, i);
 	}
 	// @ end
 
@@ -94,7 +94,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
 
-		mConstantBufferMap[bufferDesc.Name] = std::shared_ptr<DXGenericConstantBuffer>(new DXGenericConstantBuffer(constantBuffer, i));
+		mConstantBufferMap[bufferDesc.Name] = new DXGenericConstantBuffer(constantBuffer, i);
 	}
 
 	// @input layout creation

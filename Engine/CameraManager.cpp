@@ -3,12 +3,12 @@
 #include "DXFreeCamera.h"
 #include "CameraManager.h"
 
-CameraManager::CameraManager()
+SSCameraManager::SSCameraManager()
 {
     mCurrentCamera = new SSFreeCamera();
 }
 
-CameraManager::~CameraManager()
+SSCameraManager::~SSCameraManager()
 {
     if(mCurrentCamera)
     {
@@ -16,16 +16,26 @@ CameraManager::~CameraManager()
     }
 }
 
-XMMATRIX CameraManager::GetCurrentCameraView() const
+XMMATRIX SSCameraManager::GetCurrentCameraView() const
 {
 	check(mCurrentCamera != nullptr);
 	return mCurrentCamera->GetView();
 }
 
-XMMATRIX CameraManager::GetCurrentCameraProj() const
+XMMATRIX SSCameraManager::GetCurrentCameraProj() const
 {
 	check(mCurrentCamera != nullptr);
 	return mCurrentCamera->GetProj();
 }
 
+XMMATRIX SSCameraManager::GetCurrentCameraViewProj() const 
+{
+	check(mCurrentCamera != nullptr);
+	return mCurrentCamera->GetViewProj();
+}
 
+void SSCameraManager::UpdateCurrentCamera()
+{
+	check(mCurrentCamera != nullptr);
+	mCurrentCamera->Update();
+}

@@ -39,13 +39,12 @@ DWORD DXRenderingThread::Run()
 		}
 		//
 		renderingThreadTimer.Tick();
-
-
-
+			   
 		SSEngine::Get().DrawScene();
 
 		if (bRequestExit)
 		{
+			SSEngine::Get().Shutdown();
 			return 0;
 		}
 	}	
