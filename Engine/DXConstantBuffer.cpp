@@ -15,6 +15,8 @@ DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantB
 
     D3D11_SHADER_BUFFER_DESC bufferDesc;
     constantBuffer->GetDesc(&bufferDesc);
+
+	mBufferSize = bufferDesc.Size;
     
     // 
     for(unsigned int i = 0; i < bufferDesc.Variables; ++i)
@@ -39,7 +41,6 @@ DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     }
 
     // alloc
-    mBufferSize = mVariableInfoArray[bufferDesc.Variables - 1].StartOffset +  mVariableInfoArray[bufferDesc.Variables - 1].Size;
     mBufferData = new BYTE[mBufferSize] {0};
 
     // now create constant buffer
@@ -50,7 +51,7 @@ DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = mBufferSize;
 
-    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));    
+    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
 }
 
 DXGenericConstantBuffer::~DXGenericConstantBuffer()
