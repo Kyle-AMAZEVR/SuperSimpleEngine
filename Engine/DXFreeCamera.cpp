@@ -4,7 +4,7 @@
 
 using namespace DirectX;
 
-DXFreeCamera::DXFreeCamera()
+SSFreeCamera::SSFreeCamera()
 	: SSCameraBase()
 {
 	mEyePosition = XMFLOAT3(-5, 0, 0);
@@ -12,7 +12,7 @@ DXFreeCamera::DXFreeCamera()
 	mLookAtPosition = XMFLOAT3(1, 0, 0);
 }
 
-void DXFreeCamera::UpdateViewMatrix()
+void SSFreeCamera::UpdateViewMatrix()
 {
 	mView = XMMatrixLookAtLH(
 		XMLoadFloat3(&mEyePosition),
@@ -21,12 +21,12 @@ void DXFreeCamera::UpdateViewMatrix()
 	);
 }
 
-void DXFreeCamera::UpdateProjMatrix()
+void SSFreeCamera::UpdateProjMatrix()
 {
 	mProj = XMMatrixPerspectiveFovLH(mFOV, mAspectRatio, mNear, mFar);
 }
 
-void DXFreeCamera::Update()
+void SSFreeCamera::Update()
 {
 	UpdateViewMatrix();
 	UpdateProjMatrix();

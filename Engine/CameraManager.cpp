@@ -16,4 +16,16 @@ CameraManager::~CameraManager()
     }
 }
 
+XMMATRIX CameraManager::GetCurrentCameraView() const
+{
+	check(mCurrentCamera != nullptr);
+	return mCurrentCamera->GetView();
+}
+
+XMMATRIX CameraManager::GetCurrentCameraProj() const
+{
+	check(mCurrentCamera != nullptr);
+	return mCurrentCamera->GetProj();
+}
+
 
