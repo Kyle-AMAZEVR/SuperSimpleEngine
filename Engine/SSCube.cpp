@@ -13,11 +13,16 @@ SSCube::SSCube()
 		InternalCreate();
 		bIsInitialized = true;
 	}
+
+	mYaw = 0;
 }
 
 void SSCube::Draw(ID3D11DeviceContext* deviceContext)
 {
 	mYaw += 0.001f;
+	
+
+	//this->SetScale(scale, scale, scale);
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -36,11 +41,11 @@ void SSCube::InternalCreate()
 	{	
 		// Create vertex buffer		
 		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(1,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(1,0,0),  XMFLOAT2(0,1)},
-		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(1,0,0),   XMFLOAT2(1,1)  },
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,1,0),  XMFLOAT2(0,1)},
+		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,1),   XMFLOAT2(1,1)  },
 		{ XMFLOAT4(+1.0f, -1.0f, -1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
-		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(0,0)  },
-		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(0,1)  },
+		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,1,0),   XMFLOAT2(0,0)  },
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,0),   XMFLOAT2(0,1)  },
 		{ XMFLOAT4(+1.0f, +1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,1)  },
 		{ XMFLOAT4(+1.0f, -1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
 	};

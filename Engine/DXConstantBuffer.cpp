@@ -64,7 +64,7 @@ DXGenericConstantBuffer::~DXGenericConstantBuffer()
 }
 
 void DXGenericConstantBuffer::SubmitDataToDevice()
-{ 
+{ 	
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     HR(SSEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
     memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
