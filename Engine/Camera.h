@@ -6,9 +6,10 @@ class ENGINE_API SSCameraBase
 {
 public:
 	SSCameraBase()
-		: mFOV(DirectX::XM_PI * 0.25f)
+		: mFOV(DirectX::XM_PIDIV2 * 0.5f * 0.5f)
+		
 		, mAspectRatio(1.0f)
-		, mNear (0.5f)
+		, mNear (1.f)
 		, mFar (1000.0f)
 	{
 	}

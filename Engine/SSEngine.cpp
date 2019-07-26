@@ -44,7 +44,7 @@ void SSEngine::TestCreateResources()
 	mTestTexture = std::make_shared<SSTexture2D>();
 	mTestCube = std::make_shared<SSCube>();
 
-	mTestCube->SetScale(5, 5, 5);
+	mTestCube->SetScale(1, 1, 1);
 
     std::vector<VT_PositionTexcoord> VertexArray =
     {
@@ -203,7 +203,6 @@ void SSEngine::DrawScene()
 	
 	SSCameraManager::Get().UpdateCurrentCamera();
 	
-	mTestCube->SetPositionZ(10);
 
 	XMFLOAT4X4 model; XMStoreFloat4x4(&model, mTestCube->GetModelTransform());
 	XMFLOAT4X4 view; XMStoreFloat4x4(&view, SSCameraManager::Get().GetCurrentCameraView());
@@ -227,8 +226,7 @@ void SSEngine::DrawScene()
 	//mTestPixelShader->SetConstantBufferData(mDeviceContext, "TestMatrix", testIdentity);
 
     //mDeviceContext->DrawIndexed(6,0,0);
-
-	
+		
 	
 	mTestCube->Draw(mDeviceContext);
 	
