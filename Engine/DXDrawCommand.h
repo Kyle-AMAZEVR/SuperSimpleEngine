@@ -2,20 +2,32 @@
 #include "Core.h"
 #include <list>
 
-class ENGINE_API SSDrawCommand 
-{
-public:
 
+class SSVertexShader;
+class SSPixelShader;
+class SSSceneObject;
+
+class ENGINE_API SSDrawCommand  : public DXRenderResource
+{
+public:	
+	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object);
+	
+	//template<class T>
+	//void SetVSConstantBufferData(std::string name, const T& value);
 
 
 	virtual void Do();
 
 protected:
-	std::shared_ptr<class SSVertexShader> mVS;
-	std::shared_ptr<class SSPixelShader> mPS;
-	std::shared_ptr<class SSVertexBuffer> mVB;
-	std::shared_ptr<class SSIndexBuffer> mIB;	
+	class SSVertexShader* mpVS = nullptr;
+	class SSPixelShader* mpPS = nullptr;
 
-	std::vector<std::shared_ptr<class SSBufferBase>> mVertexShaderConstantBufferList;
-	std::vector<std::shared_ptr<class SSBufferBase>> mPixelShaderConstantBufferList;
+	//
+	std::map<std::string, class SSBufferBase*> mVertexShaderConstantBufferMap;
+	std::map<std::string, class SSBufferBase*> mPixelShaderConstantBufferMap;
+
+	//
+
+
+	std::shared_ptr<SSSceneObject> mObject;
 };

@@ -1,9 +1,26 @@
 
 
 
-cbuffer MVP
+
+
+cbuffer TestColor
 {
-    float4x4 mvp;
+    float4 givencolor;  
+};
+
+cbuffer Model
+{
+  float4x4 model;  
+};
+
+cbuffer View
+{
+  float4x4 view; 
+};
+
+cbuffer Proj
+{
+  float4x4 proj;
 };
 
 struct VertexInputType
@@ -26,7 +43,11 @@ PixelInputType VSMain(VertexInputType input)
     PixelInputType output;
 
     // Calculate the position of the vertex against the world, view, and projection matrices.
-    // float4x4 transform = model * view *  proj ;
+    
+    //output.position = mul(input.position, mvp);
+
+    float4x4 mvp = mul(mul(model, view), proj);
+
     output.position = mul(input.position, mvp);
     
     // Store the input color for the pixel shader to use.    

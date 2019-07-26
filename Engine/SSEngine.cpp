@@ -205,9 +205,9 @@ void SSEngine::DrawScene()
 	
 	Transform testTransform;
 
-	XMFLOAT4X4 model; XMStoreFloat4x4(&model, mTestCube->GetModelTransform());
-	XMFLOAT4X4 view; XMStoreFloat4x4(&view, SSCameraManager::Get().GetCurrentCameraView());
-	XMFLOAT4X4 proj; XMStoreFloat4x4(&proj, SSCameraManager::Get().GetCurrentCameraProj());
+	XMFLOAT4X4 model; XMStoreFloat4x4(&model, XMMatrixTranspose(mTestCube->GetModelTransform()));
+	XMFLOAT4X4 view; XMStoreFloat4x4(&view, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	XMFLOAT4X4 proj; XMStoreFloat4x4(&proj, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	MVP mvp;
 	XMMATRIX WorldView = XMMatrixMultiply(mTestCube->GetModelTransform(), SSCameraManager::Get().GetCurrentCameraView());
@@ -221,11 +221,11 @@ void SSEngine::DrawScene()
 	XMFLOAT4X4 mvpMatrix;
 	XMStoreFloat4x4(&mvpMatrix, mvp.ModelViewProj);
 
-	mTestVertexShader->SetConstantBufferData(mDeviceContext, "MVP", mvpMatrix);
-	//mTestPixelShader->SetConstantBufferData(mDeviceContext, "TestMatrix", testIdentity);
-
-    //mDeviceContext->DrawIndexed(6,0,0);
-		
+	//mTestVertexShader->SetConstantBufferData(mDeviceContext, "MVP", mvpMatrix);		
+	mTestVertexShader->SetConstantBufferData(mDeviceContext, "Model", model);
+	mTestVertexShader->SetConstantBufferData(mDeviceContext, "View", view);
+	mTestVertexShader->SetConstantBufferData(mDeviceContext, "Proj", proj);
+	
 	
 	mTestCube->Draw(mDeviceContext);
 	
