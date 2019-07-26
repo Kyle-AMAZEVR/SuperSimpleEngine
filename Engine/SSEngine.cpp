@@ -200,36 +200,35 @@ void SSEngine::DrawScene()
     mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);   
     mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);
 
-	Transform transform;
-	XMStoreFloat4x4(&transform.Model, mTestCube->GetModelTransform());
+	
 	SSCameraManager::Get().UpdateCurrentCamera();
-	XMStoreFloat4x4(&transform.View, SSCameraManager::Get().GetCurrentCameraView());
-	XMStoreFloat4x4(&transform.Proj, SSCameraManager::Get().GetCurrentCameraProj());
+	
+	mTestCube->SetPositionZ(10);
+
+	XMFLOAT4X4 model; XMStoreFloat4x4(&model, mTestCube->GetModelTransform());
+	XMFLOAT4X4 view; XMStoreFloat4x4(&view, SSCameraManager::Get().GetCurrentCameraView());
+	XMFLOAT4X4 proj; XMStoreFloat4x4(&proj, SSCameraManager::Get().GetCurrentCameraProj());
 
 	MVP mvp;
 	mvp.ModelViewProj = mTestCube->GetModelTransform() * SSCameraManager::Get().GetCurrentCameraView() * SSCameraManager::Get().GetCurrentCameraProj();
-
-	auto* cubeVB = mTestCube->GetVB();
-	auto* cubeIB = mTestCube->GetIB();
-
-	//mDeviceContext->IASetVertexBuffers(0, 1, &cubeVB->GetBufferPointerRef(), &stride, &offset);
-	//mDeviceContext->IASetIndexBuffer(cubeIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
-
-    //mDeviceContext->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetBufferPointerRef(), &stride, &offset);
-    //mDeviceContext->IASetIndexBuffer(mTestIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
-
+	
 	mDeviceContext->PSSetSamplers(0, 1, &mDefaultSamplerState);
 	mDeviceContext->PSSetShaderResources(0, 1, &mTestTexture->GetShaderResourceViewRef());
 
 	XMMATRIX testIdentity = DXMathHelper::IdentityMatrix4X4;
 
-	mTestVertexShader->SetConstantBufferData(mDeviceContext, "MVP", mvp.ModelViewProj);
+	XMFLOAT4X4 m;
+	XMStoreFloat4x4(&m, mvp.ModelViewProj);
+
+	mTestVertexShader->SetConstantBufferData(mDeviceContext, "MVP", m);
 
 
 	//mTestPixelShader->SetConstantBufferData(mDeviceContext, "Color" , XMFLOAT4(0, 0, 0, 0));
 	//mTestPixelShader->SetConstantBufferData(mDeviceContext, "TestMatrix", testIdentity);
 
     //mDeviceContext->DrawIndexed(6,0,0);
+
+	
 	
 	mTestCube->Draw(mDeviceContext);
 	

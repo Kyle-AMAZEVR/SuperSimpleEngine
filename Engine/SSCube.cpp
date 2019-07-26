@@ -17,7 +17,6 @@ SSCube::SSCube()
 
 void SSCube::Draw(ID3D11DeviceContext* deviceContext)
 {	
-	mYaw += 0.0001f;
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

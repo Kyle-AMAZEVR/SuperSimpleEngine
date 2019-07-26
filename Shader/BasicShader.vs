@@ -1,6 +1,6 @@
 
 
-cbuffer MVP
+cbuffer MVP : register(b0)
 {
     float4x4 ModelViewProj;
 };
