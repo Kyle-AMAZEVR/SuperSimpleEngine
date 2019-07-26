@@ -20,6 +20,7 @@
 #include "Engine/SSEngine.h"
 #include "Engine/DXRenderingThread.h"
 #include "Engine/SSTimer.h"
+#include "Engine/CameraManager.h"
 
 #define MAX_LOADSTRING 100
 
@@ -198,7 +199,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
 
-    
+	case WM_KEYDOWN:
+		
+		switch (wParam)
+		{
+		case VK_UP:
+			SSCameraManager::Get().IncreaseCurrentCameraFOV(0.05f);
+			break;
+		case VK_DOWN:
+			SSCameraManager::Get().DecreaseCurrentCameraFOV(0.05f);
+			break;
+		}
+		break;
+	
     case WM_DESTROY:
         PostQuitMessage(0);
         break;

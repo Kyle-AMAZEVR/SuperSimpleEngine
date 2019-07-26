@@ -2,7 +2,7 @@
 struct PixelInputType
 {
     float4 position : SV_POSITION;
-    float3 normal : NORMAL;    
+    float3 color : COLOR;    
     float2 texcoord : TEXCOORD;
 };
 
@@ -12,7 +12,6 @@ SamplerState DefaultTexSampler : register(s0);
 
 
 float4 PSMain(PixelInputType input) : SV_TARGET
-{    
-    return sampleTexture.SampleLevel(DefaultTexSampler , input.texcoord, 0);    
-    //return float4(1,0,0,0);
+{   
+    return float4(input.color.x, input.color.y, input.color.z, 1.0f);
 }

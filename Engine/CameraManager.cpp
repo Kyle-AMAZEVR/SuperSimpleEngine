@@ -46,6 +46,26 @@ void SSCameraManager::SetCurrentCameraFOV(float fov)
 	mCurrentCamera->SetFOV(fov);
 }
 
+void SSCameraManager::IncreaseCurrentCameraFOV(float amount)
+{
+	float newFOV = mCurrentCamera->GetFOV() + amount;
+	mCurrentCamera->SetFOV(newFOV);
+}
+
+void SSCameraManager::DecreaseCurrentCameraFOV(float amount)
+{
+	float newFOV = mCurrentCamera->GetFOV() - amount;
+
+	if (newFOV <= 0)
+	{
+		newFOV = 0.001f;
+	}
+
+	mCurrentCamera->SetFOV(newFOV);
+}
+
+
+
 void SSCameraManager::SetCurrentCameraAspectRatio(float ratio)
 {
 	check(mCurrentCamera != nullptr);

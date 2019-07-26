@@ -16,9 +16,8 @@ SSCube::SSCube()
 }
 
 void SSCube::Draw(ID3D11DeviceContext* deviceContext)
-{		
+{
 	mYaw += 0.001f;
-	
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -34,72 +33,46 @@ void SSCube::Draw(ID3D11DeviceContext* deviceContext)
 void SSCube::InternalCreate()
 {
 	std::vector<VT_PositionNormalTexcoord> vertexArray =
-	{
-		// Left
-		{DirectX::XMFLOAT4(-1,   1,  1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(0,0)},
-		{DirectX::XMFLOAT4(-1,   1, -1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(1,0)},
-		{DirectX::XMFLOAT4(-1,  -1, -1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(1,1)},
-
-		{DirectX::XMFLOAT4(-1,   1,  1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(1,0)},
-		{DirectX::XMFLOAT4(-1,  -1, -1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(1,1)},
-		{DirectX::XMFLOAT4(-1,  -1,  1, 1), DirectX::XMFLOAT3(-1,0,0),DirectX::XMFLOAT2(0,1)},
-
-		// Right
-		{DirectX::XMFLOAT4(1,  1,-1, 1), DirectX::XMFLOAT3(1,0,0), DirectX::XMFLOAT2(0,0)},
-		{DirectX::XMFLOAT4(1,  1, 1, 1), DirectX::XMFLOAT3(1,0,0), DirectX::XMFLOAT2(1,0)},
-		{DirectX::XMFLOAT4(1, -1, 1, 1), DirectX::XMFLOAT3(1,0,0), DirectX::XMFLOAT2(1,1)},
-
-		{DirectX::XMFLOAT4(1,  1,-1, 1), DirectX::XMFLOAT3(1,0,0), DirectX::XMFLOAT2(0,0)},
-		{DirectX::XMFLOAT4(1, -1, 1, 1), DirectX::XMFLOAT3(1,0,0), DirectX::XMFLOAT2(1,1)},
-		{DirectX::XMFLOAT4(1, -1,-1, 1), DirectX::XMFLOAT3(1,0,0), DirectX::XMFLOAT2(0,1)},
-
-
-		// front
-		/*{DirectX::XMFLOAT4(-1,   1, -1, 1), DirectX::XMFLOAT3(0,0,-1), DirectX::XMFLOAT2(0,0)},
-		{DirectX::XMFLOAT4(1,   1, -1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,0)},
-		{DirectX::XMFLOAT4(1,  -1, -1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,1)},
-
-		{DirectX::XMFLOAT4(-1,   1, -1, 1), DirectX::XMFLOAT3(0,0,-1), DirectX::XMFLOAT2(0,0)},
-		{DirectX::XMFLOAT4(1,  -1, -1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,1)},
-		{DirectX::XMFLOAT4(-1,  -1, -1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(0,1)},
-
-		// back
-		{DirectX::XMFLOAT4(1,  -1, 1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,1)},
-		{DirectX::XMFLOAT4(1,   1, 1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,0)},
-		{DirectX::XMFLOAT4(-1,   1, 1, 1), DirectX::XMFLOAT3(0,0,-1), DirectX::XMFLOAT2(0,0)},		
-		
-		{DirectX::XMFLOAT4(-1,  -1, 1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(0,1)},
-		{DirectX::XMFLOAT4(1,  -1,  1, 1), DirectX::XMFLOAT3(0,0,-1),DirectX::XMFLOAT2(1,1)},
-		{DirectX::XMFLOAT4(-1,   1, 1, 1), DirectX::XMFLOAT3(0,0,-1), DirectX::XMFLOAT2(0,0)},
-		
-
-		//Top
-		{ DirectX::XMFLOAT4(-1, 1, 1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(0,0)},
-		{ DirectX::XMFLOAT4( 1, 1, 1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(1,0)},
-		{ DirectX::XMFLOAT4( 1, 1, -1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(1,1)},
-
-		{ DirectX::XMFLOAT4(-1, 1, 1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(0,0)},		
-		{ DirectX::XMFLOAT4(1, 1, -1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(1,1)},
-		{ DirectX::XMFLOAT4(-1, 1, -1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(0,1)},
-		
-		//bottom
-		
-		{ DirectX::XMFLOAT4(1, -1, -1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(1,1)},
-		{ DirectX::XMFLOAT4(1, -1, 1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(1,0)},
-		{ DirectX::XMFLOAT4(-1, -1, 1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(0,0)},	
-
-		
-		{ DirectX::XMFLOAT4(-1, -1, -1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(0,1)},
-		{ DirectX::XMFLOAT4(1, -1, -1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(1,1)},
-		{ DirectX::XMFLOAT4(-1, -1, 1, 1), DirectX::XMFLOAT3(0,1, 0),DirectX::XMFLOAT2(0,0)},*/
+	{	
+		// Create vertex buffer		
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(1,0,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(1,0,0),  XMFLOAT2(0,1)},
+		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(1,0,0),   XMFLOAT2(1,1)  },
+		{ XMFLOAT4(+1.0f, -1.0f, -1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
+		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(0,0)  },
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(0,1)  },
+		{ XMFLOAT4(+1.0f, +1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,1)  },
+		{ XMFLOAT4(+1.0f, -1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
 	};
 
-	std::vector<UINT> indexArray;
-
-	for (auto i = 0; i < vertexArray.size(); ++i)
+	std::vector<UINT> indexArray
 	{
-		indexArray.push_back(i);
-	}
+		// front face
+		0, 1, 2,
+		0, 2, 3,
+
+		// back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// left face
+		4, 5, 1,
+		4, 1, 0,
+
+		// right face
+		3, 2, 6,
+		3, 6, 7,
+
+		// top face
+		1, 5, 6,
+		1, 6, 2,
+
+		// bottom face
+		4, 0, 3,
+		4, 3, 7
+	};
+
+	
 
 	mCubeVB = new SSVertexBuffer();
 	mCubeVB->SetVertexBufferData(vertexArray);
