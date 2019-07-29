@@ -3,7 +3,7 @@
 #include "DXViewport.h"
 #include "CameraManager.h"
 
-void DXViewport::Clear()
+void SSViewport::Clear()
 {
     float Color[4] { 0.0f, 1.0f, 0.0f, 1.0f};
     
@@ -16,7 +16,7 @@ void DXViewport::Clear()
     }
 }
 
-void DXViewport::Resize(int newWidth, int newHeight)
+void SSViewport::Resize(int newWidth, int newHeight)
 {
     auto* dxDevice = SSEngine::Get().GetDevice();
     auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();

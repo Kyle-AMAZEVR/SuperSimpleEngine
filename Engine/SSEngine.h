@@ -30,7 +30,7 @@ protected:
     int mBufferWidth = 1024;
     int mBufferHeight = 768;
 
-    DXViewport mViewport;
+    SSViewport mViewport;
 
     void TestCompileShader();
     void TestCreateResources();
