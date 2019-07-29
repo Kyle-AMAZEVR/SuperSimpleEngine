@@ -30,7 +30,7 @@ protected:
     int mBufferWidth = 1024;
     int mBufferHeight = 768;
 
-    SSViewport mViewport;
+    std::shared_ptr<SSViewport> mViewport = nullptr;
 
     void TestCompileShader();
     void TestCreateResources();
@@ -55,9 +55,16 @@ private:
 
     // 
     std::shared_ptr<class SSVertexBuffer> mTestVertexBuffer;
+	std::shared_ptr<class SSIndexBuffer> mTestIndexBuffer;
+
+	std::shared_ptr<class SSVertexShader> mTestVertexShader;
     std::shared_ptr<class SSPixelShader> mTestPixelShader;
-    std::shared_ptr<class SSIndexBuffer> mTestIndexBuffer;
-    std::shared_ptr<class SSVertexShader> mTestVertexShader;
+
+	std::shared_ptr<class SSVertexShader> mDeferredVertexShader;
+	std::shared_ptr<class SSPixelShader> mDeferredPixelShader;
+
+    
+    
 	std::shared_ptr<class SSTexture2D> mTestTexture;
 	std::shared_ptr<class SSGBuffer> mGBuffer;
     //

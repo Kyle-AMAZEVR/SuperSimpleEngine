@@ -23,9 +23,14 @@ bool SSEngine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;
     CreateDevice();
-    CreateSwapChain();
+    CreateSwapChain();	
+
 	bInitialized = true;
-    OnWindowResize(mBufferWidth, mBufferHeight);
+
+	mViewport = std::make_shared<SSViewport>();
+
+    OnWindowResize(mBufferWidth, mBufferHeight);	
+	
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	SSSamplerManager::Get().Initialize();
     TestCompileShader();
@@ -90,11 +95,14 @@ void SSEngine::TestCreateResources()
 void SSEngine::TestCompileShader()
 {    
     mTestVertexShader = std::make_shared<SSVertexShader>();
-    //assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
-	assert(mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs"));
-    
-    mTestPixelShader = std::make_shared<SSPixelShader>();
-    //assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
+	mTestPixelShader = std::make_shared<SSPixelShader>();
+	mDeferredVertexShader = std::make_shared<SSVertexShader>();
+	mDeferredPixelShader = std::make_shared<SSPixelShader>();	
+
+    assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
+	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
+	
+	assert(mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs"));    
 	assert(mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
@@ -121,7 +129,7 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 		mBufferWidth = newWidth;
 		mBufferHeight = newHeight;
 
-		mViewport.Resize(newWidth, newHeight);
+		mViewport->Resize(newWidth, newHeight);
 	}
 }
 
@@ -194,7 +202,7 @@ void SSEngine::DrawScene()
     
     check(mDeviceContext != nullptr);
 
-    mViewport.Clear();
+    mViewport->Clear();
 
 	SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
 
