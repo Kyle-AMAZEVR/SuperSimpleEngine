@@ -17,7 +17,6 @@ protected:
 	UINT mWidth;
 	UINT mHeight;
 	DXGI_FORMAT mTextureFormat;
-	ID3D11Texture2D* mTexturePtr = nullptr;	
-	//ID3D11Resource* mTexturePtr = nullptr;
+	ID3D11Texture2D* mTexturePtr = nullptr;		
 	
 };

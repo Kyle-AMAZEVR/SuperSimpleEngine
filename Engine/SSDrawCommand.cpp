@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "SSEngine.h"
-#include "DXDrawCommand.h"
+#include "SSDrawCommand.h"
 #include "DXVertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSSceneObject.h"

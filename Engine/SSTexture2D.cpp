@@ -45,13 +45,6 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	mHeight = metaData.height;
 	mMipLevels = metaData.mipLevels;
 
-
-	/*D3D11_SUBRESOURCE_DATA textureData;
-	ZeroMemory(&textureData, sizeof(D3D11_SUBRESOURCE_DATA));
-	textureData.pSysMem = pImage->pixels;
-	textureData.SysMemPitch = pImage->rowPitch;
-	textureData.SysMemSlicePitch = pImage->slicePitch;*/
-
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth = metaData.width;
 	description.Height = mHeight = metaData.height;

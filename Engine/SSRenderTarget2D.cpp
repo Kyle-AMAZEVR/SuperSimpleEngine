@@ -14,13 +14,13 @@ void SSRenderTarget2D::InternalCreate(const UINT width, const UINT height, DXGI_
 	description.Height = mHeight = height;
 	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 	description.MiscFlags = 0;
-	description.Usage = D3D11_USAGE_DYNAMIC;
+	description.Usage = D3D11_USAGE_DEFAULT;
 	description.SampleDesc.Count = 1;
 	description.MipLevels = description.ArraySize = 1;
-	description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	description.CPUAccessFlags = 0;
 	description.Format = mTextureFormat = format;
 
-	//HR(DXEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
 	//HR(DXEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, nullptr, &mShaderResourceView));
 }
 

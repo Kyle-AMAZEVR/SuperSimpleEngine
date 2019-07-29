@@ -14,7 +14,7 @@
 #include "SSTexture2D.h"
 #include "SSCube.h"
 #include "SSSamplerManager.h"
-#include "DXDrawCommand.h"
+#include "SSDrawCommand.h"
 
 bool SSEngine::bInitialized = false;
 
