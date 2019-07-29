@@ -13,6 +13,8 @@
 #include "SSIndexBuffer.h"
 #include "SSTexture2D.h"
 #include "SSCube.h"
+#include "SSSamplerManager.h"
+#include "DXDrawCommand.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -24,6 +26,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	bInitialized = true;
     OnWindowResize(mBufferWidth, mBufferHeight);
 
+	SSSamplerManager::Get().Initialize();
     TestCompileShader();
     TestCreateResources();
 
@@ -192,42 +195,21 @@ void SSEngine::DrawScene()
 
     mViewport.Clear();
 
-    UINT stride = sizeof(VT_PositionNormalTexcoord);
-    UINT offset = 0;
+	SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
 
-    mDeviceContext->IASetInputLayout(mTestVertexShader->GetInputLayout());
-    mDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);	
-    mDeviceContext->VSSetShader(mTestVertexShader->GetShader(), nullptr, 0);   
-    mDeviceContext->PSSetShader(mTestPixelShader->GetShader(), nullptr, 0);
-
-	
 	SSCameraManager::Get().UpdateCurrentCamera();
-	
-	Transform testTransform;
 
 	XMFLOAT4X4 model; XMStoreFloat4x4(&model, XMMatrixTranspose(mTestCube->GetModelTransform()));
 	XMFLOAT4X4 view; XMStoreFloat4x4(&view, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	XMFLOAT4X4 proj; XMStoreFloat4x4(&proj, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
-
-	MVP mvp;
-	XMMATRIX WorldView = XMMatrixMultiply(mTestCube->GetModelTransform(), SSCameraManager::Get().GetCurrentCameraView());
-	mvp.ModelViewProj = XMMatrixTranspose(XMMatrixMultiply( WorldView,SSCameraManager::Get().GetCurrentCameraProj()));
+		
+	testDrawCmd.StoreVSConstantBufferData("Model", model);
+	testDrawCmd.StoreVSConstantBufferData("View", view);
+	testDrawCmd.StoreVSConstantBufferData("Proj", proj);
 	
-	mDeviceContext->PSSetSamplers(0, 1, &mDefaultSamplerState);
-	mDeviceContext->PSSetShaderResources(0, 1, &mTestTexture->GetShaderResourceViewRef());
+	testDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
 
-	XMMATRIX testIdentity = DXMathHelper::IdentityMatrix4X4;
-
-	XMFLOAT4X4 mvpMatrix;
-	XMStoreFloat4x4(&mvpMatrix, mvp.ModelViewProj);
-
-	//mTestVertexShader->SetConstantBufferData(mDeviceContext, "MVP", mvpMatrix);		
-	mTestVertexShader->SetConstantBufferData(mDeviceContext, "Model", model);
-	mTestVertexShader->SetConstantBufferData(mDeviceContext, "View", view);
-	mTestVertexShader->SetConstantBufferData(mDeviceContext, "Proj", proj);
-	
-	
-	mTestCube->Draw(mDeviceContext);
+	testDrawCmd.Do();
 	
     HR(mSwapChain->Present(0,0));
 }

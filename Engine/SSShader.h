@@ -16,7 +16,13 @@ public:
 
 	virtual void SetTexture(std::string name, class SSTexture2D* texture){}
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) {}
+
+	std::vector<std::string> GetSamplerNames();
+
+	inline std::map<std::string, SSGenericConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
+
 protected:
+	
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
     virtual bool CompileFromFile(std::wstring filepath) { return true; }	
     void PrintCompileError(ID3D10Blob* errorMsg);

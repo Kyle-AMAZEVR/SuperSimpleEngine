@@ -6,11 +6,13 @@
 #include "DXVertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSSceneObject.h"
+#include "SSSamplerManager.h"
 
 SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
 {
-
+	mVertexShaderConstantBufferMap = mpVS->GetConstantBufferMap();
+	mPixelShaderConstantBufferMap = mpPS->GetConstantBufferMap();
 }
 
 void SSDrawCommand::Do()
@@ -23,20 +25,31 @@ void SSDrawCommand::Do()
 	// @ set input layout
 	deviceContext->IASetInputLayout(mpVS->GetInputLayout());
 
+	// @ for now ony
+	deviceContext->IASetPrimitiveTopology(mPrimitiveType);
+
 	// @ set vertex, pixel shader
 	deviceContext->VSSetShader(mpVS->GetShader(), nullptr, 0);
 	deviceContext->PSSetShader(mpPS->GetShader(), nullptr, 0);
 
 	// @ set vertex shader constant buffer
 	for (auto& kvp : mVertexShaderConstantBufferMap)
-	{
+	{		
 		kvp.second->SubmitDataToDevice();
+
+		UINT bufferIndex = kvp.second->GetBufferIndex();
+
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader constant buffer
 	for (auto& kvp : mPixelShaderConstantBufferMap)
 	{
 		kvp.second->SubmitDataToDevice();
+
+		UINT bufferIndex = kvp.second->GetBufferIndex();
+
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader texture 
@@ -49,6 +62,13 @@ void SSDrawCommand::Do()
 	for (auto& kvp : mVertexShaderTextureMap)
 	{
 		mpVS->SetTexture(kvp.first, kvp.second);
+	}
+
+	// @ set pixel shader sampler
+	for (auto& samplerName : mpPS->GetSamplerNames())
+	{
+		ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
+		mpPS->SetSampler(samplerName, sampler);
 	}
 
 	// @ draw

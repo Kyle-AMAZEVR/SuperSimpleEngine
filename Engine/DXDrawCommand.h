@@ -20,14 +20,17 @@ public:
 
 	void SetPSTexture(std::string name, class SSTexture2D* texture);
 
-	void SetVSTexture(std::string name, class SSTexture2D* texture);
+	void SetVSTexture(std::string name, class SSTexture2D* texture);	
+
+	void SetPrimitiveType(D3D_PRIMITIVE_TOPOLOGY ePrimitiveType) { mPrimitiveType = ePrimitiveType; }
+
+	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }
 
 	virtual void Do();
 
 protected:
 	class SSVertexShader* mpVS = nullptr;
-	class SSPixelShader* mpPS = nullptr;
-	
+	class SSPixelShader* mpPS = nullptr;	
 
 	//
 	std::map<std::string, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;
@@ -37,6 +40,9 @@ protected:
 	std::map<std::string, class SSTexture2D*> mPixelShaderTextureMap;
 	std::map<std::string, class SSTexture2D*> mVertexShaderTextureMap;
 
+	//
+	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
 	std::shared_ptr<SSSceneObject> mObject;
 };
 
@@ -45,7 +51,7 @@ void SSDrawCommand::StoreVSConstantBufferData(std::string name, const T& value)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
-		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);
+		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);		
 	}
 }
 
@@ -54,6 +60,6 @@ void SSDrawCommand::StorePSConstantBufferData(std::string name, const T& value)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{
-		mPixelShaderConstantBufferMap[name]->StoreBufferData(value);
+		mPixelShaderConstantBufferMap[name]->StoreBufferData(value);		
 	}
 }

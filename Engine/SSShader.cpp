@@ -73,6 +73,16 @@ void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 	}
 }
 
+std::vector<std::string> SSShader::GetSamplerNames() 
+{
+	std::vector<std::string> result;
+	for (auto& k : mSamplerMap)
+	{
+		result.push_back(k.first);
+	}
+	return result;
+}
+
 #pragma endregion
 
 
@@ -221,13 +231,14 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
 
 void SSPixelShader::SetTexture(std::string name, SSTexture2D* texture)
 {
-	check(mTextureMap.count(name) > 0);
+	if (mTextureMap.count(name) > 0)
+	{
+		UINT slotIndex = mTextureMap[name];
 
-	UINT slotIndex = mTextureMap[name];
+		auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
 
-	auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
-
-	dxDeviceContext->PSSetShaderResources(slotIndex, 1, &texture->GetShaderResourceViewRef());
+		dxDeviceContext->PSSetShaderResources(slotIndex, 1, &texture->GetShaderResourceViewRef());
+	}
 }
 
 void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
