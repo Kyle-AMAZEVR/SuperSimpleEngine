@@ -5,7 +5,7 @@
 #include "SSEngine.h"
 
 SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)
-	: mWidth(width), mHeight(height), mFormat(format)
+	: SSRenderTargetBase(width, height, format)
 {
 	mRenderTargetArray[0] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
 	mRenderTargetArray[1] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
@@ -56,10 +56,10 @@ void SSGBuffer::Resize(UINT newWidth, UINT newHeight)
 	mViewport.MinDepth = 0.0f;
 	mViewport.MaxDepth = 1.0f;
 
-	MakeCurrent();
+	MakeCurrentRenderTarget();
 }
 
-void SSGBuffer::MakeCurrent()
+void SSGBuffer::MakeCurrentRenderTarget()
 {
 	ID3D11RenderTargetView* renderTargets[3]{
 		mRenderTargetArray[0]->GetRenderTargetView(),

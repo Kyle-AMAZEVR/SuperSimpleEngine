@@ -1,16 +1,16 @@
 
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSRenderTargetBase.h"
 
-class ENGINE_API SSGBuffer : public DXRenderResource
+class ENGINE_API SSGBuffer : public SSRenderTargetBase
 {
 public:
 	SSGBuffer(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT);
 
-	void Resize(UINT newWidth, UINT newHeight);
+	virtual void Resize(UINT newWidth, UINT newHeight) override;
 
-	void MakeCurrent();
+	virtual void MakeCurrentRenderTarget() override;
 
 	virtual void Destroy() override;
 
@@ -22,9 +22,4 @@ protected:
 	class SSRenderTarget2D* mRenderTargetArray[3]{ nullptr };
 	class SSDepthRenderTarget2D* mDepthTarget = nullptr;
 	D3D11_VIEWPORT mViewport;
-
-	UINT mWidth;
-	UINT mHeight;
-	DXGI_FORMAT mFormat;
-
 };

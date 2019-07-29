@@ -2,7 +2,7 @@
 #pragma once
 
 #include "Singleton.h"
-#include "DXViewport.h"
+#include "SSViewport.h"
 
 #include "SSShader.h"
 
