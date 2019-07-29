@@ -16,6 +16,22 @@ void SSViewport::Clear()
     }
 }
 
+void SSViewport::MakeCurrent()
+{
+	// Bind the render target view and depth/stencil view to the pipeline.
+	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
+
+	// Set the viewport transform.
+	mScreenViewport.TopLeftX = 0;
+	mScreenViewport.TopLeftY = 0;
+	mScreenViewport.Width = static_cast<float>(mWidth);
+	mScreenViewport.Height = static_cast<float>(mHeight);
+	mScreenViewport.MinDepth = 0.0f;
+	mScreenViewport.MaxDepth = 1.0f;
+
+	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mScreenViewport);
+}
+
 void SSViewport::Resize(int newWidth, int newHeight)
 {
     auto* dxDevice = SSEngine::Get().GetDevice();
@@ -70,19 +86,7 @@ void SSViewport::Resize(int newWidth, int newHeight)
 	HR(dxDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
 	HR(dxDevice->CreateDepthStencilView(mDepthStencilBuffer, 0, &mDepthStencilView));
 
-
-	// Bind the render target view and depth/stencil view to the pipeline.
-	dxDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);	
-
-	// Set the viewport transform.
-	mScreenViewport.TopLeftX = 0;
-	mScreenViewport.TopLeftY = 0;
-	mScreenViewport.Width    = static_cast<float>(mWidth);
-	mScreenViewport.Height   = static_cast<float>(mHeight);
-	mScreenViewport.MinDepth = 0.0f;
-	mScreenViewport.MaxDepth = 1.0f;
-
-	dxDeviceContext->RSSetViewports(1, &mScreenViewport);    
+	MakeCurrent();
 
 	SSCameraManager::Get().SetCurrentCameraAspectRatio(static_cast<float>(mWidth) / static_cast<float>(mHeight));
 }

@@ -9,6 +9,8 @@ public:
     void Clear();
     void Resize(int newWidth, int newHeight);
 
+	void MakeCurrent();
+
 protected:
     int mWidth = 0;
     int mHeight = 0;

@@ -9,6 +9,9 @@ public:
 	virtual void Resize(const UINT newWidth, const UINT newHeight) override;
 	virtual void Destroy() override;
 
+	ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView; }
+	ID3D11ShaderResourceView*& GetShaderResourceViewRef() { return mShaderResourceView; }
+	
 	ID3D11RenderTargetView* GetRenderTargetView() { return mRenderTargetView; }
 
 	void Clear();
