@@ -34,5 +34,7 @@ protected:
 	DirectX::XMFLOAT3 mScale;
 
 	float mYaw = 0;
+	float mPitch = 0;
+	float mRoll = 0;
 	UINT mObjectId = 0;
 };
