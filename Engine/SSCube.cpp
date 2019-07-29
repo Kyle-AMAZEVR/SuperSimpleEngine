@@ -37,41 +37,41 @@ void SSCube::InternalCreate()
 	std::vector<VT_PositionNormalTexcoord> vertexArray =
 	{	
 		// front
-		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(1,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,1,0),  XMFLOAT2(0,1)},
-		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,1),   XMFLOAT2(1,1)  },
-		{ XMFLOAT4(+1.0f, -1.0f, -1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(0,0,-1), XMFLOAT2(0,0)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,-1),  XMFLOAT2(0,1)},
+		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,-1),   XMFLOAT2(1,1)  },
+		{ XMFLOAT4(+1.0f, -1.0f, -1.0f,1),  XMFLOAT3(0,0,-1),   XMFLOAT2(1,0)  },
 
 		// back
-		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,1,0),   XMFLOAT2(0,0)  },
-		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,0),   XMFLOAT2(0,1)  },
-		{ XMFLOAT4(+1.0f, +1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,1)  },
-		{ XMFLOAT4(+1.0f, -1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
+		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(0,0)  },
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(0,1)  },
+		{ XMFLOAT4(+1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(1,1)  },
+		{ XMFLOAT4(+1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(1,0)  },
 
 		// top
-		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4( 1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4( 1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4( 1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4( 1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,1)},
 
 		
 		// bottom
-		{ XMFLOAT4(-1.0f,-1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4(1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(-1.0f,-1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4(1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4(1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(0,1)},
 
 		// left
-		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(-1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(-1.0f, -1.0f, +1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(0,1)},
 
 		// right
-		{ XMFLOAT4(+1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(+1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4(+1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(+1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(+1.0f, +1.0f, -1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4(+1.0f, +1.0f, +1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4(+1.0f, -1.0f, +1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(+1.0f, -1.0f, -1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(0,1)},
 	};
 
 	std::vector<UINT> indexArray
