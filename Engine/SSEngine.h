@@ -59,6 +59,6 @@ private:
     std::shared_ptr<class SSIndexBuffer> mTestIndexBuffer;
     std::shared_ptr<class SSVertexShader> mTestVertexShader;
 	std::shared_ptr<class SSTexture2D> mTestTexture;
-
+	std::shared_ptr<class SSGBuffer> mGBuffer;
     //
 };

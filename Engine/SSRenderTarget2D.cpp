@@ -117,8 +117,7 @@ void SSDepthRenderTarget2D::InternalCreate(const UINT newWidth, const UINT heigh
 
 	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &mTexturePtr));
 
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-	ZeroMemory(&depthStencilViewDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{ 0 };	
 
 	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;

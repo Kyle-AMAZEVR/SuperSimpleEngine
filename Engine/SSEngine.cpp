@@ -15,6 +15,7 @@
 #include "SSCube.h"
 #include "SSSamplerManager.h"
 #include "SSDrawCommand.h"
+#include "SSGBuffer.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -25,7 +26,7 @@ bool SSEngine::Initialize(HWND windowHandle)
     CreateSwapChain();
 	bInitialized = true;
     OnWindowResize(mBufferWidth, mBufferHeight);
-
+	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	SSSamplerManager::Get().Initialize();
     TestCompileShader();
     TestCreateResources();
