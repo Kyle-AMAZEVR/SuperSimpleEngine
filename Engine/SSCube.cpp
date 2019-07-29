@@ -36,15 +36,42 @@ void SSCube::InternalCreate()
 {
 	std::vector<VT_PositionNormalTexcoord> vertexArray =
 	{	
-		// Create vertex buffer		
+		// front
 		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(1,0,0), XMFLOAT2(0,0)},
 		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,1,0),  XMFLOAT2(0,1)},
 		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,1),   XMFLOAT2(1,1)  },
 		{ XMFLOAT4(+1.0f, -1.0f, -1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
+
+		// back
 		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,1,0),   XMFLOAT2(0,0)  },
 		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,0),   XMFLOAT2(0,1)  },
 		{ XMFLOAT4(+1.0f, +1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,1)  },
 		{ XMFLOAT4(+1.0f, -1.0f, +1.0f,1),  XMFLOAT3(1,0,0),   XMFLOAT2(1,0)  },
+
+		// top
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4( 1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4( 1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
+
+		
+		// bottom
+		{ XMFLOAT4(-1.0f,-1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4(1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4(1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
+
+		// left
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(-1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
+
+		// right
+		{ XMFLOAT4(+1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,0)},
+		{ XMFLOAT4(+1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4(+1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(+1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,0,0), XMFLOAT2(0,1)},
 	};
 
 	std::vector<UINT> indexArray
@@ -57,21 +84,21 @@ void SSCube::InternalCreate()
 		4, 6, 5,
 		4, 7, 6,
 
-		// left face
-		4, 5, 1,
-		4, 1, 0,
+		// top
+		8,9,11,
+		11,9,10,
 
-		// right face
-		3, 2, 6,
-		3, 6, 7,
+		// bottom
+		14,13,12,
+		15,14,12,
 
-		// top face
-		1, 5, 6,
-		1, 6, 2,
+		// left
+		16,17,18,
+		16,18,19,
 
-		// bottom face
-		4, 0, 3,
-		4, 3, 7
+		// right
+		20,21,22,
+		20,22,23,
 	};
 
 	
