@@ -4,7 +4,7 @@
 #include "SSEngine.h"
 #include "SSShader.h"
 #include "DXVertexTypes.h"
-#include "DXVertexElementDeclaration.h"
+#include "SSVertexElementDeclaration.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "CameraManager.h"
 #include "DXMathHelper.h"

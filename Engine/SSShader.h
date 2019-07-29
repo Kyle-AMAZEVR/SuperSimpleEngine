@@ -14,14 +14,17 @@ public:
 
     virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
+	virtual void SetTexture(std::string name, class SSTexture2D* texture){}
+	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) {}
 protected:
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
     virtual bool CompileFromFile(std::wstring filepath) { return true; }	
     void PrintCompileError(ID3D10Blob* errorMsg);
-    ID3DBlob* mShaderBuffer = nullptr;  
+    ID3DBlob* mShaderBuffer = nullptr;
 
-    std::map<std::string, DXGenericConstantBuffer*> mConstantBufferMap;
+    std::map<std::string, SSGenericConstantBuffer*> mConstantBufferMap;
 	std::map<std::string, UINT> mTextureMap;
+	std::map<std::string, UINT> mSamplerMap;
 };
 
 template<class T>
@@ -49,6 +52,8 @@ public:
 	template<class T>
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
+	virtual void SetTexture(std::string name, class SSTexture2D* texture) override;
+	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 protected:	
     void CreateInputLayout(ID3D11ShaderReflection* shaderReflection);
     ID3D11VertexShader* mVertexShader = nullptr;
@@ -83,6 +88,9 @@ public:
 
 	template<class T>
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
+
+	virtual void SetTexture(std::string name, class SSTexture2D* texture) override;
+	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 protected:
     ID3D11PixelShader* mPixelShader = nullptr;
 };

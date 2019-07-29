@@ -58,11 +58,11 @@ struct VariableInConstantBufferInfo
     std::string Name;
 };
 
-class DXGenericConstantBuffer : public SSBufferBase
+class SSGenericConstantBuffer : public SSBufferBase
 {
 public:
-    DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);
-    virtual ~DXGenericConstantBuffer() override;
+    SSGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);
+    virtual ~SSGenericConstantBuffer() override;
     
     template<class T>
     void SetBufferSubData(std::string name, const T& value);
@@ -70,15 +70,20 @@ public:
     template<class T>
     void SetBufferData(const T& value);
 
+	template<class T>
+	void StoreBufferData(const T& value);
+
 protected:
     BYTE* mBufferData = nullptr;
     std::vector<VariableInConstantBufferInfo> mVariableInfoArray;
+
+	friend class SSDrawCommand;
 
     virtual void SubmitDataToDevice() override;
 };
 
 template<class T>
-void DXGenericConstantBuffer::SetBufferSubData(std::string name , const T& value)
+void SSGenericConstantBuffer::SetBufferSubData(std::string name , const T& value)
 {
     for(auto& iter : mVariableInfoArray)
     {
@@ -94,13 +99,19 @@ void DXGenericConstantBuffer::SetBufferSubData(std::string name , const T& value
 }
 
 template<class T>
-void DXGenericConstantBuffer::SetBufferData(const T& value)
+void SSGenericConstantBuffer::SetBufferData(const T& value)
 {
-    check(mpBuffer != nullptr);
-
-    check(sizeof(value) == mBufferSize);
-
-    memcpy_s(mBufferData , mBufferSize, &value, mBufferSize);
+	StoreBufferData<T>(value);
 
     SubmitDataToDevice();
+}
+
+template<class T>
+void SSGenericConstantBuffer::StoreBufferData(const T& value)
+{
+	check(mpBuffer != nullptr);
+
+	check(sizeof(value) == mBufferSize);
+
+	memcpy_s(mBufferData, mBufferSize, &value, mBufferSize);
 }

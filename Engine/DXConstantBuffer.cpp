@@ -7,7 +7,7 @@
 // trigger compile
 
 
-DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index)
+SSGenericConstantBuffer::SSGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index)
 {
     mBufferIndex = index;
 
@@ -54,7 +54,7 @@ DXGenericConstantBuffer::DXGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
 }
 
-DXGenericConstantBuffer::~DXGenericConstantBuffer()
+SSGenericConstantBuffer::~SSGenericConstantBuffer()
 {
     if(mBufferData != nullptr)
     {
@@ -63,7 +63,7 @@ DXGenericConstantBuffer::~DXGenericConstantBuffer()
     }
 }
 
-void DXGenericConstantBuffer::SubmitDataToDevice()
+void SSGenericConstantBuffer::SubmitDataToDevice()
 { 	
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     HR(SSEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));

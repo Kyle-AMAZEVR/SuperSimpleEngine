@@ -4,7 +4,7 @@
 
 
 
-class ENGINE_API DXVertexElementDeclaration
+class ENGINE_API SSVertexElementDeclaration
 {
 public:
     // POSTION, COLOR
@@ -13,5 +13,6 @@ public:
     // POSITION, NORMAL, TEXCOORD
     static D3D11_INPUT_ELEMENT_DESC PositionNormalTexcoord[3];
     
+	//
 };
 

@@ -1,12 +1,13 @@
 #include "Core.h"
 #include "SSShader.h"
 #include "SSEngine.h"
-#include "DXVertexElementDeclaration.h"
+#include "SSVertexElementDeclaration.h"
 #include <filesystem>
 #include <fstream>
 #include <map>
 #include "Templates.h"
 #include "Translator.h"
+#include "SSTexture2D.h"
 
 #pragma region DXShaderImplementation
 
@@ -51,7 +52,7 @@ void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
 
-		mConstantBufferMap[bufferDesc.Name] = new DXGenericConstantBuffer(constantBuffer, i);
+		mConstantBufferMap[bufferDesc.Name] = new SSGenericConstantBuffer(constantBuffer, i);
 	}
 	// @ end
 
@@ -64,6 +65,10 @@ void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 		if (desc.Type == D3D_SHADER_INPUT_TYPE::D3D_SIT_TEXTURE)
 		{
 			mTextureMap[desc.Name] = desc.BindPoint;
+		}
+		else if (desc.Type == D3D_SHADER_INPUT_TYPE::D3D10_SIT_SAMPLER)
+		{
+			mSamplerMap[desc.Name] = desc.BindPoint;
 		}
 	}
 }
@@ -94,7 +99,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
 
-		mConstantBufferMap[bufferDesc.Name] = new DXGenericConstantBuffer(constantBuffer, i);
+		mConstantBufferMap[bufferDesc.Name] = new SSGenericConstantBuffer(constantBuffer, i);
 	}
 
 	// @input layout creation
@@ -161,6 +166,25 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
     return true;
  }
 
+ void SSVertexShader::SetTexture(std::string name, SSTexture2D* texture)
+ {
+	 check(mTextureMap.count(name) > 0);
+
+	 UINT slotIndex = mTextureMap[name];
+
+	 auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+
+	 dxDeviceContext->VSSetShaderResources(slotIndex, 1, &texture->GetShaderResourceViewRef());
+ }
+
+ void SSVertexShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
+ {
+	 UINT slotIndex = mSamplerMap[name];
+	 	 
+	 auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+	 
+	 dxDeviceContext->VSSetSamplers(slotIndex, 1, &sampler);
+ }
 
 #pragma region PixelShader
 SSPixelShader::~SSPixelShader()
@@ -193,4 +217,26 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
 
     return true;
 }
+
+
+void SSPixelShader::SetTexture(std::string name, SSTexture2D* texture)
+{
+	check(mTextureMap.count(name) > 0);
+
+	UINT slotIndex = mTextureMap[name];
+
+	auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+
+	dxDeviceContext->PSSetShaderResources(slotIndex, 1, &texture->GetShaderResourceViewRef());
+}
+
+void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
+{
+	UINT slotIndex = mSamplerMap[name];
+
+	auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+
+	dxDeviceContext->PSSetSamplers(slotIndex, 1, &sampler);
+}
+
 #pragma endregion
