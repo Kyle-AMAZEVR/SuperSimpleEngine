@@ -172,7 +172,7 @@ void SSEngine::DrawScene()
     check(mDeviceContext != nullptr);
 
 	mGBuffer->Clear();
-	mGBuffer->MakeCurrentRenderTarget();
+	mGBuffer->SetCurrentRenderTarget();
 	//
 	
 
@@ -193,8 +193,10 @@ void SSEngine::DrawScene()
 
 	testDrawCmd.Do();
 
+	mGBuffer->UnsetCurrentRenderTarget();
+
 	mViewport->Clear();
-	mViewport->MakeCurrentRenderTarget();
+	mViewport->SetCurrentRenderTarget();
 
 	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
 

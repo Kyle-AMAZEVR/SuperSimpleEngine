@@ -241,6 +241,21 @@ void SSPixelShader::SetTexture(std::string name, SSTexture2DBase* texture)
 	}
 }
 
+void SSPixelShader::SetTextureAsNull(std::string name)
+{
+	if (mTextureMap.count(name) > 0)
+	{
+		UINT slotIndex = mTextureMap[name];
+
+		auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+
+		ID3D11ShaderResourceView* nullResourceView = nullptr;
+
+		dxDeviceContext->PSSetShaderResources(slotIndex, 1, &nullResourceView);
+	}
+}
+
+
 void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
 {
 	UINT slotIndex = mSamplerMap[name];

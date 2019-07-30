@@ -21,7 +21,9 @@ public:
 
 	virtual void Resize(UINT newWidth, UINT newHeight) override;
 
-	virtual void MakeCurrentRenderTarget() override;
+	virtual void SetCurrentRenderTarget() override;
+
+	virtual void UnsetCurrentRenderTarget() override;
 
 	virtual void Destroy() override;
 

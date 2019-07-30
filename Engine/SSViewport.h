@@ -14,7 +14,7 @@ public:
 
     void Resize(int newWidth, int newHeight);	
 
-	virtual void MakeCurrentRenderTarget() override;
+	virtual void SetCurrentRenderTarget() override;
 
 protected:
 

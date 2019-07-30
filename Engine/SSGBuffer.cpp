@@ -58,10 +58,10 @@ void SSGBuffer::Resize(UINT newWidth, UINT newHeight)
 	mViewport.MinDepth = 0.0f;
 	mViewport.MaxDepth = 1.0f;
 
-	MakeCurrentRenderTarget();
+	SetCurrentRenderTarget();
 }
 
-void SSGBuffer::MakeCurrentRenderTarget()
+void SSGBuffer::SetCurrentRenderTarget()
 {
 	ID3D11RenderTargetView* renderTargets[4]{
 		mRenderTargetArray[0]->GetRenderTargetView(),
@@ -75,6 +75,11 @@ void SSGBuffer::MakeCurrentRenderTarget()
 	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(3, renderTargets, depthStencil);
 
 	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+}
+
+void SSGBuffer::UnsetCurrentRenderTarget()
+{
+	//SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(3, nullptr, nullptr);
 }
 
 void SSGBuffer::Clear()

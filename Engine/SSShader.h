@@ -15,6 +15,8 @@ public:
     virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture){}
+	virtual void SetTextureAsNull(std::string name){}
+
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) {}
 
 	std::vector<std::string> GetSamplerNames();
@@ -59,6 +61,7 @@ public:
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
+	
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 protected:	
     void CreateInputLayout(ID3D11ShaderReflection* shaderReflection);
@@ -96,6 +99,7 @@ public:
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
+	virtual void SetTextureAsNull(std::string name) override;
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 protected:
     ID3D11PixelShader* mPixelShader = nullptr;

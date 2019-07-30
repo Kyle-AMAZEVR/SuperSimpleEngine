@@ -16,7 +16,7 @@ void SSViewport::Clear()
     }
 }
 
-void SSViewport::MakeCurrentRenderTarget()
+void SSViewport::SetCurrentRenderTarget()
 {
 	// Bind the render target view and depth/stencil view to the pipeline.
 	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
@@ -86,7 +86,7 @@ void SSViewport::Resize(int newWidth, int newHeight)
 	HR(dxDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
 	HR(dxDevice->CreateDepthStencilView(mDepthStencilBuffer, 0, &mDepthStencilView));
 
-	MakeCurrentRenderTarget();
+	SetCurrentRenderTarget();
 
 	SSCameraManager::Get().SetCurrentCameraAspectRatio(static_cast<float>(mWidth) / static_cast<float>(mHeight));
 }

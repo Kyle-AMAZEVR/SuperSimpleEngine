@@ -73,6 +73,11 @@ void SSDrawCommand::Do()
 
 	// @ draw
 	mObject->Draw(deviceContext);
+
+	for (auto& kvp : mPixelShaderTextureMap)
+	{
+		mpPS->SetTextureAsNull(kvp.first);
+	}
 }
 
 
