@@ -19,7 +19,6 @@ public:
 
 protected:	
 	
-	DXGI_FORMAT mTextureFormat = DXGI_FORMAT_UNKNOWN;
 	UINT mMipLevels = 1;
 	bool bSRGB = true;
 };

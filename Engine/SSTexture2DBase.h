@@ -16,7 +16,7 @@ public:
 protected:
 	UINT mWidth;
 	UINT mHeight;
-	DXGI_FORMAT mTextureFormat;
+	DXGI_FORMAT mTextureFormat = DXGI_FORMAT_UNKNOWN;
 	ID3D11Texture2D* mTexturePtr = nullptr;		
 	ID3D11ShaderResourceView* mShaderResourceView = nullptr;
 };
