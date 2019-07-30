@@ -57,8 +57,12 @@ void SSEngine::TestCreateResources()
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
+	
+
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
+
+
     
 	mTestTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron2_basecolor.dds");
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
@@ -70,12 +74,17 @@ void SSEngine::TestCompileShader()
 	mTestPixelShader = std::make_shared<SSPixelShader>();
 	mDeferredVertexShader = std::make_shared<SSVertexShader>();
 	mDeferredPixelShader = std::make_shared<SSPixelShader>();	
+	mCubemapVertexShader = std::make_shared<SSVertexShader>();
+	mCubemapPixelShader = std::make_shared<SSPixelShader>();
 
     assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
 	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
 	
 	assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));    
 	assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
+
+	assert(mCubemapVertexShader->CompileFromFile(L"./Shader/CubemapShader.vs"));
+	assert(mCubemapPixelShader->CompileFromFile(L"./Shader/CubemapShader.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }

@@ -7,7 +7,7 @@ struct VertexOut
     float4 PosH : SV_POSITION;
     float3 PosL : POSITION;
 };
- 
+
 
 SamplerState samTriLinearSam
 {
@@ -16,7 +16,7 @@ SamplerState samTriLinearSam
     AddressV = Wrap;
 };
 
-float4 PS(VertexOut pin) : SV_Target
+float4 PSMain(VertexOut pin) : SV_Target
 {
     return gCubeMap.Sample(samTriLinearSam, pin.PosL);
 }
