@@ -76,13 +76,13 @@ void SSDrawCommand::Do()
 }
 
 
-void SSDrawCommand::SetPSTexture(std::string name, SSTexture2D* texture)
+void SSDrawCommand::SetPSTexture(std::string name, SSTexture2DBase* texture)
 {
 	mPixelShaderTextureMap[name] = texture;
 }
 
 
-void SSDrawCommand::SetVSTexture(std::string name, SSTexture2D* texture)
+void SSDrawCommand::SetVSTexture(std::string name, SSTexture2DBase* texture)
 {
 	mVertexShaderTextureMap[name] = texture;
 }

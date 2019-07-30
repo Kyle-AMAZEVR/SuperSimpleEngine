@@ -3,6 +3,9 @@
 
 #include "SSRenderTargetBase.h"
 
+class SSRenderTarget2D;
+class SSDepthRenderTarget2D;
+
 class ENGINE_API SSGBuffer : public SSRenderTargetBase
 {
 public:
@@ -15,11 +18,15 @@ public:
 	virtual void Destroy() override;
 
 	void Clear();
+	
+	SSRenderTarget2D* GetPositionOutput() { return mRenderTargetArray[0]; }
+	SSRenderTarget2D* GetColorOutput() { return mRenderTargetArray[1]; }
+	SSRenderTarget2D* GetNormalOutput() { return mRenderTargetArray[2]; }
 
 protected:
 
 	// 
-	class SSRenderTarget2D* mRenderTargetArray[3]{ nullptr };
-	class SSDepthRenderTarget2D* mDepthTarget = nullptr;
+	SSRenderTarget2D* mRenderTargetArray[3]{ nullptr };
+	SSDepthRenderTarget2D* mDepthTarget = nullptr;
 	D3D11_VIEWPORT mViewport;
 };

@@ -176,7 +176,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
     return true;
  }
 
- void SSVertexShader::SetTexture(std::string name, SSTexture2D* texture)
+ void SSVertexShader::SetTexture(std::string name, SSTexture2DBase* texture)
  {
 	 check(mTextureMap.count(name) > 0);
 
@@ -229,7 +229,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
 }
 
 
-void SSPixelShader::SetTexture(std::string name, SSTexture2D* texture)
+void SSPixelShader::SetTexture(std::string name, SSTexture2DBase* texture)
 {
 	if (mTextureMap.count(name) > 0)
 	{

@@ -18,9 +18,9 @@ public:
 	template<class T>
 	void StorePSConstantBufferData(std::string name, const T& value);
 
-	void SetPSTexture(std::string name, class SSTexture2D* texture);
+	void SetPSTexture(std::string name, class SSTexture2DBase* texture);
 
-	void SetVSTexture(std::string name, class SSTexture2D* texture);	
+	void SetVSTexture(std::string name, class SSTexture2DBase* texture);	
 
 	void SetPrimitiveType(D3D_PRIMITIVE_TOPOLOGY ePrimitiveType) { mPrimitiveType = ePrimitiveType; }
 
@@ -37,8 +37,8 @@ protected:
 	std::map<std::string, class SSGenericConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
-	std::map<std::string, class SSTexture2D*> mPixelShaderTextureMap;
-	std::map<std::string, class SSTexture2D*> mVertexShaderTextureMap;
+	std::map<std::string, class SSTexture2DBase*> mPixelShaderTextureMap;
+	std::map<std::string, class SSTexture2DBase*> mVertexShaderTextureMap;
 
 	//
 	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;

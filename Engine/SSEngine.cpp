@@ -170,11 +170,14 @@ void SSEngine::DrawScene()
     
     check(mDeviceContext != nullptr);
 
-    mViewport->Clear();
+	//mGBuffer->Clear();
+	//mGBuffer->MakeCurrentRenderTarget();
+	//
+	mViewport->Clear();
+	mViewport->MakeCurrentRenderTarget();
 
 	SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
-	//SSDrawCommand gbufferDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestCube };
-	
+	//SSDrawCommand testDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestCube };
 
 	SSCameraManager::Get().UpdateCurrentCamera();
 
@@ -189,6 +192,10 @@ void SSEngine::DrawScene()
 	testDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
 
 	testDrawCmd.Do();
+
+	
+	
+
 	
     HR(mSwapChain->Present(0,0));
 }
