@@ -212,7 +212,7 @@ void SSEngine::DrawScene()
 
 	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	
-	blitDrawCmd.Do();	_
+	blitDrawCmd.Do();	
 
 	
     HR(mSwapChain->Present(0,0));

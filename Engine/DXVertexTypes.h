@@ -88,7 +88,7 @@ struct DXGIFormatToNativeType<DXGI_FORMAT_R32_FLOAT>
 using VT_PositionColor = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT4>;
 using VT_PositionTexcoord = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT2>;
 using VT_PositionNormalTexcoord = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT3, DirectX::XMFLOAT2>;
-
+using VT_PositionNormalTexcoordTangent = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT3, DirectX::XMFLOAT2, DirectX::XMFLOAT4>;
 
 
 
