@@ -185,9 +185,7 @@ void SSEngine::DrawScene()
 
 	mGBuffer->Clear();
 	mGBuffer->SetCurrentRenderTarget();
-	//
 	
-
 	//SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
 	SSDrawCommand testDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestCube };
 
@@ -214,7 +212,7 @@ void SSEngine::DrawScene()
 
 	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	
-	blitDrawCmd.Do();
+	blitDrawCmd.Do();	_
 
 	
     HR(mSwapChain->Present(0,0));
