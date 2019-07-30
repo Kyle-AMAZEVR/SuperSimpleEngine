@@ -10,6 +10,7 @@ SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)
 	mRenderTargetArray[0] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
 	mRenderTargetArray[1] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
 	mRenderTargetArray[2] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
+	//mRenderTargetArray[3] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
 
 	mDepthTarget = new SSDepthRenderTarget2D(mWidth, mHeight);
 
@@ -24,7 +25,7 @@ SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)
 
 void SSGBuffer::Destroy()
 {
-	for (UINT i = 0; i < 3; ++i)
+	for (UINT8 i = 0; i < static_cast<UINT8>(EGBufferType::Max); ++i)
 	{
 		mRenderTargetArray[i]->Destroy();
 	}
@@ -46,6 +47,7 @@ void SSGBuffer::Resize(UINT newWidth, UINT newHeight)
 	mRenderTargetArray[0]->Resize(newWidth, newHeight);
 	mRenderTargetArray[1]->Resize(newWidth, newHeight);
 	mRenderTargetArray[2]->Resize(newWidth, newHeight);
+	//mRenderTargetArray[3]->Resize(newWidth, newHeight);
 	mDepthTarget->Resize(newWidth, newHeight);
 
 	// Set the viewport transform.
@@ -61,10 +63,11 @@ void SSGBuffer::Resize(UINT newWidth, UINT newHeight)
 
 void SSGBuffer::MakeCurrentRenderTarget()
 {
-	ID3D11RenderTargetView* renderTargets[3]{
+	ID3D11RenderTargetView* renderTargets[4]{
 		mRenderTargetArray[0]->GetRenderTargetView(),
 		mRenderTargetArray[1]->GetRenderTargetView(),
 		mRenderTargetArray[2]->GetRenderTargetView(),
+		//mRenderTargetArray[3]->GetRenderTargetView(),
 	};
 
 	ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
@@ -79,5 +82,6 @@ void SSGBuffer::Clear()
 	mRenderTargetArray[0]->Clear();
 	mRenderTargetArray[1]->Clear();
 	mRenderTargetArray[2]->Clear();
+	//mRenderTargetArray[3]->Clear();
 	mDepthTarget->Clear();
 }

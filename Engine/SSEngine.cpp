@@ -17,6 +17,7 @@
 #include "SSDrawCommand.h"
 #include "SSGBuffer.h"
 #include "SSScreenBlit.h"
+#include "SSRenderTarget2D.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -70,8 +71,8 @@ void SSEngine::TestCompileShader()
     assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
 	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
 	
-	assert(mTestVertexShader->CompileFromFile(L"./Shader/BasicShader.vs"));    
-	assert(mTestPixelShader->CompileFromFile(L"./Shader/BasicShader.ps"));
+	assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));    
+	assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -170,14 +171,13 @@ void SSEngine::DrawScene()
     
     check(mDeviceContext != nullptr);
 
-	//mGBuffer->Clear();
-	//mGBuffer->MakeCurrentRenderTarget();
+	mGBuffer->Clear();
+	mGBuffer->MakeCurrentRenderTarget();
 	//
-	mViewport->Clear();
-	mViewport->MakeCurrentRenderTarget();
+	
 
-	SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
-	//SSDrawCommand testDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestCube };
+	//SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
+	SSDrawCommand testDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestCube };
 
 	SSCameraManager::Get().UpdateCurrentCamera();
 
@@ -193,8 +193,14 @@ void SSEngine::DrawScene()
 
 	testDrawCmd.Do();
 
+	mViewport->Clear();
+	mViewport->MakeCurrentRenderTarget();
+
+	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
+
+	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	
-	
+	blitDrawCmd.Do();
 
 	
     HR(mSwapChain->Present(0,0));

@@ -6,6 +6,7 @@
 class SSVertexShader;
 class SSPixelShader;
 class SSSceneObject;
+class SSTexture2DBase;
 
 class ENGINE_API SSDrawCommand  : public DXRenderResource
 {
@@ -18,9 +19,9 @@ public:
 	template<class T>
 	void StorePSConstantBufferData(std::string name, const T& value);
 
-	void SetPSTexture(std::string name, class SSTexture2DBase* texture);
+	void SetPSTexture(std::string name, SSTexture2DBase* texture);
 
-	void SetVSTexture(std::string name, class SSTexture2DBase* texture);	
+	void SetVSTexture(std::string name, SSTexture2DBase* texture);	
 
 	void SetPrimitiveType(D3D_PRIMITIVE_TOPOLOGY ePrimitiveType) { mPrimitiveType = ePrimitiveType; }
 

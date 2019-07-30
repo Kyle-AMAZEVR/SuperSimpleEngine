@@ -6,6 +6,14 @@
 class SSRenderTarget2D;
 class SSDepthRenderTarget2D;
 
+enum class EGBufferType : UINT8
+{
+	Position,
+	Color,
+	Normal,	
+	Max,
+};
+
 class ENGINE_API SSGBuffer : public SSRenderTargetBase
 {
 public:
@@ -19,14 +27,15 @@ public:
 
 	void Clear();
 	
-	SSRenderTarget2D* GetPositionOutput() { return mRenderTargetArray[0]; }
-	SSRenderTarget2D* GetColorOutput() { return mRenderTargetArray[1]; }
-	SSRenderTarget2D* GetNormalOutput() { return mRenderTargetArray[2]; }
+	SSRenderTarget2D* GetPositionOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Position)]; }
+	SSRenderTarget2D* GetColorOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Color)]; }
+	SSRenderTarget2D* GetNormalOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Normal)]; }
+	//SSRenderTarget2D* GetTexcoordOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Texcoord)]; }
 
 protected:
 
 	// 
-	SSRenderTarget2D* mRenderTargetArray[3]{ nullptr };
+	SSRenderTarget2D* mRenderTargetArray[EGBufferType::Max]{ nullptr };
 	SSDepthRenderTarget2D* mDepthTarget = nullptr;
 	D3D11_VIEWPORT mViewport;
 };
