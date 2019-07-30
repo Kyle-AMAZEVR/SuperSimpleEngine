@@ -12,5 +12,4 @@ struct Transform
 struct MVP
 {
 	DirectX::XMMATRIX ModelViewProj;
-
 };

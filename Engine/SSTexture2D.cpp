@@ -13,16 +13,8 @@ SSTexture2D::SSTexture2D()
 
 bool SSTexture2D::Release()
 {
-	if (mTexturePtr != nullptr)
-	{
-		mTexturePtr->Release();
-		mTexturePtr = nullptr;
-	}
-	if (mResourceView != nullptr)
-	{
-		mResourceView->Release();
-		mResourceView = nullptr;
-	}
+	ReleaseCOM(mTexturePtr);
+	ReleaseCOM(mShaderResourceView);
 
 	return true;
 }
@@ -76,7 +68,7 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 	resourceViewDesc.Texture2D.MipLevels = metaData.mipLevels;
 
-	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mResourceView));
+	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
 
 	// update lod data
 	for (int i = 0; i < metaData.mipLevels; ++i)

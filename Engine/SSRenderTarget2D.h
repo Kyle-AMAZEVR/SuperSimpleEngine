@@ -8,10 +8,7 @@ class ENGINE_API SSRenderTarget2D : public SSTexture2DBase
 public:
 	SSRenderTarget2D(const UINT width, const UINT height, DXGI_FORMAT eFormat);
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
-	virtual void Destroy() override;
-
-	ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView; }
-	ID3D11ShaderResourceView*& GetShaderResourceViewRef() { return mShaderResourceView; }
+	virtual void Destroy() override;	
 	
 	ID3D11RenderTargetView* GetRenderTargetView() { return mRenderTargetView; }
 
@@ -20,8 +17,7 @@ public:
 protected:
 
 	friend class SSGBuffer;
-	ID3D11RenderTargetView* mRenderTargetView = nullptr;
-	ID3D11ShaderResourceView* mShaderResourceView = nullptr;
+	ID3D11RenderTargetView* mRenderTargetView = nullptr;	
 	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format);	
 };
 

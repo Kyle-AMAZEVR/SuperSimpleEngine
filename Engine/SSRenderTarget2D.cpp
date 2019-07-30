@@ -113,7 +113,7 @@ void SSDepthRenderTarget2D::InternalCreate(const UINT newWidth, const UINT heigh
 	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
 	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	depthStencilDesc.CPUAccessFlags = 0;
-	depthStencilDesc.MiscFlags = 0;
+	depthStencilDesc.MiscFlags = 0;	
 
 	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &mTexturePtr));
 

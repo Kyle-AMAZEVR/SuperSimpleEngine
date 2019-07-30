@@ -8,8 +8,9 @@ public:
 
 	UINT GetWidth() { return mWidth; }
 	UINT GetHeight() {	return mHeight; }
-	ID3D11Texture2D* GetTexturePtr() { return mTexturePtr; }
-
+	
+	virtual ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView; }
+	virtual ID3D11ShaderResourceView*& GetShaderResourceViewRef() { return mShaderResourceView; }
 	
 
 protected:
@@ -17,5 +18,5 @@ protected:
 	UINT mHeight;
 	DXGI_FORMAT mTextureFormat;
 	ID3D11Texture2D* mTexturePtr = nullptr;		
-	
+	ID3D11ShaderResourceView* mShaderResourceView = nullptr;
 };
