@@ -1,0 +1,22 @@
+
+
+TextureCube gCubeMap;
+
+struct VertexOut
+{
+    float4 PosH : SV_POSITION;
+    float3 PosL : POSITION;
+};
+ 
+
+SamplerState samTriLinearSam
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+float4 PS(VertexOut pin) : SV_Target
+{
+    return gCubeMap.Sample(samTriLinearSam, pin.PosL);
+}

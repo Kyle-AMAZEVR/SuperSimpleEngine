@@ -75,7 +75,7 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	{
 		auto* pLodImage = image.GetImage(i, 0, 0);
 		assert(pLodImage != nullptr);
-		auto dstSubresource = D3D11CalcSubresource(i, 0, i);
+		auto dstSubresource = D3D11CalcSubresource(i, 0, metaData.mipLevels);
 		SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
 	}	
 	

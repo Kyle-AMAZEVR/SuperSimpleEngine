@@ -18,6 +18,7 @@
 #include "SSGBuffer.h"
 #include "SSScreenBlit.h"
 #include "SSRenderTarget2D.h"
+#include "SSTextureCube.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -54,11 +55,13 @@ void SSEngine::TestCreateResources()
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
 	mTestTexture = std::make_shared<SSTexture2D>();
 	mTestCube = std::make_shared<SSCube>();
+	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
     
 	mTestTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron2_basecolor.dds");
+	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
 }
 
 void SSEngine::TestCompileShader()

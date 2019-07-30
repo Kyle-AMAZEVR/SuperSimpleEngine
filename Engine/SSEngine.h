@@ -62,7 +62,7 @@ private:
 
 	std::shared_ptr<class SSVertexShader> mDeferredVertexShader;
 	std::shared_ptr<class SSPixelShader> mDeferredPixelShader;
-
+	std::shared_ptr<class SSTextureCube> mTestCubeTexture;
     
     
 	std::shared_ptr<class SSTexture2D> mTestTexture;
