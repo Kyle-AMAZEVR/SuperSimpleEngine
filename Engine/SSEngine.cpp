@@ -189,9 +189,7 @@ void SSEngine::DrawScene()
 	
 	testDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
 
-	testDrawCmd.Do();
-
-	mGBuffer->UnsetCurrentRenderTarget();
+	testDrawCmd.Do();	
 
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();
