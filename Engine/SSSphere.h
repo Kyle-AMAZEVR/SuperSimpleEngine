@@ -22,7 +22,7 @@ protected:
 	static class SSVertexBuffer* mSphereVB;
 	static class SSIndexBuffer* mSphereIB;
 
-	std::vector<XMFLOAT3> mTempVertexList;
+	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;
 	std::vector<XMFLOAT2> mTempTexCoordList;
 	std::vector<XMFLOAT4> mTempTangentList;

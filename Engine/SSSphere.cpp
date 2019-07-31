@@ -2,12 +2,18 @@
 #include "Core.h"
 #include "SSSphere.h"
 #include <cmath>
-
+#include "DXVertexTypes.h"
+#include "DXVertexBuffer.h"
+#include "SSIndexBuffer.h"
 
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	: mSectorCount(sector), mStackCount(stack), mRadius(radius)
 {
-	
+	if (bIsInitialized == false)
+	{
+		InternalCreate();
+		bIsInitialized = true;
+	}
 }
 
 
@@ -51,23 +57,23 @@ void SSSphere::InternalCreate()
 			auto x4 = sectorRadius2 * DirectX::XMScalarCos(XMConvertToRadians(deg2));
 			auto z4 = sectorRadius2 * DirectX::XMScalarSin(XMConvertToRadians(deg2));
 
-			auto V1 = XMFLOAT3{ (float)x1, (float)y1, (float)z1 };
+			auto V1 = XMFLOAT4{ (float)x1, (float)y1, (float)z1 , 1};
 			auto T1 = XMFLOAT2{ u1, v1 };
 
-			auto V2 = XMFLOAT3((float)x2, (float)y1, (float)z2);
+			auto V2 = XMFLOAT4((float)x2, (float)y1, (float)z2, 1);
 			auto T2 = XMFLOAT2(u2, v1);
 
-			auto V3 = XMFLOAT3((float)x3, (float)y2, (float)z3);
+			auto V3 = XMFLOAT4((float)x3, (float)y2, (float)z3, 1);
 			auto T3 = XMFLOAT2(u1, v2);
 
-			auto V4 = XMFLOAT3((float)x4, (float)y2, (float)z4);
+			auto V4 = XMFLOAT4((float)x4, (float)y2, (float)z4, 1);
 			auto T4 = XMFLOAT2(u2, v2);
 
-						
-			XMFLOAT3 norm1; XMStoreFloat3(&norm1, XMVector3Normalize(XMLoadFloat3(&V1)));
-			XMFLOAT3 norm2; XMStoreFloat3(&norm2, XMVector3Normalize(XMLoadFloat3(&V2)));
-			XMFLOAT3 norm3; XMStoreFloat3(&norm3, XMVector3Normalize(XMLoadFloat3(&V3)));
-			XMFLOAT3 norm4; XMStoreFloat3(&norm4, XMVector3Normalize(XMLoadFloat3(&V4)));
+
+			XMFLOAT3 norm1; XMStoreFloat3(&norm1, XMVector3Normalize(XMLoadFloat4(&V1)));
+			XMFLOAT3 norm2; XMStoreFloat3(&norm2, XMVector3Normalize(XMLoadFloat4(&V2)));
+			XMFLOAT3 norm3; XMStoreFloat3(&norm3, XMVector3Normalize(XMLoadFloat4(&V3)));
+			XMFLOAT3 norm4; XMStoreFloat3(&norm4, XMVector3Normalize(XMLoadFloat4(&V4)));
 
 			// V1-----V2
 			//       /
@@ -103,6 +109,41 @@ void SSSphere::InternalCreate()
 			mTempTexCoordList.push_back(T4);
 		}
 	}
+
+	GenerateTangents();
+
+	std::vector< VT_PositionNormalTexcoordTangent > vertexArray;
+	std::vector<UINT> indexArray;
+	
+
+	for (UINT i = 0; i < mTempVertexList.size(); i += 3)
+	{
+		// face1
+		vertexArray.push_back(VT_PositionNormalTexcoordTangent
+		(
+			mTempVertexList[i], mTempNormalList[i], mTempTexCoordList[i], mTempTangentList[i]
+		));
+
+		vertexArray.push_back(VT_PositionNormalTexcoordTangent
+		(
+			mTempVertexList[i + 1], mTempNormalList[i + 1], mTempTexCoordList[i + 1], mTempTangentList[i + 1]
+		));
+
+		vertexArray.push_back(VT_PositionNormalTexcoordTangent
+		(
+			mTempVertexList[i + 2], mTempNormalList[i + 2], mTempTexCoordList[i + 2], mTempTangentList[i + 2]
+		));
+
+		indexArray.push_back(i);
+		indexArray.push_back(i+1);
+		indexArray.push_back(i+2);
+	}
+
+	mSphereVB = new SSVertexBuffer();
+	mSphereVB->SetVertexBufferData(vertexArray);	
+
+	mSphereIB = new SSIndexBuffer();
+	mSphereIB->SetIndexBufferData(indexArray);
 }
 
 
@@ -125,9 +166,9 @@ void SSSphere::GenerateTangents()
 	// Compute the tangent vector
 	for (UINT i = 0; i < mTempVertexList.size(); i += 3)
 	{
-		XMVECTOR p1 = XMLoadFloat3(&mTempVertexList[(int)i]);
-		XMVECTOR p2 = XMLoadFloat3(&mTempVertexList[(int)i + 1]);
-		XMVECTOR p3 = XMLoadFloat3(&mTempVertexList[(int)i + 2]);
+		XMVECTOR p1 = XMLoadFloat4(&mTempVertexList[(int)i]);
+		XMVECTOR p2 = XMLoadFloat4(&mTempVertexList[(int)i + 1]);
+		XMVECTOR p3 = XMLoadFloat4(&mTempVertexList[(int)i + 2]);
 
 		XMVECTOR tc1 = XMLoadFloat2(&mTempTexCoordList[(int)i]);
 		XMVECTOR tc2 = XMLoadFloat2(&mTempTexCoordList[(int)i + 1]);
