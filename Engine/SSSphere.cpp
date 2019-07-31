@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSSphere.h"
-
+#include <cmath>
 
 
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
@@ -108,13 +108,13 @@ void SSSphere::InternalCreate()
 
 void SSSphere::GenerateTangents()
 {
-	std::vector<XMFLOAT3> tan1Accum;
-	std::vector<XMFLOAT3> tan2Accum;	
+	std::vector<XMVECTOR> tan1Accum;
+	std::vector<XMVECTOR> tan2Accum;	
 
 	for (UINT i = 0; i < mTempVertexList.size(); ++i)
 	{
-		tan1Accum.push_back(XMFLOAT3(0, 0, 0));
-		tan2Accum.push_back(XMFLOAT3(0, 0, 0));
+		tan1Accum.push_back(XMVECTOR());
+		tan2Accum.push_back(XMVECTOR());
 	}
 
 	for (UINT i = 0; i < mTempVertexList.size(); i++)
@@ -133,9 +133,8 @@ void SSSphere::GenerateTangents()
 		XMVECTOR tc2 = XMLoadFloat2(&mTempTexCoordList[(int)i + 1]);
 		XMVECTOR tc3 = XMLoadFloat2(&mTempTexCoordList[(int)i + 2]);
 
-		XMVECTOR q1 = p2 - p1;
-		XMVECTOR q2 = p3 - p1;
-		
+		XMFLOAT3 q1; XMStoreFloat3(&q1, p2 - p1);
+		XMFLOAT3 q2; XMStoreFloat3(&q2, p3 - p1);		
 
 		float s1 = mTempTexCoordList[(int)i + 1].x - mTempTexCoordList[(int)i].x;
 		float s2 = mTempTexCoordList[(int)i + 2].x - mTempTexCoordList[(int)i].x;
@@ -145,20 +144,24 @@ void SSSphere::GenerateTangents()
 
 		// prevent degeneration
 		float r = 1.0f / (s1 * t2 - s2 * t1);
-
-		if (Single.IsInfinity(r))
+			   
+		if (std::isinf(r))
 		{
 			r = 1 / 0.1f;
 		}
 
-		var tan1 = new Vector3((t2 * q1.X - t1 * q2.X) * r,
-			(t2 * q1.Y - t1 * q2.Y) * r,
-			(t2 * q1.Z - t1 * q2.Z) * r);
+		XMFLOAT3 tmptan1;
+		tmptan1.x = (t2 * q1.x - t1 * q2.x) * r;
+		tmptan1.y = (t2 * q1.y - t1 * q2.y) * r;
+		tmptan1.z = (t2 * q1.z - t1 * q2.z) * r;
 
-		var tan2 = new Vector3((s1 * q2.X - s2 * q1.X) * r,
-			(s1 * q2.Y - s2 * q1.Y) * r,
-			(s1 * q2.Z - s2 * q1.Z) * r);
+		XMFLOAT3 tmptan2;
+		tmptan2.x = (s1 * q2.x - s2 * q1.x) * r;
+		tmptan2.y = (s1 * q2.y - s2 * q1.y) * r;
+		tmptan2.z = (s1 * q2.z - s2 * q1.z) * r;
 
+		auto tan1 = XMLoadFloat3(&tmptan1);
+		auto tan2 = XMLoadFloat3(&tmptan2);
 
 		tan1Accum[(int)i] += tan1;
 		tan1Accum[(int)i + 1] += tan1;
@@ -169,45 +172,54 @@ void SSSphere::GenerateTangents()
 		tan2Accum[(int)i + 2] += tan2;
 	}
 
-	Vector4 lastValidTangent = new Vector4();
+	XMFLOAT4 lastValidTangent{ 0 };
 
-	for (UINT i = 0; i < mTempVertexList.Count; ++i)
+	for (UINT i = 0; i < mTempVertexList.size(); ++i)
 	{
-		var n = mTempNormalList[(int)i];
-		var t1 = tan1Accum[(int)i];
-		var t2 = tan2Accum[(int)i];
-
+		auto n =  DirectX::XMLoadFloat3(&mTempNormalList[(int)i]);
+		auto t1 = tan1Accum[(int)i];
+		auto t2 = tan2Accum[(int)i];
+		
 		// Gram-Schmidt orthogonalize                
-		var temp = OpenTK.Vector3.Normalize(t1 - (OpenTK.Vector3.Dot(n, t1) * n));
+		XMFLOAT3 temp; 
+		XMStoreFloat3(&temp, XMVector3Normalize(t1 - (XMVector3Dot(n, t1) * n)));
 		// Store handedness in w                
-		var W = (OpenTK.Vector3.Dot(OpenTK.Vector3.Cross(n, t1), t2) < 0.0f) ? -1.0f : 1.0f;
+		XMFLOAT3 dotResult;
+		XMStoreFloat3(&dotResult, XMVector3Dot(XMVector3Cross(n, t1), t2));
+
+		auto W = (dotResult.x < 0.0f) ? -1.0f : 1.0f;
 
 		bool bValid = true;
-		if (Single.IsNaN(temp.X) || Single.IsNaN(temp.Y) || Single.IsNaN(temp.Z))
+		if (std::isnan(temp.x) || std::isnan(temp.y) || std::isnan(temp.z))
 		{
 			bValid = false;
 		}
 
-		if (Single.IsInfinity(temp.X) || Single.IsInfinity(temp.Y) || Single.IsInfinity(temp.Z))
+		if (std::isinf(temp.x) || std::isinf(temp.y) || std::isinf(temp.z))
 		{
 			bValid = false;
 		}
 
 		if (bValid == true)
 		{
-			lastValidTangent = new Vector4(temp.X, temp.Y, temp.Z, W);
+			lastValidTangent.x = temp.x;
+			lastValidTangent.y = temp.y;
+			lastValidTangent.z = temp.z;
+			lastValidTangent.w = W;
 		}
 
 		if (bValid == false)
 		{
-			temp = lastValidTangent.Xyz;
+			temp.x = lastValidTangent.x;
+			temp.y = lastValidTangent.y;
+			temp.z = lastValidTangent.z;
 		}
 
-		TempTangentList[(int)i] = new Vector4(temp.X, temp.Y, temp.Z, W);
+		mTempTangentList[i].x = temp.x;
+		mTempTangentList[i].y = temp.y;
+		mTempTangentList[i].z = temp.z;
+		mTempTangentList[i].w = W;
 	}
-
-	tan1Accum.Clear();
-	tan2Accum.Clear();
 	
 }
 
