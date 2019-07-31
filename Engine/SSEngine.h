@@ -17,8 +17,7 @@ public:
     void OnWindowResize(int newWidth, int newHeight);
     static bool IsInitialized() { return bInitialized; }
 
-	void SetVertexShader(std::weak_ptr<SSVertexShader> vs);
-	void SetPixelShader(std::weak_ptr<SSPixelShader> ps);
+	
 
     inline ID3D11Device* GetDevice() { return mDevice; }
     inline ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }

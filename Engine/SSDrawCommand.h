@@ -8,6 +8,14 @@ class SSPixelShader;
 class SSSceneObject;
 class SSTexture2DBase;
 
+class ENGINE_API SSDrawCommandBase
+{
+public :
+	virtual void Do() = 0;
+};
+
+
+
 class ENGINE_API SSDrawCommand  : public DXRenderResource
 {
 public:	

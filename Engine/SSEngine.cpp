@@ -162,19 +162,6 @@ bool SSEngine::CreateSwapChain()
     return true;
 }
 
-void SSEngine::SetVertexShader(std::weak_ptr<SSVertexShader> vs)
-{
-	if (vs.expired() == false)
-	{
-		auto sharedVS = vs.lock();
-		mDeviceContext->VSSetShader(sharedVS->GetShader(), nullptr, 0);
-	}
-}
-void SSEngine::SetPixelShader(std::weak_ptr<SSPixelShader> ps)
-{
-	
-}
-
 void SSEngine::DrawScene()
 {
     if(bInitialized == false)
