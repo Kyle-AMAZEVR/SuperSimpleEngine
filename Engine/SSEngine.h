@@ -52,6 +52,7 @@ private:
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
 
 	std::shared_ptr<class SSCube> mTestCube;
+	std::shared_ptr<class SSSphere> mTestSphere;
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;
     // 
     std::shared_ptr<class SSVertexBuffer> mTestVertexBuffer;

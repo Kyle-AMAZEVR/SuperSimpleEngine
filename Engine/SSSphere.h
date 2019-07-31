@@ -9,6 +9,7 @@ class ENGINE_API SSSphere : public SSSceneObject
 public:
 	SSSphere(UINT sector, UINT stack, float radius);
 
+	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 protected:
 	UINT mSectorCount = 5;
 	UINT mStackCount = 5;

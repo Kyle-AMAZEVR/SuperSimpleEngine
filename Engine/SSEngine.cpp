@@ -19,6 +19,7 @@
 #include "SSScreenBlit.h"
 #include "SSRenderTarget2D.h"
 #include "SSTextureCube.h"
+#include "SSSphere.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -56,7 +57,7 @@ void SSEngine::TestCreateResources()
 	mTestTexture = std::make_shared<SSTexture2D>();
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
-
+	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);
 	
 
 	mTestCube->SetScale(1, 1, 1);
@@ -187,7 +188,7 @@ void SSEngine::DrawScene()
 	mGBuffer->SetCurrentRenderTarget();
 	
 	//SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
-	SSDrawCommand testDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestCube };
+	SSDrawCommand testDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
 
 	SSCameraManager::Get().UpdateCurrentCamera();
 

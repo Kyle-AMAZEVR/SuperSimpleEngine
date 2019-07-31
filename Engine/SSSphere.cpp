@@ -213,7 +213,7 @@ void SSSphere::GenerateTangents()
 		tan2Accum[(int)i + 2] += tan2;
 	}
 
-	XMFLOAT4 lastValidTangent{ 0 };
+	XMFLOAT4 lastValidTangent;
 
 	for (UINT i = 0; i < mTempVertexList.size(); ++i)
 	{
@@ -264,7 +264,20 @@ void SSSphere::GenerateTangents()
 	
 }
 
+void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
+{
+	mYaw += 0.01f;
 
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	auto stride = mSphereVB->GetStride();
+	UINT offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetIndexBuffer(mSphereIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+
+	deviceContext->DrawIndexed(mSphereIB->GetIndexCount(), 0, 0);
+}
 
 
 bool SSSphere::bIsInitialized = false;
