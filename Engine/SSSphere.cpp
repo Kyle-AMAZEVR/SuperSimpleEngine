@@ -108,38 +108,44 @@ void SSSphere::InternalCreate()
 
 void SSSphere::GenerateTangents()
 {
-	/*List<Vector3> tan1Accum = new List<Vector3>();
-	List<Vector3> tan2Accum = new List<Vector3>();
+	std::vector<XMFLOAT3> tan1Accum;
+	std::vector<XMFLOAT3> tan2Accum;	
 
-	for (uint i = 0; i < TempVertexList.Count; ++i)
+	for (UINT i = 0; i < mTempVertexList.size(); ++i)
 	{
-		tan1Accum.Add(new Vector3(0, 0, 0));
-		tan2Accum.Add(new Vector3(0, 0, 0));
+		tan1Accum.push_back(XMFLOAT3(0, 0, 0));
+		tan2Accum.push_back(XMFLOAT3(0, 0, 0));
 	}
 
-	for (uint i = 0; i < TempVertexList.Count; i++)
+	for (UINT i = 0; i < mTempVertexList.size(); i++)
 	{
-		TempTangentList.Add(new Vector4(0, 0, 0, 0));
+		mTempTangentList.push_back(XMFLOAT4(0, 0, 0, 0));
 	}
 
 	// Compute the tangent vector
-	for (uint i = 0; i < TempVertexList.Count; i += 3)
+	for (UINT i = 0; i < mTempVertexList.size(); i += 3)
 	{
-		var p1 = TempVertexList[(int)i];
-		var p2 = TempVertexList[(int)i + 1];
-		var p3 = TempVertexList[(int)i + 2];
+		XMVECTOR p1 = XMLoadFloat3(&mTempVertexList[(int)i]);
+		XMVECTOR p2 = XMLoadFloat3(&mTempVertexList[(int)i + 1]);
+		XMVECTOR p3 = XMLoadFloat3(&mTempVertexList[(int)i + 2]);
 
-		var tc1 = TempTexCoordList[(int)i];
-		var tc2 = TempTexCoordList[(int)i + 1];
-		var tc3 = TempTexCoordList[(int)i + 2];
+		XMVECTOR tc1 = XMLoadFloat2(&mTempTexCoordList[(int)i]);
+		XMVECTOR tc2 = XMLoadFloat2(&mTempTexCoordList[(int)i + 1]);
+		XMVECTOR tc3 = XMLoadFloat2(&mTempTexCoordList[(int)i + 2]);
 
-		Vector3 q1 = p2 - p1;
-		Vector3 q2 = p3 - p1;
-		float s1 = tc2.X - tc1.X, s2 = tc3.X - tc1.X;
-		float t1 = tc2.Y - tc1.Y, t2 = tc3.Y - tc1.Y;
+		XMVECTOR q1 = p2 - p1;
+		XMVECTOR q2 = p3 - p1;
+		
+
+		float s1 = mTempTexCoordList[(int)i + 1].x - mTempTexCoordList[(int)i].x;
+		float s2 = mTempTexCoordList[(int)i + 2].x - mTempTexCoordList[(int)i].x;
+
+		float t1 = mTempTexCoordList[(int)i+1].y - mTempTexCoordList[(int)i].y;
+		float t2 = mTempTexCoordList[(int)i+2].y - mTempTexCoordList[(int)i].y;
 
 		// prevent degeneration
 		float r = 1.0f / (s1 * t2 - s2 * t1);
+
 		if (Single.IsInfinity(r))
 		{
 			r = 1 / 0.1f;
@@ -165,9 +171,9 @@ void SSSphere::GenerateTangents()
 
 	Vector4 lastValidTangent = new Vector4();
 
-	for (uint i = 0; i < TempVertexList.Count; ++i)
+	for (UINT i = 0; i < mTempVertexList.Count; ++i)
 	{
-		var n = TempNormalList[(int)i];
+		var n = mTempNormalList[(int)i];
 		var t1 = tan1Accum[(int)i];
 		var t2 = tan2Accum[(int)i];
 
@@ -202,7 +208,7 @@ void SSSphere::GenerateTangents()
 
 	tan1Accum.Clear();
 	tan2Accum.Clear();
-	*/
+	
 }
 
 

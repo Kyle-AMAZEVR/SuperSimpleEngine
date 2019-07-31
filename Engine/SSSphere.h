@@ -10,7 +10,6 @@ public:
 	SSSphere(UINT sector, UINT stack, float radius);
 
 protected:
-
 	UINT mSectorCount = 5;
 	UINT mStackCount = 5;
 	float mRadius = 5.0f;
@@ -26,4 +25,5 @@ protected:
 	std::vector<XMFLOAT3> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;
 	std::vector<XMFLOAT2> mTempTexCoordList;
+	std::vector<XMFLOAT4> mTempTangentList;
 };
