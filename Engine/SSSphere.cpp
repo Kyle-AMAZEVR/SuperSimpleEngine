@@ -266,7 +266,7 @@ void SSSphere::GenerateTangents()
 
 void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 {
-	mYaw += 0.01f;
+	mYaw += 0.001f;
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

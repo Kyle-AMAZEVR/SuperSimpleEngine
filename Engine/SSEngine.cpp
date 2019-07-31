@@ -192,7 +192,7 @@ void SSEngine::DrawScene()
 
 	SSCameraManager::Get().UpdateCurrentCamera();
 
-	XMFLOAT4X4 model; XMStoreFloat4x4(&model, XMMatrixTranspose(mTestCube->GetModelTransform()));
+	XMFLOAT4X4 model; XMStoreFloat4x4(&model, XMMatrixTranspose(mTestSphere->GetModelTransform()));
 	XMFLOAT4X4 view; XMStoreFloat4x4(&view, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	XMFLOAT4X4 proj; XMStoreFloat4x4(&proj, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 		
