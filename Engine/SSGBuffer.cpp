@@ -7,12 +7,12 @@
 SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)
 	: mWidth(width), mHeight(height), mFormat(format)
 {
-	mRenderTargetArray[0] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
-	mRenderTargetArray[1] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
-	mRenderTargetArray[2] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
+	mRenderTargetArray[0] = new SSRenderTargetTexture2D(mWidth, mHeight, mFormat);
+	mRenderTargetArray[1] = new SSRenderTargetTexture2D(mWidth, mHeight, mFormat);
+	mRenderTargetArray[2] = new SSRenderTargetTexture2D(mWidth, mHeight, mFormat);
 	//mRenderTargetArray[3] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
 
-	mDepthTarget = new SSDepthRenderTarget2D(mWidth, mHeight);
+	mDepthTarget = new SSDepthRenderTargetTexture2D(mWidth, mHeight);
 
 	// Set the viewport transform.
 	mViewport.TopLeftX = 0;

@@ -2,9 +2,10 @@
 #pragma once
 
 #include "SSRenderTargetBase.h"
+#include "SSRenderTarget2D.h"
 
 class SSRenderTarget2D;
-class SSDepthRenderTarget2D;
+class SSDepthRenderTargetTexture2D;
 
 enum class EGBufferType : UINT8
 {
@@ -26,14 +27,14 @@ public:
 	virtual UINT GetWidth() const override { return mWidth; }
 	virtual UINT GetHeight() const override { return mHeight; }
 	
-	SSRenderTarget2D* GetPositionOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Position)]; }
-	SSRenderTarget2D* GetColorOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Color)]; }
-	SSRenderTarget2D* GetNormalOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Normal)]; }	
+	SSRenderTargetTexture2D* GetPositionOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Position)]; }
+	SSRenderTargetTexture2D* GetColorOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Color)]; }
+	SSRenderTargetTexture2D* GetNormalOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Normal)]; }	
 
 protected:
 	// 
-	SSRenderTarget2D* mRenderTargetArray[EGBufferType::Max]{ nullptr };
-	SSDepthRenderTarget2D* mDepthTarget = nullptr;
+	SSRenderTargetTexture2D* mRenderTargetArray[EGBufferType::Max]{ nullptr };
+	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
 	D3D11_VIEWPORT mViewport;
 	UINT mWidth;
 	UINT mHeight;

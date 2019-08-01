@@ -3,14 +3,14 @@
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
 
-SSRenderTarget2D::SSRenderTarget2D(const UINT width, const UINT height, DXGI_FORMAT format)
+SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT format)
 {
 	mWidth = width;
 	mHeight = height;
 	mTextureFormat = format;
 	InternalCreate(width, height, format);
 }
-void SSRenderTarget2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format)
+void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format)
 {
 	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
 	textureDesc.Width = mWidth = width;
@@ -45,14 +45,14 @@ void SSRenderTarget2D::InternalCreate(const UINT width, const UINT height, DXGI_
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &shaderResourceViewDesc, &mShaderResourceView));
 }
 
-void SSRenderTarget2D::Destroy()
+void SSRenderTargetTexture2D::Destroy()
 {
 	ReleaseCOM(mTexturePtr);
 	ReleaseCOM(mShaderResourceView);
 	ReleaseCOM(mRenderTargetView);
 }
 
-void SSRenderTarget2D::Resize(const UINT newWidth, const UINT newHeight)
+void SSRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
 {
 	if (mWidth != newWidth || mHeight != newHeight)
 	{
@@ -61,7 +61,7 @@ void SSRenderTarget2D::Resize(const UINT newWidth, const UINT newHeight)
 	}
 }
 
-void SSRenderTarget2D::Clear()
+void SSRenderTargetTexture2D::Clear()
 {
 	float Color[4]{ 1.0f, 1.0f, 1.0f, 1.0f };
 	
@@ -70,7 +70,7 @@ void SSRenderTarget2D::Clear()
 
 ///////////////////////////
 
-SSDepthRenderTarget2D::SSDepthRenderTarget2D(const UINT width, const UINT height, DXGI_FORMAT eFormat)		
+SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat)		
 {
 	mWidth = width;
 	mHeight = height;
@@ -79,24 +79,24 @@ SSDepthRenderTarget2D::SSDepthRenderTarget2D(const UINT width, const UINT height
 	InternalCreate(width, height, eFormat);
 }
 
-void SSDepthRenderTarget2D::Clear()
+void SSDepthRenderTargetTexture2D::Clear()
 {
 	SSEngine::Get().GetDeviceContext()->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
-void SSDepthRenderTarget2D::Destroy()
+void SSDepthRenderTargetTexture2D::Destroy()
 {
 	ReleaseCOM(mTexturePtr);
 	ReleaseCOM(mDepthStencilView);
 }
 
-void SSDepthRenderTarget2D::Resize(const UINT newWidth, const UINT newHeight)
+void SSDepthRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
 {
 	Destroy();
 	InternalCreate(newWidth, newHeight, mTextureFormat);
 }
 
-void SSDepthRenderTarget2D::InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format)
+void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format)
 {
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
 
