@@ -3,13 +3,13 @@
 struct VertexIn
 {
     float4 PosL : POSITION;
-    
+
 };
 
 struct VertexOut
 {
     float4 PosH : SV_POSITION;
-    float3 PosL : POSITION;
+    float4 PosL : POSITION;
 };
  
 

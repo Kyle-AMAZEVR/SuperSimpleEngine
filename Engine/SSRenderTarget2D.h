@@ -41,15 +41,17 @@ public:
 
 	SSRenderTargetTexture2D* GetOutput(UINT nIndex) ;
 
-protected:
-	SSRenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
-	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
-
 	virtual UINT GetWidth() const override { return mWidth; }
 	virtual UINT GetHeight() const override { return mHeight; }
 	virtual void SetCurrentRenderTarget() override;
 	virtual void Clear() override;
 	virtual void Resize(UINT width, UINT height) override;
+
+protected:
+	SSRenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
+	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
+
+	
 
 	D3D11_VIEWPORT mViewport;
 
