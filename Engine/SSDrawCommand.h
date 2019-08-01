@@ -7,7 +7,8 @@ class SSVertexShader;
 class SSPixelShader;
 class SSSceneObject;
 class SSTexture2DBase;
-class SSRenderTargetBase;
+class IRenderTarget;
+
 
 class ENGINE_API SSDrawCmdBase : public DXRenderResource
 {
@@ -19,10 +20,19 @@ public :
 class ENGINE_API SSChangeRenderTargetCmd : public SSDrawCmdBase
 {
 public:
-	SSChangeRenderTargetCmd(SSRenderTargetBase* renderTarget);
+	SSChangeRenderTargetCmd(IRenderTarget* renderTarget);
 	virtual void Do() override;
 protected:
-	SSRenderTargetBase* mRenderTarget = nullptr;
+	IRenderTarget* mRenderTarget = nullptr;
+};
+
+class ENGINE_API SSDepthStateChangeCmd: public SSDrawCmdBase
+{
+public:
+	SSDepthStateChangeCmd();
+
+protected:
+
 };
 
 

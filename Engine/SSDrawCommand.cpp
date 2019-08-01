@@ -3,22 +3,20 @@
 #include "Core.h"
 #include "SSEngine.h"
 #include "SSDrawCommand.h"
-#include "DXVertexBuffer.h"
-#include "SSIndexBuffer.h"
 #include "SSSceneObject.h"
 #include "SSSamplerManager.h"
 
 
-SSChangeRenderTargetCmd::SSChangeRenderTargetCmd(SSRenderTargetBase* renderTarget)
+SSChangeRenderTargetCmd::SSChangeRenderTargetCmd(IRenderTarget* renderTarget)
 	: mRenderTarget(renderTarget)
 {	
 }
 
 void SSChangeRenderTargetCmd::Do()
 {
-	mRenderTarget->SetCurrentRenderTarget();
-	
+	mRenderTarget->SetCurrentRenderTarget();	
 }
+
 
 SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
