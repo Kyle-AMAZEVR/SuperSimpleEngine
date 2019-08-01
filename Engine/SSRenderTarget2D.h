@@ -39,7 +39,23 @@ class ENGINE_API SSGenericRenderTarget : public IRenderTarget
 public:
 	SSGenericRenderTarget(UINT width, UINT height, UINT count, DXGI_FORMAT eFormat = DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_FORMAT eDepthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
 
+	SSRenderTargetTexture2D* GetOutput(UINT nIndex) ;
+
 protected:
-	SSRenderTargetTexture2D* mRenderTargetArray[1]{ nullptr };
+	SSRenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
 	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
+
+	virtual UINT GetWidth() const override { return mWidth; }
+	virtual UINT GetHeight() const override { return mHeight; }
+	virtual void SetCurrentRenderTarget() override;
+	virtual void Clear() override;
+	virtual void Resize(UINT width, UINT height) override;
+
+	D3D11_VIEWPORT mViewport;
+
+	DXGI_FORMAT mFormat;
+
+	UINT mWidth;
+	UINT mHeight;
+	UINT mCount = 1;
 };

@@ -125,3 +125,85 @@ void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UIN
 
 	HR(SSEngine::Get().GetDevice()->CreateDepthStencilView(mTexturePtr, &depthStencilViewDesc, &mDepthStencilView));
 }
+
+
+
+SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count, DXGI_FORMAT eFormat, DXGI_FORMAT eDepthFormat)
+	: mWidth(width), mHeight(height), mFormat(eFormat), mCount(count)
+{
+	assert(mCount >= 1);
+	assert(mCount <= 4);
+
+	for (UINT i = 0; i < mCount; ++i)
+	{
+		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, mFormat);		
+	}
+	
+	mDepthTarget = new SSDepthRenderTargetTexture2D(mWidth, mHeight);
+
+	// Set the viewport transform.
+	mViewport.TopLeftX = 0;
+	mViewport.TopLeftY = 0;
+	mViewport.Width = static_cast<float>(mWidth);
+	mViewport.Height = static_cast<float>(mHeight);
+	mViewport.MinDepth = 0.0f;
+	mViewport.MaxDepth = 1.0f;
+}
+
+void SSGenericRenderTarget::SetCurrentRenderTarget()
+{
+	ID3D11RenderTargetView** renderTargets = new ID3D11RenderTargetView*[mCount];
+
+	for(UINT i = 0; i < mCount; ++i)
+	{
+		renderTargets[i] = mRenderTargetArray[i]->GetRenderTargetView();
+	}
+	
+	ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
+
+	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(mCount, renderTargets, depthStencil);
+
+	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+}
+
+void SSGenericRenderTarget::Resize(UINT width, UINT height)
+{
+	mWidth = width;
+	mHeight = height;
+
+	for(UINT i = 0; i < mCount; ++i)
+	{
+		mRenderTargetArray[i]->Resize(mWidth, mHeight);
+	}	
+	
+	mDepthTarget->Resize(mWidth, mHeight);
+
+	// Set the viewport transform.
+	mViewport.TopLeftX = 0;
+	mViewport.TopLeftY = 0;
+	mViewport.Width = static_cast<float>(mWidth);
+	mViewport.Height = static_cast<float>(mHeight);
+	mViewport.MinDepth = 0.0f;
+	mViewport.MaxDepth = 1.0f;
+
+	SetCurrentRenderTarget();
+}
+
+SSRenderTargetTexture2D* SSGenericRenderTarget::GetOutput(UINT nIndex)
+{
+	if(nIndex < mCount)
+	{
+		return mRenderTargetArray[nIndex];
+	}
+
+	return nullptr;
+}
+
+void SSGenericRenderTarget::Clear()
+{
+	for(UINT i = 0; i < mCount;++i)
+	{
+		mRenderTargetArray[i]->Clear();
+	}
+	mDepthTarget->Clear();	
+}
