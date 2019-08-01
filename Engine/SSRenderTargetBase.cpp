@@ -13,3 +13,4 @@ SSRenderTargetBase::SSRenderTargetBase(UINT width, UINT height, DXGI_FORMAT eFor
 	: mWidth(width), mHeight(height), mFormat(eFormat)
 {	
 }
+

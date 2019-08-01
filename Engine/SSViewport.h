@@ -5,15 +5,13 @@
 #include "SSRenderTargetBase.h"
 
 
-class ENGINE_API SSViewport : public SSRenderTargetBase
+class ENGINE_API SSViewport : public IRenderTarget
 {
 public:
-    UINT GetWidth() const { return mWidth; }
-	UINT GetHeight() const { return mHeight; }
-    void Clear();
-
-    void Resize(int newWidth, int newHeight);	
-
+    virtual UINT GetWidth() const override { return mWidth; }
+	virtual UINT GetHeight() const override { return mHeight; }
+    virtual void Clear() override;
+    virtual void Resize(UINT newWidth, UINT newHeight) override;	
 	virtual void SetCurrentRenderTarget() override;
 
 protected:
@@ -22,4 +20,8 @@ protected:
 	ID3D11RenderTargetView* mRenderTargetView = nullptr;
 	ID3D11DepthStencilView* mDepthStencilView = nullptr;
     D3D11_VIEWPORT mScreenViewport;
+
+	UINT mWidth;
+	UINT mHeight;
+	DXGI_FORMAT mFormat = DXGI_FORMAT_UNKNOWN;
 };

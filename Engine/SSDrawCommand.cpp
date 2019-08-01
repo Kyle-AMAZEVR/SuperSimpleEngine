@@ -8,6 +8,18 @@
 #include "SSSceneObject.h"
 #include "SSSamplerManager.h"
 
+
+SSChangeRenderTargetCmd::SSChangeRenderTargetCmd(SSRenderTargetBase* renderTarget)
+	: mRenderTarget(renderTarget)
+{	
+}
+
+void SSChangeRenderTargetCmd::Do()
+{
+	mRenderTarget->SetCurrentRenderTarget();
+	
+}
+
 SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
 {

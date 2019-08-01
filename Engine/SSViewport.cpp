@@ -32,7 +32,7 @@ void SSViewport::SetCurrentRenderTarget()
 	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mScreenViewport);
 }
 
-void SSViewport::Resize(int newWidth, int newHeight)
+void SSViewport::Resize(UINT newWidth, UINT newHeight)
 {
     auto* dxDevice = SSEngine::Get().GetDevice();
     auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();

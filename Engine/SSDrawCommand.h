@@ -7,16 +7,26 @@ class SSVertexShader;
 class SSPixelShader;
 class SSSceneObject;
 class SSTexture2DBase;
+class SSRenderTargetBase;
 
-class ENGINE_API SSDrawCommandBase
+class ENGINE_API SSDrawCmdBase : public DXRenderResource
 {
 public :
 	virtual void Do() = 0;
 };
 
 
+class ENGINE_API SSChangeRenderTargetCmd : public SSDrawCmdBase
+{
+public:
+	SSChangeRenderTargetCmd(SSRenderTargetBase* renderTarget);
+	virtual void Do() override;
+protected:
+	SSRenderTargetBase* mRenderTarget = nullptr;
+};
 
-class ENGINE_API SSDrawCommand  : public DXRenderResource
+
+class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 {
 public:	
 	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object);

@@ -5,7 +5,7 @@
 #include "SSEngine.h"
 
 SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)
-	: SSRenderTargetBase(width, height, format)
+	: mWidth(width), mHeight(height), mFormat(format)
 {
 	mRenderTargetArray[0] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
 	mRenderTargetArray[1] = new SSRenderTarget2D(mWidth, mHeight, mFormat);
@@ -77,10 +77,6 @@ void SSGBuffer::SetCurrentRenderTarget()
 	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
 }
 
-void SSGBuffer::UnsetCurrentRenderTarget()
-{
-	//SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(3, nullptr, nullptr);
-}
 
 void SSGBuffer::Clear()
 {	
