@@ -21,6 +21,7 @@
 #include "SSTextureCube.h"
 #include "SSSphere.h"
 #include "SSDepthStencilStateManager.h"
+#include "SSRasterizeStateManager.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -37,8 +38,11 @@ bool SSEngine::Initialize(HWND windowHandle)
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
+	
 	SSSamplerManager::Get().Initialize();
 	SSDepthStencilStateManager::Get().Initialize();
+	SSRaterizeStateManager::Get().Initialize();
+
     TestCompileShader();
     TestCreateResources();
 
@@ -219,8 +223,10 @@ void SSEngine::DrawScene()
 	testDrawCmd.SetPSTexture("gCubeMap", mTestCubeTexture.get());
 
 	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
+	SSRaterizeStateManager::Get().SetCullModeNone();
 	testDrawCmd.Do();
 	SSDepthStencilStateManager::Get().SetToDefault();
+	SSRaterizeStateManager::Get().SetToDefault();
 	
     HR(mSwapChain->Present(0,0));
 }
