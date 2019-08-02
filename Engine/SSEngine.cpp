@@ -175,7 +175,7 @@ void SSEngine::DrawScene()
     
     check(mDeviceContext != nullptr);
 
-	mGBuffer->Clear();
+	/*mGBuffer->Clear();
 	mGBuffer->SetCurrentRenderTarget();
 	
 	//SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
@@ -203,7 +203,24 @@ void SSEngine::DrawScene()
 	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	
 	blitDrawCmd.Do();	
+	*/
 
+	mViewport->Clear();
+	mViewport->SetCurrentRenderTarget();
+	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
+
+	SSCameraManager::Get().UpdateCurrentCamera();
+	
+	XMMATRIX scale = XMMatrixScaling(10, 10, 10) * SSCameraManager::Get().GetCurrentCameraTranslation();
+	XMMATRIX modelView = scale * SSCameraManager::Get().GetCurrentCameraView();
+	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
+
+	testDrawCmd.StoreVSConstantBufferData("MVP", mvp);
+	testDrawCmd.SetPSTexture("gCubeMap", mTestCubeTexture.get());
+
+	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
+	testDrawCmd.Do();
+	SSDepthStencilStateManager::Get().SetToDefault();
 	
     HR(mSwapChain->Present(0,0));
 }

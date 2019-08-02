@@ -28,6 +28,12 @@ XMMATRIX SSCameraManager::GetCurrentCameraProj() const
 	return mCurrentCamera->GetProj();
 }
 
+XMMATRIX SSCameraManager::GetCurrentCameraTranslation() const
+{
+	check(mCurrentCamera != nullptr);
+	return mCurrentCamera->GetTranslation();
+}
+
 XMMATRIX SSCameraManager::GetCurrentCameraViewProj() const 
 {
 	check(mCurrentCamera != nullptr);

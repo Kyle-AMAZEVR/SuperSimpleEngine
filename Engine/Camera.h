@@ -21,6 +21,7 @@ public:
 	virtual DirectX::XMMATRIX GetView() const { return mView; }
 	virtual DirectX::XMMATRIX GetProj() const { return mProj; }
 	virtual DirectX::XMMATRIX GetViewProj() const;
+	virtual DirectX::XMMATRIX GetTranslation() const;
 
 	void SetFOV(float fov) { mFOV = fov; }
 	float GetFOV() { return mFOV; }

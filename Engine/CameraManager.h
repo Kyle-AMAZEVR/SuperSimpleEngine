@@ -13,6 +13,7 @@ public:
 	XMMATRIX GetCurrentCameraView() const;
 	XMMATRIX GetCurrentCameraProj() const;
 	XMMATRIX GetCurrentCameraViewProj() const;
+	XMMATRIX GetCurrentCameraTranslation() const;
 
 	void IncreaseCurrentCameraFOV(float amount);
 	void DecreaseCurrentCameraFOV(float amount);

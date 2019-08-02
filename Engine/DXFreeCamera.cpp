@@ -30,3 +30,8 @@ void SSFreeCamera::Update()
 	UpdateViewMatrix();
 	UpdateProjMatrix();
 }
+
+XMMATRIX SSFreeCamera::GetTranslation() const
+{
+	return XMMatrixTranslation(mEyePosition.x, mEyePosition.y, mEyePosition.z);
+}
