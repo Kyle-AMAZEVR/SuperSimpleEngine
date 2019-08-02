@@ -53,6 +53,7 @@ if(!(expression))\
 
 
 #define ReleaseCOM(x) { if(x){ x->Release(); x = nullptr; } }
+#define InitD3DDesc(x)  ZeroMemory(&x, sizeof(x)) 
 
 using namespace DirectX;
 

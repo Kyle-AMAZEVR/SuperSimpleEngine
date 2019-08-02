@@ -40,6 +40,11 @@ bool SSEngine::Initialize(HWND windowHandle)
     TestCompileShader();
     TestCreateResources();
 
+	
+
+	
+		
+
     return true;
 }
 
