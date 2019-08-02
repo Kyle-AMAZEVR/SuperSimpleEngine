@@ -35,3 +35,8 @@ void SSRaterizeStateManager::SetCullModeNone()
 {
 	SSEngine::Get().GetDeviceContext()->RSSetState(mCullModeNoneState);
 }
+void SSRaterizeStateManager::Shutdown()
+{
+	ReleaseCOM(mCullModeNoneState);
+	ReleaseCOM(mDefaultState);
+}

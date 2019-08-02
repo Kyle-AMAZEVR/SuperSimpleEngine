@@ -25,3 +25,8 @@ void SSSamplerManager::CreateDefaultSampler()
 
 	HR(dxDevice->CreateSamplerState(&desc, &mDefaultSamplerState));
 }
+
+void SSSamplerManager::Shutdown()
+{
+	ReleaseCOM(mDefaultSamplerState);
+}

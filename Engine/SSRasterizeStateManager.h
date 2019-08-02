@@ -12,6 +12,7 @@ public:
 	void SetCullModeNone();
 	
 	
+	
 private:
 	D3D11_RASTERIZER_DESC mDefaultDesc;
 	D3D11_RASTERIZER_DESC mCullModeNoneDesc;

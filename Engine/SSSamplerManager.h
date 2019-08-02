@@ -8,7 +8,7 @@ class ENGINE_API SSSamplerManager : public Singleton<SSSamplerManager>
 {
 public:
 	void Initialize();
-
+	void Shutdown();
 	ID3D11SamplerState* GetDefaultSamplerState() { return mDefaultSamplerState; }
 
 protected:

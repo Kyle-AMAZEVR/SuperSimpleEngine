@@ -52,6 +52,8 @@ bool SSEngine::Initialize(HWND windowHandle)
 void SSEngine::Shutdown()
 {
 	SSDepthStencilStateManager::Get().Shutdown();
+	SSRaterizeStateManager::Get().Shutdown();
+	SSSamplerManager::Get().Shutdown();
 
 	ReleaseCOM(mSwapChain);
 	ReleaseCOM(mDevice);
