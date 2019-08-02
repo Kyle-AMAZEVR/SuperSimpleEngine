@@ -211,11 +211,11 @@ void SSEngine::DrawScene()
 
 	SSCameraManager::Get().UpdateCurrentCamera();
 	
-	XMMATRIX scale = XMMatrixScaling(10, 10, 10) * SSCameraManager::Get().GetCurrentCameraTranslation();
+	XMMATRIX scale = XMMatrixScaling(2, 2, 2) * SSCameraManager::Get().GetCurrentCameraTranslation();
 	XMMATRIX modelView = scale * SSCameraManager::Get().GetCurrentCameraView();
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
-	testDrawCmd.StoreVSConstantBufferData("MVP", mvp);
+	testDrawCmd.StoreVSConstantBufferData("MVP", XMMatrixTranspose(mvp));
 	testDrawCmd.SetPSTexture("gCubeMap", mTestCubeTexture.get());
 
 	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();

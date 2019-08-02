@@ -22,6 +22,9 @@ public:
 	
 	void UpdateCurrentCamera();
 
+	void RotateYaw(float amount);
+	void RotatePitch(float amount);
+
     class SSCameraBase* GetCurrentCamera() { return mCurrentCamera; }
 
 protected:

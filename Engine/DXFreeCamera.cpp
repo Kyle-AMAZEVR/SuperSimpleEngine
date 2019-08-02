@@ -15,9 +15,21 @@ SSFreeCamera::SSFreeCamera()
 
 void SSFreeCamera::UpdateViewMatrix()
 {
-	mView = XMMatrixLookAtLH(XMLoadFloat3(&mEyePosition), 
-		XMLoadFloat3(&mLookAtPosition),
+	XMFLOAT4X4 matrix;
+	XMStoreFloat4x4(&matrix, mRotation);	
+
+	DirectX::XMFLOAT3 lookDir;
+	lookDir.x = matrix._11;
+	lookDir.y = matrix._12;
+	lookDir.z = matrix._13;	
+
+	mView = XMMatrixLookToLH(XMLoadFloat3(&mEyePosition),
+		XMLoadFloat3(&lookDir),
 		XMLoadFloat3(&mUp));
+
+	/*mView = XMMatrixLookAtLH(XMLoadFloat3(&mEyePosition),
+		XMLoadFloat3(&mLookAtPosition),
+		XMLoadFloat3(&mUp));*/
 }
 
 void SSFreeCamera::UpdateProjMatrix()
@@ -29,9 +41,24 @@ void SSFreeCamera::Update()
 {
 	UpdateViewMatrix();
 	UpdateProjMatrix();
+	UpdateRotationMatrix();
 }
 
 XMMATRIX SSFreeCamera::GetTranslation() const
 {
 	return XMMatrixTranslation(mEyePosition.x, mEyePosition.y, mEyePosition.z);
+}
+
+void SSFreeCamera::RotatePitch(float amount)
+{
+	mPitch += amount;
+}
+void SSFreeCamera::RotateYaw(float amount)
+{
+	mYaw += amount;	
+}
+
+void SSFreeCamera::UpdateRotationMatrix()
+{
+	mRotation = XMMatrixRotationRollPitchYaw(mPitch, mYaw, 0);
 }

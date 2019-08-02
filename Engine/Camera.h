@@ -22,6 +22,9 @@ public:
 	virtual DirectX::XMMATRIX GetProj() const { return mProj; }
 	virtual DirectX::XMMATRIX GetViewProj() const;
 	virtual DirectX::XMMATRIX GetTranslation() const;
+	virtual DirectX::XMMATRIX GetRotation() const;
+	virtual void RotateYaw(float amount){}
+	virtual void RotatePitch(float amount){}
 
 	void SetFOV(float fov) { mFOV = fov; }
 	float GetFOV() { return mFOV; }
@@ -35,12 +38,16 @@ protected:
 
 	virtual void UpdateViewMatrix(){}
 	virtual void UpdateProjMatrix(){}
+	virtual void UpdateRotationMatrix(){}
 	
 	float mFOV;
 	float mAspectRatio;
 	float mNear;
 	float mFar;
+	float mYaw = 0;
+	float mPitch = 0;
 
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProj;
+	DirectX::XMMATRIX mRotation;
 };

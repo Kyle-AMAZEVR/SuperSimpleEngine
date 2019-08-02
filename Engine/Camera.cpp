@@ -13,3 +13,9 @@ XMMATRIX SSCameraBase::GetTranslation() const
 	return DXMathHelper::IdentityMatrix4X4;
 }
 
+XMMATRIX SSCameraBase::GetRotation() const
+{
+	return XMMatrixRotationRollPitchYaw(mPitch, mYaw, 0);
+}
+
+

@@ -10,9 +10,12 @@ public:
 	SSFreeCamera();
 	virtual void Update() override;
 	virtual XMMATRIX GetTranslation() const override;
+	virtual void RotatePitch(float amount) override;
+	virtual void RotateYaw(float amount) override;
 protected:
 	virtual void UpdateViewMatrix() override;
 	virtual void UpdateProjMatrix() override;
+	virtual void UpdateRotationMatrix() override;
 	
 	
 	DirectX::XMFLOAT3 mLookAtPosition;

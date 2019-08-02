@@ -209,6 +209,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case VK_DOWN:
 			SSCameraManager::Get().DecreaseCurrentCameraFOV(0.05f);
 			break;
+		case VK_LEFT:
+			SSCameraManager::Get().RotateYaw(-0.01f);
+			break;
 		}
 		break;
 	

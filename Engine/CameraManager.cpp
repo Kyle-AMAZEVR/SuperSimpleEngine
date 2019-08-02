@@ -34,6 +34,16 @@ XMMATRIX SSCameraManager::GetCurrentCameraTranslation() const
 	return mCurrentCamera->GetTranslation();
 }
 
+void SSCameraManager::RotateYaw(float amount)
+{
+	mCurrentCamera->RotateYaw(amount);
+}
+
+void SSCameraManager::RotatePitch(float amount)
+{
+	mCurrentCamera->RotatePitch(amount);
+}
+
 XMMATRIX SSCameraManager::GetCurrentCameraViewProj() const 
 {
 	check(mCurrentCamera != nullptr);
