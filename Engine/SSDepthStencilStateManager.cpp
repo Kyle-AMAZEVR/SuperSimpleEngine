@@ -56,3 +56,17 @@ void SSDepthStencilStateManager::Shutdown()
 	ReleaseCOM(mDepthFuncLessEqualState);
 	ReleaseCOM(mDepthTestDisabledState);
 }
+
+bool operator<(const D3D11_DEPTH_STENCIL_DESC& a, const D3D11_DEPTH_STENCIL_DESC& b)
+{
+	if (a.DepthEnable < b.DepthEnable) return true;
+	if (a.DepthEnable > b.DepthEnable) return false;
+
+	if (a.StencilEnable > b.StencilEnable) return true;
+	if (a.StencilEnable < b.StencilEnable) return false;
+
+	if (a.DepthFunc > b.DepthFunc) return true;
+	if (a.DepthFunc < b.DepthFunc) return false;
+
+	return false;
+}

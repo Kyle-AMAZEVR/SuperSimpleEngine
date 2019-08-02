@@ -20,6 +20,7 @@
 #include "SSRenderTarget2D.h"
 #include "SSTextureCube.h"
 #include "SSSphere.h"
+#include "SSDepthStencilStateManager.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -37,19 +38,17 @@ bool SSEngine::Initialize(HWND windowHandle)
 	
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	SSSamplerManager::Get().Initialize();
+	SSDepthStencilStateManager::Get().Initialize();
     TestCompileShader();
     TestCreateResources();
-
-	
-
-	
-		
 
     return true;
 }
 
 void SSEngine::Shutdown()
 {
+	SSDepthStencilStateManager::Get().Shutdown();
+
 	ReleaseCOM(mSwapChain);
 	ReleaseCOM(mDevice);
 	ReleaseCOM(mDeviceContext);

@@ -2,21 +2,9 @@
 
 #include "Singleton.h"
 
-bool operator<(const D3D11_DEPTH_STENCIL_DESC& a, const D3D11_DEPTH_STENCIL_DESC& b)
-{
-	if (a.DepthEnable < b.DepthEnable) return true;
-	if (a.DepthEnable > b.DepthEnable) return false;
+bool operator<(const D3D11_DEPTH_STENCIL_DESC& a, const D3D11_DEPTH_STENCIL_DESC& b);
 
-	if (a.StencilEnable > b.StencilEnable) return true;
-	if (a.StencilEnable < b.StencilEnable) return false;
-
-	if (a.DepthFunc > b.DepthFunc) return true;
-	if (a.DepthFunc < b.DepthFunc) return false;
-	
-	return false;
-}
-
-class SSDepthStencilStateManager : Singleton<SSDepthStencilStateManager>
+class SSDepthStencilStateManager : public Singleton<SSDepthStencilStateManager>
 {
 public:	
 	void Initialize();
@@ -29,9 +17,7 @@ public:
 	void SetDepthTestDisabled();
 	void SetDepthCompLessEqual();
 
-
-
-protected:
+private:
 	D3D11_DEPTH_STENCIL_DESC mDefaultDesc;
 
 	D3D11_DEPTH_STENCIL_DESC mDepthTestDisabledDesc;	
