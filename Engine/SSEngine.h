@@ -71,5 +71,6 @@ private:
     
 	std::shared_ptr<class SSTexture2D> mTestTexture;
 	std::shared_ptr<class SSGBuffer> mGBuffer;
+	std::shared_ptr<class SSGenericRenderTarget> mCubemapRenderTarget;
     //
 };

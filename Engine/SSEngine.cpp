@@ -34,10 +34,11 @@ bool SSEngine::Initialize(HWND windowHandle)
 	bInitialized = true;
 
 	mViewport = std::make_shared<SSViewport>();
+	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
+	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
-	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	
 	SSSamplerManager::Get().Initialize();
 	SSDepthStencilStateManager::Get().Initialize();
@@ -67,8 +68,7 @@ void SSEngine::TestCreateResources()
 	mTestTexture = std::make_shared<SSTexture2D>();
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
-	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);
-	
+	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);	
 
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
@@ -123,6 +123,8 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 		mBufferHeight = newHeight;
 
 		mViewport->Resize(newWidth, newHeight);
+		mGBuffer->Resize(newWidth, newHeight);
+		mCubemapRenderTarget->Resize(newWidth, newHeight);
 	}
 }
 
@@ -212,10 +214,10 @@ void SSEngine::DrawScene()
 	blitDrawCmd.Do();	
 	*/
 
-	mViewport->Clear();
-	mViewport->SetCurrentRenderTarget();
+	mCubemapRenderTarget->Clear();
+	mCubemapRenderTarget->SetCurrentRenderTarget();
+	
 	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
-
 	SSCameraManager::Get().UpdateCurrentCamera();
 	
 	XMMATRIX scale = XMMatrixScaling(2, 2, 2) * SSCameraManager::Get().GetCurrentCameraTranslation();
@@ -230,6 +232,13 @@ void SSEngine::DrawScene()
 	testDrawCmd.Do();
 	SSDepthStencilStateManager::Get().SetToDefault();
 	SSRaterizeStateManager::Get().SetToDefault();
+
+	mViewport->Clear();
+	mViewport->SetCurrentRenderTarget();
+
+	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
+	blitDrawCmd.SetPSTexture("sampleTexture", mCubemapRenderTarget->GetOutput(0));
+	blitDrawCmd.Do();
 	
     HR(mSwapChain->Present(0,0));
 }

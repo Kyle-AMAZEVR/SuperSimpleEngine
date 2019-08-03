@@ -163,12 +163,21 @@ void SSGenericRenderTarget::SetCurrentRenderTarget()
 	{
 		renderTargets[i] = mRenderTargetArray[i]->GetRenderTargetView();
 	}
-	
-	ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
 
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(mCount, renderTargets, depthStencil);
+	if(mDepthExist)
+	{
+		ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
 
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+		SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(mCount, renderTargets, depthStencil);
+
+		SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+	}
+	else
+	{
+		SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(mCount, renderTargets, nullptr);
+
+		SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+	}
 }
 
 void SSGenericRenderTarget::Resize(UINT width, UINT height)
