@@ -21,6 +21,8 @@
 #include "Engine/DXRenderingThread.h"
 #include "Engine/SSTimer.h"
 #include "Engine/CameraManager.h"
+#include "Engine/SSInputManager.h"
+#include "Windowsx.h"
 
 #define MAX_LOADSTRING 100
 
@@ -200,19 +202,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
 	case WM_KEYDOWN:
-		
-		switch (wParam)
-		{
-		case VK_UP:
-			SSCameraManager::Get().IncreaseCurrentCameraFOV(0.05f);
-			break;
-		case VK_DOWN:
-			SSCameraManager::Get().DecreaseCurrentCameraFOV(0.05f);
-			break;
-		case VK_LEFT:
-			SSCameraManager::Get().RotateYaw(-0.01f);
-			break;
-		}
+		SSInputManager::Get().OnKeyDown(wParam);
+		break;
+
+	case WM_MOUSEMOVE:
+		GET_X_LPARAM(lParam);
+		break;
+
+	case WM_LBUTTONDOWN:		
+		SSInputManager::Get().OnMouseLBtnDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		break;
+
+	case WM_LBUTTONUP:
+
 		break;
 	
     case WM_DESTROY:
