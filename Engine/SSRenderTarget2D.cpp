@@ -128,7 +128,7 @@ void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UIN
 
 
 
-SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count, DXGI_FORMAT eFormat, DXGI_FORMAT eDepthFormat)
+SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count, bool bDepthExist, DXGI_FORMAT eFormat, DXGI_FORMAT eDepthFormat)
 	: mWidth(width), mHeight(height), mFormat(eFormat), mCount(count)
 {
 	assert(mCount >= 1);
@@ -138,8 +138,13 @@ SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count
 	{
 		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, mFormat);		
 	}
-	
-	mDepthTarget = new SSDepthRenderTargetTexture2D(mWidth, mHeight);
+
+	mDepthExist = bDepthExist;
+
+	if (mDepthExist)
+	{
+		mDepthTarget = new SSDepthRenderTargetTexture2D(mWidth, mHeight);
+	}
 
 	// Set the viewport transform.
 	mViewport.TopLeftX = 0;
@@ -175,8 +180,11 @@ void SSGenericRenderTarget::Resize(UINT width, UINT height)
 	{
 		mRenderTargetArray[i]->Resize(mWidth, mHeight);
 	}	
-	
-	mDepthTarget->Resize(mWidth, mHeight);
+
+	if (mDepthExist)
+	{
+		mDepthTarget->Resize(mWidth, mHeight);
+	}
 
 	// Set the viewport transform.
 	mViewport.TopLeftX = 0;
@@ -205,5 +213,9 @@ void SSGenericRenderTarget::Clear()
 	{
 		mRenderTargetArray[i]->Clear();
 	}
-	mDepthTarget->Clear();	
+
+	if (mDepthExist)
+	{
+		mDepthTarget->Clear();
+	}
 }
