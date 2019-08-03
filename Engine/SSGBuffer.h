@@ -20,7 +20,7 @@ class ENGINE_API SSGBuffer : public SSGenericRenderTarget
 public:
 	SSGBuffer(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT);
 
-	void Destroy() override;
+	void Destroy();
 	
 	SSRenderTargetTexture2D* GetPositionOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Position)]; }
 	SSRenderTargetTexture2D* GetColorOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Color)]; }

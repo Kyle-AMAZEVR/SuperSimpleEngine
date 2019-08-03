@@ -41,8 +41,8 @@ public:
 
 	SSRenderTargetTexture2D* GetOutput(UINT nIndex) ;
 
-	virtual UINT GetWidth() const override { return mWidth; }
-	virtual UINT GetHeight() const override { return mHeight; }
+	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
+	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
 	virtual void SetCurrentRenderTarget() override;
 	virtual void Clear() override;
 	virtual void Resize(UINT width, UINT height) override;

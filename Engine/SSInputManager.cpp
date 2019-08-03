@@ -56,7 +56,7 @@ void SSInputManager::OnMouseMove(int x, int y)
 	if(mMouseLBtnDown)
 	{
 		SSCameraManager::Get().RotateYaw((x - mLastMousePosX) * 0.01f);
-		SSCameraManager::Get().RotatePitch((y - mLastMousePosY) * 0.01f);
+		SSCameraManager::Get().RotatePitch((y - mLastMousePosY) * -0.01f);
 
 		mLastMousePosX = x;
 		mLastMousePosY = y;
