@@ -16,7 +16,19 @@ SamplerState samTriLinearSam
     AddressV = Wrap;
 };
 
-float4 PSMain(VertexOut pin) : SV_Target
+
+struct PixelOutputType
 {
-    return gCubeMap.Sample(samTriLinearSam, pin.PosL);
+    float4 position: SV_Target0;
+    float4 color : SV_Target1;
+    float4 normal : SV_Target2;   
+};
+
+PixelOutputType PSMain(VertexOut pin)
+{
+	PixelOutputType output = (PixelOutputType)0;
+
+	output.color = gCubeMap.Sample(samTriLinearSam, pin.PosL);
+
+    return output;
 }

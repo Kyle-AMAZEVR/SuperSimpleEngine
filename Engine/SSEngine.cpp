@@ -214,8 +214,8 @@ void SSEngine::DrawScene()
 	blitDrawCmd.Do();	
 	*/
 
-	mCubemapRenderTarget->Clear();
-	mCubemapRenderTarget->SetCurrentRenderTarget();
+	mGBuffer->Clear();
+	mGBuffer->SetCurrentRenderTarget();
 	
 	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
 	SSCameraManager::Get().UpdateCurrentCamera();
@@ -233,11 +233,19 @@ void SSEngine::DrawScene()
 	SSDepthStencilStateManager::Get().SetToDefault();
 	SSRaterizeStateManager::Get().SetToDefault();
 
+	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };	
+	
+	sphereDrawCmd.StoreVSConstantBufferData("Model", XMMatrixTranspose(XMMatrixTranslation(10,0,0)));
+	sphereDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	sphereDrawCmd.StoreVSConstantBufferData("Proj", XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+	sphereDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
+	sphereDrawCmd.Do();
+
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();
 
 	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
-	blitDrawCmd.SetPSTexture("sampleTexture", mCubemapRenderTarget->GetOutput(0));
+	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	blitDrawCmd.Do();
 	
     HR(mSwapChain->Present(0,0));
