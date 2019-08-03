@@ -21,15 +21,16 @@ void SSFreeCamera::UpdateViewMatrix()
 	DirectX::XMFLOAT3 lookDir;
 	lookDir.x = matrix._11;
 	lookDir.y = matrix._12;
-	lookDir.z = matrix._13;	
+	lookDir.z = matrix._13;
 
-	mView = XMMatrixLookToLH(XMLoadFloat3(&mEyePosition),
-		XMLoadFloat3(&lookDir),
-		XMLoadFloat3(&mUp));
+	mLookAtPosition = mEyePosition;
+	mLookAtPosition.x += lookDir.x;
+	mLookAtPosition.y += lookDir.y;
+	mLookAtPosition.z += lookDir.z;
 
-	/*mView = XMMatrixLookAtLH(XMLoadFloat3(&mEyePosition),
+	mView = XMMatrixLookAtLH(XMLoadFloat3(&mEyePosition),
 		XMLoadFloat3(&mLookAtPosition),
-		XMLoadFloat3(&mUp));*/
+		XMLoadFloat3(&mUp));
 }
 
 void SSFreeCamera::UpdateProjMatrix()
@@ -60,5 +61,5 @@ void SSFreeCamera::RotateYaw(float amount)
 
 void SSFreeCamera::UpdateRotationMatrix()
 {
-	mRotation = XMMatrixRotationRollPitchYaw(mPitch, mYaw, 0);
+	mRotation = XMMatrixRotationZ(mPitch) * XMMatrixRotationY(mYaw);
 }

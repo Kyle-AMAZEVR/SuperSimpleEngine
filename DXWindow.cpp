@@ -205,8 +205,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SSInputManager::Get().OnKeyDown(wParam);
 		break;
 
-	case WM_MOUSEMOVE:
-		GET_X_LPARAM(lParam);
+	case WM_MOUSEMOVE:		
+		SSInputManager::Get().OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		break;
 
 	case WM_LBUTTONDOWN:		
@@ -214,7 +214,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_LBUTTONUP:
-
+		SSInputManager::Get().OnMouseLBtnUp();
 		break;
 	
     case WM_DESTROY:

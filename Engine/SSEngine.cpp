@@ -77,6 +77,7 @@ void SSEngine::TestCreateResources()
     
 	mTestTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron2_basecolor.dds");
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
+	//mTestCubeTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
 }
 
 void SSEngine::TestCompileShader()

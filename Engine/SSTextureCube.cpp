@@ -4,10 +4,18 @@
 #include "DirectXTex.h"
 #include "SSEngine.h"
 
+bool SSTextureCube::LoadFromHDRFile(std::wstring filename)
+{
+	
+	   
+	return true;
+}
+
+
 bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 {
 	DirectX::TexMetadata metaData;
-	DirectX::ScratchImage image;
+	DirectX::ScratchImage image;	
 
 	HR(DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image));
 	
