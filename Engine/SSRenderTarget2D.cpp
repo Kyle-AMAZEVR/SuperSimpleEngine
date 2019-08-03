@@ -208,6 +208,9 @@ void SSGenericRenderTarget::Resize(UINT width, UINT height)
 
 SSRenderTargetTexture2D* SSGenericRenderTarget::GetOutput(UINT nIndex)
 {
+	check(nIndex >= 0);
+	check(nIndex < mCount);
+
 	if(nIndex < mCount)
 	{
 		return mRenderTargetArray[nIndex];
