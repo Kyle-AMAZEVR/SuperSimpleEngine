@@ -12,6 +12,9 @@ public:
 	virtual ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView; }
 	virtual ID3D11ShaderResourceView*& GetShaderResourceViewRef() { return mShaderResourceView; }
 	
+	virtual ID3D11Texture2D* GetTextureResource() { return mTexturePtr; }
+	virtual ID3D11Texture2D*& GetTextureResourceRef() { return mTexturePtr; }
+	
 
 protected:
 	UINT mWidth;

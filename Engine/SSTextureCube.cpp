@@ -62,7 +62,7 @@ bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 			auto* pLodImage = image.GetImage(mipLevel, face, 0);
 			assert(pLodImage != nullptr);
 
-			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, metaData.mipLevels);
+			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, metaData.mipLevels);			
 			SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
 		}
 	}

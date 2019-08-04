@@ -230,4 +230,6 @@ void SSGenericRenderTarget::Clear()
 	{
 		mDepthTarget->Clear();
 	}
+
+	
 }
