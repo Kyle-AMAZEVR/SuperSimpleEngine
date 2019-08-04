@@ -1,12 +1,13 @@
 
 struct VertexIn
 {
-    float4 position : POSITION;
+    float4 position : POSITION;    
 };
 
 struct VertexOut
 {
-    float4 position : POSITION;
+    float4 position : POSITION0;
+    float4 worldPosition : POSITION1;
 };
 
 
@@ -26,6 +27,8 @@ VertexOut VSMain(VertexIn vin)
 	VertexOut output ;
 	output.position = mul(vin.position, ViewMatrix);
 	output.position = mul(output.position, ProjectionMatrix);
+
+	output.worldPosition = vin.position;
     
     return output;
 }

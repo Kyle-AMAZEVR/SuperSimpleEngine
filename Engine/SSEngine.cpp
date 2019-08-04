@@ -22,6 +22,7 @@
 #include "SSSphere.h"
 #include "SSDepthStencilStateManager.h"
 #include "SSRasterizeStateManager.h"
+#include "SSCubemapRenderTarget.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -36,6 +37,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mViewport = std::make_shared<SSViewport>();
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
+	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -89,6 +91,9 @@ void SSEngine::TestCompileShader()
 	mDeferredPixelShader = std::make_shared<SSPixelShader>();	
 	mCubemapVertexShader = std::make_shared<SSVertexShader>();
 	mCubemapPixelShader = std::make_shared<SSPixelShader>();
+	
+	mEquirectToCubemapVertexShader = std::make_shared<SSVertexShader>();
+	mEquirectToCubemapPixelShader = std::make_shared<SSPixelShader>();
 
     assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
 	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
@@ -98,6 +103,9 @@ void SSEngine::TestCompileShader()
 
 	assert(mCubemapVertexShader->CompileFromFile(L"./Shader/CubemapShader.vs"));
 	assert(mCubemapPixelShader->CompileFromFile(L"./Shader/CubemapShader.ps"));
+
+	assert(mEquirectToCubemapVertexShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.vs"));
+	assert(mEquirectToCubemapPixelShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
