@@ -207,11 +207,19 @@ void SSEngine::DrawScene()
 	testDrawCmd.StoreVSConstantBufferData("MVP", XMMatrixTranspose(mvp));
 	testDrawCmd.SetPSTexture("gCubeMap", mTestCubeTexture.get());
 
-	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
-	SSRaterizeStateManager::Get().SetCullModeNone();
-	testDrawCmd.Do();
-	SSDepthStencilStateManager::Get().SetToDefault();
-	SSRaterizeStateManager::Get().SetToDefault();
+	testDrawCmd.SetPreDrawJob([]()
+	{
+		SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
+		SSRaterizeStateManager::Get().SetCullModeNone();
+	});
+
+	testDrawCmd.SetPostDrawJob([]()
+	{
+		SSDepthStencilStateManager::Get().SetToDefault();
+		SSRaterizeStateManager::Get().SetToDefault();
+	});
+	
+	testDrawCmd.Do();	
 
 	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };	
 	
