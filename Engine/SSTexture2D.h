@@ -10,6 +10,8 @@ public:
 
 	bool LoadFromDDSFile(std::wstring filename);
 	bool LoadFromTGAFile(std::wstring filename);
+	bool LoadFromHDRFile(std::wstring filename);
+
 	bool Release();
 
 	UINT GetWidth() const { return mWidth; }

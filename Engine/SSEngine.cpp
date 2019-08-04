@@ -75,7 +75,8 @@ void SSEngine::TestCreateResources()
 
 
     
-	mTestTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron2_basecolor.dds");
+	//mTestTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron2_basecolor.dds");
+	mTestTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
 	//mTestCubeTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
 }
@@ -184,35 +185,6 @@ void SSEngine::DrawScene()
     
     check(mDeviceContext != nullptr);
 
-	/*mGBuffer->Clear();
-	mGBuffer->SetCurrentRenderTarget();
-	
-	//SSDrawCommand testDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mTestCube };
-	SSDrawCommand testDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
-
-	SSCameraManager::Get().UpdateCurrentCamera();
-
-	XMFLOAT4X4 model; XMStoreFloat4x4(&model, XMMatrixTranspose(mTestSphere->GetModelTransform()));
-	XMFLOAT4X4 view; XMStoreFloat4x4(&view, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	XMFLOAT4X4 proj; XMStoreFloat4x4(&proj, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
-		
-	testDrawCmd.StoreVSConstantBufferData("Model", model);
-	testDrawCmd.StoreVSConstantBufferData("View", view);
-	testDrawCmd.StoreVSConstantBufferData("Proj", proj);
-	
-	testDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
-
-	testDrawCmd.Do();	
-
-	mViewport->Clear();
-	mViewport->SetCurrentRenderTarget();
-
-	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
-
-	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
-	
-	blitDrawCmd.Do();	
-	*/
 
 	mGBuffer->Clear();
 	mGBuffer->SetCurrentRenderTarget();
