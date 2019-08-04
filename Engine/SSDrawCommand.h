@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include <list>
-
+#include <functional>
 
 class SSVertexShader;
 class SSPixelShader;
@@ -57,6 +57,9 @@ public:
 
 	virtual void Do();
 
+	void SetPreDrawJob(std::function<void()> job);
+	void SetPostDrawJob(std::function<void()> job);
+
 protected:
 	class SSVertexShader* mpVS = nullptr;
 	class SSPixelShader* mpPS = nullptr;	
@@ -73,6 +76,10 @@ protected:
 	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	std::shared_ptr<SSSceneObject> mObject;
+
+	std::function<void()> mPreDrawJob = nullptr;
+	std::function<void()> mPostDrawJob = nullptr;
+
 };
 
 template<class T>

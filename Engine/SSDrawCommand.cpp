@@ -30,6 +30,12 @@ void SSDrawCommand::Do()
 	check(mpVS != nullptr);
 	check(mpPS != nullptr);
 
+	//
+	if(mPreDrawJob != nullptr)
+	{
+		mPreDrawJob();
+	}
+
 	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetDeviceContext();
 
 	// @ set input layout
@@ -88,7 +94,24 @@ void SSDrawCommand::Do()
 	{
 		mpPS->SetTextureAsNull(kvp.first);
 	}
+
+	if(mPostDrawJob != nullptr)
+	{
+		mPostDrawJob();
+	}
 }
+
+void SSDrawCommand::SetPostDrawJob(std::function<void()> job)
+{
+	mPostDrawJob = std::move(job);
+}
+
+void SSDrawCommand::SetPreDrawJob(std::function<void()> job)
+{
+	mPreDrawJob = std::move(job);
+}
+
+
 
 
 void SSDrawCommand::SetPSTexture(std::string name, SSTexture2DBase* texture)
