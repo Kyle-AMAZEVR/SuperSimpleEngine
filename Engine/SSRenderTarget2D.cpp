@@ -63,7 +63,7 @@ void SSRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
 
 void SSRenderTargetTexture2D::Clear()
 {
-	float Color[4]{ 1.0f, 1.0f, 1.0f, 1.0f };
+	float Color[4]{ 1.0f, 0.0f, 0.0f, 1.0f };
 	
 	SSEngine::Get().GetDeviceContext()->ClearRenderTargetView(mRenderTargetView, Color);
 }

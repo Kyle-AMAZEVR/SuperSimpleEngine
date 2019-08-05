@@ -1,7 +1,8 @@
 
 #include "Core.h"
-#include <list>
+#include "DXRenderResource.h"
 #include <functional>
+#include <map>
 
 class SSVertexShader;
 class SSPixelShader;

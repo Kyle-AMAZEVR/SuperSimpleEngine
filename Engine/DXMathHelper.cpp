@@ -11,6 +11,12 @@ XMFLOAT4 DXMathHelper::UnitY4 { 0,1,0,0 };
 XMFLOAT4 DXMathHelper::UnitZ4 { 0,0,1,0 };
 XMFLOAT4 DXMathHelper::UnitW4 { 0,0,0,1 };
 
+XMFLOAT4 DXMathHelper::MinusUnitX4{ -1,0,0,0 };
+XMFLOAT4 DXMathHelper::MinusUnitY4{ 0,-1,0,0 };
+XMFLOAT4 DXMathHelper::MinusUnitZ4{ 0,0,-1,0 };
+XMFLOAT4 DXMathHelper::MinusUnitW4{ 0,0,0,-1 };
+
+
 XMFLOAT3 DXMathHelper::UnitX3{ 1,0,0 };
 XMFLOAT3 DXMathHelper::UnitY3{ 0,1,0 };
 XMFLOAT3 DXMathHelper::UnitZ3{ 0,0,1 };

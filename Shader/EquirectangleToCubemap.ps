@@ -12,8 +12,8 @@ float2 SampleSphericalMap(float3 v)
 
 struct PixelIn
 {
-    float4 position : POSITION0;
-    float4 worldPosition : POSITION1;
+    float4 position : SV_POSITION;
+    float4 worldPosition : COLOR;
 };
 
 Texture2D sampleTexture : register(t0);
