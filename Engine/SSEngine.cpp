@@ -267,9 +267,9 @@ void SSEngine::DrawScene()
 	sphereDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	sphereDrawCmd.StoreVSConstantBufferData("Proj", XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 	sphereDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
-	SSRaterizeStateManager::Get().SetCullModeNone();
+	
 	sphereDrawCmd.Do();
-	SSRaterizeStateManager::Get().SetToDefault();
+	
 
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();
