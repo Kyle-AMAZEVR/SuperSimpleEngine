@@ -186,16 +186,18 @@ bool SSEngine::CreateSwapChain()
 
 void SSEngine::DrawScene()
 {
-    if(bInitialized == false)
-    {
-        return;
-    }
-    
-    check(mDeviceContext != nullptr);
-	   
+	if (bInitialized == false)
+	{
+		return;
+	}
+
+	check(mDeviceContext != nullptr);
+
 	// @equirect to cube
 	// @start
 	SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
+
+	SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
 
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 
@@ -212,8 +214,8 @@ void SSEngine::DrawScene()
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
-		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());		
-		
+		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
+
 		SSRaterizeStateManager::Get().SetCullModeNone();
 
 		equirectToCubeDrawCmd.Do();
@@ -244,6 +246,10 @@ void SSEngine::DrawScene()
 		bEquidirectToCubeDrawn = true;
 	}
 
+	if (bConvolutionDrawn == false)
+	{
+		bConvolutionDrawn = true;
+	}
 
 	// @end
 
