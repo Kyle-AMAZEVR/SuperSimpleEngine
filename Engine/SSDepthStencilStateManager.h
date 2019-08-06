@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Singleton.h"
+#include "SSManagerBase.h"
 
 bool operator<(const D3D11_DEPTH_STENCIL_DESC& a, const D3D11_DEPTH_STENCIL_DESC& b);
 
-class SSDepthStencilStateManager : public Singleton<SSDepthStencilStateManager>
+class SSDepthStencilStateManager : public Singleton<SSDepthStencilStateManager>, public SSManagerBase
 {
 public:	
-	void Initialize();
-	void Shutdown();
+	virtual void Initialize() override;
+	virtual void Shutdown() override;
 
 	// default
 	void SetToDefault();

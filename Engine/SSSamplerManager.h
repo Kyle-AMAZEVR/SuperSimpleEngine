@@ -3,12 +3,13 @@
 #pragma once
 
 #include "Singleton.h"
+#include "SSManagerBase.h"
 
-class ENGINE_API SSSamplerManager : public Singleton<SSSamplerManager>
+class ENGINE_API SSSamplerManager : public Singleton<SSSamplerManager>, public SSManagerBase
 {
 public:
-	void Initialize();
-	void Shutdown();
+	virtual void Initialize() override;
+	virtual void Shutdown() override;
 	ID3D11SamplerState* GetDefaultSamplerState() { return mDefaultSamplerState; }
 
 protected:

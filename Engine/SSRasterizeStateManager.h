@@ -1,17 +1,16 @@
 #pragma once
 
+#include "SSManagerBase.h"
 #include "Singleton.h"
 
-class SSRaterizeStateManager : public Singleton<SSRaterizeStateManager>
+class SSRaterizeStateManager : public Singleton<SSRaterizeStateManager>, public SSManagerBase
 {
 public:
-	void Initialize();
-	void Shutdown();
+	virtual void Initialize() override;
+	virtual void Shutdown() override;
 	
 	void SetToDefault();
 	void SetCullModeNone();
-	
-	
 	
 private:
 	D3D11_RASTERIZER_DESC mDefaultDesc;

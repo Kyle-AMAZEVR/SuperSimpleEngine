@@ -1,12 +1,18 @@
 #pragma once
 
-class ENGINE_API SSManagerBase : public Singleton<SSManagerBase>
+#include "Singleton.h"
+#include <vector>
+
+class ENGINE_API SSManagerBase
 {
 public:
-
 	SSManagerBase();
 
-	static void Initialize();
+	virtual void Initialize() {}
+	virtual void Shutdown(){}
+
+	static void InitializeManagers();
+	static void ShutdownManagers();
 
 protected:
 	static std::vector<SSManagerBase*> mManagerList;

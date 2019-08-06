@@ -72,13 +72,9 @@ void SSEngine::TestCreateResources()
 
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
-
-
-    
-	//mTestTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron2_basecolor.dds");
+	
 	mTestTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
-	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
-	//mTestCubeTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
+	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");	
 }
 
 void SSEngine::TestCompileShader()
@@ -88,10 +84,13 @@ void SSEngine::TestCompileShader()
 	mDeferredVertexShader = std::make_shared<SSVertexShader>();
 	mDeferredPixelShader = std::make_shared<SSPixelShader>();	
 	mCubemapVertexShader = std::make_shared<SSVertexShader>();
-	mCubemapPixelShader = std::make_shared<SSPixelShader>();
+	mCubemapPixelShader = std::make_shared<SSPixelShader>();	
 	
 	mEquirectToCubemapVertexShader = std::make_shared<SSVertexShader>();
 	mEquirectToCubemapPixelShader = std::make_shared<SSPixelShader>();
+	
+	mCubemapConvolutionVertexShader = std::make_shared<SSVertexShader>();
+	mCubemapConvolutionPixelShader = std::make_shared<SSPixelShader>();
 
     assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
 	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
@@ -104,6 +103,9 @@ void SSEngine::TestCompileShader()
 
 	assert(mEquirectToCubemapVertexShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.vs"));
 	assert(mEquirectToCubemapPixelShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.ps"));
+
+	assert(mCubemapConvolutionVertexShader->CompileFromFile(L"./Shader/CubemapConvolution.vs"));
+	assert(mCubemapConvolutionPixelShader->CompileFromFile(L"./Shader/CubemapConvolution.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -207,7 +209,7 @@ void SSEngine::DrawScene()
 
 		auto posXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::UnitX4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));		
 				
-		auto posYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::MinusUnitY4), XMLoadFloat4(&SSMathHelper::MinusUnitZ4));
+		auto posYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::MinusUnitY4), XMLoadFloat4(&SSMathHelper::UnitZ4));
 
 		auto negZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::UnitZ4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
 
