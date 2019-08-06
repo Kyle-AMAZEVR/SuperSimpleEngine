@@ -219,9 +219,9 @@ void SSEngine::DrawScene()
 		mEquirectToCubemapRenderTarget->Clear();
 		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveX();
 
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("Model", XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(posXView));
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("Proj", XMMatrixTranspose(proj));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(posXView));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
 		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());		
 		
 		SSRaterizeStateManager::Get().SetCullModeNone();
@@ -229,23 +229,23 @@ void SSEngine::DrawScene()
 		equirectToCubeDrawCmd.Do();
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveY();
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(posYView));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(posYView));
 		equirectToCubeDrawCmd.Do();
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeY();
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(negYView));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(negYView));
 		equirectToCubeDrawCmd.Do();
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeX();
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(negXView));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(negXView));
 		equirectToCubeDrawCmd.Do();
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeZ();
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(negZView));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(negZView));
 		equirectToCubeDrawCmd.Do();
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveZ();
-		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(posZView));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(posZView));
 		equirectToCubeDrawCmd.Do();
 
 		SSRaterizeStateManager::Get().SetToDefault();
@@ -268,7 +268,7 @@ void SSEngine::DrawScene()
 	XMMATRIX modelView = scale * SSCameraManager::Get().GetCurrentCameraView();
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
-	testDrawCmd.StoreVSConstantBufferData("MVP", XMMatrixTranspose(mvp));	
+	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
 	testDrawCmd.SetPSTexture("gCubeMap", mEquirectToCubemapRenderTarget.get());
 
 	testDrawCmd.SetPreDrawJob([]()
@@ -289,9 +289,9 @@ void SSEngine::DrawScene()
 
 	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
 
-	sphereDrawCmd.StoreVSConstantBufferData("Model", XMMatrixTranspose(XMMatrixTranslation(10, 0, 0)));
-	sphereDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	sphereDrawCmd.StoreVSConstantBufferData("Proj", XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(10, 0, 0)));
+	sphereDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	sphereDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 	sphereDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
 	
 	sphereDrawCmd.Do();

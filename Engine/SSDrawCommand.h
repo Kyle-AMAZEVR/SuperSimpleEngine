@@ -44,10 +44,10 @@ public:
 	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object);
 
 	template<class T>
-	void StoreVSConstantBufferData(std::string name, const T& value);
+	void StoreVSConstantBufferData(SSName name, const T& value);
 
 	template<class T>
-	void StorePSConstantBufferData(std::string name, const T& value);
+	void StorePSConstantBufferData(SSName name, const T& value);
 
 	void SetPSTexture(std::string name, SSTexture2DBase* texture);
 
@@ -85,7 +85,7 @@ protected:
 };
 
 template<class T>
-void SSDrawCommand::StoreVSConstantBufferData(std::string name, const T& value)
+void SSDrawCommand::StoreVSConstantBufferData(SSName name, const T& value)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
@@ -94,7 +94,7 @@ void SSDrawCommand::StoreVSConstantBufferData(std::string name, const T& value)
 }
 
 template<class T>
-void SSDrawCommand::StorePSConstantBufferData(std::string name, const T& value)
+void SSDrawCommand::StorePSConstantBufferData(SSName name, const T& value)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{
