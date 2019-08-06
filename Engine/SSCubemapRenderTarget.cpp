@@ -51,6 +51,15 @@ void SSCubemapRenderTarget::Resize(UINT width, UINT height)
 	}
 }
 
+void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace)
+{
+	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(eFace)]->GetRenderTargetView() };
+
+	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
+
+	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+}
+
 void SSCubemapRenderTarget::SetCurrentRTAsNegativeX()
 {
 	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::NEGATIVE_X)]->GetRenderTargetView() };
@@ -137,7 +146,12 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 		auto dstSubresource = D3D11CalcSubresource(0, face, 1);
 
 		SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr, dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), 0, nullptr);
-	}
+	}	
+}
+
+void SSCubemapRenderTarget::Destroy()
+{
+	Destroy();
 }
 
 

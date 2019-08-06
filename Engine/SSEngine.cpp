@@ -201,17 +201,17 @@ void SSEngine::DrawScene()
 
 	if (bEquidirectToCubeDrawn == false)
 	{
-		auto negXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::MinusUnitX4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));
+		auto negXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::MinusUnitX4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
 
-		auto negYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitY4), XMLoadFloat4(&DXMathHelper::MinusUnitZ4));
+		auto negYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::UnitY4), XMLoadFloat4(&SSMathHelper::MinusUnitZ4));
 
-		auto posXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitX4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));		
+		auto posXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::UnitX4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));		
 				
-		auto posYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::MinusUnitY4), XMLoadFloat4(&DXMathHelper::MinusUnitZ4));
+		auto posYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::MinusUnitY4), XMLoadFloat4(&SSMathHelper::MinusUnitZ4));
 
-		auto negZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitZ4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));
+		auto negZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::UnitZ4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
 
-		auto posZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::MinusUnitZ4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));
+		auto posZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::MinusUnitZ4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
 
 
 		auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);

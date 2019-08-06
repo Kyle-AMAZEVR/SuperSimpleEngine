@@ -1,7 +1,7 @@
 #pragma once
 #include "DirectXMath.h"
 
-class ENGINE_API DXMathHelper
+class ENGINE_API SSMathHelper
 {
 
 public :
@@ -25,4 +25,17 @@ public :
 
 	static DirectX::XMFLOAT2 UnitX2;
 	static DirectX::XMFLOAT2 UnitY2;
+
+	static DirectX::XMFLOAT4 Zero4;
+	static DirectX::XMFLOAT3 Zero3;
+	static DirectX::XMFLOAT2 Zero2;
+
+	static XMMATRIX PositiveXViewMatrix;
+	static XMMATRIX NegativeXViewMatrix;
+
+	static XMMATRIX PositiveYViewMatrix;
+	static XMMATRIX NegativeYViewMatrix;
+
+	static XMMATRIX PositiveZViewMatrix;
+	static XMMATRIX NegativeZViewMatrix;
 };

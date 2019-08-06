@@ -10,7 +10,7 @@ XMMATRIX SSCameraBase::GetViewProj() const
 
 XMMATRIX SSCameraBase::GetTranslation() const
 {
-	return DXMathHelper::IdentityMatrix4X4;
+	return SSMathHelper::IdentityMatrix4X4;
 }
 
 XMMATRIX SSCameraBase::GetRotation() const
