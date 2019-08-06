@@ -200,13 +200,18 @@ void SSEngine::DrawScene()
 
 	if (bEquidirectToCubeDrawn == false)
 	{
-		auto posXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitX4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));
-		
-		// Matrix4.LookAt(new Vector3(0,0,0), Vector3.UnitY, Vector3.UnitZ), // positive Y
-		auto negYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitY4), XMLoadFloat4(&DXMathHelper::UnitZ4));
+		auto negXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::MinusUnitX4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));
 
-		// Matrix4.LookAt(new Vector3(0, 0, 0), -Vector3.UnitY, -Vector3.UnitZ),// negative Y
+		auto negYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitY4), XMLoadFloat4(&DXMathHelper::MinusUnitZ4));
+
+		auto posXView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitX4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));		
+				
 		auto posYView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::MinusUnitY4), XMLoadFloat4(&DXMathHelper::MinusUnitZ4));
+
+		auto negZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::UnitZ4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));
+
+		auto posZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&DXMathHelper::MinusUnitZ4), XMLoadFloat4(&DXMathHelper::MinusUnitY4));
+
 
 		auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 
@@ -216,10 +221,9 @@ void SSEngine::DrawScene()
 		equirectToCubeDrawCmd.StoreVSConstantBufferData("Model", XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(posXView));
 		equirectToCubeDrawCmd.StoreVSConstantBufferData("Proj", XMMatrixTranspose(proj));
-		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
+		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());		
 		
 		SSRaterizeStateManager::Get().SetCullModeNone();
-
 
 		equirectToCubeDrawCmd.Do();
 
@@ -231,8 +235,20 @@ void SSEngine::DrawScene()
 		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(negYView));
 		equirectToCubeDrawCmd.Do();
 
+		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeX();
+		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(negXView));
+		equirectToCubeDrawCmd.Do();
+
+		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeZ();
+		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(negZView));
+		equirectToCubeDrawCmd.Do();
+
+		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveZ();
+		equirectToCubeDrawCmd.StoreVSConstantBufferData("View", XMMatrixTranspose(posZView));
+		equirectToCubeDrawCmd.Do();
 
 		SSRaterizeStateManager::Get().SetToDefault();
+
 		mEquirectToCubemapRenderTarget->CreateCubemapResource();
 		bEquidirectToCubeDrawn = true;
 	}
@@ -251,8 +267,7 @@ void SSEngine::DrawScene()
 	XMMATRIX modelView = scale * SSCameraManager::Get().GetCurrentCameraView();
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
-	testDrawCmd.StoreVSConstantBufferData("MVP", XMMatrixTranspose(mvp));
-	//testDrawCmd.SetPSTexture("gCubeMap", mTestCubeTexture.get());
+	testDrawCmd.StoreVSConstantBufferData("MVP", XMMatrixTranspose(mvp));	
 	testDrawCmd.SetPSTexture("gCubeMap", mEquirectToCubemapRenderTarget.get());
 
 	testDrawCmd.SetPreDrawJob([]()
