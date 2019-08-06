@@ -12,3 +12,9 @@ extern SSName ViewName;
 extern SSName SamplerName;
 
 extern SSName MVPName;
+
+extern SSName BasicShaderName;
+
+extern SSName DeferredShaderName;
+
+extern SSName EquirectToCubemapShaderName;

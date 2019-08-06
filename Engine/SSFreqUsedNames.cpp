@@ -7,3 +7,5 @@ SSName ViewName("View");
 SSName ProjName("Proj");
 SSName SamplerName("samplerTexture");
 SSName MVPName("MVP");
+SSName BasicShaderName("Basic");
+SSName DeferredShaderName("Deferred");
