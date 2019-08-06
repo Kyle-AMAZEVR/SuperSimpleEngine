@@ -8,6 +8,13 @@ SSName::SSName(const std::string& name)
 	mBucketIndex = SSNameBucket::Get().AddName(mHashValue, name);
 }
 
+SSName::SSName(const char* name)
+{
+	std::string strName = name;
+	mHashValue = std::hash<std::string>{} {strName};
+	mBucketIndex = SSNameBucket::Get().AddName(mHashValue, strName);
+}
+
 std::string SSName::ToString() const 
 {
 	return SSNameBucket::Get().GetName(this);

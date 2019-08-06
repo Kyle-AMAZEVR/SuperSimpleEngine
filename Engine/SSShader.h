@@ -2,6 +2,7 @@
 
 #include "DXRenderResource.h"
 #include "DXConstantBuffer.h"
+#include "SSName.h"
 #include <map>
 
 class ENGINE_API SSShader : public DXRenderResource
@@ -21,7 +22,7 @@ public:
 
 	std::vector<std::string> GetSamplerNames();
 
-	inline std::map<std::string, SSGenericConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
+	inline std::map<SSName, SSGenericConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
 
 protected:
 	
@@ -30,7 +31,8 @@ protected:
     void PrintCompileError(ID3D10Blob* errorMsg);
     ID3DBlob* mShaderBuffer = nullptr;
 
-    std::map<std::string, SSGenericConstantBuffer*> mConstantBufferMap;
+    //std::map<std::string, SSGenericConstantBuffer*> mConstantBufferMap;
+	std::map<SSName, SSGenericConstantBuffer*> mConstantBufferMap;
 	std::map<std::string, UINT> mTextureMap;
 	std::map<std::string, UINT> mSamplerMap;
 };

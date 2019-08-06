@@ -20,6 +20,7 @@
 #include "SSRasterizeStateManager.h"
 #include "SSCubemapRenderTarget.h"
 #include "DXMathHelper.h"
+#include "SSFreqUsedNames.h"
 
 bool SSEngine::bInitialized = false;
 

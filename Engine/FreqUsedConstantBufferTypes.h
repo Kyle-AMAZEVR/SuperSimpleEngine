@@ -2,6 +2,7 @@
 
 #include "DirectXMath.h"
 
+
 struct Transform
 {
 	DirectX::XMFLOAT4X4 Model;

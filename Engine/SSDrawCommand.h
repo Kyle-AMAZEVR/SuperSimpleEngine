@@ -1,6 +1,7 @@
 
 #include "Core.h"
 #include "DXRenderResource.h"
+#include "SSName.h"
 #include <functional>
 #include <map>
 
@@ -66,8 +67,8 @@ protected:
 	class SSPixelShader* mpPS = nullptr;	
 
 	//
-	std::map<std::string, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;
-	std::map<std::string, class SSGenericConstantBuffer*> mPixelShaderConstantBufferMap;
+	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;
+	std::map<SSName, class SSGenericConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
 	std::map<std::string, class SSTexture2DBase*> mPixelShaderTextureMap;

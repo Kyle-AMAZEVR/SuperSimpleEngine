@@ -10,9 +10,10 @@
 class ENGINE_API SSName
 {
 public:
-	SSName(const std::string& name);	
+	SSName(const std::string& name);
+	SSName(const char* name);
 
-	bool operator < (const SSName& rhs)
+	bool operator < (const SSName& rhs) const
 	{
 		if (mHashValue < rhs.mHashValue)
 		{
@@ -27,7 +28,7 @@ public:
 		return false;
 	}
 
-	bool operator > (const SSName& rhs)
+	bool operator > (const SSName& rhs) const
 	{	
 		if (mHashValue > rhs.mHashValue)
 		{
@@ -42,15 +43,17 @@ public:
 		return false;
 	}
 
-	bool operator == (const SSName& rhs)
+	bool operator == (const SSName& rhs) const
 	{
 		return mHashValue == mHashValue && mBucketIndex == rhs.mBucketIndex;
 	}
 
-	bool operator != (const SSName& rhs)
+	bool operator != (const SSName& rhs) const
 	{
 		return !(*this == rhs);
 	}
+
+	operator std::string() const { return ToString(); }
 
 	std::string ToString() const;
 
@@ -66,7 +69,8 @@ class ENGINE_API SSNameBucket : public Singleton<SSNameBucket>
 public:
 	size_t AddName(size_t hashValue, const std::string& name);
 	std::string GetName(const SSName* name) const;
-
+	
+	void DebugDumpNames();
 protected:
 
 	std::map<size_t, std::vector<std::string>> mNameBucket;
