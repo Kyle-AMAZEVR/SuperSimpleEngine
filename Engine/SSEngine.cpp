@@ -311,7 +311,7 @@ void SSEngine::DrawScene()
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
 			prefilterDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
 			CbufferFloat temp;
-			temp.value = 0.9f;
+			temp.value = 0.3f;
 			prefilterDrawCmd.StorePSConstantBufferData(RoughnessName, temp);
 			prefilterDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());			
 
@@ -360,7 +360,7 @@ void SSEngine::DrawScene()
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
-	testDrawCmd.SetPSTexture("gCubeMap", mEquirectToCubemapRenderTarget.get());
+	testDrawCmd.SetPSTexture("gCubeMap", mPrefilterRenderTarget.get());
 
 	testDrawCmd.SetPreDrawJob([]()
 	{

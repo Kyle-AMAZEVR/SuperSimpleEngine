@@ -109,8 +109,8 @@ void SSCubemapRenderTarget::TempCreateCubemapResource()
 	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 	resourceViewDesc.Format = description.Format;
 	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-	resourceViewDesc.Texture2D.MipLevels = mMipLevels;
+	resourceViewDesc.TextureCube.MostDetailedMip = 0;
+	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
 	//	
@@ -147,8 +147,8 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 	resourceViewDesc.Format = description.Format;
 	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-	resourceViewDesc.Texture2D.MipLevels = mMipLevels;
+	resourceViewDesc.TextureCube.MostDetailedMip = 0;
+	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
 	
