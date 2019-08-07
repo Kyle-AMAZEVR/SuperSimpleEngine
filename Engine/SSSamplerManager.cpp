@@ -18,7 +18,7 @@ void SSSamplerManager::CreateDefaultSampler()
 	desc.MaxAnisotropy = 1;
 	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	desc.MinLOD = 0;
-	desc.MaxLOD = 5;
+	desc.MaxLOD = D3D11_FLOAT32_MAX;
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
 	auto* dxDevice = SSEngine::Get().GetDevice();

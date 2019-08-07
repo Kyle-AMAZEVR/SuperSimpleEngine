@@ -71,8 +71,8 @@ void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace, UINT mip)
 	{
 		if (mip != mLastRTMip)
 		{
-			mViewport.Width = mWidth / (mip+1);
-			mViewport.Height = mHeight / (mip+1);
+			mViewport.Width = mWidth / static_cast<float>(std::pow(2, mip));
+			mViewport.Height = mHeight / static_cast<float>(std::pow(2,mip));
 			mLastRTMip = mip;
 		}
 	}

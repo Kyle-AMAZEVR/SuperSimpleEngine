@@ -37,7 +37,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024,true,10);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
-	mPrefilterRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512,true,5);
+	mPrefilterRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024, 1024,true,5);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -303,17 +303,23 @@ void SSEngine::DrawScene()
 
 		SSRaterizeStateManager::Get().SetCullModeNone();
 
-		for (UINT mip = 0; mip < 1; ++mip)
+		const int maxMipLevels = 5;
+
+
+
+		for (UINT mip = 0; mip < 5; ++mip)
 		{
 			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X, mip);
 
 			prefilterDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
 			prefilterDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
-			CbufferFloat temp;
-			temp.value = 0.3f;
+			CbufferFloat temp;			
+			temp.value = (float)mip / (float)(maxMipLevels - 1);
+
+
 			prefilterDrawCmd.StorePSConstantBufferData(RoughnessName, temp);
-			prefilterDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());			
+			prefilterDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());
 
 			prefilterDrawCmd.Do();
 
