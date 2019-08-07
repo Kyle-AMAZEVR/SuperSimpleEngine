@@ -46,11 +46,11 @@ XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 //auto negZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::UnitZ4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
 //auto posZView = XMMatrixLookToLH(XMLoadFloat3(&origin), XMLoadFloat4(&SSMathHelper::MinusUnitZ4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
 
-XMMATRIX SSMathHelper::NegativeXViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::MinusUnitX4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
-XMMATRIX SSMathHelper::PositiveXViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::UnitX4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
+XMMATRIX SSMathHelper::NegativeXViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::MinusUnitX4), XMLoadFloat4(&SSMathHelper::UnitY4));
+XMMATRIX SSMathHelper::PositiveXViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::UnitX4), XMLoadFloat4(&SSMathHelper::UnitY4));
 
-XMMATRIX SSMathHelper::NegativeYViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::UnitY4), XMLoadFloat4(&SSMathHelper::MinusUnitZ4));
-XMMATRIX SSMathHelper::PositiveYViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::MinusUnitY4), XMLoadFloat4(&SSMathHelper::UnitZ4));
+XMMATRIX SSMathHelper::NegativeYViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::MinusUnitY4), XMLoadFloat4(&SSMathHelper::UnitZ4));
+XMMATRIX SSMathHelper::PositiveYViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::UnitY4), XMLoadFloat4(&SSMathHelper::MinusUnitZ4));
 
-XMMATRIX SSMathHelper::NegativeZViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::UnitZ4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
-XMMATRIX SSMathHelper::PositiveZViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::MinusUnitZ4), XMLoadFloat4(&SSMathHelper::MinusUnitY4));
+XMMATRIX SSMathHelper::NegativeZViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::MinusUnitZ4), XMLoadFloat4(&SSMathHelper::UnitY4));
+XMMATRIX SSMathHelper::PositiveZViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::UnitZ4), XMLoadFloat4(&SSMathHelper::UnitY4));

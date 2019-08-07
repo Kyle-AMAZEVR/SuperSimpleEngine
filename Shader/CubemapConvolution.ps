@@ -8,9 +8,14 @@ struct PixelIn
 
 TextureCube EnvironmentMap : register(t0);
 
-SamplerState DefaultTexSampler : register(s0);
+SamplerState samTriLinearSam
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
 
-float PI = 3.14159265359;
+static const float PI = 3.14159265359;
 
 float4 PSMain(PixelIn vin) : SV_TARGET
 {		
@@ -42,12 +47,16 @@ float4 PSMain(PixelIn vin) : SV_TARGET
             // tangent space to world
             float3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * N; 
 
-            irradiance += EnvironmentMap.Sample(DefaultTexSampler, sampleVec).rgb * cos(theta) * sin(theta);
+            irradiance += EnvironmentMap.Sample(samTriLinearSam, sampleVec).xyz * cos(theta) * sin(theta);
             nrSamples++;
         }
     }
     
-    irradiance = PI * irradiance * (1.0 / float(nrSamples));
+    irradiance = PI * irradiance * (1.0 / float(nrSamples));    
+    
+
+    //float3 irradiance = EnvironmentMap.Sample(samTriLinearSam, vin.worldPosition.xyz).xyz;
+
     
     return float4(irradiance, 1.0);
 }

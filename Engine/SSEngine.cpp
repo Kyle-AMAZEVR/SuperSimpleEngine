@@ -36,6 +36,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024);
+	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -200,13 +201,13 @@ void SSEngine::DrawScene()
 	SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
 
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
+	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 
 	static bool bEquidirectToCubeDrawn = false;
 	static bool bConvolutionDrawn = false;
 
 	if (bEquidirectToCubeDrawn == false)
-	{
-		auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
+	{	
 
 		mEquirectToCubemapRenderTarget->Clear();
 		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveX();
@@ -248,6 +249,42 @@ void SSEngine::DrawScene()
 
 	if (bConvolutionDrawn == false)
 	{
+		mConvolutionRenderTarget->Clear();
+		mConvolutionRenderTarget->SetCurrentRTAsPositiveX();
+
+		convolutionDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
+		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
+		convolutionDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
+		convolutionDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());
+
+		SSRaterizeStateManager::Get().SetCullModeNone();
+
+		convolutionDrawCmd.Do();
+
+		mConvolutionRenderTarget->SetCurrentRTAsPositiveY();
+		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
+		convolutionDrawCmd.Do();
+
+		mConvolutionRenderTarget->SetCurrentRTAsNegativeY();
+		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
+		convolutionDrawCmd.Do();
+
+		mConvolutionRenderTarget->SetCurrentRTAsNegativeX();
+		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
+		convolutionDrawCmd.Do();
+
+		mConvolutionRenderTarget->SetCurrentRTAsNegativeZ();
+		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
+		convolutionDrawCmd.Do();
+
+		mConvolutionRenderTarget->SetCurrentRTAsPositiveZ();
+		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
+		convolutionDrawCmd.Do();
+
+		SSRaterizeStateManager::Get().SetToDefault();
+
+		mConvolutionRenderTarget->CreateCubemapResource();
+
 		bConvolutionDrawn = true;
 	}
 
@@ -267,7 +304,7 @@ void SSEngine::DrawScene()
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
-	testDrawCmd.SetPSTexture("gCubeMap", mEquirectToCubemapRenderTarget.get());
+	testDrawCmd.SetPSTexture("gCubeMap", mConvolutionRenderTarget.get());
 
 	testDrawCmd.SetPreDrawJob([]()
 	{

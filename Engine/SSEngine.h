@@ -74,6 +74,7 @@ private:
 	std::shared_ptr<class SSPixelShader> mCubemapConvolutionPixelShader;
 
 	std::shared_ptr<class SSCubemapRenderTarget> mEquirectToCubemapRenderTarget;
+	std::shared_ptr<class SSCubemapRenderTarget> mConvolutionRenderTarget;
 	
     
 	std::shared_ptr<class SSTexture2D> mTestTexture;
