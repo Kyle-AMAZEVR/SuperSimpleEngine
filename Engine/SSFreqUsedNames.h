@@ -18,3 +18,5 @@ extern SSName BasicShaderName;
 extern SSName DeferredShaderName;
 
 extern SSName EquirectToCubemapShaderName;
+
+extern SSName RoughnessName;

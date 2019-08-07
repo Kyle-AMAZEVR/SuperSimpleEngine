@@ -14,3 +14,8 @@ struct MVP
 {
 	DirectX::XMMATRIX ModelViewProj;
 };
+
+ struct alignas(16) CbufferFloat
+{
+	float value;
+};

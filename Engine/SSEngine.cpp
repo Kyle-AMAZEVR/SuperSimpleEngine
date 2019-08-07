@@ -37,7 +37,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
-	
+	mPrefilterRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512, true, 5);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -203,18 +203,16 @@ void SSEngine::DrawScene()
 
 	// @equirect to cube
 	// @start
-	SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
-
-	SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
-
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 
 	static bool bEquidirectToCubeDrawn = false;
 	static bool bConvolutionDrawn = false;
+	static bool bPrefilterDrawn = false;
 
 	if (bEquidirectToCubeDrawn == false)
 	{	
+		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
 
 		mEquirectToCubemapRenderTarget->Clear();
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X);
@@ -256,6 +254,8 @@ void SSEngine::DrawScene()
 
 	if (bConvolutionDrawn == false)
 	{
+		SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
+
 		mConvolutionRenderTarget->Clear();
 		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X);
 
@@ -295,6 +295,55 @@ void SSEngine::DrawScene()
 		bConvolutionDrawn = true;
 	}
 
+	if (bPrefilterDrawn == false)
+	{
+		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader.get(), mPrefilterPixelShader.get(), mTestCube };
+		
+		mPrefilterRenderTarget->Clear();
+
+		SSRaterizeStateManager::Get().SetCullModeNone();
+
+		for (UINT mip = 0; mip < 5; ++mip)
+		{
+			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X, mip);
+
+			prefilterDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
+			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
+			prefilterDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
+			CbufferFloat temp;
+			temp.value = 0.9f;
+			prefilterDrawCmd.StorePSConstantBufferData(RoughnessName, temp);
+			prefilterDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());			
+
+			prefilterDrawCmd.Do();
+
+			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y, mip);
+			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
+			prefilterDrawCmd.Do();
+
+			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z, mip);
+			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
+			prefilterDrawCmd.Do();
+
+			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X, mip);
+			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
+			prefilterDrawCmd.Do();
+
+			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y, mip);
+			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
+			prefilterDrawCmd.Do();
+
+			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z, mip);
+			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
+			prefilterDrawCmd.Do();
+		}
+		SSRaterizeStateManager::Get().SetToDefault();
+
+		mPrefilterRenderTarget->CreateCubemapResource();
+
+		bPrefilterDrawn = true;
+	}
+
 	// @end
 
 
@@ -311,7 +360,7 @@ void SSEngine::DrawScene()
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
-	testDrawCmd.SetPSTexture("gCubeMap", mConvolutionRenderTarget.get());
+	testDrawCmd.SetPSTexture("gCubeMap", mPrefilterRenderTarget.get());
 
 	testDrawCmd.SetPreDrawJob([]()
 	{
