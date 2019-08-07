@@ -60,6 +60,17 @@ void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace)
 	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
 }
 
+void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace, UINT mip)
+{
+	UINT mipWidth, mipHeight;
+	if (mRenderTargetArray[static_cast<int>(eFace)]->GetWidth() != mipWidth || mRenderTargetArray[static_cast<int>(eFace)]->GetHeight() != mipHeight)
+	{
+		mRenderTargetArray[static_cast<int>(eFace)]->Resize(mipWidth, mipHeight);
+	}
+	
+	SetCurrentRTAs(eFace);
+}
+
 void SSCubemapRenderTarget::SetCurrentRTAsNegativeX()
 {
 	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::NEGATIVE_X)]->GetRenderTargetView() };

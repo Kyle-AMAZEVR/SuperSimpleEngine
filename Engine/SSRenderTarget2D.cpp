@@ -3,14 +3,44 @@
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
 
-SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT format)
+
+SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips)
 {
 	mWidth = width;
 	mHeight = height;
-	mTextureFormat = format;
-	InternalCreate(width, height, format);
+	mTextureFormat = eFormat;
+	mGenerateMips = bGenerateMips;
+
+	if (bGenerateMips)
+	{
+		check(mWidth == mHeight);
+
+		bool bPowerOfTwo = !(mWidth == 0) && !(mWidth & (mWidth - 1));
+		check(bPowerOfTwo);
+
+		mMipLevels = CalcMipLevel(mWidth);
+		InternalCreate(width, height, eFormat, mMipLevels);
+	}
+	else
+	{
+		InternalCreate(width, height, eFormat, 1);
+	}
 }
-void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format)
+
+UINT SSRenderTargetTexture2D::CalcMipLevel(UINT nSize)
+{
+	UINT mipCount = 0;
+	
+	do
+	{
+		mipCount++;
+		nSize /= 2;
+	} 	while (nSize > 0);
+
+	return mipCount;
+}
+
+void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format, const UINT mipLevels)
 {
 	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
 	textureDesc.Width = mWidth = width;
@@ -19,28 +49,31 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 	textureDesc.MiscFlags = 0;
 	textureDesc.Usage = D3D11_USAGE_DEFAULT;
 	textureDesc.SampleDesc.Count = 1;
-	textureDesc.MipLevels = textureDesc.ArraySize = 1;
+	textureDesc.MipLevels = mipLevels;
+	textureDesc.ArraySize = 1;
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.Format = mTextureFormat = format;
 
 	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &mTexturePtr));
 
-	D3D11_RENDER_TARGET_VIEW_DESC renderTargetDesc;
-	ZeroMemory(&renderTargetDesc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+	for (UINT i = 0; i < mipLevels; ++i)
+	{
+		D3D11_RENDER_TARGET_VIEW_DESC renderTargetDesc;
+		ZeroMemory(&renderTargetDesc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+		renderTargetDesc.Format = textureDesc.Format;
+		renderTargetDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		renderTargetDesc.Texture2D.MipSlice = i;
 
-	renderTargetDesc.Format = textureDesc.Format;
-	renderTargetDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	renderTargetDesc.Texture2D.MipSlice = 0;
-
-	HR(SSEngine::Get().GetDevice()->CreateRenderTargetView(mTexturePtr, &renderTargetDesc, &mRenderTargetView));
-
+		HR(SSEngine::Get().GetDevice()->CreateRenderTargetView(mTexturePtr, &renderTargetDesc, &mRenderTargetView[i]));
+	}
+	
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
 	ZeroMemory(&shaderResourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 	
 	shaderResourceViewDesc.Format = textureDesc.Format;
 	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+	shaderResourceViewDesc.Texture2D.MipLevels = mipLevels;
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &shaderResourceViewDesc, &mShaderResourceView));
 }
@@ -49,25 +82,37 @@ void SSRenderTargetTexture2D::Destroy()
 {
 	ReleaseCOM(mTexturePtr);
 	ReleaseCOM(mShaderResourceView);
-	ReleaseCOM(mRenderTargetView);
+
+	for (UINT i = 0; i < mMipLevels; ++i)
+	{
+		ReleaseCOM(mRenderTargetView[i]);
+	}
 }
 
 void SSRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
 {
+	// 
+	if (mGenerateMips)
+	{
+		return;
+	}
+
 	if (mWidth != newWidth || mHeight != newHeight)
 	{
 		Destroy();
-		InternalCreate(newWidth, newHeight, mTextureFormat);
+		InternalCreate(newWidth, newHeight, mTextureFormat, 1);
 	}
 }
 
 void SSRenderTargetTexture2D::Clear()
 {
 	float Color[4]{ 1.0f, 0.0f, 0.0f, 1.0f };
-	
-	SSEngine::Get().GetDeviceContext()->ClearRenderTargetView(mRenderTargetView, Color);
-}
 
+	for (UINT i = 0; i < mMipLevels; ++i)
+	{
+		SSEngine::Get().GetDeviceContext()->ClearRenderTargetView(mRenderTargetView[i], Color);
+	}
+}
 ///////////////////////////
 
 SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat)		

@@ -6,19 +6,23 @@
 class ENGINE_API SSRenderTargetTexture2D : public SSTexture2DBase
 {
 public:
-	SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat);
+	
+	SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false);
+
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
 	virtual void Destroy() override;	
 	
-	ID3D11RenderTargetView* GetRenderTargetView() { return mRenderTargetView; }
-
+	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip]; }
 	void Clear();
+	UINT GetMipLevels() const { return mMipLevels; }
 
 protected:
-
 	friend class SSGBuffer;
-	ID3D11RenderTargetView* mRenderTargetView = nullptr;	
-	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format);	
+	ID3D11RenderTargetView* mRenderTargetView[10]{ nullptr };
+	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format, const UINT mipLevels);
+	bool mGenerateMips = false;
+	UINT mMipLevels = 0;
+	UINT CalcMipLevel(UINT nSize);
 };
 
 class ENGINE_API SSDepthRenderTargetTexture2D : public SSTexture2DBase
