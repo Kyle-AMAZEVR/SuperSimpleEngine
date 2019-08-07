@@ -1,14 +1,36 @@
-#version 450
 
-layout (location = 0) in vec3 Position;
 
-layout (location = 0) out vec3 WorldPos;
-
-uniform mat4 Projection;
-uniform mat4 View;
-
-void main()
+struct VertexIn
 {
-    WorldPos = Position;
-    gl_Position =  Projection * View * vec4(WorldPos, 1.0);
+    float4 position : POSITION;       
+    float3 color : COLOR;
+    float2 texcoord : TEXCOORD;
+};
+
+struct VertexOut
+{
+    float4 position : SV_POSITION;
+    float4 worldPosition : COLOR;
+};
+
+
+cbuffer Proj
+{
+	float4x4 proj;	
+};
+
+cbuffer View
+{
+	float4x4 view;	
+};
+
+
+VertexOut VSMain(VertexIn vin)
+{
+    VertexOut output ;
+    float4x4 mvp = mul(view, proj);
+    output.position = mul(vin.position, mvp);
+    output.worldPosition = vin.position;
+    
+    return output;
 }

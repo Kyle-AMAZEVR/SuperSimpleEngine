@@ -1,9 +1,11 @@
-#version 450
 
 
-layout (location = 0) out float4 FragColor;
+struct PixelIn
+{
+    float4 position : SV_POSITION;
+    float4 worldPosition : COLOR;
+};
 
-layout (location = 0) in float3 WorldPos;
 
 TextureCube EnvironmentMap;
 
@@ -11,6 +13,16 @@ cbuffer Roughness
 {
     float roughness;
 };
+
+
+SamplerState samTriLinearSam
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+
 
 static const float PI = 3.14159265359;
 
@@ -69,16 +81,16 @@ float3 ImportanceSampleGGX(float2 Xi, float3 N, float roughness)
 	return normalize(sampleVec);
 }
 // ----------------------------------------------------------------------------
-float4 PSMain() : SV_TARGET
+float4 PSMain(PixelIn pin) : SV_TARGET
 {		
-    float3 N = normalize(WorldPos);
+    float3 N = normalize(pin.worldPosition.xyz);
     
     // make the simplyfying assumption that V equals R equals the normal 
     float3 R = N;
     float3 V = R;
 
     const uint SAMPLE_COUNT = 1024u;
-    float3 prefilteredColor = float3(0.0);
+    float3 prefilteredColor = float3(0,0,0);
     float totalWeight = 0.0;
     
     for(uint i = 0u; i < SAMPLE_COUNT; ++i)
@@ -103,12 +115,12 @@ float4 PSMain() : SV_TARGET
 
             float mipLevel = roughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel); 
             
-            prefilteredColor += textureLod(EnvironmentMap, L, mipLevel).rgb * NdotL;
+            prefilteredColor += EnvironmentMap.SampleLevel(samTriLinearSam, L, mipLevel).xyz * NdotL;
             totalWeight      += NdotL;
         }
     }
 
     prefilteredColor = prefilteredColor / totalWeight;
 
-    FragColor = float4(prefilteredColor, 1.0);
+    return float4(prefilteredColor, 1.0);
 }

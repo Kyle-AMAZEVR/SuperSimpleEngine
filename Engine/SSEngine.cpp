@@ -93,6 +93,9 @@ void SSEngine::TestCompileShader()
 	mCubemapConvolutionVertexShader = std::make_shared<SSVertexShader>();
 	mCubemapConvolutionPixelShader = std::make_shared<SSPixelShader>();
 
+	mPrefilterVertexShader = std::make_shared<SSVertexShader>();
+	mPrefilterPixelShader = std::make_shared<SSPixelShader>();
+
     assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
 	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
 	
@@ -107,6 +110,9 @@ void SSEngine::TestCompileShader()
 
 	assert(mCubemapConvolutionVertexShader->CompileFromFile(L"./Shader/CubemapConvolution.vs"));
 	assert(mCubemapConvolutionPixelShader->CompileFromFile(L"./Shader/CubemapConvolution.ps"));
+
+	assert(mPrefilterVertexShader->CompileFromFile(L"./Shader/Prefilter.vs"));
+	assert(mPrefilterPixelShader->CompileFromFile(L"./Shader/Prefilter.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
