@@ -95,8 +95,8 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth ;
 	description.Height = mHeight;
-	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	description.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+	description.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE | D3D11_RESOURCE_MISC_GENERATE_MIPS;
 	description.Usage = D3D11_USAGE_DEFAULT;
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;

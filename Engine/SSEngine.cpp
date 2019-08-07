@@ -35,9 +35,9 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mViewport = std::make_shared<SSViewport>();
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
-	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024);
+	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024,true,10);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
-	mPrefilterRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512, true, 5);
+	mPrefilterRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512,true,5);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -303,7 +303,7 @@ void SSEngine::DrawScene()
 
 		SSRaterizeStateManager::Get().SetCullModeNone();
 
-		for (UINT mip = 0; mip < 5; ++mip)
+		for (UINT mip = 0; mip < 1; ++mip)
 		{
 			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X, mip);
 
