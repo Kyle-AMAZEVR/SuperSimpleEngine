@@ -248,7 +248,7 @@ void SSEngine::DrawScene()
 
 		SSRaterizeStateManager::Get().SetToDefault();
 
-		mEquirectToCubemapRenderTarget->CreateCubemapResource();
+		mEquirectToCubemapRenderTarget->TempCreateCubemapResource();
 		bEquidirectToCubeDrawn = true;
 	}
 
@@ -360,7 +360,7 @@ void SSEngine::DrawScene()
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
-	testDrawCmd.SetPSTexture("gCubeMap", mPrefilterRenderTarget.get());
+	testDrawCmd.SetPSTexture("gCubeMap", mEquirectToCubemapRenderTarget.get());
 
 	testDrawCmd.SetPreDrawJob([]()
 	{

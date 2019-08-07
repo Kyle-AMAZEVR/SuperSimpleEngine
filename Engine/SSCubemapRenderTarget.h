@@ -26,6 +26,7 @@ public:
 	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);	
 
 	void CreateCubemapResource();
+	void TempCreateCubemapResource();
 
 	void ClearFace(ECubemapFace eFace);
 
