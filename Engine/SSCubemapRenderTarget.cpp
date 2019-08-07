@@ -5,19 +5,24 @@
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
 
-SSCubemapRenderTarget::SSCubemapRenderTarget(UINT width, UINT height, bool bGenerateMips, enum DXGI_FORMAT format)	
+SSCubemapRenderTarget::SSCubemapRenderTarget(UINT width, UINT height, bool bGenerateMips, UINT maxMipCount, enum DXGI_FORMAT format)	
 {
 	mWidth = width;
 	mHeight = height;
 	mTextureFormat = format;
-	mGenerateMips = bGenerateMips;
+	mGenerateMips = bGenerateMips;	
 
 	if (bGenerateMips)
 	{
 		check(mWidth == mHeight);
 		bool bPowerOfTwo = !(mWidth == 0) && !(mWidth & (mWidth - 1));
 		check(bPowerOfTwo);
-	}	
+		mMipLevels = maxMipCount;
+	}
+	else
+	{
+		mMipLevels = 1;
+	}
 	
 	InternalCreate();	
 }
@@ -26,7 +31,7 @@ void SSCubemapRenderTarget::InternalCreate()
 {
 	for(int i = 0; i < static_cast<int>(ECubemapFace::MAX); ++i)
 	{
-		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, mGenerateMips);
+		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, mGenerateMips, mMipLevels);
 	}
 
 	mViewport.TopLeftX = mViewport.TopLeftY = 0;
@@ -95,7 +100,7 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 	description.Usage = D3D11_USAGE_DEFAULT;
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;
-	description.MipLevels = 1;
+	description.MipLevels = mMipLevels;
 	description.ArraySize = 6;
 	description.CPUAccessFlags = 0 ;
 	description.Format = mTextureFormat;
@@ -107,15 +112,20 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 	resourceViewDesc.Format = description.Format;
 	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-	resourceViewDesc.Texture2D.MipLevels = 1;
+	resourceViewDesc.Texture2D.MipLevels = mMipLevels;
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
-
-	for (UINT face = 0; face < 6; ++face)
+	
+	//
+	for (UINT mipLevel = 0; mipLevel < mMipLevels; ++mipLevel)
 	{
-		auto dstSubresource = D3D11CalcSubresource(0, face, 1);
+		for (UINT face = 0; face < 6; ++face)
+		{
+			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, mMipLevels);
+			auto srcSubresource = D3D11CalcSubresource(mipLevel, 0, mMipLevels);
 
-		SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr, dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), 0, nullptr);
+			SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr, dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
+		}
 	}	
 }
 
