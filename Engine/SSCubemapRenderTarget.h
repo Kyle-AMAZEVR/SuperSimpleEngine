@@ -20,19 +20,10 @@ enum class ECubemapFace : unsigned char
 class SSCubemapRenderTarget : public IRenderTarget, public SSTexture2DBase
 {
 public:
-	SSCubemapRenderTarget(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
+	SSCubemapRenderTarget(UINT width, UINT height, bool bGenerateMips = false, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
 	
 	void SetCurrentRTAs(ECubemapFace eFace);
-	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);
-
-	void SetCurrentRTAsPositiveX();
-	void SetCurrentRTAsNegativeX();
-
-	void SetCurrentRTAsPositiveY();
-	void SetCurrentRTAsNegativeY();
-
-	void SetCurrentRTAsPositiveZ();
-	void SetCurrentRTAsNegativeZ();
+	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);	
 
 	void CreateCubemapResource();
 
@@ -47,7 +38,7 @@ public:
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
 	virtual void SetCurrentRenderTarget() override {}
 	virtual void Clear() override;	
-	virtual void Resize(UINT width, UINT height) override;
+	virtual void Resize(UINT width, UINT height) override {}
 	// @IRenderTarget Interface
 
 protected:
@@ -57,4 +48,8 @@ protected:
 	void InternalCreate();
 
 	D3D11_VIEWPORT mViewport;
+
+	bool mGenerateMips = false;
+
+	UINT mLastRTMip = 0;
 };

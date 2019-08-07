@@ -37,6 +37,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
+	
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -216,7 +217,7 @@ void SSEngine::DrawScene()
 	{	
 
 		mEquirectToCubemapRenderTarget->Clear();
-		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveX();
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X);
 
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
@@ -227,23 +228,23 @@ void SSEngine::DrawScene()
 
 		equirectToCubeDrawCmd.Do();
 
-		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveY();
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
 		equirectToCubeDrawCmd.Do();
 
-		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeY();
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
 		equirectToCubeDrawCmd.Do();
 
-		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeX();
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
 		equirectToCubeDrawCmd.Do();
 
-		mEquirectToCubemapRenderTarget->SetCurrentRTAsNegativeZ();
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
 		equirectToCubeDrawCmd.Do();
 
-		mEquirectToCubemapRenderTarget->SetCurrentRTAsPositiveZ();
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
 		equirectToCubeDrawCmd.Do();
 
@@ -256,7 +257,7 @@ void SSEngine::DrawScene()
 	if (bConvolutionDrawn == false)
 	{
 		mConvolutionRenderTarget->Clear();
-		mConvolutionRenderTarget->SetCurrentRTAsPositiveX();
+		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X);
 
 		convolutionDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
@@ -267,23 +268,23 @@ void SSEngine::DrawScene()
 
 		convolutionDrawCmd.Do();
 
-		mConvolutionRenderTarget->SetCurrentRTAsPositiveY();
+		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
 		convolutionDrawCmd.Do();
 
-		mConvolutionRenderTarget->SetCurrentRTAsNegativeY();
+		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
 		convolutionDrawCmd.Do();
 
-		mConvolutionRenderTarget->SetCurrentRTAsNegativeX();
+		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
 		convolutionDrawCmd.Do();
 
-		mConvolutionRenderTarget->SetCurrentRTAsNegativeZ();
+		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
 		convolutionDrawCmd.Do();
 
-		mConvolutionRenderTarget->SetCurrentRTAsPositiveZ();
+		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
 		convolutionDrawCmd.Do();
 

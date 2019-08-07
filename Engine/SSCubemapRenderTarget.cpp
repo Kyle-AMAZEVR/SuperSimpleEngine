@@ -5,20 +5,28 @@
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
 
-SSCubemapRenderTarget::SSCubemapRenderTarget(UINT width, UINT height, enum DXGI_FORMAT format)	
+SSCubemapRenderTarget::SSCubemapRenderTarget(UINT width, UINT height, bool bGenerateMips, enum DXGI_FORMAT format)	
 {
 	mWidth = width;
 	mHeight = height;
 	mTextureFormat = format;
+	mGenerateMips = bGenerateMips;
 
-	InternalCreate();
+	if (bGenerateMips)
+	{
+		check(mWidth == mHeight);
+		bool bPowerOfTwo = !(mWidth == 0) && !(mWidth & (mWidth - 1));
+		check(bPowerOfTwo);
+	}	
+	
+	InternalCreate();	
 }
 
 void SSCubemapRenderTarget::InternalCreate()
 {
 	for(int i = 0; i < static_cast<int>(ECubemapFace::MAX); ++i)
 	{
-		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT);
+		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, mGenerateMips);
 	}
 
 	mViewport.TopLeftX = mViewport.TopLeftY = 0;
@@ -43,14 +51,6 @@ void SSCubemapRenderTarget::ClearFace(ECubemapFace eFace)
 }
 
 
-void SSCubemapRenderTarget::Resize(UINT width, UINT height)
-{
-	for (int i = 0; i < static_cast<int>(ECubemapFace::MAX); ++i)
-	{
-		mRenderTargetArray[i]->Resize(width, height);
-	}
-}
-
 void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace)
 {
 	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(eFace)]->GetRenderTargetView() };
@@ -62,69 +62,28 @@ void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace)
 
 void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace, UINT mip)
 {
-	UINT mipWidth, mipHeight;
-	if (mRenderTargetArray[static_cast<int>(eFace)]->GetWidth() != mipWidth || mRenderTargetArray[static_cast<int>(eFace)]->GetHeight() != mipHeight)
+	if (mGenerateMips)
 	{
-		mRenderTargetArray[static_cast<int>(eFace)]->Resize(mipWidth, mipHeight);
+		if (mip != mLastRTMip)
+		{
+			mViewport.Width = mWidth / (mip+1);
+			mViewport.Height = mHeight / (mip+1);
+			mLastRTMip = mip;
+		}
 	}
+	else
+	{
+		mip = 0;
+	}
+
+	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(eFace)]->GetRenderTargetView(mip) };
+
+	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
 	
-	SetCurrentRTAs(eFace);
-}
-
-void SSCubemapRenderTarget::SetCurrentRTAsNegativeX()
-{
-	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::NEGATIVE_X)]->GetRenderTargetView() };
-		
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
-
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
-}
-
-void SSCubemapRenderTarget::SetCurrentRTAsPositiveX()
-{
-	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::POSITIVE_X)]->GetRenderTargetView() };
-
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
-
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
-}
-
-void SSCubemapRenderTarget::SetCurrentRTAsNegativeY()
-{
-	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::NEGATIVE_Y)]->GetRenderTargetView()};
-
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
-
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
-}
-
-void SSCubemapRenderTarget::SetCurrentRTAsPositiveY()
-{
-	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::POSITIVE_Y)]->GetRenderTargetView() };
-
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
-
 	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
 }
 
 
-void SSCubemapRenderTarget::SetCurrentRTAsNegativeZ()
-{
-	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::NEGATIVE_Z)]->GetRenderTargetView() };
-
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
-
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
-}
-
-void SSCubemapRenderTarget::SetCurrentRTAsPositiveZ()
-{
-	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(ECubemapFace::POSITIVE_Z)]->GetRenderTargetView() };
-
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
-
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
-}
 
 void SSCubemapRenderTarget::CreateCubemapResource()
 {
