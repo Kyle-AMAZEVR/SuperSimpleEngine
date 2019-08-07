@@ -54,3 +54,20 @@ XMMATRIX SSMathHelper::PositiveYViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero
 
 XMMATRIX SSMathHelper::NegativeZViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::MinusUnitZ4), XMLoadFloat4(&SSMathHelper::UnitY4));
 XMMATRIX SSMathHelper::PositiveZViewMatrix = XMMatrixLookToLH(XMLoadFloat3(&Zero3), XMLoadFloat4(&SSMathHelper::UnitZ4), XMLoadFloat4(&SSMathHelper::UnitY4));
+
+
+UINT SSMathHelper::CalcMipLevel(UINT nSize)
+{
+	bool bPowerOfTwo = !(nSize == 0) && !(nSize & (nSize - 1));
+	check(bPowerOfTwo);
+
+	UINT mipCount = 0;
+
+	do
+	{
+		mipCount++;
+		nSize /= 2;
+	} while (nSize > 0);
+
+	return mipCount;
+}

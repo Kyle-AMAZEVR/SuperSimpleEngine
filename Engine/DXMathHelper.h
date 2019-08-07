@@ -38,4 +38,6 @@ public :
 
 	static XMMATRIX PositiveZViewMatrix;
 	static XMMATRIX NegativeZViewMatrix;
+
+	static UINT CalcMipLevel(UINT nSize);
 };

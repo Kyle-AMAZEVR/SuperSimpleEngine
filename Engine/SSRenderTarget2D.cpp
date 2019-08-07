@@ -4,7 +4,7 @@
 #include "SSEngine.h"
 
 
-SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips)
+SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips, UINT maxMipCount)
 {
 	mWidth = width;
 	mHeight = height;
@@ -18,7 +18,7 @@ SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT he
 		bool bPowerOfTwo = !(mWidth == 0) && !(mWidth & (mWidth - 1));
 		check(bPowerOfTwo);
 
-		mMipLevels = CalcMipLevel(mWidth);
+		mMipLevels = maxMipCount;
 		InternalCreate(width, height, eFormat, mMipLevels);
 	}
 	else
@@ -27,18 +27,6 @@ SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT he
 	}
 }
 
-UINT SSRenderTargetTexture2D::CalcMipLevel(UINT nSize)
-{
-	UINT mipCount = 0;
-	
-	do
-	{
-		mipCount++;
-		nSize /= 2;
-	} 	while (nSize > 0);
-
-	return mipCount;
-}
 
 void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format, const UINT mipLevels)
 {
@@ -46,10 +34,19 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 	textureDesc.Width = mWidth = width;
 	textureDesc.Height = mHeight = height;
 	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-	textureDesc.MiscFlags = 0;
+	if (mGenerateMips)
+	{
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+		textureDesc.MipLevels = mipLevels;
+	}
+	else
+	{
+		textureDesc.MiscFlags = 0;
+		textureDesc.MipLevels = 1;
+	}
 	textureDesc.Usage = D3D11_USAGE_DEFAULT;
 	textureDesc.SampleDesc.Count = 1;
-	textureDesc.MipLevels = mipLevels;
+	
 	textureDesc.ArraySize = 1;
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.Format = mTextureFormat = format;
