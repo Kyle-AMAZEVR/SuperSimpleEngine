@@ -78,7 +78,7 @@ private:
 
 	std::shared_ptr<class SSCubemapRenderTarget> mEquirectToCubemapRenderTarget;
 	std::shared_ptr<class SSCubemapRenderTarget> mConvolutionRenderTarget;
-	std::shared_ptr<class SSCubemapRenderTarget> mPrefilterRenderTarget;
+	std::shared_ptr<class SSPrefilterCubemapRenderTarget> mPrefilterRenderTarget;
 	
 	
     

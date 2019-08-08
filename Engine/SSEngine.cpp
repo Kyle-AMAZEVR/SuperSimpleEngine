@@ -35,9 +35,9 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mViewport = std::make_shared<SSViewport>();
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
-	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024,true,10);
+	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
-	mPrefilterRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024, 1024,true,5);
+	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024,5);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -248,7 +248,7 @@ void SSEngine::DrawScene()
 
 		SSRaterizeStateManager::Get().SetToDefault();
 
-		mEquirectToCubemapRenderTarget->TempCreateCubemapResource();
+		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
 		bEquidirectToCubeDrawn = true;
 	}
 
@@ -290,7 +290,7 @@ void SSEngine::DrawScene()
 
 		SSRaterizeStateManager::Get().SetToDefault();
 
-		mConvolutionRenderTarget->CreateCubemapResource();
+		mConvolutionRenderTarget->CreateCubemapShaderResource();
 
 		bConvolutionDrawn = true;
 	}
@@ -345,7 +345,7 @@ void SSEngine::DrawScene()
 		}
 		SSRaterizeStateManager::Get().SetToDefault();
 
-		mPrefilterRenderTarget->CreateCubemapResource();
+		mPrefilterRenderTarget->CreateCubemapShaderResource();
 
 		bPrefilterDrawn = true;
 	}

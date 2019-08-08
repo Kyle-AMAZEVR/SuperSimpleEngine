@@ -4,34 +4,25 @@
 #include "SSCubemapRenderTarget.h"
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
+#include "DXMathHelper.h"
 
-SSCubemapRenderTarget::SSCubemapRenderTarget(UINT width, UINT height, bool bGenerateMips, UINT maxMipCount, enum DXGI_FORMAT format)	
+SSCubemapRenderTarget::SSCubemapRenderTarget(UINT width, UINT height, enum DXGI_FORMAT format)	
 {
+	check(width == height);
+
 	mWidth = width;
 	mHeight = height;
-	mTextureFormat = format;
-	mGenerateMips = bGenerateMips;	
-
-	if (bGenerateMips)
-	{
-		check(mWidth == mHeight);
-		bool bPowerOfTwo = !(mWidth == 0) && !(mWidth & (mWidth - 1));
-		check(bPowerOfTwo);
-		mMipLevels = maxMipCount;
-	}
-	else
-	{
-		mMipLevels = 1;
-	}
+	mTextureFormat = format;	
+	mMipLevels = SSMathHelper::CalcMipLevel(mWidth);
 	
-	InternalCreate();	
+	InternalCreate();
 }
 
 void SSCubemapRenderTarget::InternalCreate()
 {
 	for(int i = 0; i < static_cast<int>(ECubemapFace::MAX); ++i)
 	{
-		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, mGenerateMips, mMipLevels);
+		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT);
 	}
 
 	mViewport.TopLeftX = mViewport.TopLeftY = 0;
@@ -65,30 +56,8 @@ void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace)
 	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
 }
 
-void SSCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace, UINT mip)
-{
-	if (mGenerateMips)
-	{
-		if (mip != mLastRTMip)
-		{
-			mViewport.Width = mWidth / static_cast<float>(std::pow(2, mip));
-			mViewport.Height = mHeight / static_cast<float>(std::pow(2,mip));
-			mLastRTMip = mip;
-		}
-	}
-	else
-	{
-		mip = 0;
-	}
 
-	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(eFace)]->GetRenderTargetView(mip) };
-
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
-	
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
-}
-
-void SSCubemapRenderTarget::TempCreateCubemapResource()
+void SSCubemapRenderTarget::CreateCubemapShaderResource()
 {
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth;
@@ -126,10 +95,38 @@ void SSCubemapRenderTarget::TempCreateCubemapResource()
 	SSEngine::Get().GetDeviceContext()->GenerateMips(mShaderResourceView);
 }
 
-void SSCubemapRenderTarget::CreateCubemapResource()
+void SSCubemapRenderTarget::Destroy()
+{
+	Destroy();
+}
+
+
+SSRenderTargetTexture2D* SSCubemapRenderTarget::GetRenderTargetTexture(ECubemapFace eFace)
+{
+	return mRenderTargetArray[static_cast<int>(eFace)];
+}
+
+
+SSPrefilterCubemapRenderTarget::SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount, DXGI_FORMAT format)	
+{
+	mWidth = width;
+	mHeight = height;
+	mTextureFormat = format;
+	
+	check(mWidth == mHeight);
+	bool bPowerOfTwo = !(mWidth == 0) && !(mWidth & (mWidth - 1));
+	check(bPowerOfTwo);
+	check(maxMipCount > 0);
+
+	mMipLevels = maxMipCount;	
+	
+	InternalCreate();
+}
+
+void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource()
 {
 	D3D11_TEXTURE2D_DESC description;
-	description.Width = mWidth ;
+	description.Width = mWidth;
 	description.Height = mHeight;
 	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 	description.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE | D3D11_RESOURCE_MISC_GENERATE_MIPS;
@@ -138,7 +135,7 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 	description.SampleDesc.Quality = 0;
 	description.MipLevels = mMipLevels;
 	description.ArraySize = 6;
-	description.CPUAccessFlags = 0 ;
+	description.CPUAccessFlags = 0;
 	description.Format = mTextureFormat;
 
 	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
@@ -151,7 +148,7 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
-	
+
 	//
 	for (UINT mipLevel = 0; mipLevel < mMipLevels; ++mipLevel)
 	{
@@ -162,16 +159,35 @@ void SSCubemapRenderTarget::CreateCubemapResource()
 
 			SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr, dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
 		}
+	}
+}
+
+void SSPrefilterCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace, UINT mip)
+{	
+	if (mip != mLastRTMip)
+	{
+		mViewport.Width = mWidth / static_cast<float>(std::pow(2, mip));
+		mViewport.Height = mHeight / static_cast<float>(std::pow(2, mip));
+		mLastRTMip = mip;
 	}	
+
+	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(eFace)]->GetRenderTargetView(mip) };
+
+	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
+
+	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
 }
 
-void SSCubemapRenderTarget::Destroy()
+void SSPrefilterCubemapRenderTarget::InternalCreate()
 {
-	Destroy();
-}
+	for (int i = 0; i < static_cast<int>(ECubemapFace::MAX); ++i)
+	{
+		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, true, mMipLevels);
+	}
 
-
-SSRenderTargetTexture2D* SSCubemapRenderTarget::GetRenderTargetTexture(ECubemapFace eFace)
-{
-	return mRenderTargetArray[static_cast<int>(eFace)];
+	mViewport.TopLeftX = mViewport.TopLeftY = 0;
+	mViewport.Width = static_cast<float>(mWidth);
+	mViewport.Height = static_cast<float>(mHeight);
+	mViewport.MinDepth = 0;
+	mViewport.MaxDepth = 1.0f;
 }

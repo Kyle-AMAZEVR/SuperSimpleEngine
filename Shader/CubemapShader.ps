@@ -28,7 +28,7 @@ PixelOutputType PSMain(VertexOut pin)
 {
 	PixelOutputType output = (PixelOutputType)0;
 
-	output.color = gCubeMap.SampleLevel(samTriLinearSam, pin.PosL, 2);
+	output.color = gCubeMap.SampleLevel(samTriLinearSam, pin.PosL, 1);
 
     return output;
 }

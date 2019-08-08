@@ -17,15 +17,16 @@ enum class ECubemapFace : unsigned char
 };
 
 
+
+
 class SSCubemapRenderTarget : public IRenderTarget, public SSTexture2DBase
 {
 public:
-	SSCubemapRenderTarget(UINT width, UINT height, bool bGenerateMips = false, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
+	SSCubemapRenderTarget(UINT width, UINT height ,DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
 	
-	void SetCurrentRTAs(ECubemapFace eFace);
-	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);	
+	void SetCurrentRTAs(ECubemapFace eFace);	
 
-	void CreateCubemapResource();
+	virtual void CreateCubemapShaderResource();
 	void TempCreateCubemapResource();
 
 	void ClearFace(ECubemapFace eFace);
@@ -43,15 +44,30 @@ public:
 	// @IRenderTarget Interface
 
 protected:
+	SSCubemapRenderTarget() {}
 
 	class SSRenderTargetTexture2D* mRenderTargetArray[ECubemapFace::MAX]{ nullptr };
 
-	void InternalCreate();
+	virtual void InternalCreate();
 
 	D3D11_VIEWPORT mViewport;
-
-	bool mGenerateMips = false;
+	
 	UINT mMipLevels = 0;
+	UINT mLastRTMip = 0;
+};
 
+
+// @ cubemap rt for prefiltering 
+class SSPrefilterCubemapRenderTarget : public SSCubemapRenderTarget
+{
+public:
+	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
+	virtual void CreateCubemapShaderResource() override;
+	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);
+	
+protected:
+	
+	virtual void InternalCreate() override;
+	UINT mMipLevels = 0;
 	UINT mLastRTMip = 0;
 };
