@@ -251,7 +251,10 @@ void SSEngine::DrawScene()
 		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
 		bEquidirectToCubeDrawn = true;
 
-		mEquirectToCubemapRenderTarget->SaveFaceAsDDSFile(ECubemapFace::POSITIVE_Y);
+
+		mEquirectToCubemapRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
+		mEquirectToCubemapRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
+		mEquirectToCubemapRenderTarget->SaveAsCubemapDDSFile();
 	}
 
 	if (bConvolutionDrawn == false)
@@ -349,8 +352,9 @@ void SSEngine::DrawScene()
 
 		mPrefilterRenderTarget->CreateCubemapShaderResource();
 
-		//mPrefilterRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
+		mPrefilterRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
 		mPrefilterRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
+		mPrefilterRenderTarget->SaveAsCubemapDDSFile();
 
 		bPrefilterDrawn = true;
 	}

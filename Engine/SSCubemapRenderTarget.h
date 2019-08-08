@@ -26,8 +26,10 @@ public:
 	
 	void SetCurrentRTAs(ECubemapFace eFace);
 
-	virtual void SaveAsCubemapDDSFile() {}
+	virtual void SaveAsCubemapDDSFile();
 	virtual void SaveFaceAsDDSFile(ECubemapFace eFace);
+	virtual void SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip = 0);
+
 	virtual void CreateCubemapShaderResource();	
 
 	void ClearFace(ECubemapFace eFace);
@@ -62,10 +64,7 @@ protected:
 class SSPrefilterCubemapRenderTarget : public SSCubemapRenderTarget
 {
 public:
-	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);	
-	virtual void SaveAsCubemapDDSFile() override;
-	virtual void SaveFaceAsDDSFile(ECubemapFace eFace) override;
-	void SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip = 0);
+	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);		
 	virtual void CreateCubemapShaderResource() override;
 	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);
 	
