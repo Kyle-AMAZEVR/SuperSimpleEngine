@@ -269,7 +269,7 @@ void SSPrefilterCubemapRenderTarget::SaveFaceOfMipAsDDSFile(ECubemapFace eFace, 
 	SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(copiedTexturePtr, 0, 0, 0, 0, mRenderTargetArray[static_cast<int>(eFace)]->GetTextureResource(), srcSubResource, nullptr);
 
 	D3D11_MAPPED_SUBRESOURCE mapped;
-	HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr, srcSubResource, D3D11_MAP_READ, 0, &mapped));
+	HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr, 0, D3D11_MAP_READ, 0, &mapped));
 
 	DirectX::Image image;
 	InitD3DDesc(image);
