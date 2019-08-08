@@ -24,10 +24,11 @@ class SSCubemapRenderTarget : public IRenderTarget, public SSTexture2DBase
 public:
 	SSCubemapRenderTarget(UINT width, UINT height ,DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
 	
-	void SetCurrentRTAs(ECubemapFace eFace);	
+	void SetCurrentRTAs(ECubemapFace eFace);
 
-	virtual void CreateCubemapShaderResource();
-	void TempCreateCubemapResource();
+	void SaveFaceAsDDSFile(ECubemapFace eFace);
+
+	virtual void CreateCubemapShaderResource();	
 
 	void ClearFace(ECubemapFace eFace);
 
@@ -61,7 +62,8 @@ protected:
 class SSPrefilterCubemapRenderTarget : public SSCubemapRenderTarget
 {
 public:
-	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
+	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);	
+	void SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip = 0);
 	virtual void CreateCubemapShaderResource() override;
 	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);
 	

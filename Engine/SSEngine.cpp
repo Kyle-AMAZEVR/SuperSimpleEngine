@@ -250,6 +250,8 @@ void SSEngine::DrawScene()
 
 		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
 		bEquidirectToCubeDrawn = true;
+
+		mEquirectToCubemapRenderTarget->SaveFaceAsDDSFile(ECubemapFace::POSITIVE_Y);
 	}
 
 	if (bConvolutionDrawn == false)
