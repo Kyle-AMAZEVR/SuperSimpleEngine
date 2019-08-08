@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
-#include "DXMathHelper.h"
+#include "SSMathHelper.h"
 #include "DirectXTex.h"
 
 SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips, UINT maxMipCount)

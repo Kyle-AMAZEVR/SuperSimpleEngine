@@ -19,7 +19,7 @@
 #include "SSDepthStencilStateManager.h"
 #include "SSRasterizeStateManager.h"
 #include "SSCubemapRenderTarget.h"
-#include "DXMathHelper.h"
+#include "SSMathHelper.h"
 #include "SSFreqUsedNames.h"
 
 bool SSEngine::bInitialized = false;

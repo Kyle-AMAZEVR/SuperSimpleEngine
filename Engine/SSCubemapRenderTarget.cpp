@@ -4,7 +4,7 @@
 #include "SSCubemapRenderTarget.h"
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
-#include "DXMathHelper.h"
+#include "SSMathHelper.h"
 #include "DirectXTex.h"
 
 SSCubemapRenderTarget::SSCubemapRenderTarget(UINT width, UINT height, enum DXGI_FORMAT format)	

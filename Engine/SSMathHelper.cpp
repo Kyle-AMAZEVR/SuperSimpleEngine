@@ -1,7 +1,7 @@
 
 
 #include "Core.h"
-#include "DXMathHelper.h"
+#include "SSMathHelper.h"
 #include "DirectXMath.h"
 
 using namespace DirectX;

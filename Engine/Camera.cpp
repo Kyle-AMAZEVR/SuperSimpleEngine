@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "Camera.h"
-#include "DXMathHelper.h"
+#include "SSMathHelper.h"
 
 XMMATRIX SSCameraBase::GetViewProj() const 
 {
