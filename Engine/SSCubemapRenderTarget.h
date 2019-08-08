@@ -69,8 +69,5 @@ public:
 	void SetCurrentRTAs(ECubemapFace eFace, UINT mip);
 	
 protected:
-	
-	virtual void InternalCreate() override;
-	UINT mMipLevels = 0;
-	UINT mLastRTMip = 0;
+	virtual void InternalCreate() override;		
 };

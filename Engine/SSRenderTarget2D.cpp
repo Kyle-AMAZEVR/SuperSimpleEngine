@@ -24,6 +24,7 @@ SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT he
 	}
 	else
 	{
+		mMipLevels = 1;
 		InternalCreate(width, height, eFormat, 1);
 	}
 }
@@ -351,6 +352,11 @@ SSRenderTargetTexture2D* SSGenericRenderTarget::GetOutput(UINT nIndex)
 	}
 
 	return nullptr;
+}
+
+void SSGenericRenderTarget::SaveRTTexture(UINT index, std::wstring filename)
+{
+	mRenderTargetArray[index]->SaveAsDDSFile(filename);
 }
 
 void SSGenericRenderTarget::Clear()

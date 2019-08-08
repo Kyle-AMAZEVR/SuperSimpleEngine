@@ -47,7 +47,9 @@ class ENGINE_API SSGenericRenderTarget : public IRenderTarget
 public:
 	SSGenericRenderTarget(UINT width, UINT height, UINT count, bool bDepthExist = true, DXGI_FORMAT eFormat = DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_FORMAT eDepthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
 
-	SSRenderTargetTexture2D* GetOutput(UINT nIndex) ;
+	SSRenderTargetTexture2D* GetOutput(UINT nIndex);
+
+	void SaveRTTexture(UINT index, std::wstring filename);
 
 	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }

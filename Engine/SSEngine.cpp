@@ -34,10 +34,11 @@ bool SSEngine::Initialize(HWND windowHandle)
 
 	mViewport = std::make_shared<SSViewport>();
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
-	mCubemapRenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
+	
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024,1024);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024,5);
+	m2DLUTRenderTarget = std::make_shared<class SSGenericRenderTarget>(512, 512, 1, false);
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
@@ -97,6 +98,9 @@ void SSEngine::TestCompileShader()
 	mPrefilterVertexShader = std::make_shared<SSVertexShader>();
 	mPrefilterPixelShader = std::make_shared<SSPixelShader>();
 
+	m2DLUTPixelShader = std::make_shared<SSPixelShader>();
+	m2DLUTVertexShader = std::make_shared<SSVertexShader>();
+
     assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
 	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
 	
@@ -114,6 +118,9 @@ void SSEngine::TestCompileShader()
 
 	assert(mPrefilterVertexShader->CompileFromFile(L"./Shader/Prefilter.vs"));
 	assert(mPrefilterPixelShader->CompileFromFile(L"./Shader/Prefilter.ps"));
+
+	assert(m2DLUTVertexShader->CompileFromFile(L"./Shader/2DLUT.vs"));
+	assert(m2DLUTPixelShader->CompileFromFile(L"./Shader/2DLUT.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -141,7 +148,7 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 
 		mViewport->Resize(newWidth, newHeight);
 		mGBuffer->Resize(newWidth, newHeight);
-		mCubemapRenderTarget->Resize(newWidth, newHeight);
+		
 	}
 }
 
@@ -190,6 +197,17 @@ bool SSEngine::CreateSwapChain()
     ReleaseCOM(dxgiFactory);
 
     return true;
+}
+
+void SSEngine::Create2DLUTTexture()
+{
+	m2DLUTRenderTarget->Clear();
+	m2DLUTRenderTarget->SetCurrentRenderTarget();
+
+	SSDrawCommand blitDrawCmd{ m2DLUTVertexShader.get(), m2DLUTPixelShader.get(), mScreenBlit };	
+	blitDrawCmd.Do();
+
+	m2DLUTRenderTarget->SaveRTTexture(0, L"LUT.dds");
 }
 
 void SSEngine::CreateEnvCubemapConvolution()
@@ -364,6 +382,7 @@ void SSEngine::DrawScene()
 	static bool bEquidirectToCubeDrawn = false;
 	static bool bConvolutionDrawn = false;
 	static bool bPrefilterDrawn = false;
+	static bool bLUTCreated = false;
 
 	if (bEquidirectToCubeDrawn == false)
 	{	
@@ -382,6 +401,13 @@ void SSEngine::DrawScene()
 		CreateEnvCubemapPrefilter();
 		bPrefilterDrawn = true;
 	}
+
+	if (bLUTCreated == false)
+	{
+		Create2DLUTTexture();
+		bLUTCreated = true;
+	}
+
 	// @end
 
 
@@ -423,8 +449,7 @@ void SSEngine::DrawScene()
 	sphereDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 	sphereDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
 	
-	sphereDrawCmd.Do();
-	
+	sphereDrawCmd.Do();	
 
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();

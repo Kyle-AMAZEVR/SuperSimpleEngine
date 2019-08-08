@@ -76,18 +76,25 @@ private:
 	std::shared_ptr<class SSVertexShader> mPrefilterVertexShader;
 	std::shared_ptr<class SSPixelShader> mPrefilterPixelShader;
 
+	std::shared_ptr<class SSVertexShader> m2DLUTVertexShader;
+	std::shared_ptr<class SSPixelShader> m2DLUTPixelShader;
+
+	// @ cubemap rendertargets
 	std::shared_ptr<class SSCubemapRenderTarget> mEquirectToCubemapRenderTarget;
 	std::shared_ptr<class SSCubemapRenderTarget> mConvolutionRenderTarget;
 	std::shared_ptr<class SSPrefilterCubemapRenderTarget> mPrefilterRenderTarget;	
+
+	// @
 	
     
 	std::shared_ptr<class SSTexture2D> mTestTexture;
 	std::shared_ptr<class SSGBuffer> mGBuffer;
-	std::shared_ptr<class SSGenericRenderTarget> mCubemapRenderTarget;
+	std::shared_ptr<class SSGenericRenderTarget> m2DLUTRenderTarget;
     //
 
 private:
 	void CreateEnvCubemap();
 	void CreateEnvCubemapConvolution();
 	void CreateEnvCubemapPrefilter();
+	void Create2DLUTTexture();
 };

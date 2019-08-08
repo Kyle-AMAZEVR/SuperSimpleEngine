@@ -110,6 +110,7 @@ SSRenderTargetTexture2D* SSCubemapRenderTarget::GetRenderTargetTexture(ECubemapF
 
 
 SSPrefilterCubemapRenderTarget::SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount, DXGI_FORMAT format)	
+	: SSCubemapRenderTarget()
 {
 	mWidth = width;
 	mHeight = height;
