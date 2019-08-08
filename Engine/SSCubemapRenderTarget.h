@@ -28,7 +28,7 @@ public:
 
 	virtual void SaveAsCubemapDDSFile();
 	virtual void SaveFaceAsDDSFile(ECubemapFace eFace);
-	virtual void SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip = 0);
+	virtual void SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip = 0);	
 
 	virtual void CreateCubemapShaderResource();	
 

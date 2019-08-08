@@ -194,6 +194,8 @@ void SSPrefilterCubemapRenderTarget::InternalCreate()
 	mViewport.MaxDepth = 1.0f;
 }
 
+// @ save as cubemap 
+// @ include all mips
 void SSCubemapRenderTarget::SaveAsCubemapDDSFile()
 {
 	const UINT mipTextureWidth = mWidth;

@@ -2,7 +2,8 @@
 #include "Core.h"
 #include "SSRenderTarget2D.h"
 #include "SSEngine.h"
-
+#include "DXMathHelper.h"
+#include "DirectXTex.h"
 
 SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips, UINT maxMipCount)
 {
@@ -109,6 +110,97 @@ void SSRenderTargetTexture2D::Clear()
 	{
 		SSEngine::Get().GetDeviceContext()->ClearRenderTargetView(mRenderTargetView[i], Color);
 	}
+}
+
+void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
+{
+
+	// @create staging texture for copy
+	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
+	textureDesc.Width = mWidth;
+	textureDesc.Height = mHeight;
+	textureDesc.BindFlags = 0;
+	textureDesc.MiscFlags = 0;
+	textureDesc.MipLevels = mMipLevels;
+	textureDesc.Usage = D3D11_USAGE_STAGING;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	textureDesc.Format = mTextureFormat;
+	ID3D11Texture2D* copiedTexturePtr = nullptr;
+
+	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &copiedTexturePtr));
+
+	SSEngine::Get().GetDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr);
+
+	// copy resource
+	if (mGenerateMips)
+	{
+		DirectX::Image* imageList = new DirectX::Image[mMipLevels];
+
+		for (UINT i = 0; i < mMipLevels; ++i)
+		{
+			const UINT mipTextureHeight = mWidth / static_cast<UINT>(std::pow(2, i));
+			const UINT mipTextureWidth = mHeight / static_cast<UINT>(std::pow(2, i));
+
+			UINT subresource = D3D11CalcSubresource(i, 0, mMipLevels);
+
+			D3D11_MAPPED_SUBRESOURCE mapped;
+			HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr, subresource, D3D11_MAP_READ, 0, &mapped));
+						
+			InitD3DDesc(imageList[i]);
+			imageList[i].width = mipTextureWidth;
+			imageList[i].height = mipTextureHeight;
+			imageList[i].pixels = new uint8_t[mapped.RowPitch * mipTextureHeight];
+			imageList[i].rowPitch = mapped.RowPitch;
+			imageList[i].format = mTextureFormat;
+			imageList[i].slicePitch = mapped.RowPitch * mipTextureHeight;
+
+			// copy raw data
+			memcpy_s(imageList[i].pixels, mapped.RowPitch * mipTextureHeight, mapped.pData, mapped.RowPitch * mipTextureHeight);
+
+			SSEngine::Get().GetDeviceContext()->Unmap(copiedTexturePtr, subresource);
+		}
+
+		TexMetadata metaData;
+		InitD3DDesc(metaData);
+		metaData.arraySize = 1;
+		metaData.dimension = TEX_DIMENSION_TEXTURE2D;
+		metaData.format = mTextureFormat;
+		metaData.width = mWidth;
+		metaData.height = mHeight;
+
+		HR(DirectX::SaveToDDSFile(imageList, mMipLevels, metaData, 0, filename.c_str()));
+		
+		for (UINT i = 0; i < mMipLevels; ++i)
+		{
+			delete[] imageList[i].pixels;
+		}
+	}
+	else
+	{
+		D3D11_MAPPED_SUBRESOURCE mapped;
+		HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr, 0, D3D11_MAP_READ, 0, &mapped));
+
+		DirectX::Image image;
+		InitD3DDesc(image);
+		image.width = mWidth;
+		image.height = mHeight;
+		image.pixels = new uint8_t[mapped.RowPitch * mHeight];
+		image.rowPitch = mapped.RowPitch;
+		image.format = mTextureFormat;
+		image.slicePitch = mapped.RowPitch * mHeight;
+
+		// copy raw data
+		memcpy_s(image.pixels, mapped.RowPitch * mHeight, mapped.pData, mapped.RowPitch * mHeight);
+
+		SSEngine::Get().GetDeviceContext()->Unmap(copiedTexturePtr, 0);
+
+		HR(DirectX::SaveToDDSFile(image, 0, filename.c_str()));
+		delete[] image.pixels;
+	}
+
+	ReleaseCOM(copiedTexturePtr);
 }
 ///////////////////////////
 

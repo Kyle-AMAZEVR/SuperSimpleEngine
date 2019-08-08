@@ -10,7 +10,9 @@ public:
 	SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
 
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
-	virtual void Destroy() override;	
+	virtual void Destroy() override;
+	virtual void SaveAsDDSFile(std::wstring filename);
+	
 	
 	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip]; }
 	void Clear();

@@ -78,8 +78,7 @@ private:
 
 	std::shared_ptr<class SSCubemapRenderTarget> mEquirectToCubemapRenderTarget;
 	std::shared_ptr<class SSCubemapRenderTarget> mConvolutionRenderTarget;
-	std::shared_ptr<class SSPrefilterCubemapRenderTarget> mPrefilterRenderTarget;
-	
+	std::shared_ptr<class SSPrefilterCubemapRenderTarget> mPrefilterRenderTarget;	
 	
     
 	std::shared_ptr<class SSTexture2D> mTestTexture;
@@ -88,5 +87,7 @@ private:
     //
 
 private:
-	
+	void CreateEnvCubemap();
+	void CreateEnvCubemapConvolution();
+	void CreateEnvCubemapPrefilter();
 };

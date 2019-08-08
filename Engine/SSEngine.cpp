@@ -192,72 +192,10 @@ bool SSEngine::CreateSwapChain()
     return true;
 }
 
-void SSEngine::DrawScene()
+void SSEngine::CreateEnvCubemapConvolution()
 {
-	if (bInitialized == false)
-	{
-		return;
-	}
-
-	check(mDeviceContext != nullptr);
-
-	// @equirect to cube
-	// @start
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
-
-	static bool bEquidirectToCubeDrawn = false;
-	static bool bConvolutionDrawn = false;
-	static bool bPrefilterDrawn = false;
-
-	if (bEquidirectToCubeDrawn == false)
-	{	
-		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
-
-		mEquirectToCubemapRenderTarget->Clear();
-		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X);
-
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
-		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
-
-		SSRaterizeStateManager::Get().SetCullModeNone();
-
-		equirectToCubeDrawCmd.Do();
-
-		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y);
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
-		equirectToCubeDrawCmd.Do();
-
-		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y);
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
-		equirectToCubeDrawCmd.Do();
-
-		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X);
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
-		equirectToCubeDrawCmd.Do();
-
-		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z);
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
-		equirectToCubeDrawCmd.Do();
-
-		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z);
-		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
-		equirectToCubeDrawCmd.Do();
-
-		SSRaterizeStateManager::Get().SetToDefault();
-
-		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
-		bEquidirectToCubeDrawn = true;
-
-
-		mEquirectToCubemapRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
-		mEquirectToCubemapRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
-		mEquirectToCubemapRenderTarget->SaveAsCubemapDDSFile();
-	}
-
-	if (bConvolutionDrawn == false)
 	{
 		SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
 
@@ -295,21 +233,22 @@ void SSEngine::DrawScene()
 
 		SSRaterizeStateManager::Get().SetToDefault();
 
-		mConvolutionRenderTarget->CreateCubemapShaderResource();
-
-		bConvolutionDrawn = true;
+		mConvolutionRenderTarget->CreateCubemapShaderResource();		
 	}
+}
 
-	if (bPrefilterDrawn == false)
+void SSEngine::CreateEnvCubemapPrefilter()
+{
+	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
+	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 	{
 		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader.get(), mPrefilterPixelShader.get(), mTestCube };
-		
+
 		mPrefilterRenderTarget->Clear();
 
 		SSRaterizeStateManager::Get().SetCullModeNone();
 
 		const int maxMipLevels = 5;
-
 
 
 		for (UINT mip = 0; mip < 5; ++mip)
@@ -319,7 +258,7 @@ void SSEngine::DrawScene()
 			prefilterDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
 			prefilterDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
-			CbufferFloat temp;			
+			CbufferFloat temp;
 			temp.value = (float)mip / (float)(maxMipLevels - 1);
 
 
@@ -354,11 +293,95 @@ void SSEngine::DrawScene()
 
 		mPrefilterRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
 		mPrefilterRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
-		mPrefilterRenderTarget->SaveAsCubemapDDSFile();
+		mPrefilterRenderTarget->SaveAsCubemapDDSFile();		
+	}
+}
 
-		bPrefilterDrawn = true;
+void SSEngine::CreateEnvCubemap()
+{
+	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
+	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);	
+	
+	{
+		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
+
+		mEquirectToCubemapRenderTarget->Clear();
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X);
+
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
+		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
+
+		SSRaterizeStateManager::Get().SetCullModeNone();
+
+		equirectToCubeDrawCmd.Do();
+
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y);
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
+		equirectToCubeDrawCmd.Do();
+
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y);
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
+		equirectToCubeDrawCmd.Do();
+
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X);
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
+		equirectToCubeDrawCmd.Do();
+
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z);
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
+		equirectToCubeDrawCmd.Do();
+
+		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z);
+		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
+		equirectToCubeDrawCmd.Do();
+
+		SSRaterizeStateManager::Get().SetToDefault();
+
+		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
+
+		mEquirectToCubemapRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
+		mEquirectToCubemapRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
+		mEquirectToCubemapRenderTarget->SaveAsCubemapDDSFile();
+	}
+}
+
+void SSEngine::DrawScene()
+{
+	if (bInitialized == false)
+	{
+		return;
 	}
 
+	check(mDeviceContext != nullptr);
+
+	// @equirect to cube
+	// @start
+	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
+	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
+
+	static bool bEquidirectToCubeDrawn = false;
+	static bool bConvolutionDrawn = false;
+	static bool bPrefilterDrawn = false;
+
+	if (bEquidirectToCubeDrawn == false)
+	{	
+		CreateEnvCubemap();
+		bEquidirectToCubeDrawn = true;		
+	}
+
+	if (bConvolutionDrawn == false)
+	{
+		CreateEnvCubemapConvolution();
+		bConvolutionDrawn = true;
+	}
+
+	if (bPrefilterDrawn == false)
+	{
+		CreateEnvCubemapPrefilter();
+		bPrefilterDrawn = true;
+	}
 	// @end
 
 
@@ -412,3 +435,5 @@ void SSEngine::DrawScene()
 	
     HR(mSwapChain->Present(0,0));
 }
+
+
