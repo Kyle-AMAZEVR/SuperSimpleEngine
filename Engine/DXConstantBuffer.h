@@ -6,10 +6,10 @@
 #include <string>
 
 template<class TBufferType>
-class DXTypedConstantBuffer : public SSBufferBase
+class SSTypedConstantBuffer : public SSBufferBase
 {
 public:
-    DXTypedConstantBuffer();
+    SSTypedConstantBuffer();
     
     void Write(const TBufferType& data);
 
@@ -19,7 +19,7 @@ protected:
 
 
 template<class TBufferType>
-DXTypedConstantBuffer<TBufferType>::DXTypedConstantBuffer()
+SSTypedConstantBuffer<TBufferType>::SSTypedConstantBuffer()
 {
     mBufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -33,7 +33,7 @@ DXTypedConstantBuffer<TBufferType>::DXTypedConstantBuffer()
 
 
 template<class TBufferType>
-void DXTypedConstantBuffer<TBufferType>::Write(const TBufferType& data)
+void SSTypedConstantBuffer<TBufferType>::Write(const TBufferType& data)
 {
     check(mpBuffer != nullptr);
 

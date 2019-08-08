@@ -92,8 +92,8 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 
 	assert(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
-	mWidth = metaData.width;
-	mHeight = metaData.height;
+	mWidth = static_cast<UINT>(metaData.width);
+	mHeight = static_cast<UINT>(metaData.height);
 	mMipLevels = metaData.mipLevels;
 
 	D3D11_TEXTURE2D_DESC description;
