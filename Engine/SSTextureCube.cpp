@@ -11,6 +11,19 @@ bool SSTextureCube::LoadFromHDRFile(std::wstring filename)
 	return true;
 }
 
+bool SSTextureCube::LoadFromDDSFiles(std::vector<std::wstring> sixFaceFiles)
+{
+	DirectX::TexMetadata metaDataList[6];
+	DirectX::ScratchImage imageList[6];
+
+	for (size_t i = 0; i < sixFaceFiles.size(); ++i)
+	{
+		HR(DirectX::LoadFromDDSFile(sixFaceFiles[i].c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaDataList[i], imageList[i]));
+	}
+	
+	return true;
+}
+
 
 bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 {

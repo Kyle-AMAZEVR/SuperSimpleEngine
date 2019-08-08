@@ -349,6 +349,9 @@ void SSEngine::DrawScene()
 
 		mPrefilterRenderTarget->CreateCubemapShaderResource();
 
+		//mPrefilterRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
+		mPrefilterRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
+
 		bPrefilterDrawn = true;
 	}
 

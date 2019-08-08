@@ -242,6 +242,89 @@ void SSPrefilterCubemapRenderTarget::InternalCreate()
 	mViewport.MaxDepth = 1.0f;
 }
 
+// @save specific face
+// @all mips included
+void SSPrefilterCubemapRenderTarget::SaveFaceAsDDSFile(ECubemapFace eFace)
+{
+	const UINT mipTextureWidth = mWidth;
+	const UINT mipTextureHeight = mHeight;
+
+	// @create staging texture for copy
+	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
+	textureDesc.Width = mWidth;
+	textureDesc.Height = mHeight;
+	textureDesc.BindFlags = 0;
+	textureDesc.MiscFlags = 0;
+	textureDesc.MipLevels = mMipLevels;
+	textureDesc.Usage = D3D11_USAGE_STAGING;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	textureDesc.Format = mTextureFormat;
+	ID3D11Texture2D* copiedTexturePtr = nullptr;
+
+	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &copiedTexturePtr));
+
+	// copy resource 
+	// all mips
+	for (UINT mip = 0; mip < mMipLevels; ++mip)
+	{
+		auto srcSubResource = D3D11CalcSubresource(mip, 0, mMipLevels);
+		auto dstSubResource = D3D11CalcSubresource(mip, 0, mMipLevels);
+
+		SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(copiedTexturePtr, dstSubResource, 0, 0, 0, mRenderTargetArray[static_cast<int>(eFace)]->GetTextureResource(), srcSubResource, nullptr);
+	}	
+
+	DirectX::Image imageList[6];
+	// 
+	for (UINT mip = 0; mip < mMipLevels; ++mip)
+	{
+		D3D11_MAPPED_SUBRESOURCE mapped;
+		
+		auto srcSubResource = D3D11CalcSubresource(mip, 0, mMipLevels);
+		
+		HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr,srcSubResource, D3D11_MAP_READ, 0, &mapped));
+		
+		InitD3DDesc(imageList[mip]);
+		imageList[mip].width = mWidth / static_cast<UINT>(std::pow(2, mip));
+		imageList[mip].height = mHeight / static_cast<UINT>(std::pow(2, mip));
+		imageList[mip].pixels = new uint8_t[mapped.RowPitch * imageList[mip].height];
+		imageList[mip].rowPitch = mapped.RowPitch;
+		imageList[mip].format = mTextureFormat;
+		imageList[mip].slicePitch = mapped.RowPitch * imageList[mip].height;
+
+		// copy raw data
+		memcpy_s(imageList[mip].pixels, mapped.RowPitch * imageList[mip].height, mapped.pData, mapped.RowPitch * imageList[mip].height);
+
+		SSEngine::Get().GetDeviceContext()->Unmap(copiedTexturePtr, srcSubResource);
+	}
+	
+	TexMetadata metaData;
+	InitD3DDesc(metaData);
+	
+	metaData.format = mTextureFormat;
+	metaData.mipLevels = mMipLevels;
+	metaData.dimension = TEX_DIMENSION_TEXTURE2D;
+	metaData.width = mipTextureWidth;
+	metaData.height = mipTextureHeight;
+	metaData.arraySize = 1;
+
+	wchar_t buffer[1024];
+
+	wsprintfW(buffer, L"CubemapRT_%d_MipIncluded.dds", static_cast<int>(eFace));
+
+	HR(DirectX::SaveToDDSFile(imageList, 6, metaData, 0, buffer));
+
+	for (UINT i = 0; i < 6; ++i)
+	{
+		delete[] imageList[i].pixels;
+		imageList[i].pixels = nullptr;
+	}	
+
+	ReleaseCOM(copiedTexturePtr);
+}
+
+// @save specific face and specific mip
 void SSPrefilterCubemapRenderTarget::SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip)
 {
 	const UINT mipTextureWidth = mWidth / static_cast<UINT>(std::pow(2, mip));
