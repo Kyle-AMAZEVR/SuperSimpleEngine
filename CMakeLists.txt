@@ -9,36 +9,12 @@ set(CMAKE_SHARED_LINKER_FLAGS "/machine:x64")
 set(CMAKE_STATIC_LINKER_FLAGS "/machine:x64")
 set(CMAKE_CXX_STANDARD 17)
 
-
-###########################################################
-################ Engine					 ################
-file(GLOB SOURCES "Engine/*.cpp")
-file(GLOB HEADERS "Engine/*.h")
-
 include_directories("Engine")
-include_directories("lib/DirectXMath/Include")
 
-#include_directories("lib/DirectXTK/Inc")
-include_directories("lib/DirectXTex/DirectXTex")
-
-#add_subdirectory("lib/DirectXTK")
-add_subdirectory("lib/DirectXTex")
-
-foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
-endforeach(src_file ${SOURCES})
-
-set_source_files_properties("Engine/Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
-
-add_library(Core SHARED ${SOURCES} ${HEADERS})
-
-target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib ./bin/CMake/Debug/directXTex ) 
-
-target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
-target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
-###########################################################
+add_subdirectory("Engine")
 
 add_executable(SuperSimpleEngine resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
+
 
 if(WIN32)
 	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")
@@ -46,9 +22,7 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(SuperSimpleEngine 
-Core
- )
+target_link_libraries(SuperSimpleEngine Core)
 
 add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Shader $<TARGET_FILE_DIR:SuperSimpleEngine>/Shader)
 add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resource $<TARGET_FILE_DIR:SuperSimpleEngine>/Resource)

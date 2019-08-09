@@ -28,3 +28,8 @@ lib/DirectXTK/CMakeFiles/*
 
 lib/DirectXTex/CMakeFiles/*
 *.pdb
+Prebaked/*
+Release/*
+Engine/CMakeFiles/*
+Engine/DirectXTex/CMakeFiles/*
+Engine/Release/*
