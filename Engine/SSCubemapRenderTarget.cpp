@@ -98,7 +98,13 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource()
 
 void SSCubemapRenderTarget::Destroy()
 {
-	Destroy();
+	ReleaseCOM(mShaderResourceView);
+	ReleaseCOM(mTexturePtr);
+	for (UINT i = 0; i < 6; ++i)
+	{
+		mRenderTargetArray[i]->Destroy();
+		delete mRenderTargetArray[i];
+	}
 }
 
 
@@ -197,7 +203,7 @@ void SSPrefilterCubemapRenderTarget::InternalCreate()
 
 // @ save as cubemap 
 // @ include all mips
-void SSCubemapRenderTarget::SaveAsCubemapDDSFile()
+void SSCubemapRenderTarget::SaveAsCubemapDDSFile(std::wstring filename)
 {
 	const UINT mipTextureWidth = mWidth;
 	const UINT mipTextureHeight = mHeight;
@@ -259,12 +265,8 @@ void SSCubemapRenderTarget::SaveAsCubemapDDSFile()
 	metaData.height = mipTextureHeight;
 	metaData.arraySize = 6;	
 	metaData.miscFlags = TEX_MISC_TEXTURECUBE;
-
-	wchar_t buffer[1024];
-
-	wsprintfW(buffer, L"CubemapRT_AsCubemap.dds");
 		
-	HRESULT result = (DirectX::SaveToDDSFile(imageList, 6 * mMipLevels, metaData, 0, buffer));
+	HR(DirectX::SaveToDDSFile(imageList, 6 * mMipLevels, metaData, 0, filename.c_str()));
 
 	for (UINT i = 0; i < 6 * mMipLevels; ++i)
 	{

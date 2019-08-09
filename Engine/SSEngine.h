@@ -82,8 +82,12 @@ private:
 	// @ cubemap rendertargets
 	std::shared_ptr<class SSCubemapRenderTarget> mEquirectToCubemapRenderTarget;
 	std::shared_ptr<class SSCubemapRenderTarget> mConvolutionRenderTarget;
-	std::shared_ptr<class SSPrefilterCubemapRenderTarget> mPrefilterRenderTarget;	
+	std::shared_ptr<class SSPrefilterCubemapRenderTarget> mPrefilterRenderTarget;
 
+	std::shared_ptr<class SSTextureCube> mEnvCubemap;
+	std::shared_ptr<class SSTextureCube> mEnvCubemapConvolution;
+	std::shared_ptr<class SSTextureCube> mEnvCubemapPrefilter;
+	std::shared_ptr<class SSTexture2D> m2DLUTTexture;
 	// @
 	
     
@@ -93,6 +97,11 @@ private:
     //
 
 private:
+	bool TryLoadEnvCubemap(std::wstring filepath);
+	bool TryLoadEnvCubemapConvolution(std::wstring filepath);
+	bool TryLoadEnvCubemapPrefilter(std::wstring filepath);
+	bool TryLoad2DLUTTexture();
+
 	void CreateEnvCubemap();
 	void CreateEnvCubemapConvolution();
 	void CreateEnvCubemapPrefilter();

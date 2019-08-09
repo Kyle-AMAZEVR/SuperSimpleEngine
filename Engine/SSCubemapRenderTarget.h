@@ -1,6 +1,7 @@
 #pragma once
 #include "SSRenderTargetBase.h"
 #include "SSTexture2D.h"
+#include "SSTextureCube.h"
 
 enum class ECubemapFace : unsigned char
 {
@@ -18,15 +19,15 @@ enum class ECubemapFace : unsigned char
 
 
 
-
-class SSCubemapRenderTarget : public IRenderTarget, public SSTexture2DBase
+// @cubemap rt 
+class SSCubemapRenderTarget : public IRenderTarget, public SSTextureCube
 {
 public:
 	SSCubemapRenderTarget(UINT width, UINT height ,DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
 	
 	void SetCurrentRTAs(ECubemapFace eFace);
 
-	virtual void SaveAsCubemapDDSFile();
+	virtual void SaveAsCubemapDDSFile(std::wstring filename);
 	virtual void SaveFaceAsDDSFile(ECubemapFace eFace);
 	virtual void SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip = 0);	
 
@@ -53,9 +54,7 @@ protected:
 
 	virtual void InternalCreate();
 
-	D3D11_VIEWPORT mViewport;
-	
-	UINT mMipLevels = 0;
+	D3D11_VIEWPORT mViewport;	
 	UINT mLastRTMip = 0;
 };
 

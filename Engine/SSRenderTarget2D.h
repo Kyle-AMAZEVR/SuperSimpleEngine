@@ -22,8 +22,7 @@ protected:
 	friend class SSGBuffer;
 	ID3D11RenderTargetView* mRenderTargetView[10]{ nullptr };
 	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format, const UINT mipLevels);
-	bool mGenerateMips = false;
-	UINT mMipLevels = 0;
+	bool mGenerateMips = false;	
 };
 
 class ENGINE_API SSDepthRenderTargetTexture2D : public SSTexture2DBase

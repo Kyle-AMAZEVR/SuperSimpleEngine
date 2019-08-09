@@ -7,6 +7,8 @@ class ENGINE_API SSTexture2D : public SSTexture2DBase
 public:
 	SSTexture2D();
 	
+	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(std::wstring filename);
+	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(std::wstring filename);
 
 	bool LoadFromDDSFile(std::wstring filename);
 	bool LoadFromTGAFile(std::wstring filename);
@@ -19,8 +21,7 @@ public:
 	UINT GetMipLevels() const { return mMipLevels; }
 	bool IsSRGB() const { return bSRGB; }
 
-protected:	
+protected:		
 	
-	UINT mMipLevels = 1;
 	bool bSRGB = true;
 };

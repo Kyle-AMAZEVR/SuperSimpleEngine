@@ -46,7 +46,12 @@ if(WIN32)
 endif(WIN32)
 
 
-
 target_link_libraries(SuperSimpleEngine 
 Core
  )
+
+add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Shader $<TARGET_FILE_DIR:SuperSimpleEngine>/Shader)
+add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resource $<TARGET_FILE_DIR:SuperSimpleEngine>/Resource)
+
+
+###########################################################

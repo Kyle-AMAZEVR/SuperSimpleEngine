@@ -29,12 +29,17 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;
 
-	HR(DirectX::LoadFromHDRFile(filename.c_str(), &metaData, image));
+	HRESULT result = DirectX::LoadFromHDRFile(filename.c_str(), &metaData, image);
+
+	if (result != S_OK)
+	{
+		return false;
+	}
 
 	assert(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
-	mWidth = metaData.width;
-	mHeight = metaData.height;
+	mWidth = static_cast<UINT>(metaData.width);
+	mHeight = static_cast<UINT>(metaData.height);
 	mMipLevels = metaData.mipLevels;
 
 	D3D11_TEXTURE2D_DESC description;
@@ -88,7 +93,11 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;
 
-	HR(DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image));
+	HRESULT result = (DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image));
+	if (result != S_OK)
+	{
+		return false;
+	}
 
 	assert(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
@@ -140,4 +149,33 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	
 
 	return true;
+}
+
+
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::wstring filename)
+{
+	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
+
+	if (texture->LoadFromDDSFile(filename))
+	{
+		return texture;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::wstring filename)
+{
+	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
+
+	if (texture->LoadFromHDRFile(filename))
+	{
+		return texture;
+	}
+	else
+	{
+		return nullptr;
+	}
 }

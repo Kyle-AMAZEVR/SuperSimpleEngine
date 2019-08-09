@@ -21,6 +21,7 @@
 #include "SSCubemapRenderTarget.h"
 #include "SSMathHelper.h"
 #include "SSFreqUsedNames.h"
+#include "SSFileHelper.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -207,7 +208,7 @@ void SSEngine::Create2DLUTTexture()
 	SSDrawCommand blitDrawCmd{ m2DLUTVertexShader.get(), m2DLUTPixelShader.get(), mScreenBlit };	
 	blitDrawCmd.Do();
 
-	m2DLUTRenderTarget->SaveRTTexture(0, L"LUT.dds");
+	m2DLUTRenderTarget->SaveRTTexture(0, L"./Prebaked/2DLUT.dds");
 }
 
 void SSEngine::CreateEnvCubemapConvolution()
@@ -223,7 +224,7 @@ void SSEngine::CreateEnvCubemapConvolution()
 		convolutionDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
 		convolutionDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
-		convolutionDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());
+		convolutionDrawCmd.SetPSTexture("EnvironmentMap", mEnvCubemap.get());
 
 		SSRaterizeStateManager::Get().SetCullModeNone();
 
@@ -251,7 +252,11 @@ void SSEngine::CreateEnvCubemapConvolution()
 
 		SSRaterizeStateManager::Get().SetToDefault();
 
-		mConvolutionRenderTarget->CreateCubemapShaderResource();		
+		mConvolutionRenderTarget->CreateCubemapShaderResource();	
+
+		mEnvCubemapConvolution = mConvolutionRenderTarget;
+
+		mConvolutionRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvConvolution.dds");
 	}
 }
 
@@ -309,10 +314,35 @@ void SSEngine::CreateEnvCubemapPrefilter()
 
 		mPrefilterRenderTarget->CreateCubemapShaderResource();
 
-		mPrefilterRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
-		mPrefilterRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
-		mPrefilterRenderTarget->SaveAsCubemapDDSFile();		
+		mEnvCubemapPrefilter = mPrefilterRenderTarget;
+		
+		mPrefilterRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvPrefilter.dds");
 	}
+}
+
+bool SSEngine::TryLoadEnvCubemap(std::wstring filepath) 
+{
+	mEnvCubemap = SSTextureCube::CreateFromDDSFile(filepath);	
+	return mEnvCubemap != nullptr;
+}
+
+bool SSEngine::TryLoadEnvCubemapPrefilter(std::wstring filepath)
+{
+	mEnvCubemapPrefilter = SSTextureCube::CreateFromDDSFile(filepath);
+	return mEnvCubemapPrefilter != nullptr;
+}
+
+bool SSEngine::TryLoadEnvCubemapConvolution(std::wstring filepath)
+{
+	mEnvCubemapConvolution = SSTextureCube::CreateFromDDSFile(filepath);
+	return mEnvCubemapConvolution != nullptr;
+}
+
+
+bool SSEngine::TryLoad2DLUTTexture()
+{
+	m2DLUTTexture = SSTexture2D::CreateFromDDSFile(L"./Prebaked/2DLUT.dds");
+	return m2DLUTTexture != nullptr;
 }
 
 void SSEngine::CreateEnvCubemap()
@@ -358,10 +388,10 @@ void SSEngine::CreateEnvCubemap()
 		SSRaterizeStateManager::Get().SetToDefault();
 
 		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
+		
+		mEquirectToCubemapRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvCubemap.dds");
 
-		mEquirectToCubemapRenderTarget->SaveFaceOfMipAsDDSFile(ECubemapFace::NEGATIVE_X, 1);
-		mEquirectToCubemapRenderTarget->SaveFaceAsDDSFile(ECubemapFace::NEGATIVE_X);
-		mEquirectToCubemapRenderTarget->SaveAsCubemapDDSFile();
+		mEnvCubemap = mEquirectToCubemapRenderTarget;
 	}
 }
 
@@ -385,26 +415,37 @@ void SSEngine::DrawScene()
 	static bool bLUTCreated = false;
 
 	if (bEquidirectToCubeDrawn == false)
-	{	
-		CreateEnvCubemap();
-		bEquidirectToCubeDrawn = true;		
+	{
+		if (TryLoadEnvCubemap(L"./Prebaked/EnvCubemap.dds") == false)
+		{
+			CreateEnvCubemap();
+		}
+		bEquidirectToCubeDrawn = true;
 	}
 
 	if (bConvolutionDrawn == false)
 	{
-		CreateEnvCubemapConvolution();
+		if (TryLoadEnvCubemapConvolution(L"./Prebaked/EnvConvolution.dds") == false)
+		{
+			CreateEnvCubemapConvolution();
+		}
 		bConvolutionDrawn = true;
 	}
-
 	if (bPrefilterDrawn == false)
 	{
-		CreateEnvCubemapPrefilter();
+		if (TryLoadEnvCubemapPrefilter(L"./Prebaked/EnvPrefilter.dds") == false)
+		{
+			CreateEnvCubemapPrefilter();
+		}
 		bPrefilterDrawn = true;
 	}
 
 	if (bLUTCreated == false)
 	{
-		Create2DLUTTexture();
+		if (TryLoad2DLUTTexture()==false)
+		{
+			Create2DLUTTexture();			
+		}		
 		bLUTCreated = true;
 	}
 
@@ -424,7 +465,7 @@ void SSEngine::DrawScene()
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
-	testDrawCmd.SetPSTexture("gCubeMap", mPrefilterRenderTarget.get());
+	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemapPrefilter.get());
 
 	testDrawCmd.SetPreDrawJob([]()
 	{

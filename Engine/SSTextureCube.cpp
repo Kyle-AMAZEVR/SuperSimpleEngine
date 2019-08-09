@@ -4,35 +4,35 @@
 #include "DirectXTex.h"
 #include "SSEngine.h"
 
-bool SSTextureCube::LoadFromHDRFile(std::wstring filename)
+std::shared_ptr<SSTextureCube> SSTextureCube::CreateFromDDSFile(std::wstring filename)
 {
+	std::shared_ptr<SSTextureCube> texture = std::make_shared<SSTextureCube>();
 	
-	   
-	return true;
-}
-
-bool SSTextureCube::LoadFromDDSFiles(std::vector<std::wstring> sixFaceFiles)
-{
-	DirectX::TexMetadata metaDataList[6];
-	DirectX::ScratchImage imageList[6];
-
-	for (size_t i = 0; i < sixFaceFiles.size(); ++i)
+	if (texture->LoadFromDDSFile(filename))
 	{
-		HR(DirectX::LoadFromDDSFile(sixFaceFiles[i].c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaDataList[i], imageList[i]));
+		return texture;
 	}
-	
-	return true;
+	else
+	{
+		return nullptr;
+	}	
 }
-
 
 bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 {
+	check(mTexturePtr == nullptr);
+
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;	
 
-	HR(DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image));
+	HRESULT result = DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image);
+
+	if (result != S_OK)
+	{
+		return false;
+	}
 	
-	mWidth = metaData.width;
+	mWidth = static_cast<UINT>(metaData.width);
 	mHeight = metaData.height;
 	mMipLevels = metaData.mipLevels;
 
@@ -78,9 +78,7 @@ bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, metaData.mipLevels);			
 			SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
 		}
-	}
-
-	
+	}	
 
 	return true;
 }
