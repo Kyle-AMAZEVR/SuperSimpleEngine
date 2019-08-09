@@ -13,7 +13,10 @@ include_directories("Engine")
 
 add_subdirectory("Engine")
 
+
 add_executable(SuperSimpleEngine resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
+
+add_dependencies(SuperSimpleEngine Core)
 
 
 if(WIN32)
@@ -24,8 +27,13 @@ endif(WIN32)
 
 target_link_libraries(SuperSimpleEngine Core)
 
+#INSTALL( TARGETS SuperSimpleEngine Engine DESTINATION ${CMAKE_BUILD_TYPE})
+
+
 add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Shader $<TARGET_FILE_DIR:SuperSimpleEngine>/Shader)
 add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resource $<TARGET_FILE_DIR:SuperSimpleEngine>/Resource)
 
+add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Debug/Core.dll Debug)
+add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Release/Core.dll Release)
 
 ###########################################################
