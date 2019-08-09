@@ -40,8 +40,8 @@ ID3D11Buffer* SSShader::GetConstantBuffer(std::string bufferName)
 
 void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 {
-	assert(mShaderBuffer != nullptr);
-	assert(shaderReflection != nullptr);	
+	check(mShaderBuffer != nullptr);
+	check(shaderReflection != nullptr);
 
 	D3D11_SHADER_DESC shaderDescription;
 	shaderReflection->GetDesc(&shaderDescription);

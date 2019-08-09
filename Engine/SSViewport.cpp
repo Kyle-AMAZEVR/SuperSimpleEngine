@@ -38,9 +38,9 @@ void SSViewport::Resize(UINT newWidth, UINT newHeight)
     auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
     auto* dxSwapChain = SSEngine::Get().GetSwapChain();
     
-    assert(dxDevice != nullptr);
-	assert(dxDeviceContext != nullptr);	
-    assert(dxSwapChain != nullptr);
+	check(dxDevice != nullptr);
+	check(dxDeviceContext != nullptr);
+	check(dxSwapChain != nullptr);
 
     UINT msaaQuality;
 

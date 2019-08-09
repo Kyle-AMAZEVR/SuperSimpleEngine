@@ -266,8 +266,8 @@ void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UIN
 SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count, bool bDepthExist, DXGI_FORMAT eFormat, DXGI_FORMAT eDepthFormat)
 	: mWidth(width), mHeight(height), mFormat(eFormat), mCount(count)
 {
-	assert(mCount >= 1);
-	assert(mCount <= 4);
+	check(mCount >= 1);
+	check(mCount <= 4);
 
 	for (UINT i = 0; i < mCount; ++i)
 	{

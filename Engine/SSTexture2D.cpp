@@ -36,7 +36,7 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 		return false;
 	}
 
-	assert(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
+	check(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
 	mWidth = static_cast<UINT>(metaData.width);
 	mHeight = static_cast<UINT>(metaData.height);
@@ -79,7 +79,7 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 	for (int i = 0; i < metaData.mipLevels; ++i)
 	{
 		auto* pLodImage = image.GetImage(i, 0, 0);
-		assert(pLodImage != nullptr);
+		check(pLodImage != nullptr);
 		auto dstSubresource = D3D11CalcSubresource(i, 0, metaData.mipLevels);
 		SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
 	}
@@ -99,7 +99,7 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 		return false;
 	}
 
-	assert(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
+	check(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
 	mWidth = static_cast<UINT>(metaData.width);
 	mHeight = static_cast<UINT>(metaData.height);
@@ -142,7 +142,7 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	for (int i = 0; i < metaData.mipLevels; ++i)
 	{
 		auto* pLodImage = image.GetImage(i, 0, 0);
-		assert(pLodImage != nullptr);
+		check(pLodImage != nullptr);
 		auto dstSubresource = D3D11CalcSubresource(i, 0, metaData.mipLevels);
 		SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
 	}	

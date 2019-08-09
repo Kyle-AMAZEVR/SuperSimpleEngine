@@ -83,6 +83,7 @@ void SSEngine::TestCreateResources()
 
 void SSEngine::TestCompileShader()
 {    
+	
     mTestVertexShader = std::make_shared<SSVertexShader>();
 	mTestPixelShader = std::make_shared<SSPixelShader>();
 	mDeferredVertexShader = std::make_shared<SSVertexShader>();
@@ -102,26 +103,26 @@ void SSEngine::TestCompileShader()
 	m2DLUTPixelShader = std::make_shared<SSPixelShader>();
 	m2DLUTVertexShader = std::make_shared<SSVertexShader>();
 
-    assert(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
-	assert(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
+	check(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
+	check(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
 	
-	assert(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));    
-	assert(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
+	check(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
+	check(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
 
-	assert(mCubemapVertexShader->CompileFromFile(L"./Shader/CubemapShader.vs"));
-	assert(mCubemapPixelShader->CompileFromFile(L"./Shader/CubemapShader.ps"));
+	check(mCubemapVertexShader->CompileFromFile(L"./Shader/CubemapShader.vs"));
+	check(mCubemapPixelShader->CompileFromFile(L"./Shader/CubemapShader.ps"));
 
-	assert(mEquirectToCubemapVertexShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.vs"));
-	assert(mEquirectToCubemapPixelShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.ps"));
+	check(mEquirectToCubemapVertexShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.vs"));
+	check(mEquirectToCubemapPixelShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.ps"));
 
-	assert(mCubemapConvolutionVertexShader->CompileFromFile(L"./Shader/CubemapConvolution.vs"));
-	assert(mCubemapConvolutionPixelShader->CompileFromFile(L"./Shader/CubemapConvolution.ps"));
+	check(mCubemapConvolutionVertexShader->CompileFromFile(L"./Shader/CubemapConvolution.vs"));
+	check(mCubemapConvolutionPixelShader->CompileFromFile(L"./Shader/CubemapConvolution.ps"));
 
-	assert(mPrefilterVertexShader->CompileFromFile(L"./Shader/Prefilter.vs"));
-	assert(mPrefilterPixelShader->CompileFromFile(L"./Shader/Prefilter.ps"));
+	check(mPrefilterVertexShader->CompileFromFile(L"./Shader/Prefilter.vs"));
+	check(mPrefilterPixelShader->CompileFromFile(L"./Shader/Prefilter.ps"));
 
-	assert(m2DLUTVertexShader->CompileFromFile(L"./Shader/2DLUT.vs"));
-	assert(m2DLUTPixelShader->CompileFromFile(L"./Shader/2DLUT.ps"));
+	check(m2DLUTVertexShader->CompileFromFile(L"./Shader/2DLUT.vs"));
+	check(m2DLUTPixelShader->CompileFromFile(L"./Shader/2DLUT.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -138,9 +139,9 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 {
 	if (bInitialized)
 	{
-		assert(mDeviceContext);
-		assert(mDevice);
-		assert(mSwapChain);
+		check(mDeviceContext);
+		check(mDevice);
+		check(mSwapChain);
 
 		check(newWidth > 0 && newHeight > 0);
 

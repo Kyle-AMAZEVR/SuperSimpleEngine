@@ -17,23 +17,15 @@
 #include <cassert>
 #include <string>
 
-#define check(expression)\
-if(!(expression))\
-{\
-    OutputDebugStringA("FAILED : ");\
-    OutputDebugStringA(#expression);\
-    OutputDebugStringA("\n");\
-	__debugbreak();\
-}
+#define STRINGFY(x) #x
+#define TOSTRING(x) STRINGFY(x)
+#define AT __FILE__ ":" TOSTRING(__LINE__)
 
-#define checkMsg(expression,msg)\
-if(!(expression))\
-{\
-    OutputDebugStringA("FAILED : ");\
-    OutputDebugStringA(#msg);\
-    OutputDebugStringA("\n");\
-	__debugbreak();\
-}
+void PrintError(const char* loc, const char* msg);
+
+#define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
+
+#define checkMsg(expression,msg) if(!(expression)) { PrintError(AT, STRINGFY(msg));}
 
 //#if defined(DEBUG) | defined(_DEBUG)
 #if 1
