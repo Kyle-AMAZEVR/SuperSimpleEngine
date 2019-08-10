@@ -33,7 +33,8 @@ target_link_libraries(SuperSimpleEngine Core)
 add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Shader $<TARGET_FILE_DIR:SuperSimpleEngine>/Shader)
 add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resource $<TARGET_FILE_DIR:SuperSimpleEngine>/Resource)
 
-add_custom_command(TARGET SuperSimpleEngine PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Debug/Core.dll Debug)
-add_custom_command(TARGET SuperSimpleEngine PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Release/Core.dll Release)
+add_custom_command(TARGET SuperSimpleEngine PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Debug/Core.dll $<TARGET_FILE_DIR:SuperSimpleEngine>/Core.dll)
+add_custom_command(TARGET SuperSimpleEngine PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Debug/Core.pdb $<TARGET_FILE_DIR:SuperSimpleEngine>/Core.pdb)
+
 
 ###########################################################

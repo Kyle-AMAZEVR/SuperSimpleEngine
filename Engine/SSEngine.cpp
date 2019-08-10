@@ -22,6 +22,7 @@
 #include "SSMathHelper.h"
 #include "SSFreqUsedNames.h"
 #include "SSFileHelper.h"
+#include "SSObjMesh.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -40,6 +41,9 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024,5);
 	m2DLUTRenderTarget = std::make_shared<class SSGenericRenderTarget>(512, 512, 1, false);
+	mObjMesh = std::make_shared<SSObjMesh>();
+
+	mObjMesh->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
 
 	if(SSFileHelper::DirectoryExists(L"./Prebaked") == false)
 	{

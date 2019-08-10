@@ -96,6 +96,8 @@ private:
 	std::shared_ptr<class SSGenericRenderTarget> m2DLUTRenderTarget;
     //
 
+	std::shared_ptr<class SSObjMesh> mObjMesh;
+
 private:
 	bool TryLoadEnvCubemap(std::wstring filepath);
 	bool TryLoadEnvCubemapConvolution(std::wstring filepath);
