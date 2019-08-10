@@ -41,6 +41,11 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024,5);
 	m2DLUTRenderTarget = std::make_shared<class SSGenericRenderTarget>(512, 512, 1, false);
 
+	if(SSFileHelper::DirectoryExists(L"./Prebaked") == false)
+	{
+		SSFileHelper::MakeDirectory(L"./Prebaked");
+	}
+
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
 	
