@@ -1,0 +1,444 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 20.08.2010 18:13:43
+
+newmtl leaf
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Thorn_roughness.dds
+	map_Kd ./Resources/SponzaTexture/Sponza_Thorn_diffuse.dds
+	map_d ./Resources/SponzaTexture/sponza_thorn_mask.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Thorn_roughness.dds
+
+newmtl vase_round
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/vase_round_spec.tga
+	map_Kd ./Resources/SponzaTexture/VaseRound_diffuse.dds
+	map_bump ./Resources/SponzaTexture/VaseRound_normal.dds
+	bump ./Resources/SponzaTexture/VaseRound_normal.dds
+	map_Ns ./Resources/SponzaTexture/VaseRound_roughness.dds
+
+newmtl Material__57
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/VasePlant_roughness.dds
+	map_Kd ./Resources/SponzaTexture/VasePlant_diffuse.dds
+	map_bump ./Resources/SponzaTexture/VasePlant_normal.dds
+	bump ./Resources/SponzaTexture/VasePlant_normal.dds
+	map_Ns ./Resources/SponzaTexture/VasePlant_roughness.dds
+	map_d ./Resources/SponzaTexture/vase_plant_mask.dds
+
+newmtl Material__298
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Background_Roughness.dds
+	map_Kd ./Resources/SponzaTexture/Background_Albedo.dds
+	map_bump ./Resources/SponzaTexture/Background_Normal.dds
+	bump ./Resources/SponzaTexture/Background_Normal.dds
+
+newmtl 16___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Blue_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+
+newmtl bricks
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/spnza_bricks_a_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Bricks_a_Albedo.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Bricks_a_Normal.tga
+	map_Ns ./Resources/SponzaTexture/Sponza_Bricks_a_Roughness.dds
+	bump ./Resources/SponzaTexture/Sponza_Bricks_a_Normal.dds
+
+newmtl arch
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_arch_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Arch_diffuse.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Arch_roughness.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Arch_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Arch_normal.dds
+
+newmtl ceiling
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_ceiling_a_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Ceiling_diffuse.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Ceiling_roughness.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Ceiling_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Ceiling_normal.dds
+
+newmtl column_a
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_column_a_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Column_a_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Column_a_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Column_a_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Column_a_roughness.dds
+
+newmtl floor
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_floor_a_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Floor_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Floor_normal.tga
+	bump ./Resources/SponzaTexture/Sponza_Floor_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Floor_roughness.dds
+
+newmtl column_c
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_column_c_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Column_c_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Column_c_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Column_c_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Column_c_roughness.dds
+
+newmtl details
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_details_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Details_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Details_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Details_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Details_roughness.dds
+
+newmtl column_b
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_column_b_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Column_b_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Column_b_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Column_b_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Column_b_roughness.dds
+
+newmtl Material__47
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Kd ./Resources/SponzaTexture/Sponza_Thorn_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
+
+newmtl flagpole
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/sponza_flagpole_spec.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_FlagPole_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_FlagPole_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_FlagPole_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_FlagPole_roughness.dds
+
+newmtl fabric_e
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Green_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Green_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Fabric_Green_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+
+newmtl fabric_d
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Blue_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+
+newmtl fabric_a
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Red_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Red_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Fabric_Red_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+
+newmtl fabric_g
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Curtain_metallic.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Curtain_Blue_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Curtain_Blue_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Curtain_Blue_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Curtain_roughness.dds
+
+newmtl fabric_c
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Curtain_metallic.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Curtain_Red_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Curtain_Red_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Curtain_Red_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Curtain_roughness.dds
+
+newmtl fabric_f
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Curtain_metallic.tga
+	map_Kd ./Resources/SponzaTexture/Sponza_Curtain_Green_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Curtain_Green_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Curtain_Green_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Curtain_roughness.dds
+
+newmtl chain
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/ChainTexture_Metallic.dds
+	map_Kd ./Resources/SponzaTexture/ChainTexture_Albedo.dds
+	map_d ./Resources/SponzaTexture/chain_texture_mask.dds
+	map_bump ./Resources/SponzaTexture/ChainTexture_Normal.dds
+	bump ./Resources/SponzaTexture/ChainTexture_Normal.dds
+	map_Ns ./Resources/SponzaTexture/ChainTexture_Roughness.dds
+
+newmtl vase_hanging
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/VaseHanging_roughness.dds
+	map_Kd ./Resources/SponzaTexture/VaseHanging_diffuse.dds
+	map_bump ./Resources/SponzaTexture/VaseHanging_normal.dds
+	bump ./Resources/SponzaTexture/VaseHanging_normal.dds
+	map_Ns ./Resources/SponzaTexture/VaseHanging_roughness.dds
+
+newmtl vase
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Vase_roughness.dds
+	map_Kd ./Resources/SponzaTexture/Vase_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Vase_normal.dds
+	bump ./Resources/SponzaTexture/Vase_normal.dds
+	map_Ns ./Resources/SponzaTexture/Vase_roughness.dds
+
+newmtl Material__25
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Lion_Roughness.dds
+	map_Kd ./Resources/SponzaTexture/Lion_Albedo.dds
+	map_bump ./Resources/SponzaTexture/Lion_Normal.dds
+	bump ./Resources/SponzaTexture/Lion_Normal.dds
+	map_Ns ./Resources/SponzaTexture/Lion_Roughness.dds
+
+newmtl roof
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka ./Resources/SponzaTexture/Sponza_Roof_roughness.dds
+	map_Kd ./Resources/SponzaTexture/Sponza_Roof_diffuse.dds
+	map_bump ./Resources/SponzaTexture/Sponza_Roof_normal.dds
+	bump ./Resources/SponzaTexture/Sponza_Roof_normal.dds
+	map_Ns ./Resources/SponzaTexture/Sponza_Roof_roughness.dds
