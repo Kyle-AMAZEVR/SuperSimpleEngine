@@ -155,14 +155,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - post a quit message and return
 //
 //
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 {
     static int width = 0;
     static int height = 0;
     switch (message)
     {
     case WM_COMMAND:
-        {
+        { 
             int wmId = LOWORD(wParam);
             // Parse the menu selections:
             switch (wmId)
@@ -206,7 +206,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_MOUSEMOVE:		
-		SSInputManager::Get().OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		SSInputManager::Get().OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)); 
 		break;
 
 	case WM_LBUTTONDOWN:		

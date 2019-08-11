@@ -37,6 +37,8 @@ target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib directxtex freet
 
 target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
+
+
 ###########################################################
 
 
