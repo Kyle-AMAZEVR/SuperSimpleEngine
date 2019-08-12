@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 template<class... Types>
 struct count 
 {

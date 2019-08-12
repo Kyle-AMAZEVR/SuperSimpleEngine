@@ -1,6 +1,7 @@
 
 #include "Core.h"
 #include "SSISerializable.h"
+#include "DXVertexTypes.h"
 
 #pragma region SerializeReader
 SerializeReader::SerializeReader(const std::string& FilePath)
@@ -52,6 +53,12 @@ SerializeReader& operator >> (SerializeReader& Archive, std::string& RHS)
 SerializeReader& operator >> (SerializeReader& Archive, size_t& Value)
 {
 	Archive.Stream.read((char*)&Value, sizeof(size_t));
+	return Archive;
+}
+
+SerializeReader& operator >> (SerializeReader& Archive, VT_PositionNormalTexcoordTangent& Value)
+{
+	Archive >> Value.VertexAttribute1 >> Value.VertexAttribute2 >> Value.VertexAttribute3 >> Value.VertexAttribute4;
 	return Archive;
 }
 
@@ -179,3 +186,43 @@ std::ofstream& operator<<(std::ofstream& Archive, const std::string& S)
 	Archive.write(S.data(), S.length());
 	return Archive;
 }
+
+
+std::ofstream& operator<< (std::ofstream& Archive, const VT_PositionNormalTexcoordTangent& p)
+{
+	Archive << p.VertexAttribute1 << p.VertexAttribute2 << p.VertexAttribute3 << p.VertexAttribute4;
+	return Archive;
+}
+
+std::ifstream& operator>>(std::ifstream& Archive, XMFLOAT4& Vec4)
+{
+	Archive >> Vec4.x >> Vec4.y >> Vec4.z >> Vec4.w;
+	return Archive;
+}
+
+
+
+
+inline std::ifstream& operator >> (std::ifstream& Archive, XMFLOAT3& Vec3)
+{
+	Archive >> Vec3.x >> Vec3.y >> Vec3.z;
+	return Archive;
+}
+
+
+
+inline std::ifstream& operator >> (std::ifstream& Archive, XMFLOAT2& Vec2)
+{
+	Archive >> Vec2.x >> Vec2.y;
+	return Archive;
+}
+
+std::ifstream& operator >> (std::ifstream& Archive, std::string& S)
+{
+	std::string::size_type Size;
+	Archive >> Size;
+	S.resize(Size);
+	Archive.read(&S[0], Size);
+	return Archive;
+}
+

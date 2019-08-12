@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include "DXVertexTypes.h"
 
 
 using namespace DirectX;
@@ -44,6 +45,7 @@ SerializeReader& operator >> (SerializeReader& Archive, float& Value);
 SerializeReader& operator >> (SerializeReader& Archive, unsigned int& Value);
 SerializeReader& operator >> (SerializeReader& Archive, int& Value);
 SerializeReader& operator >> (SerializeReader& Archive, bool& Value);
+SerializeReader& operator >> (SerializeReader& Archive, VT_PositionNormalTexcoordTangent& Value);
 #pragma endregion
 
 class SerializeWriter
@@ -179,6 +181,9 @@ std::ofstream& operator<<(std::ofstream& Archive, const std::string& S);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT2& Vec2);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT4& Vec4);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT3& Vec3);
+std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoordTangent& p);
+
+
 
 template<typename T>
 std::ofstream& operator<<(std::ofstream& Archive, const std::vector<T>& RHS)
@@ -202,34 +207,4 @@ inline std::ifstream& operator>>(std::ifstream& Archive, std::vector<T>& RHS)
 
 
 
-inline std::ifstream& operator>>(std::ifstream& Archive, XMFLOAT4& Vec4)
-{
-	Archive >> Vec4.x >> Vec4.y >> Vec4.z >> Vec4.w;
-	return Archive;
-}
 
-
-
-inline std::ifstream& operator >> (std::ifstream& Archive, XMFLOAT3& Vec3)
-{
-	Archive >> Vec3.x >> Vec3.y >> Vec3.z;
-	return Archive;
-}
-
-
-
-inline std::ifstream& operator >> (std::ifstream& Archive, XMFLOAT2& Vec2)
-{
-	Archive >> Vec2.x >> Vec2.y;
-	return Archive;
-}
-
-
-inline std::ifstream& operator >> (std::ifstream& Archive, std::string& S)
-{
-	std::string::size_type Size;
-	Archive >> Size;
-	S.resize(Size);
-	Archive.read(&S[0], Size);
-	return Archive;
-}
