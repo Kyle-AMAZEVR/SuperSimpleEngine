@@ -41,9 +41,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024,5);
 	m2DLUTRenderTarget = std::make_shared<class SSGenericRenderTarget>(512, 512, 1, false);
-	mObjMesh = std::make_shared<SSObjMesh>();
-
-	mObjMesh->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
+	
 
 	if(SSFileHelper::DirectoryExists(L"./Prebaked") == false)
 	{
@@ -82,10 +80,12 @@ void SSEngine::TestCreateResources()
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);	
-
+	mObjMesh = std::make_shared<SSObjMesh>();
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	
+	mObjMesh->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
+
 	mTestTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");	
 }
@@ -493,7 +493,7 @@ void SSEngine::DrawScene()
 
 	// @end
 
-	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
+	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mObjMesh };
 
 	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(10, 0, 0)));
 	sphereDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));

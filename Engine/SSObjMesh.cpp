@@ -59,7 +59,6 @@ static inline std::string trim_copy(std::string s)
 
 bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath)
 {
-
 	std::ifstream in(FilePath.c_str(), std::ios::in);
 	// @import file
 	if (in.good())
@@ -117,9 +116,9 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 		VT_PositionNormalTexcoordTangent v
 		{
 			mTempVertexList[mVertexIndexList[i]],
-			mTempNormalList[mVertexIndexList[i]],
-			mTempTexCoordList[mVertexIndexList[i]],
-			mTempTangentList[mVertexIndexList[i]],
+			mTempNormalList[mNormalIndexList[i]],
+			mTempTexCoordList[mTexcoordIndexList[i]],
+			mTempTangentList[i],
 		};
 		mRealVertexList.push_back(v);
 	}

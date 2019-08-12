@@ -18,6 +18,7 @@ protected:
 
 	void GenerateTangents();
 	void OptimizedGenerateVertices();
+	
 
 	XMFLOAT3 mMinPosition;
 	XMFLOAT3 mMaxPosition;
