@@ -9,7 +9,12 @@ set(CMAKE_SHARED_LINKER_FLAGS "/machine:x64")
 set(CMAKE_STATIC_LINKER_FLAGS "/machine:x64")
 set(CMAKE_CXX_STANDARD 17)
 
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 include_directories("Engine")
+
+message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory("Engine")
 
@@ -34,7 +39,5 @@ add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} 
 add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resource $<TARGET_FILE_DIR:SuperSimpleEngine>/Resource)
 
 
-add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Debug/Core.dll $<TARGET_FILE_DIR:SuperSimpleEngine>/Core.dll)
-add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different  ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Debug/Core.pdb $<TARGET_FILE_DIR:SuperSimpleEngine>/Core.pdb)
 
 ###########################################################

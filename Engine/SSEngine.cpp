@@ -272,7 +272,7 @@ void SSEngine::CreateEnvCubemapConvolution()
 
 void SSEngine::CreateEnvCubemapPrefilter()
 {
-	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
+	XMFLOAT3 origin = XMFLOAT3(0, 0, 0); 
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 	{
 		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader.get(), mPrefilterPixelShader.get(), mTestCube };
