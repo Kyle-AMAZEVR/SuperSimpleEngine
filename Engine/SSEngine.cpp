@@ -84,7 +84,8 @@ void SSEngine::TestCreateResources()
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	
-	mObjMesh->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
+	mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
+	mObjMesh->SetScale(0.1f, 0.1f,0.1f);
 
 	mTestTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");	
@@ -495,7 +496,7 @@ void SSEngine::DrawScene()
 
 	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mObjMesh };
 
-	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(10, 0, 0)));
+	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(0.1,0.1,0.1) * XMMatrixTranslation(10, 0, 0)));
 	sphereDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	sphereDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 	sphereDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());

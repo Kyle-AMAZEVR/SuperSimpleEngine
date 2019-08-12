@@ -59,6 +59,9 @@ static inline std::string trim_copy(std::string s)
 
 bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath)
 {
+	//std::string test = "f 47/27/58558 10192/14167/58559 10193/14168/58560";
+	//SSObjMeshParser::ParseFace(test, mVertexIndexList, mTexcoordIndexList, mNormalIndexList);
+
 	std::ifstream in(FilePath.c_str(), std::ios::in);
 	// @import file
 	if (in.good())
@@ -249,9 +252,18 @@ void SSObjMesh::GenerateTangents()
 
 	for (UINT i = 0; i < mVertexIndexList.size(); ++i)
 	{
-		auto n = DirectX::XMLoadFloat3(&mTempNormalList[mNormalIndexList[i]]);
-		auto t1 = tan1Accum[mVertexIndexList[i]];
-		auto t2 = tan2Accum[mVertexIndexList[i]];
+		auto n1 = mNormalIndexList[i];
+		if (n1 >= mTexcoordIndexList.size())
+		{
+			check(n1 < mTempNormalList.size());
+		}
+
+		auto n = DirectX::XMLoadFloat3(&mTempNormalList[n1]);
+
+		auto i1 = mVertexIndexList[i];
+		check(i1 < tan1Accum.size());
+		auto t1 = tan1Accum[i1];
+		auto t2 = tan2Accum[i1];
 
 		// Gram-Schmidt orthogonalize                
 		XMFLOAT3 temp;
@@ -363,7 +375,7 @@ void SSObjMeshParser::ParseFace(std::string& line, std::vector<UINT>& vertexInde
 
 	vertexIndexList.push_back(atoi(token2.substr(0, seperatorList[0]).c_str()) - 1);
 	texcoordIndexList.push_back(atoi(token2.substr(seperatorList[0] + 1, seperatorList[1] - seperatorList[0]).c_str()) - 1);
-	normalIndexList.push_back(atoi(token2.substr(seperatorList[1] + 1, token1.size() - seperatorList[1]).c_str()) - 1);
+	normalIndexList.push_back(atoi(token2.substr(seperatorList[1] + 1, token2.size() - seperatorList[1]).c_str()) - 1);
 
 	seperatorList.clear();
 
@@ -378,7 +390,7 @@ void SSObjMeshParser::ParseFace(std::string& line, std::vector<UINT>& vertexInde
 	check(seperatorList.size() == 2);
 	vertexIndexList.push_back(atoi(token3.substr(0, seperatorList[0]).c_str()) - 1);
 	texcoordIndexList.push_back(atoi(token3.substr(seperatorList[0] + 1, seperatorList[1] - seperatorList[0]).c_str()) - 1);
-	normalIndexList.push_back(atoi(token3.substr(seperatorList[1] + 1, token1.size() - seperatorList[1]).c_str()) - 1);
+	normalIndexList.push_back(atoi(token3.substr(seperatorList[1] + 1, token3.size() - seperatorList[1]).c_str()) - 1);
 }
 
 
@@ -501,14 +513,25 @@ XMFLOAT3 SSObjMeshParser::ParseFloat3(std::string& line)
 		}
 	}
 
-	check(indexList.size() == 3);
+	check(indexList.size() >= 2);
 
 	XMFLOAT2 result;
 
 	auto str1 = line.substr(indexList[0], indexList[1] - indexList[0]);
 	trim(str1);
-	auto str2 = line.substr(indexList[1], indexList[2] - indexList[1]);
-	trim(str2);
+
+	std::string str2;
+	
+	if (indexList.size() == 3)
+	{
+		str2 = line.substr(indexList[1], indexList[2] - indexList[1]);
+		trim(str2);
+	}
+	else
+	{
+		str2 = line.substr(indexList[1], line.size() - indexList[1]);
+		trim(str2);
+	}
 
 	sscanf_s(str1.c_str(), "%f", &result.x);
 	sscanf_s(str2.c_str(), "%f", &result.y);
