@@ -132,18 +132,12 @@ void SSSphere::InternalCreate()
 		vertexArray.push_back(VT_PositionNormalTexcoordTangent
 		(
 			mTempVertexList[i + 2], mTempNormalList[i + 2], mTempTexCoordList[i + 2], mTempTangentList[i + 2]
-		));
-
-		indexArray.push_back(i);
-		indexArray.push_back(i+1);
-		indexArray.push_back(i+2);
+		));		
 	}
 
 	mSphereVB = new SSVertexBuffer();
 	mSphereVB->SetVertexBufferData(vertexArray);	
-
-	mSphereIB = new SSIndexBuffer();
-	mSphereIB->SetIndexBufferData(indexArray);
+	
 }
 
 
@@ -272,12 +266,10 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
-	deviceContext->IASetIndexBuffer(mSphereIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
-	deviceContext->DrawIndexed(mSphereIB->GetIndexCount(), 0, 0);
+	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);
 }
 
 
 bool SSSphere::bIsInitialized = false;
 SSVertexBuffer* SSSphere::mSphereVB = nullptr;
-SSIndexBuffer* SSSphere::mSphereIB = nullptr;

@@ -14,11 +14,13 @@ public:
     template<class T>
     void SetVertexBufferData(const std::vector<T>& vertexData);
 	UINT GetStride() const;
+	UINT GetVertexCount() const;
 
 protected:
     template<class T>
     void InternalCreateVertexBuffer(const std::vector<T>& vertexData);
 	UINT mStride = 0;
+	UINT mVertexCount = 0;
 };
 
 template<class T>
@@ -49,4 +51,5 @@ void SSVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData
     HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
 
 	mStride = sizeof(T);
+	mVertexCount = vertexData.size();
 }

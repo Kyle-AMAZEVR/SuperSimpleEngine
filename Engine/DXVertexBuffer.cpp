@@ -7,3 +7,8 @@ UINT SSVertexBuffer::GetStride() const
 {	
 	return mStride;
 }
+
+UINT SSVertexBuffer::GetVertexCount() const
+{
+	return mVertexCount;
+}

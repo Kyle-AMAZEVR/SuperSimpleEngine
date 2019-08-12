@@ -21,7 +21,7 @@ protected:
 
 	static bool bIsInitialized;
 	static class SSVertexBuffer* mSphereVB;
-	static class SSIndexBuffer* mSphereIB;
+	
 
 	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;

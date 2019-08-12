@@ -83,7 +83,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		Timer.Tick();
 
     }
-    renderingThread.RequestExit();
+    renderingThread.RequestExit(); 
     renderingThread.Join();
 
     return (int) msg.wParam;

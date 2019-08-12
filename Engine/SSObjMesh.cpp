@@ -155,10 +155,9 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
 	auto stride = mVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);
-	deviceContext->IASetIndexBuffer(mIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);	
 
-	deviceContext->DrawIndexed(mIB->GetIndexCount(), 0, 0);
+	deviceContext->Draw(mVB->GetVertexCount(), 0);	
 }
 
 void SSObjMesh::OptimizedGenerateVertices()

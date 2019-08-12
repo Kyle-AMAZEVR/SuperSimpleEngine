@@ -23,7 +23,7 @@ include_directories("../lib/freetype/include")
 
 #add_subdirectory("lib/DirectXTK")
 add_subdirectory("../lib/DirectXTex" "./DirectXTex")
-add_subdirectory("../lib/freetype" "./freetype")
+#add_subdirectory("../lib/freetype" "./freetype")
 
 foreach(src_file ${SOURCES})
 	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
@@ -33,7 +33,7 @@ set_source_files_properties("Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib directxtex freetype) 
+target_link_libraries(Core d3d11.lib d3dcompiler.lib dxguid.lib directxtex ) 
 
 target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
