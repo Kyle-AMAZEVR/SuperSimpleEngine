@@ -11,6 +11,7 @@ class ENGINE_API SSObjMesh : public SSSceneObject
 public:
 	bool ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath);
 	void ImportMtlFile(const std::string& FilePath);
+	bool LoadCookedFile(const std::string& filePath);
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 

@@ -84,7 +84,8 @@ void SSEngine::TestCreateResources()
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	
-	mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
+	//mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
+	mObjMesh->LoadCookedFile("./Prebaked/pistol.mesh");
 	mObjMesh->SetScale(0.1f, 0.1f,0.1f);
 
 	mTestTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");

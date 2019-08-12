@@ -8,7 +8,7 @@
 #include <cctype>
 #include <locale>
 #include "DXVertexBuffer.h"
-#include "SSIndexBuffer.h"
+#include "SSISerializable.h"
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -130,11 +130,31 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	mTempTexCoordList.clear();
 	mTempNormalList.clear();
 
+	SerializeWriter writer("./Prebaked/pistol.mesh");
+	writer << mRealVertexList;
+
 	mVB = std::make_shared<SSVertexBuffer>();
 	mVB->SetVertexBufferData(mRealVertexList);
 	
 	return true;
 }
+
+bool SSObjMesh::LoadCookedFile(const std::string& filePath)
+{
+	SerializeReader reader(filePath);
+	if(reader.IsGood())
+	{
+		reader >> mRealVertexList;
+		mVB = std::make_shared<SSVertexBuffer>();
+		mVB->SetVertexBufferData(mRealVertexList);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 
 bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNormalTexcoordTangent& b)
 {

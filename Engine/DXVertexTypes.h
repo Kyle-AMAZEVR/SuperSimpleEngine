@@ -16,6 +16,7 @@ struct VertexType
 template<class T1, class T2>    
 struct VertexType<T1, T2>
 {    
+	VertexType() = default;
     VertexType(const T1& param1, const T2& param2)
     : VertexAttribute1(param1), VertexAttribute2(param2)
     {        
@@ -28,6 +29,7 @@ struct VertexType<T1, T2>
 template<class T1, class T2, class T3>
 struct VertexType<T1, T2, T3>
 {   
+	VertexType() = default;
     VertexType(const T1& param1, const T2& param2, const T3& param3) 
     : VertexAttribute1(param1), VertexAttribute2(param2), VertexAttribute3(param3)
     {        
@@ -41,6 +43,7 @@ struct VertexType<T1, T2, T3>
 template<class T1, class T2, class T3, class T4>
 struct VertexType<T1, T2, T3, T4>
 {   
+	VertexType() = default;
 	VertexType(const T1& param1, const T2& param2, const T3& param3, const T4& param4)
 		: VertexAttribute1(param1), VertexAttribute2(param2), VertexAttribute3(param3), VertexAttribute4(param4)
 	{
