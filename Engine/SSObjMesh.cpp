@@ -304,12 +304,9 @@ void SSObjMesh::GenerateTangents()
 
 void SSObjMeshParser::ParseFace(std::string& line, std::vector<UINT>& vertexIndexList, std::vector<UINT>& texcoordIndexList, std::vector<UINT>& normalIndexList)
 {
-	// "f 37 / 1 / 1 10193 / 14168 / 2 43 / 4 / 3";
-
 	UINT v1, v2, v3;
 	UINT n1, n2, n3;
-	UINT t1, t2, t3;
-	UINT delim;
+	UINT t1, t2, t3;	
 
 	int count = sscanf_s(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", 
 		&v1, &t1, &n1,
