@@ -185,17 +185,11 @@ void SSObjMesh::GenerateTangents()
 	std::vector<XMVECTOR> tan1Accum;
 	std::vector<XMVECTOR> tan2Accum;
 
-	for (UINT i = 0; i < mTempVertexList.size(); ++i)
-	{
-		tan1Accum.push_back(XMVECTOR());
-		tan2Accum.push_back(XMVECTOR());
-	}
+	tan1Accum.resize(mTempVertexList.size());
+	tan2Accum.resize(mTempVertexList.size());
 
-	for (UINT i = 0; i < mVertexIndexList.size(); i++)
-	{
-		mTempTangentList.push_back(XMFLOAT4(0, 0, 0, 0));
-	}
-
+	mTempTangentList.resize(mVertexIndexList.size());
+	
 	// Compute the tangent vector
 	for (UINT i = 0; i < mVertexIndexList.size(); i += 3)
 	{
