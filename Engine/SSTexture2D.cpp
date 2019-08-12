@@ -40,7 +40,7 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 
 	mWidth = static_cast<UINT>(metaData.width);
 	mHeight = static_cast<UINT>(metaData.height);
-	mMipLevels = metaData.mipLevels;
+	mMipLevels = static_cast<UINT>(metaData.mipLevels);
 
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth = metaData.width;

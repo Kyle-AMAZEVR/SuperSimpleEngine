@@ -51,5 +51,5 @@ void SSVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData
     HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
 
 	mStride = sizeof(T);
-	mVertexCount = vertexData.size();
+	mVertexCount = static_cast<UINT>(vertexData.size());
 }

@@ -52,9 +52,9 @@ class SSObjMeshParser
 {
 public:
 
-	static XMFLOAT4 ParseFloat3ToFloat4(std::string& line);
-	static XMFLOAT3 ParseFloat3(std::string& line);
-	static XMFLOAT2 ParseFloat3ToFloat2(std::string& line);
+	static XMFLOAT4 ParseVertex(std::string& line);
+	static XMFLOAT3 ParseNormal(std::string& line);
+	static XMFLOAT2 ParseTexcoord(std::string& line);
 	
 	static void ParseFace(std::string& line, std::vector<UINT>& vertexIndexList, std::vector<UINT>& texcoordIndexList, std::vector<UINT>& normalIndexList);
 };

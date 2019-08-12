@@ -59,8 +59,6 @@ static inline std::string trim_copy(std::string s)
 
 bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath)
 {
-	//std::string test = "f 47/27/58558 10192/14167/58559 10193/14168/58560";
-	//SSObjMeshParser::ParseFace(test, mVertexIndexList, mTexcoordIndexList, mNormalIndexList);
 
 	std::ifstream in(FilePath.c_str(), std::ios::in);
 	// @import file
@@ -80,18 +78,18 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 			if (Line[0] == 'v' && std::isspace(Line[1]))
 			{
 				//@ Vertex
-				mTempVertexList.push_back(SSObjMeshParser::ParseFloat3ToFloat4(Line));
+				mTempVertexList.push_back(SSObjMeshParser::ParseVertex(Line));
 			}
 			else if (Line[0] == 'v' && Line[1] == 't')
 			{
 				//@ Texcoord
-				mTempTexCoordList.push_back(std::move(SSObjMeshParser::ParseFloat3ToFloat2(Line)));
+				mTempTexCoordList.push_back(std::move(SSObjMeshParser::ParseTexcoord(Line)));
 				mHasTexCoord = true;
 			}
 			else if (Line[0] == 'v' && Line[1] == 'n')
 			{
 				//@ Normal
-				mTempNormalList.push_back(std::move(SSObjMeshParser::ParseFloat3(Line)));
+				mTempNormalList.push_back(std::move(SSObjMeshParser::ParseNormal(Line)));
 				mHasNormal = true;
 			}
 			else if (Line[0] == 'f' && std::isspace(Line[1]))
@@ -312,229 +310,55 @@ void SSObjMesh::GenerateTangents()
 
 void SSObjMeshParser::ParseFace(std::string& line, std::vector<UINT>& vertexIndexList, std::vector<UINT>& texcoordIndexList, std::vector<UINT>& normalIndexList)
 {
-	size_t index = 0;
+	// "f 37 / 1 / 1 10193 / 14168 / 2 43 / 4 / 3";
 
-	std::vector<size_t> indexList;
+	UINT v1, v2, v3;
+	UINT n1, n2, n3;
+	UINT t1, t2, t3;
+	UINT delim;
 
-	bool bPrevCharIsSpace = false;
+	int count = sscanf_s(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", 
+		&v1, &t1, &n1,
+		&v2, &t2, &n2,
+		&v3, &t3, &n3);
 
-	for (auto i = 0; i < line.size(); ++i)
-	{
-		if (isspace(line[i]) && bPrevCharIsSpace == false)
-		{
-			indexList.push_back(i);
-			bPrevCharIsSpace = true;
-		}
-		else
-		{
-			bPrevCharIsSpace = false;
-		}
-	}
+	vertexIndexList.push_back(v1-1); vertexIndexList.push_back(v2-1); vertexIndexList.push_back(v3-1);
 
-	check(indexList.size() >= 3);	
+	texcoordIndexList.push_back(t1-1); texcoordIndexList.push_back(t2-1); texcoordIndexList.push_back(t3-1);
 
-	auto token1 = line.substr(indexList[0], indexList[1] - indexList[0]);
-	trim(token1);
-
-	auto token2 = line.substr(indexList[1], indexList[2] - indexList[1]);
-	trim(token2);
-
-	auto token3 = line.substr(indexList[2], line.size() - indexList[2]);
-	trim(token3);
-
-	std::vector<size_t> seperatorList;
-
-	for(auto i = 0; i < token1.size(); ++i)
-	{
-		if(token1[i] == '/')
-		{
-			seperatorList.push_back(i);
-		}
-	}
-
-	check(seperatorList.size() == 2);
-	
-	auto vertexIndex = atoi(token1.substr(0, seperatorList[0]).c_str()) - 1;
-	vertexIndexList.push_back(vertexIndex);
-	auto texcoordIndex = atoi(token1.substr(seperatorList[0] + 1, seperatorList[1] - seperatorList[0]).c_str()) - 1;
-	texcoordIndexList.push_back(texcoordIndex);
-	auto normalIndex = atoi(token1.substr(seperatorList[1] + 1, token1.size() - seperatorList[1]).c_str()) - 1;
-	normalIndexList.push_back(normalIndex);
-
-	seperatorList.clear();
-
-	for (auto i = 0; i < token2.size(); ++i)
-	{
-		if (token2[i] == '/')
-		{
-			seperatorList.push_back(i);
-		}
-	}
-
-	check(seperatorList.size() == 2);
-
-	vertexIndexList.push_back(atoi(token2.substr(0, seperatorList[0]).c_str()) - 1);
-	texcoordIndexList.push_back(atoi(token2.substr(seperatorList[0] + 1, seperatorList[1] - seperatorList[0]).c_str()) - 1);
-	normalIndexList.push_back(atoi(token2.substr(seperatorList[1] + 1, token2.size() - seperatorList[1]).c_str()) - 1);
-
-	seperatorList.clear();
-
-	for (auto i = 0; i < token3.size(); ++i)
-	{
-		if (token3[i] == '/')
-		{
-			seperatorList.push_back(i);
-		}
-	}
-
-	check(seperatorList.size() == 2);
-	vertexIndexList.push_back(atoi(token3.substr(0, seperatorList[0]).c_str()) - 1);
-	texcoordIndexList.push_back(atoi(token3.substr(seperatorList[0] + 1, seperatorList[1] - seperatorList[0]).c_str()) - 1);
-	normalIndexList.push_back(atoi(token3.substr(seperatorList[1] + 1, token3.size() - seperatorList[1]).c_str()) - 1);
+	normalIndexList.push_back(n1-1); normalIndexList.push_back(n2-1); normalIndexList.push_back(n3-1);
 }
 
 
 
 
 
-XMFLOAT4 SSObjMeshParser::ParseFloat3ToFloat4(std::string& line)
+XMFLOAT4 SSObjMeshParser::ParseVertex(std::string& line)
 {
-	size_t index = 0;
-
-	enum class ParseState
-	{
-		NONE,
-		WHITE_SPACE,
-		DIGIT,
-	};
-
-	std::vector<size_t> indexList;
-
-	bool bPrevCharIsSpace = false;
-
-	for (auto i = 0; i < line.size(); ++i)
-	{
-		if (isspace(line[i]) && bPrevCharIsSpace == false)
-		{
-			indexList.push_back(i);
-			bPrevCharIsSpace = true;
-		}
-		else
-		{
-			bPrevCharIsSpace = false;
-		}
-	}
-
-	check(indexList.size() == 3);
-
 	XMFLOAT4 result;
 
-	sscanf_s(line.substr(indexList[0], indexList[1] - indexList[0]).c_str(), "%f", &result.x);
-	sscanf_s(line.substr(indexList[1], indexList[2] - indexList[1]).c_str(), "%f", &result.y);
-	sscanf_s(line.substr(indexList[2], line.size() - indexList[2]).c_str(), "%f", &result.z);
-	result.w = 1;
+	sscanf_s(line.c_str(), "v %f %f %f", &result.x, &result.y, &result.z);
+
+	result.w = 1.0f;
 
 	return result;
 }
 
-XMFLOAT3 SSObjMeshParser::ParseFloat3(std::string& line)
+XMFLOAT3 SSObjMeshParser::ParseNormal(std::string& line)
 {
-	size_t index = 0;
-
-	enum class ParseState
-	{
-		NONE,
-		WHITE_SPACE,
-		DIGIT,
-	};
-
-	std::vector<size_t> indexList;
-
-	bool bPrevCharIsSpace = false;
-	
-	for (auto i = 0; i < line.size(); ++i)
-	{
-		if(isspace(line[i]) && bPrevCharIsSpace == false)
-		{
-			indexList.push_back(i);
-			bPrevCharIsSpace = true;
-		}
-		else
-		{
-			bPrevCharIsSpace = false;
-		}
-	}
-
-	check(indexList.size() == 3);
-
 	XMFLOAT3 result;
 
-	auto str1 = line.substr(indexList[0], indexList[1] - indexList[0]);
-	trim(str1);
-	
-	auto str2 = line.substr(indexList[1], indexList[2] - indexList[1]);
-	trim(str2);
-
-	auto str3 = line.substr(indexList[2], line.size() - indexList[2]);
-	trim(str3);
-	
-	sscanf_s(str1.c_str(), "%f", &result.x);
-	sscanf_s(str2.c_str(), "%f", &result.y);
-	sscanf_s(str3.c_str(), "%f", &result.z);
+	sscanf_s(line.c_str(), "vn %f %f %f", &result.x, &result.y, &result.z);	
 
 	return result;
 }
 
- XMFLOAT2 SSObjMeshParser::ParseFloat3ToFloat2(std::string& line)
+ XMFLOAT2 SSObjMeshParser::ParseTexcoord(std::string& line)
 {
-	size_t index = 0;
+	 XMFLOAT2 result;
 
-	enum class ParseState
-	{
-		NONE,
-		WHITE_SPACE,
-		DIGIT,
-	};
+	 sscanf_s(line.c_str(), "vt %f %f", &result.x, &result.y);
 
-	std::vector<size_t> indexList;
+	 return result;
 
-	bool bPrevCharIsSpace = false;
-
-	for (auto i = 0; i < line.size(); ++i)
-	{
-		if (isspace(line[i]) && bPrevCharIsSpace == false)
-		{
-			indexList.push_back(i);
-			bPrevCharIsSpace = true;
-		}
-		else
-		{
-			bPrevCharIsSpace = false;
-		}
-	}
-
-	check(indexList.size() >= 2);
-
-	XMFLOAT2 result;
-
-	auto str1 = line.substr(indexList[0], indexList[1] - indexList[0]);
-	trim(str1);
-
-	std::string str2;
-	
-	if (indexList.size() == 3)
-	{
-		str2 = line.substr(indexList[1], indexList[2] - indexList[1]);
-		trim(str2);
-	}
-	else
-	{
-		str2 = line.substr(indexList[1], line.size() - indexList[1]);
-		trim(str2);
-	}
-
-	sscanf_s(str1.c_str(), "%f", &result.x);
-	sscanf_s(str2.c_str(), "%f", &result.y);
-
-	return result;
 }
