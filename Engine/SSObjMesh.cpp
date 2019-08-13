@@ -370,6 +370,8 @@ XMFLOAT3 SSObjMeshParser::ParseNormal(std::string& line)
 
 	 sscanf_s(line.c_str(), "vt %f %f", &result.x, &result.y);
 
+	 result.y = 1 - result.y;
+
 	 return result;
 
 }
