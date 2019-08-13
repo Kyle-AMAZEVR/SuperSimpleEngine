@@ -114,6 +114,9 @@ void SSEngine::TestCompileShader()
 	m2DLUTPixelShader = std::make_shared<SSPixelShader>();
 	m2DLUTVertexShader = std::make_shared<SSVertexShader>();
 
+	mFXAAVertexShader = std::make_shared<SSVertexShader>();
+	mFXAAPixelShader = std::make_shared<SSPixelShader>();
+
 	check(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
 	check(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
 	
@@ -134,6 +137,9 @@ void SSEngine::TestCompileShader()
 
 	check(m2DLUTVertexShader->CompileFromFile(L"./Shader/2DLUT.vs"));
 	check(m2DLUTPixelShader->CompileFromFile(L"./Shader/2DLUT.ps"));
+
+	check(mFXAAVertexShader->CompileFromFile(L"./Shader/FXAA.vs"));
+	check(mFXAAPixelShader->CompileFromFile(L"./Shader/FXAA.ps"));
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }

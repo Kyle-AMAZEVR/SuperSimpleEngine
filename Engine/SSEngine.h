@@ -79,6 +79,9 @@ private:
 	std::shared_ptr<class SSVertexShader> m2DLUTVertexShader;
 	std::shared_ptr<class SSPixelShader> m2DLUTPixelShader;
 
+	std::shared_ptr<class SSVertexShader> mFXAAVertexShader;
+	std::shared_ptr<class SSPixelShader> mFXAAPixelShader;
+
 	// @ cubemap rendertargets
 	std::shared_ptr<class SSCubemapRenderTarget> mEquirectToCubemapRenderTarget;
 	std::shared_ptr<class SSCubemapRenderTarget> mConvolutionRenderTarget;
