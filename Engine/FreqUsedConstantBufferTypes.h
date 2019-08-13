@@ -19,3 +19,8 @@ struct MVP
 {
 	float value;
 };
+
+ struct alignas(16) CbufferInvScreenSize
+ {
+	 XMFLOAT2 InvScreenSize;
+ };

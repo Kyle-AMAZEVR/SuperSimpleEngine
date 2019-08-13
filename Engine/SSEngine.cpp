@@ -41,6 +41,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024,5);
 	m2DLUTRenderTarget = std::make_shared<class SSGenericRenderTarget>(512, 512, 1, false);
+	mFXAARenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
 	
 
 	if(SSFileHelper::DirectoryExists(L"./Prebaked") == false)
@@ -88,7 +89,7 @@ void SSEngine::TestCreateResources()
 	mObjMesh->LoadCookedFile("./Prebaked/pistol.mesh");
 	mObjMesh->SetScale(0.1f, 0.1f,0.1f);
 
-	mTestTexture->LoadFromHDRFile(L"./Resource/Tex/HDR/Ueno-Shrine_3k.hdr");
+	mTestTexture->LoadFromDDSFile(L"./Resource/Tex/pistol/Cerberus_A.dds");
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");	
 }
 
@@ -167,7 +168,7 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 
 		mViewport->Resize(newWidth, newHeight);
 		mGBuffer->Resize(newWidth, newHeight);
-		
+		mFXAARenderTarget->Resize(newWidth, newHeight);
 	}
 }
 
@@ -510,11 +511,22 @@ void SSEngine::DrawScene()
 	
 	sphereDrawCmd.Do();	
 
+	mFXAARenderTarget->Clear();
+	mFXAARenderTarget->SetCurrentRenderTarget();
+
+	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader.get(), mFXAAPixelShader.get(), mScreenBlit };
+	fxaaDrawCmd.SetPSTexture("ScreenTex", mGBuffer->GetColorOutput());
+	CbufferInvScreenSize invScreenSize;
+	invScreenSize.InvScreenSize.x = 1 / static_cast<float>(mBufferWidth);
+	invScreenSize.InvScreenSize.y = 1 / static_cast<float>(mBufferHeight);
+	fxaaDrawCmd.StorePSConstantBufferData("CBInverseScreenSize", invScreenSize);
+	fxaaDrawCmd.Do();
+
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();
 
 	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
-	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
+	blitDrawCmd.SetPSTexture("sampleTexture", mFXAARenderTarget->GetOutput(0));
 	blitDrawCmd.Do();
 	
     HR(mSwapChain->Present(0,0));
