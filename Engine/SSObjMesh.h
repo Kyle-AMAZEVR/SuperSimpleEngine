@@ -41,7 +41,7 @@ protected:
 	bool mHasNormal = false;
 	
 
-	std::map<VT_PositionNormalTexcoordTangent, UINT> mVertexCacheMap;
+	std::map<UINT, UINT> mVertexCacheMap;
 	std::vector<VT_PositionNormalTexcoordTangent> mRealVertexList;
 	
 	bool GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index);

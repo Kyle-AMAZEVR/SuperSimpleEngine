@@ -24,3 +24,5 @@ struct MVP
  {
 	 XMFLOAT2 InvScreenSize;
  };
+
+ 

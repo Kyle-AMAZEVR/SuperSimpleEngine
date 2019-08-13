@@ -187,9 +187,11 @@ void SSObjMesh::OptimizedGenerateVertices()
 
 bool SSObjMesh::GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index)
 {
-	if (mVertexCacheMap.count(vertex) > 0)
+	UINT vHashCode = GetHashCode(vertex);
+
+	if (mVertexCacheMap.count(vHashCode) > 0)
 	{
-		index = mVertexCacheMap[vertex];
+		
 		return true;
 	}
 	else
