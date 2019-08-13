@@ -112,6 +112,8 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	check(mVertexIndexList.size() == mTempTangentList.size());
 
 	// @create real vertex
+	mRealVertexList.resize(mVertexIndexList.size());
+	
 	for(UINT i = 0; i < mVertexIndexList.size(); ++i)
 	{
 		VT_PositionNormalTexcoordTangent v
@@ -121,7 +123,7 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 			mTempTexCoordList[mTexcoordIndexList[i]],
 			mTempTangentList[i],
 		};
-		mRealVertexList.push_back(v);
+		mRealVertexList[i] = std::move(v);
 	}
 
 	// @clear 
