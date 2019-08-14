@@ -10,7 +10,8 @@ public:
 	virtual void Shutdown() override;
 
 protected:
-	
+	std::map<SSName, SSVertexShader> mVertexShaderMap;
+	std::map<SSName, SSPixelShader> mPixelShaderMap;
 };
 
 
