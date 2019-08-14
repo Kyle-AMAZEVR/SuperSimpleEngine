@@ -35,3 +35,4 @@ bool SSFileHelper::MakeDirectory(std::wstring dirname)
 
 	return false;
 }
+
