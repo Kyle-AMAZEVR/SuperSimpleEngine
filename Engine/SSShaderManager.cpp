@@ -25,6 +25,10 @@ void SSShaderManager::Initialize()
 			{
 				mVertexShaderMap[filename] = vs;
 			}
+			else
+			{
+				check(false);
+			}
 		}
 		else if (filename.find(".ps") != std::string::npos)
 		{
@@ -32,6 +36,10 @@ void SSShaderManager::Initialize()
 			if (ps->CompileFromFile(filepath) == true)
 			{
 				mPixelShaderMap[filename] = ps;
+			}
+			else
+			{
+				check(false);
 			}
 		}
 	}

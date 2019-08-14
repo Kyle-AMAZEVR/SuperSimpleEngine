@@ -228,7 +228,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
 
     if(errorMsg != nullptr)
     {
-        PrintCompileError(errorMsg);
+        PrintCompileError(errorMsg);		
         return false;
     }
 

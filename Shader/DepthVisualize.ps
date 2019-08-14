@@ -1,0 +1,27 @@
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float2 InTexCoord : TEXCOORD0;
+};
+
+
+cbuffer DepthInfo
+{
+	float near;
+	float far;	
+};
+
+SamplerState DefaultTexSampler : register(s0);
+
+
+Texture2D DepthTex : register(t0);
+
+
+
+float4 PSMain(PixelInputType pin) : SV_TARGET
+{   
+	float depth = DepthTex.Sample(DefaultTexSampler, pin.InTexCoord).x;	
+	float linearizedDepth = (2.0 * near) / (far + near - depth * (far - near));
+    return float4(linearizedDepth, linearizedDepth, linearizedDepth, 1.0f);
+}

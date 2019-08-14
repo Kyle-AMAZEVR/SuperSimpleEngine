@@ -69,6 +69,7 @@ void SSEngine::Shutdown()
 	SSDepthStencilStateManager::Get().Shutdown();
 	SSRaterizeStateManager::Get().Shutdown();
 	SSSamplerManager::Get().Shutdown();
+	SSShaderManager::Get().Shutdown();
 
 	ReleaseCOM(mSwapChain);
 	ReleaseCOM(mDevice);
