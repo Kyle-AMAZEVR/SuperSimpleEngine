@@ -96,53 +96,30 @@ void SSEngine::TestCreateResources()
 }
 
 void SSEngine::TestCompileShader()
-{    
+{   
+    mTestVertexShader = SSShaderManager::Get().GetVertexShader("Screen.vs");
+	mTestPixelShader = SSShaderManager::Get().GetPixelShader("Screen.ps");
 	
-    mTestVertexShader = std::make_shared<SSVertexShader>();
-	mTestPixelShader = std::make_shared<SSPixelShader>();
-	mDeferredVertexShader = std::make_shared<SSVertexShader>();
-	mDeferredPixelShader = std::make_shared<SSPixelShader>();	
-	mCubemapVertexShader = std::make_shared<SSVertexShader>();
-	mCubemapPixelShader = std::make_shared<SSPixelShader>();	
+	mDeferredVertexShader = SSShaderManager::Get().GetVertexShader("DeferredShader.vs");
+	mDeferredPixelShader = SSShaderManager::Get().GetPixelShader("DeferredShader.ps");
+
+	mCubemapVertexShader = SSShaderManager::Get().GetVertexShader("CubemapShader.vs");
+	mCubemapPixelShader = SSShaderManager::Get().GetPixelShader("CubemapShader.ps");
 	
-	mEquirectToCubemapVertexShader = std::make_shared<SSVertexShader>();
-	mEquirectToCubemapPixelShader = std::make_shared<SSPixelShader>();
+	mEquirectToCubemapVertexShader = SSShaderManager::Get().GetVertexShader("EquirectangleToCubemap.vs");
+	mEquirectToCubemapPixelShader = SSShaderManager::Get().GetPixelShader("EquirectangleToCubemap.ps");
 	
-	mCubemapConvolutionVertexShader = std::make_shared<SSVertexShader>();
-	mCubemapConvolutionPixelShader = std::make_shared<SSPixelShader>();
+	mCubemapConvolutionVertexShader = SSShaderManager::Get().GetVertexShader("CubemapConvolution.vs");
+	mCubemapConvolutionPixelShader = SSShaderManager::Get().GetPixelShader("CubemapConvolution.ps");
 
-	mPrefilterVertexShader = std::make_shared<SSVertexShader>();
-	mPrefilterPixelShader = std::make_shared<SSPixelShader>();
+	mPrefilterVertexShader = SSShaderManager::Get().GetVertexShader("Prefilter.vs");
+	mPrefilterPixelShader = SSShaderManager::Get().GetPixelShader("Prefilter.ps");
 
-	m2DLUTPixelShader = std::make_shared<SSPixelShader>();
-	m2DLUTVertexShader = std::make_shared<SSVertexShader>();
+	m2DLUTVertexShader = SSShaderManager::Get().GetVertexShader("2DLUT.vs");
+	m2DLUTPixelShader = SSShaderManager::Get().GetPixelShader("2DLUT.ps");
 
-	mFXAAVertexShader = std::make_shared<SSVertexShader>();
-	mFXAAPixelShader = std::make_shared<SSPixelShader>();
-
-	check(mDeferredVertexShader->CompileFromFile(L"./Shader/DeferredShader.vs"));
-	check(mDeferredPixelShader->CompileFromFile(L"./Shader/DeferredShader.ps"));
-	
-	check(mTestVertexShader->CompileFromFile(L"./Shader/Screen.vs"));
-	check(mTestPixelShader->CompileFromFile(L"./Shader/Screen.ps"));
-
-	check(mCubemapVertexShader->CompileFromFile(L"./Shader/CubemapShader.vs"));
-	check(mCubemapPixelShader->CompileFromFile(L"./Shader/CubemapShader.ps"));
-
-	check(mEquirectToCubemapVertexShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.vs"));
-	check(mEquirectToCubemapPixelShader->CompileFromFile(L"./Shader/EquirectangleToCubemap.ps"));
-
-	check(mCubemapConvolutionVertexShader->CompileFromFile(L"./Shader/CubemapConvolution.vs"));
-	check(mCubemapConvolutionPixelShader->CompileFromFile(L"./Shader/CubemapConvolution.ps"));
-
-	check(mPrefilterVertexShader->CompileFromFile(L"./Shader/Prefilter.vs"));
-	check(mPrefilterPixelShader->CompileFromFile(L"./Shader/Prefilter.ps"));
-
-	check(m2DLUTVertexShader->CompileFromFile(L"./Shader/2DLUT.vs"));
-	check(m2DLUTPixelShader->CompileFromFile(L"./Shader/2DLUT.ps"));
-
-	check(mFXAAVertexShader->CompileFromFile(L"./Shader/FXAA.vs"));
-	check(mFXAAPixelShader->CompileFromFile(L"./Shader/FXAA.ps"));
+	mFXAAVertexShader = SSShaderManager::Get().GetVertexShader("FXAA.vs");
+	mFXAAPixelShader = SSShaderManager::Get().GetPixelShader("FXAA.ps");
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }

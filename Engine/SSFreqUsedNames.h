@@ -20,3 +20,6 @@ extern SSName DeferredShaderName;
 extern SSName EquirectToCubemapShaderName;
 
 extern SSName RoughnessName;
+
+extern SSName DeferredVertexShaderName;
+extern SSName DeferredPixelShaderName;

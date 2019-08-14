@@ -181,6 +181,7 @@ std::ofstream& operator<<(std::ofstream& Archive, const std::string& S);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT2& Vec2);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT4& Vec4);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT3& Vec3);
+std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoord& p);
 std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoordTangent& p);
 
 

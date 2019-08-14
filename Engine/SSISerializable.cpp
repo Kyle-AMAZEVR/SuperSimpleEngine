@@ -194,6 +194,12 @@ std::ofstream& operator<< (std::ofstream& Archive, const VT_PositionNormalTexcoo
 	return Archive;
 }
 
+std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoord& p)
+{
+	Archive << p.VertexAttribute1 << p.VertexAttribute2 << p.VertexAttribute3;
+	return Archive;
+}
+
 std::ifstream& operator>>(std::ifstream& Archive, XMFLOAT4& Vec4)
 {
 	Archive >> Vec4.x >> Vec4.y >> Vec4.z >> Vec4.w;
