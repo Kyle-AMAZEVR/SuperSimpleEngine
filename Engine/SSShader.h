@@ -9,6 +9,7 @@ class ENGINE_API SSShader : public DXRenderResource
 {
 public:
     virtual ~SSShader() {}
+	
 
     template<class T>
     void SetConstantBufferData(std::string bufferName, const T& data);	
@@ -54,7 +55,7 @@ class ENGINE_API SSVertexShader : public SSShader
 {
 public:
     SSVertexShader() = default;
-    virtual ~SSVertexShader();
+	virtual void Destroy() override;
     virtual bool CompileFromFile(std::wstring filepath) override;
     ID3D11VertexShader* GetShader() { return mVertexShader; } 
     ID3D11InputLayout* GetInputLayout() { return mInputLayout; }
@@ -93,7 +94,7 @@ class ENGINE_API SSPixelShader : public SSShader
 {
 public:
     SSPixelShader() = default;
-    virtual ~SSPixelShader();
+	virtual void Destroy() override;
     virtual bool CompileFromFile(std::wstring filepath) override;
     ID3D11PixelShader* GetShader() { return mPixelShader; }
 

@@ -83,15 +83,15 @@ std::vector<std::string> SSShader::GetSamplerNames()
 	return result;
 }
 
+
+
 #pragma endregion
 
 
-//@ vertex shader implementation
- SSVertexShader::~SSVertexShader()
- {
-     ReleaseCOM(mVertexShader);
- }
-
+void SSVertexShader::Destroy()
+{
+	ReleaseCOM(mVertexShader);
+}
 
 void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 {
@@ -197,10 +197,11 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
  }
 
 #pragma region PixelShader
-SSPixelShader::~SSPixelShader()
-{
-    ReleaseCOM(mPixelShader);
-}
+
+ void SSPixelShader::Destroy()
+ {
+	 ReleaseCOM(mPixelShader);
+ }
 
 bool SSPixelShader::CompileFromFile(std::wstring filepath)
 {    

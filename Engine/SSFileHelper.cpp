@@ -36,3 +36,9 @@ bool SSFileHelper::MakeDirectory(std::wstring dirname)
 	return false;
 }
 
+std::vector<std::string> SSFileHelper::EnumerateFilesInDirectory(std::string dirname)
+{
+	std::vector<std::string> result;
+
+	return result;
+}
