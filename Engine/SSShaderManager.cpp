@@ -11,18 +11,20 @@ void SSShaderManager::Initialize()
 	for (auto& f : std::filesystem::directory_iterator("./Shader"))
 	{
 		std::string filename;
-		std::wstring wfilename = f.path().c_str();
-		filename.assign(wfilename.begin(), wfilename.end());
+		
+		std::wstring wfilename = f.path().filename().c_str();
+
+		filename.assign(wfilename.begin(), wfilename.end());		
 
 		if (filename.find(".vs") != std::string::npos)
 		{
 			std::shared_ptr<SSVertexShader> vs = std::make_shared<SSVertexShader>();
+
 			if (vs->CompileFromFile(wfilename) == true)
 			{
 				mVertexShaderMap[filename] = vs;
 			}
 		}
-
 		else if (filename.find(".ps") != std::string::npos)
 		{
 			std::shared_ptr<SSPixelShader> ps = std::make_shared<SSPixelShader>();
@@ -32,8 +34,6 @@ void SSShaderManager::Initialize()
 			}
 		}
 	}
-
-
 }
 
 
