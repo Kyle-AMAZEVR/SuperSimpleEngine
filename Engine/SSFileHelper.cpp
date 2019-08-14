@@ -1,6 +1,7 @@
 
 #include "Core.h"
 #include "SSFileHelper.h"
+#include <filesystem>
 
 bool SSFileHelper::FileExists(std::wstring filename)
 {
@@ -39,6 +40,8 @@ bool SSFileHelper::MakeDirectory(std::wstring dirname)
 std::vector<std::string> SSFileHelper::EnumerateFilesInDirectory(std::string dirname)
 {
 	std::vector<std::string> result;
+
+	
 
 	return result;
 }

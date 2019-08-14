@@ -23,6 +23,7 @@
 #include "SSFreqUsedNames.h"
 #include "SSFileHelper.h"
 #include "SSObjMesh.h"
+#include "SSShaderManager.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -55,6 +56,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	SSSamplerManager::Get().Initialize();
 	SSDepthStencilStateManager::Get().Initialize();
 	SSRaterizeStateManager::Get().Initialize();
+	SSShaderManager::Get().Initialize();
 
     TestCompileShader();
     TestCreateResources();

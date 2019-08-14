@@ -32,7 +32,7 @@ class ENGINE_API SSFXAAPostProcess : public SSPostProcess
 {
 public:
 	SSFXAAPostProcess(UINT width, UINT height);
-	virtual void Destroy() override;
+	virtual void Destroy() override{}
 protected:
 
 };

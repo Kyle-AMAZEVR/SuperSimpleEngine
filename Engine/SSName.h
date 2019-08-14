@@ -11,6 +11,7 @@ class ENGINE_API SSName
 {
 public:
 	SSName(const std::string& name);
+
 	SSName(const char* name);
 
 	bool operator < (const SSName& rhs) const

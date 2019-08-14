@@ -4,11 +4,34 @@
 #include "SSName.h"
 #include "SSShader.h"
 
+#include <filesystem>
+
 void SSShaderManager::Initialize()
 {
-	//
-	WIN32_FIND_DATA fdd;
-	HANDLE hFind = FindFirstFile("./Shader", &fdd);
+	for (auto& f : std::filesystem::directory_iterator("./Shader"))
+	{
+		std::string filename;
+		std::wstring wfilename = f.path().c_str();
+		filename.assign(wfilename.begin(), wfilename.end());
+
+		if (filename.find(".vs") != std::string::npos)
+		{
+			std::shared_ptr<SSVertexShader> vs = std::make_shared<SSVertexShader>();
+			if (vs->CompileFromFile(wfilename) == true)
+			{
+				mVertexShaderMap[filename] = vs;
+			}
+		}
+
+		else if (filename.find(".ps") != std::string::npos)
+		{
+			std::shared_ptr<SSPixelShader> ps = std::make_shared<SSPixelShader>();
+			if (ps->CompileFromFile(wfilename) == true)
+			{
+				mPixelShaderMap[filename] = ps;
+			}
+		}
+	}
 
 
 }
