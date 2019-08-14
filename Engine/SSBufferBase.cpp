@@ -11,9 +11,5 @@ SSBufferBase::~SSBufferBase()
 
 void SSBufferBase::Destroy()
 {
-	if (mpBuffer != nullptr)
-	{
-		mpBuffer->Release();
-		mpBuffer = nullptr;
-	}
+	ReleaseCOM(mpBuffer);
 }

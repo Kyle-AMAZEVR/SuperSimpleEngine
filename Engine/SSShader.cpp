@@ -90,6 +90,14 @@ std::vector<std::string> SSShader::GetSamplerNames()
 
 void SSVertexShader::Destroy()
 {
+	for (auto& kvp : mConstantBufferMap)
+	{
+		if (kvp.second)
+		{
+			kvp.second->Destroy();
+		}
+	}
+
 	ReleaseCOM(mVertexShader);
 }
 
@@ -200,6 +208,13 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 
  void SSPixelShader::Destroy()
  {
+	 for (auto& kvp : mConstantBufferMap)
+	 {
+		 if (kvp.second)
+		 {
+			 kvp.second->Destroy();
+		 }
+	 }
 	 ReleaseCOM(mPixelShader);
  }
 
