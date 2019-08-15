@@ -1,0 +1,125 @@
+
+
+
+struct PixelInputType
+{
+    float4 InPosition : SV_POSITION;
+    float4 InViewPosition : POSITION0;
+    float2 InTexCoord : TEXCOORD0;
+    float3 InNormal : NORMAL;
+    float3 InTangent : TANGENT;
+    float3 InBinormal : BINORMAL;
+};
+
+Texture2D DiffuseTex;
+Texture2D NormalTex;
+Texture2D MaskTex;
+Texture2D MetalicTex;
+Texture2D RoughnessTex;
+
+SamplerState DefaultTexSampler : register(s0);
+
+
+struct PixelOutputType
+{
+    float4 PositionColor: SV_Target0;
+    float4 DiffuseColor : SV_Target1;
+    float4 NormalColor : SV_Target2;   
+};
+
+
+
+cbuffer TextureExist
+{
+    bool MetalicExist;
+    bool MaskMapExist;
+    bool NormalMapExist;
+    bool RoughnessExist;
+    bool DiffuseMapExist;    
+};
+
+
+cbuffer MetalicRoughness
+{
+    float Metalic;
+    float Roughness; 
+};
+
+cbuffer CBDiffuseColor
+{
+    float3 DiffuseOverride;
+};
+
+
+PixelOutputType PSMain(PixelInputType pin)
+{   
+    PixelOutputType output = (PixelOutputType)0;; 
+
+    if(MaskMapExist)
+    {
+    	float4 MaskValue= MaskTex.Sample(DefaultTexSampler, pin.InTexCoord);
+    	if(MaskValue.x > 0)
+    	{
+    		output.DiffuseColor = DiffuseTex.Sample(DefaultTexSampler, pin.InTexCoord);
+    	}
+    	else
+    	{
+    		discard;
+    	}
+    }
+    else
+    {
+        if(DiffuseMapExist)
+    	{
+           output.DiffuseColor = DiffuseTex.Sample(DefaultTexSampler, pin.InTexCoord);            
+        }
+        else
+        {
+            output.DiffuseColor = float4(DiffuseOverride,0);           
+        }
+    }
+
+    if(RoughnessExist)
+    {
+        output.DiffuseColor.a = RoughnessTex.Sample(DefaultTexSampler, pin.InTexCoord).x;
+    }
+    else
+    {
+        output.DiffuseColor.a = Roughness;
+    }
+
+    if(pin.InPosition.w == 0)
+    {
+        output.DiffuseColor = float4(1,0,0,0);
+    }
+
+    float3x3 TangentToModelViewSpaceMatrix = float3x3( pin.InTangent.x, pin.InBinormal.x, pin.InNormal.x, 
+								                       pin.InTangent.y, pin.InBinormal.y, pin.InNormal.y, 
+								                       pin.InTangent.z, pin.InBinormal.z, pin.InNormal.z );
+
+    if(NormalMapExist)
+    {
+        float3 NormalMapNormal = (2.0f * (NormalTex.Sample(DefaultTexSampler, pin.InTexCoord ).xyz ) - float3(1.0f,1.0f,1.0f));
+	    float3 BumpNormal = normalize(mul(NormalMapNormal.xyz , TangentToModelViewSpaceMatrix));
+	
+        output.NormalColor.xyz = BumpNormal.xyz;
+    }
+    else
+    {
+        output.NormalColor.xyz = pin.InNormal.xyz;
+    }
+
+    if(MetalicExist)
+    {
+        output.NormalColor.a = MetalicTex.Sample(DefaultTexSampler, pin.InTexCoord).x;        
+    }
+    else
+    {
+        output.NormalColor.a = Metalic;
+    }
+
+    output.PositionColor = pin.InViewPosition;
+
+    return output;
+    
+}
