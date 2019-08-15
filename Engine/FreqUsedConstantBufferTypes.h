@@ -26,26 +26,26 @@ struct MVP
  };
 
  template<class... T>
-struct alignas(16) AlignedCBuffer
+struct alignas(16) SSAlignedCBuffer
  {	 
  };
 
 template<class T1>
-struct alignas(16) AlignedCBuffer<T1>
+struct alignas(16) SSAlignedCBuffer<T1>
 {
 	T1 value1;	
 };
 
 
  template<class T1, class T2>
- struct alignas(16) AlignedCBuffer<T1,T2>
+ struct alignas(16) SSAlignedCBuffer<T1,T2>
  {
 	 T1 value1;
 	 T2 value2;
  };
 
  template<class T1, class T2, class T3>
- struct alignas(16) AlignedCBuffer<T1,T2,T3>
+ struct alignas(16) SSAlignedCBuffer<T1,T2,T3>
  {
 	 T1 value1;
 	 T2 value2;
@@ -53,7 +53,7 @@ struct alignas(16) AlignedCBuffer<T1>
  };
 
  template<class T1, class T2, class T3, class T4>
- struct alignas(16) AlignedCBuffer<T1,T2,T3,T4>
+ struct alignas(16) SSAlignedCBuffer<T1,T2,T3,T4>
  {
 	 T1 value1;
 	 T2 value2;

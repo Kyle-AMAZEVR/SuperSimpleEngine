@@ -1,0 +1,190 @@
+
+
+Texture2D PositionTex;
+Texture2D DiffuseTex;
+Texture2D NormalTex;
+Texture2D BrdfLUT;
+TextureCube IrradianceMap;
+TextureCube PrefilterMap;
+
+
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float2 InTexCoord : TEXCOORD0;
+};
+
+
+
+static const float PI = 3.1415926535;
+
+// ----------------------------------------------------------------------------
+float DistributionGGX(float3 N, float3 H, float roughness)
+{
+    float a = roughness*roughness;
+    float a2 = a*a;
+    float NdotH = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
+
+    float nom   = a2;
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom = PI * denom * denom;
+
+    return nom / denom;
+}
+// ----------------------------------------------------------------------------
+float GeometrySchlickGGX(float NdotV, float roughness)
+{
+    float r = (roughness + 1.0);
+    float k = (r*r) / 8.0;
+
+    float nom   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+
+    return nom / denom;
+}
+// ----------------------------------------------------------------------------
+float GeometrySmith(float3 N, float3 V, float3 L, float roughness)
+{
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
+
+    return ggx1 * ggx2;
+}
+// ----------------------------------------------------------------------------
+float3 fresnelSchlick(float cosTheta, float3 F0)
+{
+    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+}
+// ----------------------------------------------------------------------------
+float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
+{
+    return F0 + (max(float3(1.0 - roughness, 1.0 - roughness, 1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
+}   
+// ----------------------------------------------------------------------------
+
+
+SamplerState DefaultTexSampler : register(s0);
+SamplerState DefaultCubemapSampler : register(s1);
+
+cbuffer LightInfo
+{
+    int lightCount;
+    float3 lightPositions[64];
+    float3 lightColors[64];
+    float2 lightMinMaxs[64];    
+};
+
+cbuffer CameraTransform
+{
+    float4x4 View; 
+    float4x4 Proj;
+};
+
+
+float4 PSMain(PixelInputType pin): SV_TARGET
+{
+    // Calc Texture Coordinate
+	float2 TexCoord = pin.InTexCoord;
+        	
+    // Fetch Geometry info from G-buffer
+	
+    float3 Color = DiffuseTex.Sample(DefaultTexSampler, pin.InTexCoord).xyz;	
+    float4 Normal = NormalTex.Sample(DefaultTexSampler, pin.InTexCoord);
+	float4 float4Position = PositionTex.Sample(DefaultTexSampler, pin.InTexCoord);    
+    float3 Position = PositionTex.Sample(DefaultTexSampler, pin.InTexCoord).xyz;
+
+	if(float4Position.a == 0)
+	{
+		return float4(Color , 1.0);		
+	}
+
+    float3 albedo     = pow(abs(Color), float3(2.2,2.2,2.2));
+    //float3 albedo   = texture(DiffuseTex, TexCoord).rgb;
+    float metallic  = saturate(NormalTex.Sample(DefaultTexSampler,TexCoord).a);
+    float roughness = saturate(DiffuseTex.Sample(DefaultTexSampler, TexCoord).a);
+    float3 N = normalize(Normal.xyz);
+    float3 V = -normalize(Position);
+    float3 R = reflect(V, N); 	
+	
+    float3 F0 = float3(0.04, 0.04, 0.04); 
+    F0 = lerp(F0, albedo, metallic);
+	           
+    // reflectance equation
+    float3 Lo = float3(0.0,0.0,0.0);
+
+    for(int i = 0; i < lightCount; ++i) 
+    {
+        // calculate per-light radiance         
+        float4 lightPosInViewSpace = mul(float4(lightPositions[i], 1), View);
+        float3 L = normalize(lightPosInViewSpace.xyz - Position);        
+        float3 H = normalize(V + L);
+
+		float scaleFactor = 0.1f;
+        float distance = clamp(length(lightPosInViewSpace.xyz - Position), lightMinMaxs[i].x, lightMinMaxs[i].y) * scaleFactor;
+        float lightRadius = lightMinMaxs[i].y * scaleFactor;
+
+        float attenuation = pow( clamp(1 - pow(distance / lightRadius, 4), 0, 1) , 2) / (distance * distance + 1);
+
+        //float distanceFactor = ((50-1) / (lightMinMaxs[i].y - lightMinMaxs[i].x)) * (distance - lightMinMaxs[i].x) + 1;
+        //float attenuation = 1.0 / (distanceFactor * distanceFactor);                
+        
+        float3 radiance     = lightColors[i] * attenuation;
+        // cook-torrance brdf
+        float NDF = DistributionGGX(N, H, roughness);        
+        float G   = GeometrySmith(N, V, L, roughness);        
+        float3 F    = fresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);              
+        
+        float3 nominator    = NDF * G * F; 
+        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
+        float3 specular = nominator / max(denominator, 0.001); // prevent divide by zero for NdotV=0.0 or NdotL=0.0
+        
+        // kS is equal to Fresnel
+        float3 kS = F;
+        // for energy conservation, the diffuse and specular light can't
+        // be above 1.0 (unless the surface emits light); to preserve this
+        // relationship the diffuse component (kD) should equal 1.0 - kS.
+        float3 kD = float3(1.0,1.0,1.0) - kS;
+        // multiply kD by the inverse metalness such that only non-metals 
+        // have diffuse lighting, or a linear blend if partly metal (pure metals
+        // have no diffuse light).
+        kD *= 1.0 - metallic;	  
+
+        // scale light by NdotL
+        float NdotL = max(dot(N, L), 0.0);
+
+        // add to outgoing radiance Lo
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
+    }   
+
+    
+    // ambient lighting (we now use IBL as the ambient term)
+    float3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+    
+    float3 kS = F;
+    float3 kD = 1.0 - kS;
+    kD *= 1.0 - metallic;    
+    
+    float3 irradiance = IrradianceMap.Sample(DefaultCubemapSampler, N).xyz;
+    float3 diffuse      = irradiance * albedo;
+    
+    // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
+    static const float MAX_REFLECTION_LOD = 4.0;    
+    float3 prefilteredColor = PrefilterMap.SampleLevel(DefaultCubemapSampler, R, roughness * MAX_REFLECTION_LOD).xyz;
+    float2 brdf = BrdfLUT.Sample(DefaultTexSampler, float2(max(dot(N, V), 0.0), roughness)).xy;
+    float3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+
+    float3 ambient = (kD * diffuse + specular);
+    
+    float3 color = ambient + Lo;
+
+    // HDR tonemapping
+    color = color / (color + float3(1.0,1.0,1.0));
+    // gamma correct
+    color = pow(abs(color), float3(1.0/2.2,1.0/2.2,1.0/2.2)); 
+
+    return float4(color , 1.0);
+}
