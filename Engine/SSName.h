@@ -68,13 +68,17 @@ protected:
 class ENGINE_API SSNameBucket : public Singleton<SSNameBucket>
 {
 public:
+	SSNameBucket();
 	size_t AddName(size_t hashValue, const std::string& name);
 	std::string GetName(const SSName* name) const;
 	
 	void DebugDumpNames();
 protected:
 
-	std::map<size_t, std::vector<std::string>> mNameBucket;
+	std::vector<std::vector<std::string>> mNameBucket;
+	UINT mBucketSize = 8192;
+
+	
 
 };
 
