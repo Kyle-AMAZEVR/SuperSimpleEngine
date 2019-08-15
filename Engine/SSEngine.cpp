@@ -80,7 +80,12 @@ void SSEngine::TestCreateResources()
 {   
     mTestVertexBuffer = std::make_shared<SSVertexBuffer>();
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
-	mTestTexture = std::make_shared<SSTexture2D>();
+	
+	mNormalTexture = std::make_shared<SSTexture2D>();
+	mRoughnessTexture = std::make_shared<SSTexture2D>();
+	mDiffuseTexture = std::make_shared<SSTexture2D>();
+	mMetalicTexture = std::make_shared<SSTexture2D>();
+
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);	
@@ -92,7 +97,11 @@ void SSEngine::TestCreateResources()
 	mObjMesh->LoadCookedFile("./Prebaked/pistol.mesh");
 	mObjMesh->SetScale(0.1f, 0.1f,0.1f);
 
-	mTestTexture->LoadFromDDSFile(L"./Resource/Tex/pistol/Cerberus_A.dds");
+	mNormalTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_normal.dds");
+	mRoughnessTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
+	mDiffuseTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_basecolor.dds");
+	mMetalicTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_metallic.dds");
+
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");	
 }
 
@@ -101,8 +110,8 @@ void SSEngine::TestCompileShader()
     mTestVertexShader = SSShaderManager::Get().GetVertexShader("Screen.vs");
 	mTestPixelShader = SSShaderManager::Get().GetPixelShader("Screen.ps");
 	
-	mDeferredVertexShader = SSShaderManager::Get().GetVertexShader("DeferredShader.vs");
-	mDeferredPixelShader = SSShaderManager::Get().GetPixelShader("DeferredShader.ps");
+	mDeferredVertexShader = SSShaderManager::Get().GetVertexShader("GBuffer.vs");
+	mDeferredPixelShader = SSShaderManager::Get().GetPixelShader("GBuffer.ps");
 
 	mCubemapVertexShader = SSShaderManager::Get().GetVertexShader("CubemapShader.vs");
 	mCubemapPixelShader = SSShaderManager::Get().GetPixelShader("CubemapShader.ps");
@@ -358,7 +367,7 @@ void SSEngine::CreateEnvCubemap()
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
-		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
+		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mHDREnvmap.get());
 
 		SSRaterizeStateManager::Get().SetCullModeNone();
 
@@ -482,12 +491,24 @@ void SSEngine::DrawScene()
 
 	// @end
 
-	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mObjMesh };
+	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
 
-	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(0.1,0.1,0.1) * XMMatrixTranslation(10, 0, 0)));
+	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.5,1.5,1.5) * XMMatrixTranslation(10, 0, 0)));
 	sphereDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	sphereDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
-	sphereDrawCmd.SetPSTexture("sampleTexture", mTestTexture.get());
+	sphereDrawCmd.SetPSTexture("DiffuseTex", mDiffuseTexture.get());
+	sphereDrawCmd.SetPSTexture("NormalTex", mNormalTexture.get());
+	sphereDrawCmd.SetPSTexture("MetalicTex", mMetalicTexture.get());
+	sphereDrawCmd.SetPSTexture("RoughnessTex", mRoughnessTexture.get());
+
+	SSAlignedCBuffer<int, int, int, int, int> settings;
+	settings.value1 = 1; //metalic
+	settings.value2 = 0; //mask
+	settings.value3 = 1; //normal
+	settings.value4 = 1; // roghness
+	settings.value5 = 1; // diffuse
+
+	sphereDrawCmd.StorePSConstantBufferData("TextureExist", settings);
 	
 	sphereDrawCmd.Do();	
 

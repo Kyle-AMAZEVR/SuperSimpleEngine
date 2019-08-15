@@ -94,7 +94,13 @@ private:
 	// @
 	
     
-	std::shared_ptr<class SSTexture2D> mTestTexture;
+	std::shared_ptr<class SSTexture2D> mNormalTexture;
+	std::shared_ptr<class SSTexture2D> mRoughnessTexture;
+	std::shared_ptr<class SSTexture2D> mMetalicTexture;
+	std::shared_ptr<class SSTexture2D> mDiffuseTexture;
+	std::shared_ptr<class SSTexture2D> mHDREnvmap;
+
+
 	std::shared_ptr<class SSGBuffer> mGBuffer;
 	std::shared_ptr<class SSGenericRenderTarget> mFXAARenderTarget;
 	std::shared_ptr<class SSGenericRenderTarget> m2DLUTRenderTarget;

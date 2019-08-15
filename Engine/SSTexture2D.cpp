@@ -91,7 +91,7 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 {
 	DirectX::TexMetadata metaData;
-	DirectX::ScratchImage image;
+	DirectX::ScratchImage image;	
 
 	HRESULT result = (DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image));
 	if (result != S_OK)

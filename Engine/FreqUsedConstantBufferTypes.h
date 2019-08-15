@@ -60,3 +60,13 @@ struct alignas(16) SSAlignedCBuffer<T1>
 	 T3 value3;
 	 T4 value4;
  };
+
+ template<class T1, class T2, class T3, class T4, class T5>
+ struct alignas(16) SSAlignedCBuffer<T1, T2, T3, T4, T5>
+ {
+	 T1 value1;
+	 T2 value2;
+	 T3 value3;
+	 T4 value4;
+	 T5 value5;
+ };

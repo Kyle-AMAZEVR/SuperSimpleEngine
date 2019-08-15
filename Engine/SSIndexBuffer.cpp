@@ -6,7 +6,7 @@
 void SSIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_PRIMITIVE_TOPOLOGY ePrimitiveType )
 {
 	mPrimitiveType = ePrimitiveType;
-	mIndexCount = indexData.size();
+	mIndexCount = static_cast<UINT>(indexData.size());
 
     mBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
     mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE ;

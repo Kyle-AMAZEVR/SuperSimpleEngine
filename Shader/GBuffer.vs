@@ -1,13 +1,17 @@
 
-cbuffer ModelTransform
+cbuffer Model
 {
-	float4x4 Model;
+	float4x4 model;
 };
 
-cbuffer CameraTransform
+cbuffer View
 {
-	float4x4 View;
-	float4x4 Proj;
+	float4x4 view;	
+};
+
+cbuffer Proj
+{
+	float4x4 proj;	
 };
 
 
@@ -23,7 +27,7 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 OutPosition : SV_POSITION;
-    float4 OutViewPosition : POSITION0;
+    float4 OutViewPosition : COLOR;
     float2 OutTexCoord : TEXCOORD0;
     float3 OutNormal : NORMAL;
     float3 OutTangent : TANGENT;
@@ -37,8 +41,8 @@ PixelInputType VSMain( VertexInputType vin )
 	
     PixelInputType output;
 
-	float4x4 ModelView = mul(Model, View);
-	float4x4 MVP = mul(ModelView, Proj);
+	float4x4 ModelView = mul(model, view);
+	float4x4 MVP = mul(ModelView, proj);
 
 	output.OutTexCoord = vin.TexCoord;
 	output.OutPosition = mul(vin.VertexPosition, MVP);
