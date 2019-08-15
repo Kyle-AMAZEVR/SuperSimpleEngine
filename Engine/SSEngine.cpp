@@ -90,10 +90,13 @@ void SSEngine::TestCreateResources()
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);	
 	mObjMesh = std::make_shared<SSObjMesh>();
+	mObjMeshSphere = std::make_shared<SSObjMesh>();
+
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	
 	//mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
+	mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
 	mObjMesh->LoadCookedFile("./Prebaked/pistol.mesh");
 	mObjMesh->SetScale(0.1f, 0.1f,0.1f);
 
@@ -504,7 +507,7 @@ void SSEngine::DrawScene()
 	SSAlignedCBuffer<int, int, int, int, int> settings;
 	settings.value1 = 1; //metalic
 	settings.value2 = 0; //mask
-	settings.value3 = 1; //normal
+	settings.value3 = 0; //normal
 	settings.value4 = 1; // roghness
 	settings.value5 = 1; // diffuse
 
@@ -516,7 +519,7 @@ void SSEngine::DrawScene()
 	mFXAARenderTarget->SetCurrentRenderTarget();
 
 	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader.get(), mFXAAPixelShader.get(), mScreenBlit };
-	fxaaDrawCmd.SetPSTexture("ScreenTex", mGBuffer->GetColorOutput());
+	fxaaDrawCmd.SetPSTexture("ScreenTex", mGBuffer->GetNormalOutput());
 	SSAlignedCBuffer<XMFLOAT2> invScreenSize;
 	invScreenSize.value1.x = 1 / static_cast<float>(mBufferWidth);
 	invScreenSize.value1.y = 1 / static_cast<float>(mBufferHeight);	

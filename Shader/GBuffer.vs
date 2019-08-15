@@ -50,7 +50,7 @@ PixelInputType VSMain( VertexInputType vin )
 	output.OutNormal = normalize(mul(float4(vin.VertexNormal,0), ModelView)).xyz;
 	output.OutTangent = normalize(mul(vin.Tangent, ModelView)).xyz;
 
-	float3 binormal = (cross(vin.VertexNormal, vin.Tangent.xyz)) * vin.Tangent.w;
+	float3 binormal = (cross(vin.VertexNormal, vin.Tangent.xyz)) * -vin.Tangent.w;
 	output.OutBinormal = normalize(mul( float4(binormal,0), ModelView)).xyz;
 
 	return output;	

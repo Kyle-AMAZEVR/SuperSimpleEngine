@@ -1,0 +1,58 @@
+
+
+Texture2D PositionTex;
+Texture2D DiffuseTex;
+Texture2D NormalTex;
+
+
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float2 texcoord : TEXCOORD0;
+};
+
+cbuffer Dump
+{
+    int PositionDump;
+    int NormalDump;
+    int MetalicDump;
+    int DiffuseDump;
+    int RoughnessDump;    
+};
+
+SamplerState DefaultTexSampler : register(s0);
+
+float4 PSMain(PixelInputType pin) : SV_TARGET
+{
+    float4 FragColor;
+    
+    if(PositionDump) 
+    {   
+        FragColor = PositionTex.Sample(DefaultTexSampler, pin.texcoord);
+        FragColor.z = -FragColor.z;
+    }
+    else if(NormalDump)
+    {        
+        FragColor = NormalTex.Sample(DefaultTexSampler, pin.texcoord);
+        FragColor.z = -FragColor.z;
+    }
+    else if(DiffuseDump)
+    {
+        FragColor = DiffuseTex.Sample(DefaultTexSampler, pin.texcoord);        
+    }
+    else if(MetalicDump)
+    {
+        FragColor = NormalTex.Sample(DefaultTexSampler, pin.texcoord).aaaa;       
+    }
+    else if(RoughnessDump)
+    {
+   		FragColor = DiffuseTex.Sample(DefaultTexSampler, pin.texcoord).aaaa;       
+    }    
+    else
+    {
+        FragColor = NormalTex.Sample(DefaultTexSampler, pin.texcoord).aaaa;
+    }
+
+    return FragColor;
+}

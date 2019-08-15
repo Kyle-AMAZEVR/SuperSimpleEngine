@@ -107,6 +107,7 @@ private:
     //
 
 	std::shared_ptr<class SSObjMesh> mObjMesh;
+	std::shared_ptr<class SSObjMesh> mObjMeshSphere;
 
 private:
 	bool TryLoadEnvCubemap(std::wstring filepath);

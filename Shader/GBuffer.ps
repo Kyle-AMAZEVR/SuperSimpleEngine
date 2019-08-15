@@ -93,9 +93,9 @@ PixelOutputType PSMain(PixelInputType pin)
         output.DiffuseColor = float4(1,0,0,0);
     }
 
-    float3x3 TangentToModelViewSpaceMatrix = float3x3( pin.InTangent.x, pin.InBinormal.x, pin.InNormal.x, 
-								                       pin.InTangent.y, pin.InBinormal.y, pin.InNormal.y, 
-								                       pin.InTangent.z, pin.InBinormal.z, pin.InNormal.z );
+    float3x3 TangentToModelViewSpaceMatrix = float3x3( pin.InTangent.x, pin.InTangent.y, pin.InTangent.z, 
+								                       pin.InBinormal.x, pin.InBinormal.y, pin.InBinormal.z, 
+								                       pin.InNormal.x, pin.InNormal.y, pin.InNormal.z );
 
     if(NormalMapExist)
     {
@@ -117,6 +117,8 @@ PixelOutputType PSMain(PixelInputType pin)
     {
         output.NormalColor.a = Metalic;
     }
+
+    //
 
     output.PositionColor = pin.InViewPosition;
 
