@@ -154,6 +154,7 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 
 	SerializeWriter writer("./Prebaked/pistol.mesh");
 	writer << mRealVertexList;
+	writer << mMeshSectionList;
 
 	mVB = std::make_shared<SSVertexBuffer>();
 	mVB->SetVertexBufferData(mRealVertexList);
@@ -167,6 +168,7 @@ bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 	if(reader.IsGood())
 	{
 		reader >> mRealVertexList;
+		reader >> mMeshSectionList;
 		mVB = std::make_shared<SSVertexBuffer>();
 		mVB->SetVertexBufferData(mRealVertexList);
 		return true;

@@ -97,8 +97,9 @@ void SSEngine::TestCreateResources()
 	
 	//mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
 	mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
-	mObjMesh->LoadCookedFile("./Prebaked/pistol.mesh");
-	mObjMesh->SetScale(0.1f, 0.1f,0.1f);
+	//mObjMesh->LoadCookedFile("./Prebaked/pistol.mesh");
+	mObjMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
+	mObjMesh->SetScale(0.5f, 0.5f,0.5f);
 
 	mNormalTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_normal.dds");
 	mRoughnessTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
@@ -494,7 +495,8 @@ void SSEngine::DrawScene()
 
 	// @end
 
-	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
+	// SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
+	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mObjMesh};
 
 	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.5,1.5,1.5) * XMMatrixTranslation(10, 0, 0)));
 	sphereDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));

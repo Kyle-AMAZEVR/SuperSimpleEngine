@@ -14,6 +14,12 @@ struct IsBulkSerializable
 	static const bool value = true;
 };
 
+template<>
+struct IsBulkSerializable<class SSObjMeshSection>
+{
+	static const bool value = false;
+};
+
 #pragma region SerializeReader
 class SerializeReader
 {
@@ -60,6 +66,7 @@ public:
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const unsigned int Value);
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const int Value);
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const size_t& Value);
+	
 
 	template<typename T>
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const std::vector<T>& RHS);
