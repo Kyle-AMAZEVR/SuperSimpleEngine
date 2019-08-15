@@ -12,12 +12,12 @@ newmtl leaf
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Thorn_roughness.dds
-	map_Kd ./Resources/SponzaTexture/Sponza_Thorn_diffuse.dds
-	map_d ./Resources/SponzaTexture/sponza_thorn_mask.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Thorn_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Thorn_roughness.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Thorn_diffuse.tga
+	map_d ./Resource/Tex/SponzaTexture/sponza_thorn_mask.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Thorn_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Thorn_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Thorn_roughness.tga
 
 newmtl vase_round
 	Ns 10.0000
@@ -30,11 +30,11 @@ newmtl vase_round
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/vase_round_spec.tga
-	map_Kd ./Resources/SponzaTexture/VaseRound_diffuse.dds
-	map_bump ./Resources/SponzaTexture/VaseRound_normal.dds
-	bump ./Resources/SponzaTexture/VaseRound_normal.dds
-	map_Ns ./Resources/SponzaTexture/VaseRound_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/vase_round_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/VaseRound_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/VaseRound_normal.tga
+	bump ./Resource/Tex/SponzaTexture/VaseRound_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/VaseRound_roughness.tga
 
 newmtl Material__57
 	Ns 10.0000
@@ -47,12 +47,12 @@ newmtl Material__57
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/VasePlant_roughness.dds
-	map_Kd ./Resources/SponzaTexture/VasePlant_diffuse.dds
-	map_bump ./Resources/SponzaTexture/VasePlant_normal.dds
-	bump ./Resources/SponzaTexture/VasePlant_normal.dds
-	map_Ns ./Resources/SponzaTexture/VasePlant_roughness.dds
-	map_d ./Resources/SponzaTexture/vase_plant_mask.dds
+	map_Ka ./Resource/Tex/SponzaTexture/VasePlant_roughness.tga
+	map_Kd ./Resource/Tex/SponzaTexture/VasePlant_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/VasePlant_normal.tga
+	bump ./Resource/Tex/SponzaTexture/VasePlant_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/VasePlant_roughness.tga
+	map_d ./Resource/Tex/SponzaTexture/vase_plant_mask.tga
 
 newmtl Material__298
 	Ns 10.0000
@@ -65,10 +65,10 @@ newmtl Material__298
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Background_Roughness.dds
-	map_Kd ./Resources/SponzaTexture/Background_Albedo.dds
-	map_bump ./Resources/SponzaTexture/Background_Normal.dds
-	bump ./Resources/SponzaTexture/Background_Normal.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Background_Roughness.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Background_Albedo.tga
+	map_bump ./Resource/Tex/SponzaTexture/Background_Normal.tga
+	bump ./Resource/Tex/SponzaTexture/Background_Normal.tga
 
 newmtl 16___Default
 	Ns 10.0000
@@ -81,11 +81,11 @@ newmtl 16___Default
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Blue_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Fabric_Blue_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Blue_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Blue_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Fabric_roughness.tga
 
 newmtl bricks
 	Ns 10.0000
@@ -98,11 +98,11 @@ newmtl bricks
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/spnza_bricks_a_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Bricks_a_Albedo.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Bricks_a_Normal.tga
-	map_Ns ./Resources/SponzaTexture/Sponza_Bricks_a_Roughness.dds
-	bump ./Resources/SponzaTexture/Sponza_Bricks_a_Normal.dds
+	map_Ka ./Resource/Tex/SponzaTexture/spnza_bricks_a_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Bricks_a_Albedo.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Bricks_a_Normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Bricks_a_Roughness.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Bricks_a_Normal.tga
 
 newmtl arch
 	Ns 10.0000
@@ -115,11 +115,11 @@ newmtl arch
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_arch_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Arch_diffuse.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Arch_roughness.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Arch_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Arch_normal.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_arch_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Arch_diffuse.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Arch_roughness.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Arch_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Arch_normal.tga
 
 newmtl ceiling
 	Ns 10.0000
@@ -132,11 +132,11 @@ newmtl ceiling
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_ceiling_a_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Ceiling_diffuse.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Ceiling_roughness.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Ceiling_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Ceiling_normal.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_ceiling_a_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Ceiling_diffuse.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Ceiling_roughness.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Ceiling_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Ceiling_normal.tga
 
 newmtl column_a
 	Ns 10.0000
@@ -149,11 +149,11 @@ newmtl column_a
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_column_a_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Column_a_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Column_a_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Column_a_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Column_a_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_column_a_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Column_a_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Column_a_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Column_a_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Column_a_roughness.tga
 
 newmtl floor
 	Ns 10.0000
@@ -166,11 +166,11 @@ newmtl floor
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_floor_a_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Floor_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Floor_normal.tga
-	bump ./Resources/SponzaTexture/Sponza_Floor_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Floor_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_floor_a_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Floor_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Floor_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Floor_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Floor_roughness.tga
 
 newmtl column_c
 	Ns 10.0000
@@ -183,11 +183,11 @@ newmtl column_c
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_column_c_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Column_c_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Column_c_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Column_c_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Column_c_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_column_c_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Column_c_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Column_c_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Column_c_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Column_c_roughness.tga
 
 newmtl details
 	Ns 10.0000
@@ -200,11 +200,11 @@ newmtl details
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_details_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Details_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Details_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Details_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Details_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_details_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Details_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Details_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Details_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Details_roughness.tga
 
 newmtl column_b
 	Ns 10.0000
@@ -217,11 +217,11 @@ newmtl column_b
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_column_b_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Column_b_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Column_b_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Column_b_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Column_b_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_column_b_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Column_b_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Column_b_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Column_b_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Column_b_roughness.tga
 
 newmtl Material__47
 	Ns 10.0000
@@ -234,9 +234,9 @@ newmtl Material__47
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Kd ./Resources/SponzaTexture/Sponza_Thorn_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Thorn_normal.dds
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Thorn_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Thorn_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Thorn_normal.tga
 
 newmtl flagpole
 	Ns 10.0000
@@ -249,11 +249,11 @@ newmtl flagpole
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/sponza_flagpole_spec.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_FlagPole_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_FlagPole_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_FlagPole_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_FlagPole_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/sponza_flagpole_spec.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_FlagPole_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_FlagPole_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_FlagPole_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_FlagPole_roughness.tga
 
 newmtl fabric_e
 	Ns 10.0000
@@ -266,11 +266,11 @@ newmtl fabric_e
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Green_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Green_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Fabric_Green_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Fabric_Green_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Green_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Green_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Fabric_roughness.tga
 
 newmtl fabric_d
 	Ns 10.0000
@@ -283,11 +283,11 @@ newmtl fabric_d
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Blue_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Fabric_Blue_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Fabric_Blue_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Blue_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Blue_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Fabric_roughness.tga
 
 newmtl fabric_a
 	Ns 10.0000
@@ -300,11 +300,11 @@ newmtl fabric_a
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Fabric_metallic.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Fabric_Red_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Fabric_Red_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Fabric_Red_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Fabric_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Fabric_metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Fabric_Red_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Red_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Fabric_Red_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Fabric_roughness.tga
 
 newmtl fabric_g
 	Ns 10.0000
@@ -317,11 +317,11 @@ newmtl fabric_g
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Curtain_metallic.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Curtain_Blue_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Curtain_Blue_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Curtain_Blue_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Curtain_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Curtain_metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Curtain_Blue_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Curtain_Blue_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Curtain_Blue_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Curtain_roughness.tga
 
 newmtl fabric_c
 	Ns 10.0000
@@ -334,11 +334,11 @@ newmtl fabric_c
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Curtain_metallic.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Curtain_Red_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Curtain_Red_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Curtain_Red_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Curtain_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Curtain_metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Curtain_Red_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Curtain_Red_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Curtain_Red_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Curtain_roughness.tga
 
 newmtl fabric_f
 	Ns 10.0000
@@ -351,11 +351,11 @@ newmtl fabric_f
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Curtain_metallic.tga
-	map_Kd ./Resources/SponzaTexture/Sponza_Curtain_Green_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Curtain_Green_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Curtain_Green_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Curtain_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Curtain_metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Curtain_Green_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Curtain_Green_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Curtain_Green_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Curtain_roughness.tga
 
 newmtl chain
 	Ns 10.0000
@@ -368,12 +368,12 @@ newmtl chain
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/ChainTexture_Metallic.dds
-	map_Kd ./Resources/SponzaTexture/ChainTexture_Albedo.dds
-	map_d ./Resources/SponzaTexture/chain_texture_mask.dds
-	map_bump ./Resources/SponzaTexture/ChainTexture_Normal.dds
-	bump ./Resources/SponzaTexture/ChainTexture_Normal.dds
-	map_Ns ./Resources/SponzaTexture/ChainTexture_Roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/ChainTexture_Metallic.tga
+	map_Kd ./Resource/Tex/SponzaTexture/ChainTexture_Albedo.tga
+	map_d ./Resource/Tex/SponzaTexture/chain_texture_mask.tga
+	map_bump ./Resource/Tex/SponzaTexture/ChainTexture_Normal.tga
+	bump ./Resource/Tex/SponzaTexture/ChainTexture_Normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/ChainTexture_Roughness.tga
 
 newmtl vase_hanging
 	Ns 10.0000
@@ -386,11 +386,11 @@ newmtl vase_hanging
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/VaseHanging_roughness.dds
-	map_Kd ./Resources/SponzaTexture/VaseHanging_diffuse.dds
-	map_bump ./Resources/SponzaTexture/VaseHanging_normal.dds
-	bump ./Resources/SponzaTexture/VaseHanging_normal.dds
-	map_Ns ./Resources/SponzaTexture/VaseHanging_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/VaseHanging_roughness.tga
+	map_Kd ./Resource/Tex/SponzaTexture/VaseHanging_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/VaseHanging_normal.tga
+	bump ./Resource/Tex/SponzaTexture/VaseHanging_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/VaseHanging_roughness.tga
 
 newmtl vase
 	Ns 10.0000
@@ -403,11 +403,11 @@ newmtl vase
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Vase_roughness.dds
-	map_Kd ./Resources/SponzaTexture/Vase_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Vase_normal.dds
-	bump ./Resources/SponzaTexture/Vase_normal.dds
-	map_Ns ./Resources/SponzaTexture/Vase_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Vase_roughness.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Vase_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Vase_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Vase_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Vase_roughness.tga
 
 newmtl Material__25
 	Ns 10.0000
@@ -420,11 +420,11 @@ newmtl Material__25
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Lion_Roughness.dds
-	map_Kd ./Resources/SponzaTexture/Lion_Albedo.dds
-	map_bump ./Resources/SponzaTexture/Lion_Normal.dds
-	bump ./Resources/SponzaTexture/Lion_Normal.dds
-	map_Ns ./Resources/SponzaTexture/Lion_Roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Lion_Roughness.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Lion_Albedo.tga
+	map_bump ./Resource/Tex/SponzaTexture/Lion_Normal.tga
+	bump ./Resource/Tex/SponzaTexture/Lion_Normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Lion_Roughness.tga
 
 newmtl roof
 	Ns 10.0000
@@ -437,8 +437,8 @@ newmtl roof
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka ./Resources/SponzaTexture/Sponza_Roof_roughness.dds
-	map_Kd ./Resources/SponzaTexture/Sponza_Roof_diffuse.dds
-	map_bump ./Resources/SponzaTexture/Sponza_Roof_normal.dds
-	bump ./Resources/SponzaTexture/Sponza_Roof_normal.dds
-	map_Ns ./Resources/SponzaTexture/Sponza_Roof_roughness.dds
+	map_Ka ./Resource/Tex/SponzaTexture/Sponza_Roof_roughness.tga
+	map_Kd ./Resource/Tex/SponzaTexture/Sponza_Roof_diffuse.tga
+	map_bump ./Resource/Tex/SponzaTexture/Sponza_Roof_normal.tga
+	bump ./Resource/Tex/SponzaTexture/Sponza_Roof_normal.tga
+	map_Ns ./Resource/Tex/SponzaTexture/Sponza_Roof_roughness.tga
