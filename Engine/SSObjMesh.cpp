@@ -9,6 +9,7 @@
 #include <locale>
 #include "DXVertexBuffer.h"
 #include "SSISerializable.h"
+#include "SSObjMeshMaterial.h"
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -59,6 +60,7 @@ static inline std::string trim_copy(std::string s)
 
 bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath)
 {
+	ParseMtlFile(MtlFilePath);
 
 	std::ifstream in(FilePath.c_str(), std::ios::in);
 	// @import file
@@ -152,9 +154,18 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	mTempTexCoordList.clear();
 	mTempNormalList.clear();
 
-	SerializeWriter writer("./Prebaked/pistol.mesh");
+	SerializeWriter writer("./Prebaked/sponza.mesh");
 	writer << mRealVertexList;
 	writer << mMeshSectionList;
+
+	writer << static_cast<UINT>(mMeshMaterialMap.size());
+
+	for(auto& kvp : mMeshMaterialMap)
+	{
+		writer << kvp.first;
+		writer << kvp.second;		
+	}
+	//writer << mMeshMaterialMap;
 
 	mVB = std::make_shared<SSVertexBuffer>();
 	mVB->SetVertexBufferData(mRealVertexList);
@@ -167,8 +178,24 @@ bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 	SerializeReader reader(filePath);
 	if(reader.IsGood())
 	{
+		UINT materialMapSize = 0;
+
 		reader >> mRealVertexList;
 		reader >> mMeshSectionList;
+
+		reader >> materialMapSize;
+
+		for(UINT i = 0; i < materialMapSize; ++i)
+		{
+			std::string name;
+			SSObjMeshMaterial material;
+
+			reader >> name;
+			reader >> material;
+
+			mMeshMaterialMap[name] = material;
+		}
+		
 		mVB = std::make_shared<SSVertexBuffer>();
 		mVB->SetVertexBufferData(mRealVertexList);
 		return true;
@@ -223,6 +250,83 @@ bool SSObjMesh::GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, 
 		index = 0;
 		return false;
 	}
+}
+
+bool SSObjMesh::ParseMtlFile(const std::string& filepath)
+{
+	std::ifstream in(filepath.c_str(), std::ios::in);
+	// @import file
+	if (in.good())
+	{
+		std::string Line;
+		bool newMtlStarted = false;
+
+		SSObjMeshMaterial* newMaterial = nullptr;
+
+		while (std::getline(in, Line))
+		{
+			trim(Line);
+
+			//								
+
+			if (Line.size() > 0)
+			{
+				char buffer[256] {0};
+
+				if (sscanf(Line.c_str(), "newmtl %s", buffer) > 0)
+				{
+					newMaterial = new SSObjMeshMaterial();
+					newMaterial->mMaterialName = buffer;
+					newMtlStarted = true;
+				}
+				else if (sscanf(Line.c_str(), "map_Ka %s", buffer) > 0)
+				{
+					check(newMaterial != nullptr);
+					newMaterial->mMetalicMap = buffer;
+				}
+				else if (sscanf(Line.c_str(), "map_Kd %s", buffer) > 0)
+				{
+					check(newMaterial != nullptr);
+					newMaterial->mDiffuseMap = buffer;
+				}
+				else if (sscanf(Line.c_str(), "bump %s", buffer) > 0)
+				{
+					check(newMaterial != nullptr);
+					newMaterial->mNormalMap = buffer;
+				}
+				else if (sscanf(Line.c_str(), "map_Ns %s", buffer) > 0)
+				{
+					check(newMaterial != nullptr);
+					newMaterial->mRoughnessMap = buffer;
+				}
+				else if(sscanf(Line.c_str(), "map_d %s", buffer) > 0)
+				{
+					check(newMaterial != nullptr);
+					newMaterial->mMaskMap = buffer;
+				}
+			}
+			else
+			{
+				if (newMtlStarted)
+				{
+					check(newMaterial != nullptr);
+					mMeshMaterialMap[newMaterial->mMaterialName] = *newMaterial;
+					delete newMaterial;
+					newMaterial = nullptr;
+					newMtlStarted = false;
+				}
+			}
+		}
+
+		if (newMtlStarted == true && newMaterial != nullptr)
+		{
+			mMeshMaterialMap[newMaterial->mMaterialName] = *newMaterial;
+			delete newMaterial;
+			newMaterial = nullptr;
+		}
+	}
+
+	return true;
 }
 
 

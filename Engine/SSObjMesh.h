@@ -4,6 +4,7 @@
 #include <map>
 #include "DXVertexTypes.h"
 #include "SSObjMeshSection.h"
+#include "SSObjMeshMaterial.h"
 
 bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNormalTexcoordTangent& b);
 
@@ -21,6 +22,7 @@ protected:
 	void GenerateTangents();
 	void OptimizedGenerateVertices();
 	
+	bool ParseMtlFile(const std::string& filepath);
 
 	XMFLOAT3 mMinPosition;
 	XMFLOAT3 mMaxPosition;
@@ -46,6 +48,7 @@ protected:
 	std::vector<VT_PositionNormalTexcoordTangent> mRealVertexList;
 
 	std::vector<SSObjMeshSection> mMeshSectionList;
+	std::map<std::string, SSObjMeshMaterial> mMeshMaterialMap;
 	
 	bool GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index);
 };

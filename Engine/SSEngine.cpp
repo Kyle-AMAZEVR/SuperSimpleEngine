@@ -96,8 +96,8 @@ void SSEngine::TestCreateResources()
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	
 	//mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
-	mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
-	//mObjMesh->LoadCookedFile("./Prebaked/pistol.mesh");
+	// mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
+	//mObjMesh->LoadCookedFile("./Prebaked/sponza.mesh");
 	mObjMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
 	mObjMesh->SetScale(0.5f, 0.5f,0.5f);
 

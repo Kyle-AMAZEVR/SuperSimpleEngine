@@ -37,6 +37,9 @@ public:
 	template<typename T>
 	friend SerializeReader& operator >> (SerializeReader& Archive, std::vector<T>& RHS);
 
+	template<typename T1, typename T2>
+	friend SerializeReader& operator >> (SerializeReader& Archive, std::map<T1&, T2&>& RHS);
+
 	bool IsGood() const;
 
 	std::ifstream Stream;
@@ -52,6 +55,7 @@ SerializeReader& operator >> (SerializeReader& Archive, unsigned int& Value);
 SerializeReader& operator >> (SerializeReader& Archive, int& Value);
 SerializeReader& operator >> (SerializeReader& Archive, bool& Value);
 SerializeReader& operator >> (SerializeReader& Archive, VT_PositionNormalTexcoordTangent& Value);
+SerializeReader& operator >> (SerializeReader& Archive, class SSObjMeshMaterial& Value);
 #pragma endregion
 
 class SerializeWriter
@@ -66,6 +70,8 @@ public:
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const unsigned int Value);
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const int Value);
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const size_t& Value);
+
+	friend SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
 	
 
 	template<typename T>
@@ -79,6 +85,7 @@ public:
 	std::ofstream Stream;
 };
 
+SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
 
 template<class T, bool bBulkSerialize>
 class VectorSerializer
@@ -163,14 +170,33 @@ SerializeWriter& operator<< (SerializeWriter& Archive, const std::vector<T>& RHS
 template<typename T1, typename T2>
 SerializeWriter& operator << (SerializeWriter& Archive, const std::map<T1, T2>& RHS)
 {
-	auto Size = RHS.size();
+	UINT Size = static_cast<UINT>(RHS.size());
 
-	Archive.Stream.write((char*)&Size, sizeof(std::map<T1, T2>::size_type));
+	Archive.Stream << Size;
 
-	for (auto iter = RHS.cbegin(); iter != RHS.cend(); ++iter)
+	for (auto iter = RHS.begin(); iter != RHS.end(); ++iter)
 	{
 		Archive.Stream << iter->first;
 		Archive.Stream << iter->second;
+	}
+}
+
+template<typename T1, typename T2>
+SerializeReader& operator >> (SerializeReader& Archive, std::map<T1&, T2&>& RHS)
+{
+	UINT Size;
+
+	Archive.Stream >> Size;
+
+	for(UINT i = 0; i < Size; ++i)
+	{
+		T1 key;
+		T2 value;
+		
+		Archive.Stream >> key;
+		Archive.Stream >> value;
+
+		RHS[key] = value;
 	}
 }
 

@@ -4,13 +4,14 @@
 
 
 #include <string>
+#include "SSISerializable.h"
 
 class SSObjMeshMaterial
 {
 public:
-
-	SSObjMeshMaterial(std::string materialName, std::string diffuse, std::string normal , std::string specular, std::string roughness, std::string mask)
-		: mMaterialName(materialName), mDiffuseMap(diffuse), mNormalMap(normal), mSpecularMap(specular), mRoughnessMap(roughness), mMaskMap(mask)
+	SSObjMeshMaterial(){}
+	SSObjMeshMaterial(std::string materialName, std::string diffuse, std::string normal , std::string metalic, std::string roughness, std::string mask)
+		: mMaterialName(materialName), mDiffuseMap(diffuse), mNormalMap(normal), mMetalicMap(metalic), mRoughnessMap(roughness), mMaskMap(mask)
 	{		
 	}
 		
@@ -20,9 +21,16 @@ public:
 	
 	std::string mNormalMap;
 	
-	std::string mSpecularMap;
+	std::string mMetalicMap;
 	
 	std::string mRoughnessMap;
 	
 	std::string mMaskMap;
+
+	friend SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
+	friend SerializeReader& operator >> (SerializeReader& Archive, SSObjMeshMaterial& Value);
 };
+
+
+SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
+SerializeReader& operator >> (SerializeReader& Archive, SSObjMeshMaterial& Value);
