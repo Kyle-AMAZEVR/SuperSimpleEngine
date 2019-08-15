@@ -97,6 +97,30 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 				//@Face Info
 				SSObjMeshParser::ParseFace(Line, mVertexIndexList, mTexcoordIndexList, mNormalIndexList);
 			}
+			/*else if (Trimmedline.StartsWith("usemtl"))
+			{
+				var MtlLine = Trimmedline.Split(new char[] {' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+
+				if (MtlLine.Count() == 2)
+				{
+					if (MeshSectionList.Count() == 0)
+					{
+						ObjMeshSection NewSection = new ObjMeshSection();
+						NewSection.StartIndex = 0;
+						NewSection.SectionName = MtlLine[1];
+						MeshSectionList.Add(NewSection);
+					}
+					else
+					{
+						MeshSectionList.Last().EndIndex = (UInt32)VertexIndices.Count;
+
+						ObjMeshSection NewSection = new ObjMeshSection();
+						NewSection.SectionName = MtlLine[1];
+						NewSection.StartIndex = (UInt32)VertexIndices.Count;
+						MeshSectionList.Add(NewSection);
+					}
+				}
+			}*/
 		}
 	}
 

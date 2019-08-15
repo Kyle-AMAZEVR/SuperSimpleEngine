@@ -9,6 +9,7 @@ public:
 	
 	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(std::wstring filename);
 	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(std::wstring filename);
+	static std::shared_ptr<SSTexture2D> CreateFromTGAFile(std::wstring filename);
 
 	bool LoadFromDDSFile(std::wstring filename);
 	bool LoadFromTGAFile(std::wstring filename);
