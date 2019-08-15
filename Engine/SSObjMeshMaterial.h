@@ -8,16 +8,21 @@
 class SSObjMeshMaterial
 {
 public:
+
+	SSObjMeshMaterial(std::string materialName, std::string diffuse, std::string normal , std::string specular, std::string roughness, std::string mask)
+		: mMaterialName(materialName), mDiffuseMap(diffuse), mNormalMap(normal), mSpecularMap(specular), mRoughnessMap(roughness), mMaskMap(mask)
+	{		
+	}
 		
-	std::string MaterialName;
+	std::string mMaterialName;
 	
-	std::string DiffuseMap;
+	std::string mDiffuseMap;
 	
-	std::string NormalMap;
+	std::string mNormalMap;
 	
-	std::string SpecularMap;
+	std::string mSpecularMap;
 	
-	std::string RoughnessMap;
+	std::string mRoughnessMap;
 	
-	std::string MaskMap;	
+	std::string mMaskMap;
 };

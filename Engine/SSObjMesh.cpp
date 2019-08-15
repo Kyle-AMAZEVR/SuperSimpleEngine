@@ -97,30 +97,26 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 				//@Face Info
 				SSObjMeshParser::ParseFace(Line, mVertexIndexList, mTexcoordIndexList, mNormalIndexList);
 			}
-			/*else if (Trimmedline.StartsWith("usemtl"))
+			else if(Line[0] == 'u' && Line[1] == 's' && Line[2] == 'e')
 			{
-				var MtlLine = Trimmedline.Split(new char[] {' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+				char buffer[256]{'\0'};
 
-				if (MtlLine.Count() == 2)
+				sscanf(Line.c_str(), "usemtl %s", buffer);
+
+				if(mMeshSectionList.size() == 0)
 				{
-					if (MeshSectionList.Count() == 0)
-					{
-						ObjMeshSection NewSection = new ObjMeshSection();
-						NewSection.StartIndex = 0;
-						NewSection.SectionName = MtlLine[1];
-						MeshSectionList.Add(NewSection);
-					}
-					else
-					{
-						MeshSectionList.Last().EndIndex = (UInt32)VertexIndices.Count;
-
-						ObjMeshSection NewSection = new ObjMeshSection();
-						NewSection.SectionName = MtlLine[1];
-						NewSection.StartIndex = (UInt32)VertexIndices.Count;
-						MeshSectionList.Add(NewSection);
-					}
+					SSObjMeshSection newSection{ buffer, 0 };
+					mMeshSectionList.push_back(newSection);
 				}
-			}*/
+				else
+				{
+					mMeshSectionList[mMeshSectionList.size() - 1].SetEndIndex(static_cast<UINT>(mVertexIndexList.size()));
+
+					SSObjMeshSection newSection{ buffer, static_cast<UINT>(mVertexIndexList.size()) };
+
+					mMeshSectionList.push_back(newSection);
+				}
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include "DXVertexTypes.h"
+#include "SSObjMeshSection.h"
 
 bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNormalTexcoordTangent& b);
 
@@ -43,6 +44,8 @@ protected:
 
 	std::map<UINT, UINT> mVertexCacheMap;
 	std::vector<VT_PositionNormalTexcoordTangent> mRealVertexList;
+
+	std::vector<SSObjMeshSection> mMeshSectionList;
 	
 	bool GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index);
 };

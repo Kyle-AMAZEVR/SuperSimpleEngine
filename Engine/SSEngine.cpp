@@ -519,7 +519,7 @@ void SSEngine::DrawScene()
 	mFXAARenderTarget->SetCurrentRenderTarget();
 
 	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader.get(), mFXAAPixelShader.get(), mScreenBlit };
-	fxaaDrawCmd.SetPSTexture("ScreenTex", mGBuffer->GetNormalOutput());
+	fxaaDrawCmd.SetPSTexture("ScreenTex", mGBuffer->GetColorOutput());
 	SSAlignedCBuffer<XMFLOAT2> invScreenSize;
 	invScreenSize.value1.x = 1 / static_cast<float>(mBufferWidth);
 	invScreenSize.value1.y = 1 / static_cast<float>(mBufferHeight);	
