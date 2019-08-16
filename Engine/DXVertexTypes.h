@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include "SSISerializable.h"
-
 template<class... Types>
 struct count 
 {
