@@ -3,11 +3,30 @@
 #include "SSTexture2D.h"
 
 
-bool SSTextureManager::LoadTexture2D(SSName texturepath)
+std::shared_ptr<class SSTexture2D> SSTextureManager::GetTexture2D(SSName texturepath, bool bLoad)
 {
 	if (m2DTextureMap.count(texturepath) > 0)
 	{
-		return true;
+		return m2DTextureMap[texturepath];
+	}
+
+	if (bLoad)
+	{
+		if (LoadTexture2D(texturepath))
+		{
+			return m2DTextureMap[texturepath];
+		}
+	}
+
+	return nullptr;
+}
+
+
+std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName texturepath)
+{
+	if (m2DTextureMap.count(texturepath) > 0)
+	{
+		return m2DTextureMap[texturepath];
 	}
 	else
 	{
@@ -20,10 +39,12 @@ bool SSTextureManager::LoadTexture2D(SSName texturepath)
 
 			if (texture == nullptr)
 			{
-				return false;
+				return nullptr;
 			}
 
 			m2DTextureMap[path] = texture;
+
+			return texture;
 		}
 		else if (path.find(".tga") != std::string::npos)
 		{
@@ -31,10 +52,12 @@ bool SSTextureManager::LoadTexture2D(SSName texturepath)
 
 			if (texture == nullptr)
 			{
-				return false;
+				return nullptr;
 			}
 
 			m2DTextureMap[path] = texture;
+
+			return texture;
 		}
 		else if (path.find(".hdr") != std::string::npos)
 		{
@@ -42,10 +65,12 @@ bool SSTextureManager::LoadTexture2D(SSName texturepath)
 
 			if (texture == nullptr)
 			{
-				return false;
+				return nullptr;
 			}
 
 			m2DTextureMap[path] = texture;
+
+			return texture;
 		}
 	}
 }

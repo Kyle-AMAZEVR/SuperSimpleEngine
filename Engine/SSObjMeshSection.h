@@ -19,6 +19,7 @@ public:
 
 	void SetEndIndex(UINT endIndex) { mEndIndex = endIndex; }
 protected:
+	friend class SSObjMesh;
 	friend SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshSection& Value);
 	friend SerializeReader& operator >> (SerializeReader& Archive, SSObjMeshSection& Value);
 	

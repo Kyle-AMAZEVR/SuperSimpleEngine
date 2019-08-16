@@ -8,7 +8,8 @@
 class ENGINE_API SSTextureManager : public Singleton<SSTextureManager>, public SSManagerBase
 {
 public:
-	bool LoadTexture2D(SSName texturepath);
+	std::shared_ptr<class SSTexture2D> GetTexture2D(SSName texturepath, bool bLoad = false);
+	std::shared_ptr<class SSTexture2D> LoadTexture2D(SSName texturepath);
 
 private:
 	std::map<SSName, std::shared_ptr<class SSTexture2D>> m2DTextureMap;

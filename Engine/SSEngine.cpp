@@ -24,6 +24,7 @@
 #include "SSFileHelper.h"
 #include "SSObjMesh.h"
 #include "SSShaderManager.h"
+#include "SSMaterial.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -89,7 +90,7 @@ void SSEngine::TestCreateResources()
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);	
-	mObjMesh = std::make_shared<SSObjMesh>();
+	mSponzaMesh = std::make_shared<SSObjMesh>();
 	mObjMeshSphere = std::make_shared<SSObjMesh>();
 
 	mTestCube->SetScale(1, 1, 1);
@@ -97,9 +98,9 @@ void SSEngine::TestCreateResources()
 	
 	//mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
 	// mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
-	mObjMesh->LoadCookedFile("./Prebaked/sponza.mesh");
+	mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
 	//mObjMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
-	mObjMesh->SetScale(0.5f, 0.5f,0.5f);
+	mSponzaMesh->SetScale(0.5f, 0.5f,0.5f);
 
 	mNormalTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_normal.dds");
 	mRoughnessTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
@@ -116,6 +117,8 @@ void SSEngine::TestCompileShader()
 	
 	mDeferredVertexShader = SSShaderManager::Get().GetVertexShader("GBuffer.vs");
 	mDeferredPixelShader = SSShaderManager::Get().GetPixelShader("GBuffer.ps");
+
+	mTestMaterial = std::make_shared<SSMaterial>(mDeferredVertexShader.get(), mDeferredPixelShader.get());	
 
 	mCubemapVertexShader = SSShaderManager::Get().GetVertexShader("CubemapShader.vs");
 	mCubemapPixelShader = SSShaderManager::Get().GetPixelShader("CubemapShader.ps");
@@ -496,26 +499,9 @@ void SSEngine::DrawScene()
 	// @end
 
 	// SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
-	SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mObjMesh};
 
-	sphereDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.5,1.5,1.5) * XMMatrixTranslation(10, -10, 0)));
-	sphereDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	sphereDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
-	sphereDrawCmd.SetPSTexture("DiffuseTex", mDiffuseTexture.get());
-	sphereDrawCmd.SetPSTexture("NormalTex", mNormalTexture.get());
-	sphereDrawCmd.SetPSTexture("MetalicTex", mMetalicTexture.get());
-	sphereDrawCmd.SetPSTexture("RoughnessTex", mRoughnessTexture.get());
-
-	SSAlignedCBuffer<int, int, int, int, int> settings;
-	settings.value1 = 1; //metalic
-	settings.value2 = 0; //mask
-	settings.value3 = 0; //normal
-	settings.value4 = 1; // roghness
-	settings.value5 = 1; // diffuse
-
-	sphereDrawCmd.StorePSConstantBufferData("TextureExist", settings);
+	mSponzaMesh->Draw(mDeviceContext, mTestMaterial.get());
 	
-	sphereDrawCmd.Do();	
 
 	mFXAARenderTarget->Clear();
 	mFXAARenderTarget->SetCurrentRenderTarget();

@@ -10,6 +10,13 @@
 #include "DXVertexBuffer.h"
 #include "SSISerializable.h"
 #include "SSObjMeshMaterial.h"
+#include "SSMaterial.h"
+#include "SSTextureManager.h"
+#include "SSTexture2D.h"
+#include "SSFreqUsedNames.h"
+#include "CameraManager.h"
+#include "SSIndexBuffer.h"
+#include "FreqUsedConstantBufferTypes.h"
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -182,7 +189,6 @@ bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 
 		reader >> mRealVertexList;
 		reader >> mMeshSectionList;
-
 		reader >> materialMapSize;
 
 		for(UINT i = 0; i < materialMapSize; ++i)
@@ -198,6 +204,18 @@ bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 		
 		mVB = std::make_shared<SSVertexBuffer>();
 		mVB->SetVertexBufferData(mRealVertexList);
+
+		std::vector<UINT> idx;
+		idx.resize(mRealVertexList.size());
+
+		for (UINT i = 0; i < mRealVertexList.size(); ++i)
+		{
+			idx[i] = i;
+		}
+
+		mIB = std::make_shared<SSIndexBuffer>();
+		mIB->SetIndexBufferData(idx);
+
 		return true;
 	}
 	else
@@ -233,7 +251,40 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
 
 void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
 {
-	
+	check(material != nullptr);
+
+	material->SetCurrent();
+
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.5, 1.5, 1.5) * XMMatrixTranslation(10, -10, 0)));
+	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+
+	SSAlignedCBuffer<int, int, int, int, int> settings;
+	settings.value1 = 1; //metalic
+	settings.value2 = 0; //mask
+	settings.value3 = 0; //normal
+	settings.value4 = 1; // roghness
+	settings.value5 = 1; // diffuse
+
+	material->SetPSConstantBufferData("TextureExist", settings);	
+
+	auto stride = mVB->GetStride();
+	UINT offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetIndexBuffer(mIB->GetBufferPointer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
+
+	for (UINT i = 0; i < 50; i++)
+	{
+		if (mMeshMaterialMap.count(mMeshSectionList[i].mSectionName) > 0)
+		{
+			auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[mMeshSectionList[i].mSectionName].mDiffuseMap);
+			
+			material->SetPSTexture("DiffuseTex", diffuse.get());
+				
+			deviceContext->DrawIndexed(mMeshSectionList[i].mEndIndex - mMeshSectionList[i].mStartIndex, mMeshSectionList[i].mStartIndex, 0);
+		}
+	}
 }
 
 void SSObjMesh::OptimizedGenerateVertices()

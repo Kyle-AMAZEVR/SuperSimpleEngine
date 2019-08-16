@@ -78,6 +78,7 @@ protected:
     std::vector<VariableInConstantBufferInfo> mVariableInfoArray;
 
 	friend class SSDrawCommand;
+	friend class SSMaterial;
 
     virtual void SubmitDataToDevice() override;
 };

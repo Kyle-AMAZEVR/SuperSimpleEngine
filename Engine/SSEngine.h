@@ -50,6 +50,8 @@ private:
     ID3D11Debug* mDebug = nullptr;
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
 
+	std::shared_ptr<class SSMaterial> mTestMaterial;
+
 	std::shared_ptr<class SSCube> mTestCube;
 	std::shared_ptr<class SSSphere> mTestSphere;
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;
@@ -106,7 +108,7 @@ private:
 	std::shared_ptr<class SSGenericRenderTarget> m2DLUTRenderTarget;
     //
 
-	std::shared_ptr<class SSObjMesh> mObjMesh;
+	std::shared_ptr<class SSObjMesh> mSponzaMesh;
 	std::shared_ptr<class SSObjMesh> mObjMeshSphere;
 
 private:
