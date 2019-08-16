@@ -500,7 +500,9 @@ void SSEngine::DrawScene()
 
 	// SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
 		
-	mSponzaMesh->Draw(mDeviceContext, mTestMaterial.get());		
+	
+	mSponzaMesh->Draw(mDeviceContext, mTestMaterial.get());	
+	
 
 	mFXAARenderTarget->Clear();
 	mFXAARenderTarget->SetCurrentRenderTarget();

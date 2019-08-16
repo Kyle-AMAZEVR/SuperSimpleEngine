@@ -27,8 +27,8 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 OutPosition : SV_POSITION;
-    float4 OutViewPosition : COLOR;
-    float2 OutTexCoord : TEXCOORD0;
+    float4 OutViewPosition : POSITION;
+    float2 OutTexCoord : TEXCOORD;
     float3 OutNormal : NORMAL;
     float3 OutTangent : TANGENT;
     float3 OutBinormal : BINORMAL;

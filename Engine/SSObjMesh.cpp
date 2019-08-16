@@ -280,7 +280,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	material->SetCurrent();
 
 	//material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(0.3,0.3,0.3) * XMMatrixTranslation(0, -20, 0) ));
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.5, 1.5, 1.5) * XMMatrixTranslation(10, -100, 0)));
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0) * XMMatrixTranslation(10, -100, 0)));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
@@ -565,7 +565,7 @@ XMFLOAT4 SSObjMeshParser::ParseVertex(std::string& line)
 	sscanf_s(line.c_str(), "v %f %f %f", &result.x, &result.y, &result.z);
 	
 	// for opengl resource revert z	
-	result.z = -result.z;
+	// result.z = -result.z;
 
 	result.w = 1.0f;
 
