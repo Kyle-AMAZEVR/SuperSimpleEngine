@@ -38,7 +38,7 @@ SerializeReader& operator>> (SerializeReader& Archive, SSName& name)
 {
 	std::string strName;
 	Archive >> strName;
-	name = SSName(strName);
+	name = std::move(SSName(strName));
 	return Archive;
 }
 
