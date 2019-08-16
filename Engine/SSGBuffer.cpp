@@ -6,7 +6,7 @@
 
 
 SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)
-	: SSGenericRenderTarget(width, height, static_cast<UINT>(EGBufferType::Max), format)
+	: SSGenericRenderTarget(width, height, static_cast<UINT>(EGBufferType::Max))
 {	
 }
 

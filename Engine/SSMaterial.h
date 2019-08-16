@@ -13,6 +13,7 @@ public:
 	SSMaterial(SSVertexShader* vs, SSPixelShader* ps);
 
 	virtual void SetCurrent();
+	virtual void ReleaseCurrent();
 
 	template<class T>
 	void SetVSConstantBufferData(SSName name, const T& value);

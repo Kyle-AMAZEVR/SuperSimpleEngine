@@ -471,9 +471,10 @@ void SSEngine::DrawScene()
 	// @start
 	mGBuffer->Clear();
 	mGBuffer->SetCurrentRenderTarget();
+	SSCameraManager::Get().UpdateCurrentCamera();
 	
 	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
-	SSCameraManager::Get().UpdateCurrentCamera();
+	
 	
 	XMMATRIX scale = XMMatrixScaling(2, 2, 2) * SSCameraManager::Get().GetCurrentCameraTranslation();
 	XMMATRIX modelView = scale * SSCameraManager::Get().GetCurrentCameraView();
@@ -481,28 +482,17 @@ void SSEngine::DrawScene()
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
 	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemapPrefilter.get());
+		
+	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
+	SSRaterizeStateManager::Get().SetCullModeNone();
 
-	testDrawCmd.SetPreDrawJob([]()
-	{
-		SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
-		SSRaterizeStateManager::Get().SetCullModeNone();
-	});
-
-	testDrawCmd.SetPostDrawJob([]()
-	{
-		SSDepthStencilStateManager::Get().SetToDefault();
-		SSRaterizeStateManager::Get().SetToDefault();
-	});
-	
 	testDrawCmd.Do();
 
-	// @end
-
-	// SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
-		
+	SSDepthStencilStateManager::Get().SetToDefault();
+	SSRaterizeStateManager::Get().SetToDefault();
 	
-	mSponzaMesh->Draw(mDeviceContext, mTestMaterial.get());	
-	
+	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
+	mTestMaterial->ReleaseCurrent();
 
 	mFXAARenderTarget->Clear();
 	mFXAARenderTarget->SetCurrentRenderTarget();
@@ -514,7 +504,7 @@ void SSEngine::DrawScene()
 	invScreenSize.value1.y = 1 / static_cast<float>(mBufferHeight);	
 	fxaaDrawCmd.StorePSConstantBufferData("CBInverseScreenSize", invScreenSize);
 	fxaaDrawCmd.Do();
-
+	
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();
 

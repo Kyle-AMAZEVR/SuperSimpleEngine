@@ -19,6 +19,8 @@
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSMathHelper.h"
 #include "SSSamplerManager.h"
+#include "SSDepthStencilStateManager.h"
+#include "SSRasterizeStateManager.h"
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -158,13 +160,9 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	
 	for(UINT i = 0; i < mVertexIndexList.size(); ++i)
 	{
-		VT_PositionNormalTexcoordTangent v
-		{
-			mTempVertexList[mVertexIndexList[i]],
-			mTempNormalList[mNormalIndexList[i]],
-			mTempTexCoordList[mTexcoordIndexList[i]],
-			mTempTangentList[mVertexIndexList[i]],
-		};
+		VT_PositionNormalTexcoordTangent v(mTempVertexList[mVertexIndexList[i]], mTempNormalList[mNormalIndexList[i]],
+			mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[mVertexIndexList[i]]);
+
 		mRealVertexList[i] = v;
 	}
 
@@ -276,7 +274,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
 void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
 {
 	check(material != nullptr);
-
+	
 	material->SetCurrent();
 
 	//material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(0.3,0.3,0.3) * XMMatrixTranslation(0, -20, 0) ));
@@ -302,8 +300,9 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);
 	deviceContext->IASetIndexBuffer(mIB->GetBufferPointer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
 
-	for(auto& section : mMeshSectionList)
+	for(UINT i = 0; i < mMeshSectionList.size(); ++i)
 	{		
+		auto& section = mMeshSectionList[i];
 		if (mMeshMaterialMap.count(section.mSectionName) > 0)
 		{
 			auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap);
@@ -547,11 +546,11 @@ void SSObjMeshParser::ParseFace(std::string& line, std::vector<UINT>& vertexInde
 		&v2, &t2, &n2,
 		&v3, &t3, &n3);
 
-	vertexIndexList.push_back(v1-1); vertexIndexList.push_back(v2-1); vertexIndexList.push_back(v3-1);
+	vertexIndexList.push_back(v1-1);  vertexIndexList.push_back(v2-1); vertexIndexList.push_back(v3 - 1);
 
-	texcoordIndexList.push_back(t1-1); texcoordIndexList.push_back(t2-1); texcoordIndexList.push_back(t3-1);
+	texcoordIndexList.push_back(t1-1);  texcoordIndexList.push_back(t2 - 1);  texcoordIndexList.push_back(t3 - 1);
 
-	normalIndexList.push_back(n1-1); normalIndexList.push_back(n2-1); normalIndexList.push_back(n3-1);
+	normalIndexList.push_back(n1-1);  normalIndexList.push_back(n2 - 1);  normalIndexList.push_back(n3 - 1);
 }
 
 
@@ -564,8 +563,7 @@ XMFLOAT4 SSObjMeshParser::ParseVertex(std::string& line)
 
 	sscanf_s(line.c_str(), "v %f %f %f", &result.x, &result.y, &result.z);
 	
-	// for opengl resource revert z	
-	// result.z = -result.z;
+	// for opengl resource revert z		
 
 	result.w = 1.0f;
 

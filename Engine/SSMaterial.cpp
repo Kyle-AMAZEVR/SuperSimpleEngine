@@ -32,6 +32,7 @@ void SSMaterial::SetCurrent()
 void SSMaterial::SetPSTexture(std::string name, SSTexture2DBase* texture)
 {
 	check(mpPS != nullptr);
+	mPixelShaderTextureMap[name] = texture;
 	mpPS->SetTexture(name, texture);
 }
 
@@ -39,6 +40,7 @@ void SSMaterial::SetPSTexture(std::string name, SSTexture2DBase* texture)
 void SSMaterial::SetVSTexture(std::string name, SSTexture2DBase* texture)
 {
 	check(mpVS != nullptr);
+	mVertexShaderTextureMap[name] = texture;
 	mpVS->SetTexture(name, texture);
 }
 
@@ -46,4 +48,13 @@ void SSMaterial::SetPSSampler(std::string name, ID3D11SamplerState* sampler)
 {
 	check(mpPS != nullptr);
 	mpPS->SetSampler(name, sampler);
+}
+
+void SSMaterial::ReleaseCurrent()
+{
+	for (auto& kvp : mPixelShaderTextureMap)
+	{
+		mpPS->SetTextureAsNull(kvp.first);
+	}
+
 }

@@ -19,7 +19,7 @@ struct VertexInputType
 {
     float4 VertexPosition : POSITION;
     float3 VertexNormal  : NORMAL;
-    float2 TexCoord : TEXCOORD;
+    float2 TexCoord : TEXCOORD0;
     float4 Tangent : TANGENT;
 };
 
@@ -27,8 +27,8 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 OutPosition : SV_POSITION;
-    float4 OutViewPosition : POSITION;
-    float2 OutTexCoord : TEXCOORD;
+    float4 OutViewPosition : COLOR;
+    float2 OutTexCoord : TEXCOORD0;
     float3 OutNormal : NORMAL;
     float3 OutTangent : TANGENT;
     float3 OutBinormal : BINORMAL;
@@ -42,7 +42,7 @@ PixelInputType VSMain( VertexInputType vin )
     PixelInputType output;
 
 	float4x4 ModelView = mul(model, view);
-	float4x4 MVP = mul(ModelView, proj);
+	float4x4 MVP = mul(mul(model, view), proj);
 
 	output.OutTexCoord = vin.TexCoord;
 	output.OutPosition = mul(vin.VertexPosition, MVP);

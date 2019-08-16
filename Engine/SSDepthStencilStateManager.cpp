@@ -37,7 +37,7 @@ void SSDepthStencilStateManager::Initialize()
 
 void SSDepthStencilStateManager::SetToDefault()
 {
-	SSEngine::Get().GetDeviceContext()->OMSetDepthStencilState(mDefaultState, 1);
+	SSEngine::Get().GetDeviceContext()->OMSetDepthStencilState(nullptr, 1);
 }
 
 void SSDepthStencilStateManager::SetDepthTestDisabled()

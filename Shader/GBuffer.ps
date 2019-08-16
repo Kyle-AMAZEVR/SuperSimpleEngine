@@ -4,8 +4,8 @@
 struct PixelInputType
 {
     float4 InPosition : SV_POSITION;
-    float4 InViewPosition : POSITION;
-    float2 InTexCoord : TEXCOORD;
+    float4 InViewPosition : COLOR;
+    float2 InTexCoord : TEXCOORD0;
     float3 InNormal : NORMAL;
     float3 InTangent : TANGENT;
     float3 InBinormal : BINORMAL;
