@@ -25,6 +25,12 @@ void SSRaterizeStateManager::Initialize()
 	mCullModeNoneDesc.CullMode = D3D11_CULL_NONE;
 
 	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mCullModeNoneDesc, &mCullModeNoneState));
+
+
+	mFrontCounterClockwiseDesc = mDefaultDesc;
+	mFrontCounterClockwiseDesc.FrontCounterClockwise = true;
+
+	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mFrontCounterClockwiseDesc, &mFrontCounterClockwiseState));
 }
 
 void SSRaterizeStateManager::SetToDefault()
@@ -35,8 +41,15 @@ void SSRaterizeStateManager::SetCullModeNone()
 {
 	SSEngine::Get().GetDeviceContext()->RSSetState(mCullModeNoneState);
 }
+
+void SSRaterizeStateManager::SetFrontCounterClockwise()
+{
+	SSEngine::Get().GetDeviceContext()->RSSetState(mFrontCounterClockwiseState);
+}
+
 void SSRaterizeStateManager::Shutdown()
 {
 	ReleaseCOM(mCullModeNoneState);
 	ReleaseCOM(mDefaultState);
+	ReleaseCOM(mFrontCounterClockwiseState);
 }

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "SSISerializable.h"
 
 template<class... Types>
 struct count 
@@ -100,4 +101,6 @@ using VT_PositionNormalTexcoordTangent = VertexType<DirectX::XMFLOAT4, DirectX::
 
 
 UINT GetHashCode(const VT_PositionNormalTexcoordTangent& p);
+
+
 

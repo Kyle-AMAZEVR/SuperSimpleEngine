@@ -6,11 +6,14 @@
 #include <unordered_map>
 #include <vector>
 #include "Singleton.h"
+#include "SSISerializable.h"
 
 class ENGINE_API SSName
 {
 public:
 	SSName(const std::string& name);
+
+	SSName(const SSName& other);
 
 	SSName(const char* name);
 
@@ -57,6 +60,9 @@ public:
 	operator std::string() const { return ToString(); }
 
 	std::string ToString() const;
+
+	friend SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name);
+	friend SerializeReader& operator>> (SerializeReader& Archive, SSName& name);
 
 protected:
 	friend class SSNameBucket;

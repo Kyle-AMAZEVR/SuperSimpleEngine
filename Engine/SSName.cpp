@@ -2,6 +2,12 @@
 #include "Core.h"
 #include "SSName.h"
 
+SSName::SSName(const SSName& other)
+{
+	mHashValue = other.mHashValue;
+	mBucketIndex = other.mBucketIndex;
+}
+
 SSName::SSName(const std::string& name)
 {
 	mHashValue = std::hash<std::string>{} {name};
@@ -18,6 +24,22 @@ SSName::SSName(const char* name)
 std::string SSName::ToString() const 
 {
 	return SSNameBucket::Get().GetName(this);
+}
+
+
+SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name)
+{
+	std::string strName = name.ToString();
+	Archive << strName;
+	return Archive;
+}
+
+SerializeReader& operator>> (SerializeReader& Archive, SSName& name)
+{
+	std::string strName;
+	Archive >> strName;
+	name = SSName(strName);
+	return Archive;
 }
 
 //

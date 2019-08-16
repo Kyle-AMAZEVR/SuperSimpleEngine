@@ -97,10 +97,10 @@ void SSEngine::TestCreateResources()
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	
 	//mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
-	// mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
+	//mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
 	mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
-	//mObjMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
-	mSponzaMesh->SetScale(0.5f, 0.5f,0.5f);
+	//mSponzaMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
+	mSponzaMesh->SetScale(0.2f, 0.2f,0.2f);
 
 	mNormalTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_normal.dds");
 	mRoughnessTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
@@ -499,9 +499,8 @@ void SSEngine::DrawScene()
 	// @end
 
 	// SSDrawCommand sphereDrawCmd{ mDeferredVertexShader.get(), mDeferredPixelShader.get(), mTestSphere };
-
-	mSponzaMesh->Draw(mDeviceContext, mTestMaterial.get());
-	
+		
+	mSponzaMesh->Draw(mDeviceContext, mTestMaterial.get());		
 
 	mFXAARenderTarget->Clear();
 	mFXAARenderTarget->SetCurrentRenderTarget();

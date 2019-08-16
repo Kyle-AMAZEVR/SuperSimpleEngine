@@ -39,6 +39,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName textur
 
 			if (texture == nullptr)
 			{
+				check(false);
 				return nullptr;
 			}
 
@@ -52,6 +53,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName textur
 
 			if (texture == nullptr)
 			{
+				check(false);
 				return nullptr;
 			}
 
@@ -65,6 +67,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName textur
 
 			if (texture == nullptr)
 			{
+				check(false);
 				return nullptr;
 			}
 

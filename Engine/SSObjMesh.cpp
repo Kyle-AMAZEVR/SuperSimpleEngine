@@ -17,6 +17,7 @@
 #include "CameraManager.h"
 #include "SSIndexBuffer.h"
 #include "FreqUsedConstantBufferTypes.h"
+#include "SSMathHelper.h"
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -116,16 +117,27 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 				{
 					SSObjMeshSection newSection{ buffer, 0 };
 					mMeshSectionList.push_back(newSection);
-				}
+				}				
 				else
 				{
-					mMeshSectionList[mMeshSectionList.size() - 1].SetEndIndex(static_cast<UINT>(mVertexIndexList.size()));
+					if (mMeshSectionList[mMeshSectionList.size() - 1].mSectionName != buffer)
+					{
+						mMeshSectionList[mMeshSectionList.size() - 1].SetEndIndex(static_cast<UINT>(mVertexIndexList.size()));
 
-					SSObjMeshSection newSection{ buffer, static_cast<UINT>(mVertexIndexList.size()) };
+						SSObjMeshSection newSection{ buffer, static_cast<UINT>(mVertexIndexList.size()) };
 
-					mMeshSectionList.push_back(newSection);
+						mMeshSectionList.push_back(newSection);
+					}
 				}
 			}
+		}
+	}
+
+	if (mMeshSectionList.size() > 0)
+	{
+		if (mMeshSectionList[mMeshSectionList.size() - 1].mEndIndex == 0)
+		{
+			mMeshSectionList[mMeshSectionList.size() - 1].SetEndIndex(static_cast<UINT>(mVertexIndexList.size()));
 		}
 	}
 
@@ -176,6 +188,17 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 
 	mVB = std::make_shared<SSVertexBuffer>();
 	mVB->SetVertexBufferData(mRealVertexList);
+
+	std::vector<UINT> idx;
+	idx.resize(mRealVertexList.size());
+
+	for (UINT i = 0; i < mRealVertexList.size(); ++i)
+	{
+		idx[i] = i;
+	}
+
+	mIB = std::make_shared<SSIndexBuffer>();
+	mIB->SetIndexBufferData(idx);
 	
 	return true;
 }
@@ -255,7 +278,8 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 
 	material->SetCurrent();
 
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.5, 1.5, 1.5) * XMMatrixTranslation(10, -10, 0)));
+	//material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(0.3,0.3,0.3) * XMMatrixTranslation(0, -20, 0) ));
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.5, 1.5, 1.5) * XMMatrixTranslation(10, -100, 0)));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
@@ -273,17 +297,17 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 
 	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);
 	deviceContext->IASetIndexBuffer(mIB->GetBufferPointer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
+	
 
-	for (UINT i = 0; i < 50; i++)
-	{
-		if (mMeshMaterialMap.count(mMeshSectionList[i].mSectionName) > 0)
+	for(auto& section : mMeshSectionList)
+	{		
+		if (mMeshMaterialMap.count(section.mSectionName) > 0)
 		{
-			auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[mMeshSectionList[i].mSectionName].mDiffuseMap);
-			
+			auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap);
+
 			material->SetPSTexture("DiffuseTex", diffuse.get());
-				
-			deviceContext->DrawIndexed(mMeshSectionList[i].mEndIndex - mMeshSectionList[i].mStartIndex, mMeshSectionList[i].mStartIndex, 0);
-		}
+			deviceContext->DrawIndexed(section.mEndIndex - section.mStartIndex, section.mStartIndex, 0);
+		}		
 	}
 }
 
