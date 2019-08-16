@@ -231,6 +231,11 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
 	deviceContext->Draw(mVB->GetVertexCount(), 0);	
 }
 
+void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
+{
+	
+}
+
 void SSObjMesh::OptimizedGenerateVertices()
 {	
 	

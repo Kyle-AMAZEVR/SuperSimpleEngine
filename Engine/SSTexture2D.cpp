@@ -225,6 +225,14 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::wstring filenam
 	}
 }
 
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::string filename)
+{
+	std::wstring wfilename;
+	wfilename.assign(filename.begin(), filename.end());
+
+	return SSTexture2D::CreateFromDDSFile(wfilename);
+}
+
 
 std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::wstring filename)
 {
@@ -253,4 +261,21 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::wstring filenam
 	{
 		return nullptr;
 	}
+}
+
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::string filename)
+{
+	std::wstring wfilename;
+	wfilename.assign(filename.begin(), filename.end());
+
+	return SSTexture2D::CreateFromHDRFile(wfilename);
+}
+
+
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::string filename)
+{
+	std::wstring wfilename;
+	wfilename.assign(filename.begin(), filename.end());
+
+	return SSTexture2D::CreateFromTGAFile(wfilename);
 }
