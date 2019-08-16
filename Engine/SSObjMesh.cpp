@@ -18,6 +18,7 @@
 #include "SSIndexBuffer.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSMathHelper.h"
+#include "SSSamplerManager.h"
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -290,14 +291,16 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	settings.value4 = 1; // roghness
 	settings.value5 = 1; // diffuse
 
+	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
+
 	material->SetPSConstantBufferData("TextureExist", settings);	
+	material->SetPSSampler("DefaultTexSampler", sampler);
 
 	auto stride = mVB->GetStride();
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);
 	deviceContext->IASetIndexBuffer(mIB->GetBufferPointer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
-	
 
 	for(auto& section : mMeshSectionList)
 	{		
@@ -306,6 +309,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap);
 
 			material->SetPSTexture("DiffuseTex", diffuse.get());
+
 			deviceContext->DrawIndexed(section.mEndIndex - section.mStartIndex, section.mStartIndex, 0);
 		}		
 	}
@@ -559,6 +563,9 @@ XMFLOAT4 SSObjMeshParser::ParseVertex(std::string& line)
 	XMFLOAT4 result;
 
 	sscanf_s(line.c_str(), "v %f %f %f", &result.x, &result.y, &result.z);
+	
+	// for opengl resource revert z	
+	result.z = -result.z;
 
 	result.w = 1.0f;
 
@@ -580,6 +587,7 @@ XMFLOAT3 SSObjMeshParser::ParseNormal(std::string& line)
 
 	 sscanf_s(line.c_str(), "vt %f %f", &result.x, &result.y);
 
+	 // for opengl resource
 	 result.y = 1 - result.y;
 
 	 return result;

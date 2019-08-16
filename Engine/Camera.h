@@ -9,7 +9,7 @@ public:
 		: mFOV(DirectX::XM_PI * 0.25f)
 		, mAspectRatio(1.0f)
 		, mNear (1.f)
-		, mFar (1500.0f)
+		, mFar (3000.0f)
 	{
 	}
 
