@@ -152,80 +152,8 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 		GenerateTangents();
 	}
 
-	// @check errors 
-	check(mVertexIndexList.size() == mNormalIndexList.size());
-	check(mVertexIndexList.size() == mTexcoordIndexList.size());
-	check(mVertexIndexList.size() == mTempTangentList.size());
-
-	// @sort mesh section list for low drawcall
-	std::sort(mMeshSectionList.begin(), mMeshSectionList.end(), [](SSObjMeshSection a, SSObjMeshSection b)
-		{			
-			if (a.mSectionName.compare(b.mSectionName) < 0)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
-
-	// @create real vertex
-	mRealVertexList.resize(mVertexIndexList.size());
-
-	std::vector<SSObjMeshSection> compressedMeshSection;
-
-	std::unordered_set<std::string> nameSet;
-	//
-	UINT sortedIndex = 0;
-
-	for (auto& section : mMeshSectionList)
-	{	
-		// new name found
-		if (nameSet.count(section.mSectionName) == 0)
-		{
-			nameSet.insert(section.mSectionName);
-
-			if (compressedMeshSection.size() > 0)
-			{
-				compressedMeshSection[compressedMeshSection.size() - 1].mEndIndex = sortedIndex;
-			}
-
-			compressedMeshSection.push_back(SSObjMeshSection(section.mSectionName, sortedIndex));
-		}
-
-		for (UINT i = section.mStartIndex; i < section.mEndIndex; ++i)
-		{
-			VT_PositionNormalTexcoordTangent v
-			(
-				mTempVertexList[mVertexIndexList[i]], mTempNormalList[mNormalIndexList[i]],
-				mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[mVertexIndexList[i]]
-			);
-			
-			mRealVertexList[sortedIndex++] = v;
-		}
-	}
-
-	if (compressedMeshSection.size() > 0)
-	{
-		compressedMeshSection[compressedMeshSection.size() - 1].mEndIndex = sortedIndex;
-	}
-	
-	mMeshSectionList = compressedMeshSection;
-	
-	/*for(UINT i = 0; i < mVertexIndexList.size(); ++i)
-	{
-		VT_PositionNormalTexcoordTangent v(mTempVertexList[mVertexIndexList[i]], mTempNormalList[mNormalIndexList[i]],
-			mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[mVertexIndexList[i]]);
-
-		mRealVertexList[i] = v;
-	}*/
-
-	// @clear 
-	mTempVertexList.clear();
-	mTempTangentList.clear();
-	mTempTexCoordList.clear();
-	mTempNormalList.clear();
+	// @ reorder vertices
+	OptimizedGenerateVertices();
 
 	SerializeWriter writer("./Prebaked/sponza.mesh");
 	writer << mRealVertexList;
@@ -237,9 +165,9 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	{
 		writer << kvp.first;
 		writer << kvp.second;		
-	}
-	//writer << mMeshMaterialMap;
+	}	
 
+	// @create vertex buffer and index buffer;
 	mVB = std::make_shared<SSVertexBuffer>();
 	mVB->SetVertexBufferData(mRealVertexList);
 
@@ -370,7 +298,73 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 
 void SSObjMesh::OptimizedGenerateVertices()
 {	
+	// @check errors 
+	check(mVertexIndexList.size() > 0);
+	check(mVertexIndexList.size() == mNormalIndexList.size());
+	check(mVertexIndexList.size() == mTexcoordIndexList.size());
+	check(mVertexIndexList.size() == mTempTangentList.size());
+
+	// @sort mesh section list for low drawcall
+	std::sort(mMeshSectionList.begin(), mMeshSectionList.end(), [](SSObjMeshSection a, SSObjMeshSection b)
+		{
+			if (a.mSectionName.compare(b.mSectionName) < 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		});
+
+	// @create real vertex
+	mRealVertexList.resize(mVertexIndexList.size());
+
+	std::vector<SSObjMeshSection> compressedMeshSection;
+
+	std::unordered_set<std::string> nameSet;
+	//
+	UINT sortedIndex = 0;
+
+	for (auto& section : mMeshSectionList)
+	{
+		// new name found
+		if (nameSet.count(section.mSectionName) == 0)
+		{
+			nameSet.insert(section.mSectionName);
+
+			if (compressedMeshSection.size() > 0)
+			{
+				compressedMeshSection[compressedMeshSection.size() - 1].mEndIndex = sortedIndex;
+			}
+
+			compressedMeshSection.push_back(SSObjMeshSection(section.mSectionName, sortedIndex));
+		}
+
+		for (UINT i = section.mStartIndex; i < section.mEndIndex; ++i)
+		{
+			VT_PositionNormalTexcoordTangent v
+			(
+				mTempVertexList[mVertexIndexList[i]], mTempNormalList[mNormalIndexList[i]],
+				mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[mVertexIndexList[i]]
+			);
+
+			mRealVertexList[sortedIndex++] = v;
+		}
+	}
+
+	if (compressedMeshSection.size() > 0)
+	{
+		compressedMeshSection[compressedMeshSection.size() - 1].mEndIndex = sortedIndex;
+	}
+
+	mMeshSectionList = compressedMeshSection;
 	
+	// @clear 
+	mTempVertexList.clear();
+	mTempTangentList.clear();
+	mTempTexCoordList.clear();
+	mTempNormalList.clear();
 }
 
 bool SSObjMesh::GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index)
