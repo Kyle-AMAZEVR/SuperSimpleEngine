@@ -44,6 +44,16 @@ void SSCameraManager::RotatePitch(float amount)
 	mCurrentCamera->RotatePitch(amount);
 }
 
+void SSCameraManager::MoveFoward(float amount)
+{
+	mCurrentCamera->MoveFoward(amount);
+}
+
+void SSCameraManager::MoveBackward(float amount)
+{
+	mCurrentCamera->MoveBackward(amount);
+}
+
 XMMATRIX SSCameraManager::GetCurrentCameraViewProj() const 
 {
 	check(mCurrentCamera != nullptr);

@@ -12,6 +12,8 @@ public:
 	virtual XMMATRIX GetTranslation() const override;
 	virtual void RotatePitch(float amount) override;
 	virtual void RotateYaw(float amount) override;
+	virtual void MoveFoward(float amount) override;
+	virtual void MoveBackward(float amount) override;
 protected:
 	virtual void UpdateViewMatrix() override;
 	virtual void UpdateProjMatrix() override;

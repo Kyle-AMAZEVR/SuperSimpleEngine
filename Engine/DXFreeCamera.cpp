@@ -62,3 +62,27 @@ void SSFreeCamera::UpdateRotationMatrix()
 {
 	mRotation = XMMatrixRotationZ(mPitch) * XMMatrixRotationY(mYaw);
 }
+
+void SSFreeCamera::MoveFoward(float amount)
+{
+	XMFLOAT4X4 rotmat;
+	XMStoreFloat4x4(&rotmat, mRotation);
+
+	auto vMoveDir = XMFLOAT3(rotmat._11, rotmat._12, rotmat._13);
+	
+	mEyePosition.x += (vMoveDir.x *amount);
+	mEyePosition.y += (vMoveDir.y * amount);
+	mEyePosition.z += (vMoveDir.z *amount);	
+}
+
+void SSFreeCamera::MoveBackward(float amount)
+{
+	XMFLOAT4X4 rotmat;
+	XMStoreFloat4x4(&rotmat, mRotation);
+
+	auto vMoveDir = XMFLOAT3(rotmat._11, rotmat._12, rotmat._13);
+
+	mEyePosition.x -= (vMoveDir.x *amount);
+	mEyePosition.y -= (vMoveDir.y * amount);
+	mEyePosition.z -= (vMoveDir.z *amount);
+}

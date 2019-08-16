@@ -163,9 +163,9 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 			mTempVertexList[mVertexIndexList[i]],
 			mTempNormalList[mNormalIndexList[i]],
 			mTempTexCoordList[mTexcoordIndexList[i]],
-			mTempTangentList[i],
+			mTempTangentList[mVertexIndexList[i]],
 		};
-		mRealVertexList[i] = std::move(v);
+		mRealVertexList[i] = v;
 	}
 
 	// @clear 

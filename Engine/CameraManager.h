@@ -22,6 +22,8 @@ public:
 	
 	void UpdateCurrentCamera();
 
+	void MoveFoward(float amount);
+	void MoveBackward(float amount);
 	void RotateYaw(float amount);
 	void RotatePitch(float amount);
 

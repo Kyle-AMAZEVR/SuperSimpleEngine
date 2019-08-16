@@ -23,8 +23,11 @@ public:
 	virtual DirectX::XMMATRIX GetViewProj() const;
 	virtual DirectX::XMMATRIX GetTranslation() const;
 	virtual DirectX::XMMATRIX GetRotation() const;
+	
 	virtual void RotateYaw(float amount){}
 	virtual void RotatePitch(float amount){}
+	virtual void MoveFoward(float amount){}
+	virtual void MoveBackward(float amount){}
 
 	void SetFOV(float fov) { mFOV = fov; }
 	float GetFOV() { return mFOV; }

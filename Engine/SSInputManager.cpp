@@ -8,10 +8,10 @@ void SSInputManager::OnKeyDown(ULONGLONG key)
 	switch (key)
 	{
 	case VK_UP:
-		SSCameraManager::Get().RotatePitch(0.01f);
+		SSCameraManager::Get().MoveFoward(2.f);
 		break;
 	case VK_DOWN:
-		SSCameraManager::Get().RotatePitch(-0.01f);
+		SSCameraManager::Get().MoveBackward(2.f);
 		break;
 	case VK_LEFT:
 		SSCameraManager::Get().RotateYaw(-0.01f);
