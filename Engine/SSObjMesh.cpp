@@ -21,6 +21,7 @@
 #include "SSSamplerManager.h"
 #include "SSDepthStencilStateManager.h"
 #include "SSRasterizeStateManager.h"
+#include <unordered_set>
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -151,20 +152,74 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 		GenerateTangents();
 	}
 
+	// @check errors 
 	check(mVertexIndexList.size() == mNormalIndexList.size());
 	check(mVertexIndexList.size() == mTexcoordIndexList.size());
 	check(mVertexIndexList.size() == mTempTangentList.size());
 
+	// @sort mesh section list for low drawcall
+	std::sort(mMeshSectionList.begin(), mMeshSectionList.end(), [](SSObjMeshSection a, SSObjMeshSection b)
+		{			
+			if (a.mSectionName.compare(b.mSectionName) < 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		});
+
 	// @create real vertex
 	mRealVertexList.resize(mVertexIndexList.size());
+
+	std::vector<SSObjMeshSection> compressedMeshSection;
+
+	std::unordered_set<std::string> nameSet;
+	//
+	UINT sortedIndex = 0;
+
+	for (auto& section : mMeshSectionList)
+	{	
+		// new name found
+		if (nameSet.count(section.mSectionName) == 0)
+		{
+			nameSet.insert(section.mSectionName);
+
+			if (compressedMeshSection.size() > 0)
+			{
+				compressedMeshSection[compressedMeshSection.size() - 1].mEndIndex = sortedIndex;
+			}
+
+			compressedMeshSection.push_back(SSObjMeshSection(section.mSectionName, sortedIndex));
+		}
+
+		for (UINT i = section.mStartIndex; i < section.mEndIndex; ++i)
+		{
+			VT_PositionNormalTexcoordTangent v
+			(
+				mTempVertexList[mVertexIndexList[i]], mTempNormalList[mNormalIndexList[i]],
+				mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[mVertexIndexList[i]]
+			);
+			
+			mRealVertexList[sortedIndex++] = v;
+		}
+	}
+
+	if (compressedMeshSection.size() > 0)
+	{
+		compressedMeshSection[compressedMeshSection.size() - 1].mEndIndex = sortedIndex;
+	}
 	
-	for(UINT i = 0; i < mVertexIndexList.size(); ++i)
+	mMeshSectionList = compressedMeshSection;
+	
+	/*for(UINT i = 0; i < mVertexIndexList.size(); ++i)
 	{
 		VT_PositionNormalTexcoordTangent v(mTempVertexList[mVertexIndexList[i]], mTempNormalList[mNormalIndexList[i]],
 			mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[mVertexIndexList[i]]);
 
 		mRealVertexList[i] = v;
-	}
+	}*/
 
 	// @clear 
 	mTempVertexList.clear();
@@ -276,9 +331,8 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	check(material != nullptr);
 	
 	material->SetCurrent();
-
-	//material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(0.3,0.3,0.3) * XMMatrixTranslation(0, -20, 0) ));
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0) * XMMatrixTranslation(10, -100, 0)));
+	
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 

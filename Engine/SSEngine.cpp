@@ -474,8 +474,7 @@ void SSEngine::DrawScene()
 	SSCameraManager::Get().UpdateCurrentCamera();
 	
 	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
-	
-	
+		
 	XMMATRIX scale = XMMatrixScaling(2, 2, 2) * SSCameraManager::Get().GetCurrentCameraTranslation();
 	XMMATRIX modelView = scale * SSCameraManager::Get().GetCurrentCameraView();
 	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
