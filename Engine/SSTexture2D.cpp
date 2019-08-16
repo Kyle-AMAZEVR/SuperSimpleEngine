@@ -39,15 +39,15 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 	mMipLevels = static_cast<UINT>(metaData.mipLevels);
 
 	D3D11_TEXTURE2D_DESC description;
-	description.Width = mWidth = metaData.width;
-	description.Height = mHeight = metaData.height;
+	description.Width = mWidth = static_cast<UINT>(metaData.width);
+	description.Height = mHeight = static_cast<UINT>(metaData.height);
 	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	description.MiscFlags = 0;
 	description.Usage = D3D11_USAGE_DEFAULT;
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;
-	description.MipLevels = metaData.mipLevels;
-	description.ArraySize = metaData.arraySize;
+	description.MipLevels = static_cast<UINT>(metaData.mipLevels);
+	description.ArraySize = static_cast<UINT>(metaData.arraySize);
 	description.CPUAccessFlags = 0;
 
 	if (bSRGB)
@@ -67,7 +67,7 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 	resourceViewDesc.Format = description.Format;
 	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-	resourceViewDesc.Texture2D.MipLevels = metaData.mipLevels;
+	resourceViewDesc.Texture2D.MipLevels = static_cast<UINT>(metaData.mipLevels);
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
 
@@ -103,15 +103,15 @@ bool SSTexture2D::LoadFromTGAFile(std::wstring filename)
 	mMipLevels = static_cast<UINT>(metaData.mipLevels);
 
 	D3D11_TEXTURE2D_DESC description;
-	description.Width = mWidth = metaData.width;
-	description.Height = mHeight = metaData.height;
+	description.Width = mWidth = static_cast<UINT>(metaData.width);
+	description.Height = mHeight = static_cast<UINT>(metaData.height);
 	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	description.MiscFlags = 0;
 	description.Usage = D3D11_USAGE_DEFAULT;
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;
-	description.MipLevels = metaData.mipLevels;
-	description.ArraySize = metaData.arraySize;
+	description.MipLevels = static_cast<UINT>(metaData.mipLevels);
+	description.ArraySize = static_cast<UINT>(metaData.arraySize);
 	description.CPUAccessFlags = 0;
 
 	if (bSRGB)
@@ -131,7 +131,7 @@ bool SSTexture2D::LoadFromTGAFile(std::wstring filename)
 	resourceViewDesc.Format = description.Format;
 	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-	resourceViewDesc.Texture2D.MipLevels = metaData.mipLevels;
+	resourceViewDesc.Texture2D.MipLevels = static_cast<UINT>(metaData.mipLevels);
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
 
@@ -172,7 +172,7 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	description.Usage = D3D11_USAGE_DEFAULT;
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;
-	description.MipLevels = metaData.mipLevels;
+	description.MipLevels = static_cast<UINT>(metaData.mipLevels);
 	description.ArraySize = metaData.arraySize;
 	description.CPUAccessFlags = 0;
 
