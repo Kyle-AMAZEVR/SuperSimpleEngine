@@ -26,7 +26,7 @@ public:
 
 protected:
 	std::unique_ptr<class SSGenericRenderTarget> mRenderTarget;
-	std::unique_ptr<class SSScreenBlit> mScreenBlit;
+	std::shared_ptr<class SSScreenBlit> mScreenBlit;
 
 	UINT mWidth;
 	UINT mHeight;

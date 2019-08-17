@@ -1,11 +1,13 @@
 
 
 #include "Core.h"
+#include "SSPostProcess.h"
 #include "SSFXAAPostProcess.h"
-#include "DXConstantBuffer.h"
+
 #include "SSDrawCommand.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSShaderManager.h"
+#include "SSScreenBlit.h"
 
 SSFXAAPostProcess::SSFXAAPostProcess(UINT width, UINT height)
 	: SSPostProcess(width, height, 1, false, false)

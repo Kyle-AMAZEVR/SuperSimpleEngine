@@ -1,5 +1,6 @@
 
 #include "Core.h"
+#include "DXConstantBuffer.h"
 #include "DXRenderResource.h"
 #include "SSName.h"
 #include <functional>
