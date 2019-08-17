@@ -531,18 +531,22 @@ void SSObjMesh::GenerateTangents()
 		XMVECTOR p2 = XMLoadFloat4(&mTempVertexList[mVertexIndexList[i+1]]);
 		XMVECTOR p3 = XMLoadFloat4(&mTempVertexList[mVertexIndexList[i+2]]);
 
-		XMVECTOR tc1 = XMLoadFloat2(&mTempTexCoordList[mTexcoordIndexList[i]]);
-		XMVECTOR tc2 = XMLoadFloat2(&mTempTexCoordList[mTexcoordIndexList[i+1]]);
-		XMVECTOR tc3 = XMLoadFloat2(&mTempTexCoordList[mTexcoordIndexList[i+2]]);
+		UINT texcoord1 = mTexcoordIndexList[i];
+		UINT texcoord2 = mTexcoordIndexList[i+1];
+		UINT texcoord3 = mTexcoordIndexList[i+2];
+
+		XMVECTOR tc1 = XMLoadFloat2(&mTempTexCoordList[texcoord1]);
+		XMVECTOR tc2 = XMLoadFloat2(&mTempTexCoordList[texcoord2]);
+		XMVECTOR tc3 = XMLoadFloat2(&mTempTexCoordList[texcoord3]);
 
 		XMFLOAT3 q1; XMStoreFloat3(&q1, p2 - p1);
 		XMFLOAT3 q2; XMStoreFloat3(&q2, p3 - p1);
 
-		float s1 = mTempTexCoordList[mTexcoordIndexList[i+1]].x - mTempTexCoordList[mTexcoordIndexList[i]].x;
-		float s2 = mTempTexCoordList[mTexcoordIndexList[i+2]].x - mTempTexCoordList[mTexcoordIndexList[i]].x;
+		float s1 = mTempTexCoordList[texcoord2].x - mTempTexCoordList[texcoord1].x;
+		float t1 = mTempTexCoordList[texcoord2].y - mTempTexCoordList[texcoord1].y;
 
-		float t1 = mTempTexCoordList[mTexcoordIndexList[i+1]].y - mTempTexCoordList[mTexcoordIndexList[i]].y;
-		float t2 = mTempTexCoordList[mTexcoordIndexList[i+2]].y - mTempTexCoordList[mTexcoordIndexList[i]].y;
+		float s2 = mTempTexCoordList[texcoord3].x - mTempTexCoordList[texcoord1].x;		
+		float t2 = mTempTexCoordList[texcoord3].y - mTempTexCoordList[texcoord1].y;
 
 		// prevent degeneration
 		float r = 1.0f / (s1 * t2 - s2 * t1);
@@ -578,16 +582,12 @@ void SSObjMesh::GenerateTangents()
 
 	for (UINT i = 0; i < mVertexIndexList.size(); ++i)
 	{
-		auto n1 = mNormalIndexList[i];
-		if (n1 >= mTexcoordIndexList.size())
-		{
-			check(n1 < mTempNormalList.size());
-		}
+		auto n1 = mNormalIndexList[i];		
 
-		auto n = DirectX::XMLoadFloat3(&mTempNormalList[mNormalIndexList[i]]);
+		auto n = DirectX::XMLoadFloat3(&mTempNormalList[n1]);
 
-		auto i1 = mVertexIndexList[i];
-		check(i1 < tan1Accum.size());
+		auto vertexIndex = mVertexIndexList[i];
+		check(vertexIndex < tan1Accum.size());
 		auto t1 = tan1Accum[mVertexIndexList[i]];
 		auto t2 = tan2Accum[mVertexIndexList[i]];
 
@@ -632,10 +632,10 @@ void SSObjMesh::GenerateTangents()
 			temp.z = lastValidTangent.z;
 		}
 
-		mTempTangentList[i].x = temp.x;
-		mTempTangentList[i].y = temp.y;
-		mTempTangentList[i].z = temp.z;
-		mTempTangentList[i].w = W;
+		mTempTangentList[mVertexIndexList[i]].x = temp.x;
+		mTempTangentList[mVertexIndexList[i]].y = temp.y;
+		mTempTangentList[mVertexIndexList[i]].z = temp.z;
+		mTempTangentList[mVertexIndexList[i]].w = W;
 	}
 
 }
