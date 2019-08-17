@@ -4,11 +4,11 @@
 struct PixelInputType
 {
     float4 InPosition : SV_POSITION;
-    float4 InViewPosition : COLOR;
+    float4 InViewPosition : COLOR0;
     float2 InTexCoord : TEXCOORD0;
-    float3 InNormal : NORMAL;
-    float3 InTangent : TANGENT;
-    float3 InBinormal : BINORMAL;
+    float3 InNormal : NORMALWS;
+    float3 InTangent : TANGENTWS;
+    float3 InBitangent : BITANGENTWS;
 };
 
 Texture2D DiffuseTex;
@@ -93,16 +93,20 @@ PixelOutputType PSMain(PixelInputType pin)
         output.DiffuseColor = float4(1,0,0,0);
     }
 
-    float3x3 TangentToModelViewSpaceMatrix = float3x3( pin.InTangent.x, pin.InTangent.y, pin.InTangent.z, 
-								                       pin.InBinormal.x, pin.InBinormal.y, pin.InBinormal.z, 
-								                       pin.InNormal.x, pin.InNormal.y, pin.InNormal.z );
+    
+    
+    float3x3 TangentToModelViewSpaceMatrix = float3x3( normalize(pin.InTangent),
+                                                       normalize(pin.InBitangent),
+                                                       normalize(pin.InNormal)
+                                                       );
+
 
     if(NormalMapExist)
     {
-        float3 NormalMapNormal = (2.0f * (NormalTex.Sample(DefaultTexSampler, pin.InTexCoord ).xyz ) - float3(1.0f,1.0f,1.0f));
-	    float3 BumpNormal = normalize(mul(NormalMapNormal.xyz , TangentToModelViewSpaceMatrix));
+        float3 NormalMapNormal = normalize(2.0f * (NormalTex.Sample(DefaultTexSampler, pin.InTexCoord ).xyz ) - float3(1.0f,1.0f,1.0f));
+	    float3 BumpNormal = mul(NormalMapNormal.xyz , TangentToModelViewSpaceMatrix);
 	
-        output.NormalColor.xyz = BumpNormal.xyz;
+        output.NormalColor.xyz = BumpNormal.xyz;        
     }
     else
     {

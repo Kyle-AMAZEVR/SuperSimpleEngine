@@ -27,11 +27,11 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 OutPosition : SV_POSITION;
-    float4 OutViewPosition : COLOR;
+    float4 OutViewPosition : COLOR0;
     float2 OutTexCoord : TEXCOORD0;
-    float3 OutNormal : NORMAL;
-    float3 OutTangent : TANGENT;
-    float3 OutBinormal : BINORMAL;
+    float3 OutNormal : NORMALWS;
+    float3 OutTangent : TANGENTWS;
+    float3 OutBitangent : BITANGENTWS;
 };
 
 
@@ -47,11 +47,18 @@ PixelInputType VSMain( VertexInputType vin )
 	output.OutTexCoord = vin.TexCoord;
 	output.OutPosition = mul(vin.VertexPosition, MVP);
 	output.OutViewPosition = mul(vin.VertexPosition, ModelView);
-	output.OutNormal = normalize(mul(float4(vin.VertexNormal,0), ModelView)).xyz;
-	output.OutTangent = normalize(mul(vin.Tangent, ModelView)).xyz;
+	
+	float3 normalWS = normalize(mul(vin.VertexNormal, (float3x3)ModelView));
+	
+	output.OutNormal = normalWS;
+	
+	float3 tangentWS = normalize(mul(vin.Tangent.xyz, (float3x3)ModelView));
+	
+	output.OutTangent = tangentWS;
 
-	float3 binormal = (cross(vin.VertexNormal, vin.Tangent.xyz)) * -vin.Tangent.w;
-	output.OutBinormal = normalize(mul( float4(binormal,0), ModelView)).xyz;
+	float3 bitangentWS = normalize(cross(normalWS, tangentWS)) * vin.Tangent.w;	
+	
+	output.OutBitangent = bitangentWS;
 
 	return output;	
 }

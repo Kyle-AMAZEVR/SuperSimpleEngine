@@ -103,12 +103,14 @@ void SSEngine::TestCreateResources()
 	mScreenBlit = std::make_shared<class SSScreenBlit>();	
 
 	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))
+	//if(false)
 	{
 		mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
 	}
 	else
 	{
-		check(false);
+
+		mSponzaMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
 	}
 
 	mNormalTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_normal.dds");

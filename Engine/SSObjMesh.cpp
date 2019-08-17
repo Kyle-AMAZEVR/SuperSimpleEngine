@@ -115,7 +115,7 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 			{
 				char buffer[256]{'\0'};
 
-				sscanf_s(Line.c_str(), "usemtl %s", buffer);
+				sscanf(Line.c_str(), "usemtl %s", buffer);
 
 				if(mMeshSectionList.size() == 0)
 				{
@@ -584,16 +584,22 @@ void SSObjMesh::GenerateTangents()
 			check(n1 < mTempNormalList.size());
 		}
 
-		auto n = DirectX::XMLoadFloat3(&mTempNormalList[n1]);
+		auto n = DirectX::XMLoadFloat3(&mTempNormalList[mNormalIndexList[i]]);
 
 		auto i1 = mVertexIndexList[i];
 		check(i1 < tan1Accum.size());
-		auto t1 = tan1Accum[i1];
-		auto t2 = tan2Accum[i1];
+		auto t1 = tan1Accum[mVertexIndexList[i]];
+		auto t2 = tan2Accum[mVertexIndexList[i]];
 
 		// Gram-Schmidt orthogonalize                
 		XMFLOAT3 temp;
-		XMStoreFloat3(&temp, XMVector3Normalize(t1 - (XMVector3Dot(n, t1) * n)));
+
+		XMFLOAT3 dotResultVector;
+		XMStoreFloat3(&dotResultVector, XMVector3Dot(n, t1));		
+
+		//XMStoreFloat3(&temp, XMVector3Normalize(t1 - (XMVector3Dot(n, t1) * n)));
+		XMStoreFloat3(&temp, XMVector3Normalize(t1 - XMVectorScale(n, dotResultVector.x)));		
+
 		// Store handedness in w                
 		XMFLOAT3 dotResult;
 		XMStoreFloat3(&dotResult, XMVector3Dot(XMVector3Cross(n, t1), t2));
