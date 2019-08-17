@@ -7,6 +7,7 @@ class ENGINE_API SSScreenBlit : public SSSceneObject
 public:
 	SSScreenBlit();
 	virtual void Draw(ID3D11DeviceContext* deviceContext);
+	virtual void Destroy() override;
 protected:
 	void InternalCreate();
 	static bool bIsInitialized;

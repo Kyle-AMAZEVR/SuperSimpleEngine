@@ -354,6 +354,22 @@ SSRenderTargetTexture2D* SSGenericRenderTarget::GetOutput(UINT nIndex)
 	return nullptr;
 }
 
+void SSGenericRenderTarget::Destroy()
+{
+	for(UINT i = 0; i < mCount; ++i)
+	{
+		if(mRenderTargetArray[i])
+		{
+			mRenderTargetArray[i]->Destroy();
+		}
+	}
+
+	if(mDepthTarget != nullptr)
+	{
+		mDepthTarget->Destroy();
+	}
+}
+
 void SSGenericRenderTarget::SaveRTTexture(UINT index, std::wstring filename)
 {
 	mRenderTargetArray[index]->SaveAsDDSFile(filename);

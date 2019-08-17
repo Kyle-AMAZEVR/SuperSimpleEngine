@@ -16,6 +16,20 @@ SSScreenBlit::SSScreenBlit()
 	}
 }
 
+void SSScreenBlit::Destroy()
+{
+	if(mScreenVB)
+	{
+		mScreenVB->Destroy();
+	}
+
+	if(mScreenIB)
+	{
+		mScreenIB->Destroy();
+	}
+}
+
+
 void SSScreenBlit::InternalCreate()
 {
 	std::vector<VT_PositionTexcoord> vertexArray

@@ -56,6 +56,8 @@ public:
 	virtual void Clear() override;
 	virtual void Resize(UINT width, UINT height) override;
 
+	virtual void Destroy();
+
 protected:
 	SSRenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
 	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
