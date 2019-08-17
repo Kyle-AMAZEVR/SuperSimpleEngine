@@ -27,10 +27,9 @@ protected:
 	std::shared_ptr<SSPixelShader> mPixelShader;
 
 	EDumpMode mDumpMode = EDumpMode::ENormalDump;
-
+	//EDumpMode mDumpMode = EDumpMode::EMetalicDump;
 	void UpdateDumpSettings();
 
-	SSAlignedCBuffer<int, int, int, int, int> mDumpSettings;
 
-
+	
 };

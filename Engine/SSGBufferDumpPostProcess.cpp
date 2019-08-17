@@ -22,6 +22,14 @@ void SSGBufferDumpPostProcess::Draw(SSTexture2DBase* input0, SSTexture2DBase* in
 	mRenderTarget->Clear();
 	mRenderTarget->SetCurrentRenderTarget();
 
+	SSAlignedCBuffer<int, int, int, int,int> mDumpSettings;
+
+	mDumpSettings.value1 = (mDumpMode == EDumpMode::EPositionDump);
+	mDumpSettings.value2 = (mDumpMode == EDumpMode::ENormalDump);
+	mDumpSettings.value3 = (mDumpMode == EDumpMode::EMetalicDump);
+	mDumpSettings.value4 = (mDumpMode == EDumpMode::EDiffuseDump);
+	mDumpSettings.value5 = (mDumpMode == EDumpMode::ERoughnessDump);
+
 	SSDrawCommand gbufferDumpDrawCmd{ mVertexShader.get(), mPixelShader.get(), mScreenBlit };
 	gbufferDumpDrawCmd.SetPSTexture("PositionTex", input0);
 	gbufferDumpDrawCmd.SetPSTexture("DiffuseTex", input1);
@@ -48,7 +56,7 @@ void SSGBufferDumpPostProcess::ChangeNextDumpMode()
 	case EDumpMode::EDiffuseDump:
 		mDumpMode = EDumpMode::ERoughnessDump;
 		break;
-	case EDumpMode::ERoughnessDump;
+	case EDumpMode::ERoughnessDump:
 		mDumpMode = EDumpMode::EPositionDump;
 		break;
 	}
@@ -59,9 +67,9 @@ void SSGBufferDumpPostProcess::ChangeNextDumpMode()
 
 void SSGBufferDumpPostProcess::UpdateDumpSettings()
 {
-	mDumpSettings.value1 = (mDumpMode == EDumpMode::EPositionDump);
-	mDumpSettings.value2 = (mDumpMode == EDumpMode::ENormalDump);
-	mDumpSettings.value3 = (mDumpMode == EDumpMode::EMetalicDump);
-	mDumpSettings.value4 = (mDumpMode == EDumpMode::EDiffuseDump);
-	mDumpSettings.value5 = (mDumpMode == EDumpMode::ERoughnessDump);
+	//mDumpSettings.value1 = (mDumpMode == EDumpMode::EPositionDump);
+	//mDumpSettings.value2 = (mDumpMode == EDumpMode::ENormalDump);
+	//mDumpSettings.value3 = (mDumpMode == EDumpMode::EMetalicDump);
+	//mDumpSettings.value4 = (mDumpMode == EDumpMode::EDiffuseDump);
+	//mDumpSettings.value5 = (mDumpMode == EDumpMode::ERoughnessDump);
 }

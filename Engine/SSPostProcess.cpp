@@ -27,7 +27,7 @@ SSRenderTargetTexture2D* SSPostProcess::GetOutput(UINT nIndex)
 {
 	if (mRenderTarget != nullptr)
 	{
-		mRenderTarget->GetOutput(nIndex);
+		return mRenderTarget->GetOutput(nIndex);
 	}
 
 	return nullptr;

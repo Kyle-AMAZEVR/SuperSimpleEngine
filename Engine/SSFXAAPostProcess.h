@@ -12,4 +12,6 @@ public:
 protected:
 	std::shared_ptr<class SSVertexShader> mFXAAVertexShader = nullptr;
 	std::shared_ptr<class SSPixelShader> mFXAAPixelShader = nullptr;
+
+
 };

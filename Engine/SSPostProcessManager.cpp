@@ -1,6 +1,8 @@
 
 #include "Core.h"
+#include "SSPostProcess.h"
 #include "SSPostProcessManager.h"
+
 
 void SSPostProcessManager::Initialize()
 {

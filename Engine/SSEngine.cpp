@@ -25,6 +25,9 @@
 #include "SSObjMesh.h"
 #include "SSShaderManager.h"
 #include "SSMaterial.h"
+#include "SSFileHelper.h"
+#include "SSFXAAPostProcess.h"
+#include "SSGBufferDumpPostProcess.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -36,6 +39,8 @@ bool SSEngine::Initialize(HWND windowHandle)
 
 	bInitialized = true;
 
+	SSShaderManager::Get().Initialize();
+
 	mViewport = std::make_shared<SSViewport>();
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 	
@@ -43,7 +48,9 @@ bool SSEngine::Initialize(HWND windowHandle)
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024,5);
 	m2DLUTRenderTarget = std::make_shared<class SSGenericRenderTarget>(512, 512, 1, false);
-	mFXAARenderTarget = std::make_shared<SSGenericRenderTarget>(1024, 768, 1, false);
+	
+	mFXAAPostProcess = std::make_shared<SSFXAAPostProcess>(1024, 768);
+	mGBufferDumpProcess = std::make_shared<SSGBufferDumpPostProcess>(512, 512);
 	
 
 	if(SSFileHelper::DirectoryExists(L"./Prebaked") == false)
@@ -53,11 +60,10 @@ bool SSEngine::Initialize(HWND windowHandle)
 
     OnWindowResize(mBufferWidth, mBufferHeight);	
 	
-	
 	SSSamplerManager::Get().Initialize();
 	SSDepthStencilStateManager::Get().Initialize();
 	SSRaterizeStateManager::Get().Initialize();
-	SSShaderManager::Get().Initialize();
+	
 
     TestCompileShader();
     TestCreateResources();
@@ -94,13 +100,16 @@ void SSEngine::TestCreateResources()
 	mObjMeshSphere = std::make_shared<SSObjMesh>();
 
 	mTestCube->SetScale(1, 1, 1);
-	mScreenBlit = std::make_shared<class SSScreenBlit>();
-	
-	//mObjMesh->ImportObjFile("./Resource/ObjMesh/pistol.obj", "./Resource/ObjMesh/pistol.mtl");
-	//mObjMeshSphere->ImportObjFile("./Resource/ObjMesh/sphere3.obj", "./Resource/ObjMesh/sphere3.mtl");
-	mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
-	//mSponzaMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
-	mSponzaMesh->SetScale(0.2f, 0.2f,0.2f);
+	mScreenBlit = std::make_shared<class SSScreenBlit>();	
+
+	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))
+	{
+		mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
+	}
+	else
+	{
+		check(false);
+	}
 
 	mNormalTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_normal.dds");
 	mRoughnessTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
@@ -133,10 +142,7 @@ void SSEngine::TestCompileShader()
 	mPrefilterPixelShader = SSShaderManager::Get().GetPixelShader("Prefilter.ps");
 
 	m2DLUTVertexShader = SSShaderManager::Get().GetVertexShader("2DLUT.vs");
-	m2DLUTPixelShader = SSShaderManager::Get().GetPixelShader("2DLUT.ps");
-
-	mFXAAVertexShader = SSShaderManager::Get().GetVertexShader("FXAA.vs");
-	mFXAAPixelShader = SSShaderManager::Get().GetPixelShader("FXAA.ps");
+	m2DLUTPixelShader = SSShaderManager::Get().GetPixelShader("2DLUT.ps");	
     
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
@@ -164,7 +170,9 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 
 		mViewport->Resize(newWidth, newHeight);
 		mGBuffer->Resize(newWidth, newHeight);
-		mFXAARenderTarget->Resize(newWidth, newHeight);
+		
+		mFXAAPostProcess->OnResize(newWidth, newHeight);
+		mGBufferDumpProcess->OnResize(newWidth, newHeight);
 	}
 }
 
@@ -493,22 +501,18 @@ void SSEngine::DrawScene()
 	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
 	mTestMaterial->ReleaseCurrent();
 
-	mFXAARenderTarget->Clear();
-	mFXAARenderTarget->SetCurrentRenderTarget();
+	mFXAAPostProcess->Draw(mGBuffer->GetColorOutput());
 
-	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader.get(), mFXAAPixelShader.get(), mScreenBlit };
-	fxaaDrawCmd.SetPSTexture("ScreenTex", mGBuffer->GetColorOutput());
-	SSAlignedCBuffer<XMFLOAT2> invScreenSize;
-	invScreenSize.value1.x = 1 / static_cast<float>(mBufferWidth);
-	invScreenSize.value1.y = 1 / static_cast<float>(mBufferHeight);	
-	fxaaDrawCmd.StorePSConstantBufferData("CBInverseScreenSize", invScreenSize);
-	fxaaDrawCmd.Do();
+	mGBufferDumpProcess->Draw(mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 	
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();
 
 	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
-	blitDrawCmd.SetPSTexture("sampleTexture", mFXAARenderTarget->GetOutput(0));
+	
+	//blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
+	blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
+
 	blitDrawCmd.Do();
 	
     HR(mSwapChain->Present(0,0));

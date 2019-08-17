@@ -81,8 +81,7 @@ private:
 	std::shared_ptr<class SSVertexShader> m2DLUTVertexShader;
 	std::shared_ptr<class SSPixelShader> m2DLUTPixelShader;
 
-	std::shared_ptr<class SSVertexShader> mFXAAVertexShader;
-	std::shared_ptr<class SSPixelShader> mFXAAPixelShader;
+	
 
 	// @ cubemap rendertargets
 	std::shared_ptr<class SSCubemapRenderTarget> mEquirectToCubemapRenderTarget;
@@ -104,12 +103,15 @@ private:
 
 
 	std::shared_ptr<class SSGBuffer> mGBuffer;
-	std::shared_ptr<class SSGenericRenderTarget> mFXAARenderTarget;
+	
 	std::shared_ptr<class SSGenericRenderTarget> m2DLUTRenderTarget;
     //
 
 	std::shared_ptr<class SSObjMesh> mSponzaMesh;
 	std::shared_ptr<class SSObjMesh> mObjMeshSphere;
+
+	std::shared_ptr<class SSPostProcess> mFXAAPostProcess;
+	std::shared_ptr<class SSPostProcess> mGBufferDumpProcess;
 
 private:
 	bool TryLoadEnvCubemap(std::wstring filepath);
