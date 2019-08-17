@@ -11,6 +11,8 @@
 class ENGINE_API SSName
 {
 public:
+	SSName(){}
+
 	SSName(const std::string& name);
 
 	SSName(const SSName& other);

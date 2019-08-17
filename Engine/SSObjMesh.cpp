@@ -115,7 +115,7 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 			{
 				char buffer[256]{'\0'};
 
-				sscanf(Line.c_str(), "usemtl %s", buffer);
+				sscanf_s(Line.c_str(), "usemtl %s", buffer);
 
 				if(mMeshSectionList.size() == 0)
 				{
@@ -165,8 +165,17 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	{
 		writer << kvp.first;
 		writer << kvp.second;		
-	}	
+	}
 
+	CreateVertexIndexBuffer();	
+	
+	return true;
+}
+
+void SSObjMesh::CreateVertexIndexBuffer()
+{
+	check(mVB == nullptr);
+	check(mIB == nullptr);
 	// @create vertex buffer and index buffer;
 	mVB = std::make_shared<SSVertexBuffer>();
 	mVB->SetVertexBufferData(mRealVertexList);
@@ -181,9 +190,9 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 
 	mIB = std::make_shared<SSIndexBuffer>();
 	mIB->SetIndexBufferData(idx);
-	
-	return true;
+
 }
+
 
 bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 {
@@ -206,21 +215,9 @@ bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 
 			mMeshMaterialMap[name] = material;
 		}
+
+		CreateVertexIndexBuffer();
 		
-		mVB = std::make_shared<SSVertexBuffer>();
-		mVB->SetVertexBufferData(mRealVertexList);
-
-		std::vector<UINT> idx;
-		idx.resize(mRealVertexList.size());
-
-		for (UINT i = 0; i < mRealVertexList.size(); ++i)
-		{
-			idx[i] = i;
-		}
-
-		mIB = std::make_shared<SSIndexBuffer>();
-		mIB->SetIndexBufferData(idx);
-
 		return true;
 	}
 	else
@@ -265,15 +262,14 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	SSAlignedCBuffer<int, int, int, int, int> settings;
-	settings.value1 = 1; //metalic
+	settings.value1 = 0; //metalic
 	settings.value2 = 0; //mask
 	settings.value3 = 0; //normal
-	settings.value4 = 1; // roghness
+	settings.value4 = 0; // roghness
 	settings.value5 = 1; // diffuse
 
 	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
-
-	material->SetPSConstantBufferData("TextureExist", settings);	
+		
 	material->SetPSSampler("DefaultTexSampler", sampler);
 
 	auto stride = mVB->GetStride();
@@ -285,11 +281,65 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	for(UINT i = 0; i < mMeshSectionList.size(); ++i)
 	{		
 		auto& section = mMeshSectionList[i];
+		
 		if (mMeshMaterialMap.count(section.mSectionName) > 0)
 		{
-			auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap);
+			if (mMeshMaterialMap[section.mSectionName].mDiffuseMap.length() > 0)
+			{
+				auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap);
+				material->SetPSTexture("DiffuseTex", diffuse.get());
+				settings.value5 = 1;
+			}
+			else
+			{
+				settings.value5 = 0;
+			}
 
-			material->SetPSTexture("DiffuseTex", diffuse.get());
+			if(mMeshMaterialMap[section.mSectionName].mNormalMap.length() > 0)
+			{
+				auto normal = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mNormalMap);
+				material->SetPSTexture("NormalTex", normal.get());
+				settings.value3 = 1;
+			}
+			else
+			{
+				settings.value3 = 0;
+			}
+
+			if (mMeshMaterialMap[section.mSectionName].mRoughnessMap.length() > 0)
+			{
+				auto rough = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mRoughnessMap);
+				material->SetPSTexture("RoughnessTex", rough.get());
+				settings.value4 = 1;
+			}
+			else
+			{
+				settings.value4 = 0;
+			}
+
+			if(mMeshMaterialMap[section.mSectionName].mMetalicMap.length() > 0)
+			{
+				auto metal = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mMetalicMap);
+				material->SetPSTexture("MetalicTex", metal.get());
+				settings.value1 = 1;
+			}
+			else
+			{
+				settings.value1 = 0;
+			}
+
+			if(mMeshMaterialMap[section.mSectionName].mMaskMap.length() > 0)
+			{
+				auto mask = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mMaskMap);
+				material->SetPSTexture("MaskTex", mask.get());
+				settings.value2 = 1;
+			}
+			else
+			{
+				settings.value2 = 0;
+			}
+
+			material->SetPSConstantBufferData("TextureExist", settings);
 
 			deviceContext->DrawIndexed(section.mEndIndex - section.mStartIndex, section.mStartIndex, 0);
 		}		
@@ -306,16 +356,19 @@ void SSObjMesh::OptimizedGenerateVertices()
 
 	// @sort mesh section list for low drawcall
 	std::sort(mMeshSectionList.begin(), mMeshSectionList.end(), [](SSObjMeshSection a, SSObjMeshSection b)
+	{
+		//auto strA = a.mSectionName.ToString();
+		//auto strB = b.mSectionName.ToString();
+
+		if (a.mSectionName.compare(b.mSectionName) < 0)
 		{
-			if (a.mSectionName.compare(b.mSectionName) < 0)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	});
 
 	// @create real vertex
 	mRealVertexList.resize(mVertexIndexList.size());

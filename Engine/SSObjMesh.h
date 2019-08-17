@@ -2,6 +2,7 @@
 #include "SSSceneObject.h"
 #include <vector>
 #include <map>
+#include "SSName.h"
 #include "DXVertexTypes.h"
 #include "SSObjMeshSection.h"
 #include "SSObjMeshMaterial.h"
@@ -23,6 +24,7 @@ protected:
 
 	void GenerateTangents();
 	void OptimizedGenerateVertices();
+	void CreateVertexIndexBuffer();
 	
 	bool ParseMtlFile(const std::string& filepath);
 
@@ -54,7 +56,6 @@ protected:
 	
 	bool GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index);
 };
-
 
 
 class SSObjMeshParser
