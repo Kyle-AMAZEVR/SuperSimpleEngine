@@ -102,8 +102,8 @@ void SSEngine::TestCreateResources()
 	mTestCube->SetScale(1, 1, 1);
 	mScreenBlit = std::make_shared<class SSScreenBlit>();	
 
-	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))
-	//if(false)
+	//if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))
+	if(false)
 	{
 		mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
 	}

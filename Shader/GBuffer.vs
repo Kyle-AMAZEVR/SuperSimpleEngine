@@ -56,7 +56,7 @@ PixelInputType VSMain( VertexInputType vin )
 	
 	output.OutTangent = tangentWS;
 
-	float3 bitangentWS = normalize(cross(normalWS, tangentWS)) * vin.Tangent.w;		
+	float3 bitangentWS = normalize(cross(normalWS, tangentWS)) * vin.Tangent.w;	
 	
 	output.OutBitangent = bitangentWS;
 

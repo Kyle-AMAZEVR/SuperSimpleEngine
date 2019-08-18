@@ -76,4 +76,6 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName textur
 			return texture;
 		}
 	}
+
+	return nullptr;
 }

@@ -25,7 +25,7 @@ SamplerState DefaultTexSampler : register(s0);
 
 float4 PSMain(PixelInputType pin) : SV_TARGET
 {
-    float4 FragColor;
+    float4 FragColor = float4(0,0,0,1);
     
     if(PositionDump) 
     {   
@@ -34,9 +34,8 @@ float4 PSMain(PixelInputType pin) : SV_TARGET
     }
     else if(NormalDump)
     {        
-        FragColor.xyz = NormalTex.Sample(DefaultTexSampler, pin.texcoord).xyz;        
+        FragColor.xyz = NormalTex.Sample(DefaultTexSampler, pin.texcoord).xyz;
         FragColor.z = -FragColor.z;
-        FragColor.w = 1.0f;        
     }
     else if(DiffuseDump)
     {

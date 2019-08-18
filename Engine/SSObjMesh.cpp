@@ -22,6 +22,19 @@
 #include "SSDepthStencilStateManager.h"
 #include "SSRasterizeStateManager.h"
 #include <unordered_set>
+#include <unordered_map>
+
+
+int GetHashCode(const VT_PositionNormalTexcoordTangent& p)
+{
+	int x = static_cast<int>(p.VertexAttribute1.x * 100.f);
+	int y = static_cast<int>(p.VertexAttribute1.y * 100.f);
+	int z = static_cast<int>(p.VertexAttribute1.z * 100.f);
+
+	return (3 * x + 5 * y + 7 * z) % (1 << 16);
+}
+
+
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -157,6 +170,7 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 
 	SerializeWriter writer("./Prebaked/sponza.mesh");
 	writer << mRealVertexList;
+	writer << mRealVertexIndices;
 	writer << mMeshSectionList;
 
 	writer << static_cast<UINT>(mMeshMaterialMap.size());
@@ -178,18 +192,10 @@ void SSObjMesh::CreateVertexIndexBuffer()
 	check(mIB == nullptr);
 	// @create vertex buffer and index buffer;
 	mVB = std::make_shared<SSVertexBuffer>();
-	mVB->SetVertexBufferData(mRealVertexList);
-
-	std::vector<UINT> idx;
-	idx.resize(mRealVertexList.size());
-
-	for (UINT i = 0; i < mRealVertexList.size(); ++i)
-	{
-		idx[i] = i;
-	}
+	mVB->SetVertexBufferData(mRealVertexList);	
 
 	mIB = std::make_shared<SSIndexBuffer>();
-	mIB->SetIndexBufferData(idx);
+	mIB->SetIndexBufferData(mRealVertexIndices);
 
 }
 
@@ -202,6 +208,7 @@ bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 		UINT materialMapSize = 0;
 
 		reader >> mRealVertexList;
+		reader >> mRealVertexIndices;
 		reader >> mMeshSectionList;
 		reader >> materialMapSize;
 
@@ -276,6 +283,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);
+
 	deviceContext->IASetIndexBuffer(mIB->GetBufferPointer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
 
 	for(UINT i = 0; i < mMeshSectionList.size(); ++i)
@@ -371,7 +379,7 @@ void SSObjMesh::OptimizedGenerateVertices()
 	});
 
 	// @create real vertex
-	mRealVertexList.resize(mVertexIndexList.size());
+	mRealVertexList.resize(mVertexIndexList.size());	
 
 	std::vector<SSObjMeshSection> compressedMeshSection;
 
@@ -396,13 +404,28 @@ void SSObjMesh::OptimizedGenerateVertices()
 
 		for (UINT i = section.mStartIndex; i < section.mEndIndex; ++i)
 		{
-			VT_PositionNormalTexcoordTangent v
-			(
+			VT_PositionNormalTexcoordTangent v(
 				mTempVertexList[mVertexIndexList[i]], mTempNormalList[mNormalIndexList[i]],
-				mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[mVertexIndexList[i]]
+				mTempTexCoordList[mTexcoordIndexList[i]], mTempTangentList[i]
 			);
 
-			mRealVertexList[sortedIndex++] = v;
+			mRealVertexIndices.push_back(sortedIndex);
+			mRealVertexList[sortedIndex++] = v;		
+
+			/*sortedIndex++;
+
+			UINT index = 0;
+			if(GetSimilarVertexIndex(v, index))
+			{
+				mRealVertexIndices.push_back(index);
+			}
+			else
+			{
+				mRealVertexList.push_back(v);
+				auto newIndex = mRealVertexList.size() - 1;
+				mVertexCache[v] = newIndex;
+				mRealVertexIndices.push_back(newIndex);
+			}*/
 		}
 	}
 
@@ -420,21 +443,7 @@ void SSObjMesh::OptimizedGenerateVertices()
 	mTempNormalList.clear();
 }
 
-bool SSObjMesh::GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index)
-{
-	UINT vHashCode = GetHashCode(vertex);
 
-	if (mVertexCacheMap.count(vHashCode) > 0)
-	{
-		
-		return true;
-	}
-	else
-	{
-		index = 0;
-		return false;
-	}
-}
 
 bool SSObjMesh::ParseMtlFile(const std::string& filepath)
 {
@@ -604,7 +613,7 @@ void SSObjMesh::GenerateTangents()
 		XMFLOAT3 dotResult;
 		XMStoreFloat3(&dotResult, XMVector3Dot(XMVector3Cross(n, t1), t2));
 
-		auto W = (dotResult.x < 0.0f) ? -1.0f : 1.0f;
+		auto W = (dotResult.x < 0.0f) ? -1.0f : 1.0f;		
 
 		bool bValid = true;
 		if (std::isnan(temp.x) || std::isnan(temp.y) || std::isnan(temp.z))
@@ -632,10 +641,10 @@ void SSObjMesh::GenerateTangents()
 			temp.z = lastValidTangent.z;
 		}
 
-		mTempTangentList[mVertexIndexList[i]].x = temp.x;
-		mTempTangentList[mVertexIndexList[i]].y = temp.y;
-		mTempTangentList[mVertexIndexList[i]].z = temp.z;
-		mTempTangentList[mVertexIndexList[i]].w = W;
+		mTempTangentList[i].x = temp.x;
+		mTempTangentList[i].y = temp.y;
+		mTempTangentList[i].z = temp.z;
+		mTempTangentList[i].w = W;
 	}
 
 }

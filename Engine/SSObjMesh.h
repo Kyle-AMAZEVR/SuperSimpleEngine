@@ -1,6 +1,7 @@
 #pragma once
 #include "SSSceneObject.h"
 #include <vector>
+#include <unordered_map>
 #include <map>
 #include "SSName.h"
 #include "DXVertexTypes.h"
@@ -47,14 +48,13 @@ protected:
 	bool mHasTexCoord = false;
 	bool mHasNormal = false;
 	
-
-	std::map<UINT, UINT> mVertexCacheMap;
 	std::vector<VT_PositionNormalTexcoordTangent> mRealVertexList;
+	std::vector<UINT> mRealVertexIndices;
 
 	std::vector<SSObjMeshSection> mMeshSectionList;
 	std::map<std::string, SSObjMeshMaterial> mMeshMaterialMap;
 	
-	bool GetSimilarVertexIndex(VT_PositionNormalTexcoordTangent& vertex, UINT& index);
+	//bool GetSimilarVertexIndex(const VT_PositionNormalTexcoordTangent& vertex, UINT& index);
 };
 
 
