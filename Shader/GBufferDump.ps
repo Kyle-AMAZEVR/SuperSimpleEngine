@@ -35,7 +35,7 @@ float4 PSMain(PixelInputType pin) : SV_TARGET
     else if(NormalDump)
     {        
         FragColor.xyz = NormalTex.Sample(DefaultTexSampler, pin.texcoord).xyz;
-        FragColor.z = -FragColor.z;
+        //FragColor.z = -FragColor.z;
     }
     else if(DiffuseDump)
     {

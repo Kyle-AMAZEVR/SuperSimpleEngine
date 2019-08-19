@@ -13,6 +13,7 @@
 #include "SSSamplerManager.h"
 #include "SSTextureManager.h"
 #include "SSTexture2D.h"
+#include "SSMathHelper.h"
 
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	: mSectorCount(sector), mStackCount(stack), mRadius(radius)
@@ -143,8 +144,44 @@ void SSSphere::InternalCreate()
 		));		
 	}
 
+	// debug purpose
+	std::vector<VT_PositionColor> tbnVertexArray;
+	for (UINT i = 0; i < mTempNormalList.size(); i++)
+	{
+		// 
+		tbnVertexArray.push_back(VT_PositionColor
+		(
+			mTempVertexList[i] , SSMathHelper::UnitY3
+		));
+
+		XMFLOAT4 normalEnd;
+		XMStoreFloat4( &normalEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&mTempNormalList[i]), 2.0f) );
+
+		tbnVertexArray.push_back(VT_PositionColor
+		(
+			normalEnd, SSMathHelper::UnitY3
+		));
+
+		XMFLOAT4 tangentEnd;
+		XMStoreFloat4(&tangentEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat4(&mTempTangentList[i]), 2.0f));
+
+		tbnVertexArray.push_back(VT_PositionColor
+		(
+			mTempVertexList[i], SSMathHelper::UnitZ3
+		));
+
+		tbnVertexArray.push_back(VT_PositionColor
+		(
+			tangentEnd, SSMathHelper::UnitZ3
+		));
+	}
+
+
 	mSphereVB = new SSVertexBuffer();
 	mSphereVB->SetVertexBufferData(vertexArray);	
+
+	mDebugTBNVB = std::make_shared<SSVertexBuffer>();
+	mDebugTBNVB->SetVertexBufferData(tbnVertexArray);
 	
 }
 
