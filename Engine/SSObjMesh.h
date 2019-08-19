@@ -20,6 +20,7 @@ public:
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
+	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 
 protected:
 
@@ -35,6 +36,9 @@ protected:
 
 	std::shared_ptr<class SSVertexBuffer> mVB;
 	std::shared_ptr<class SSIndexBuffer> mIB;
+
+	std::shared_ptr<class SSVertexBuffer> mTBNDebugVB;
+	std::shared_ptr<class SSIndexBuffer> mTBNDebugIB;
 
 	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;

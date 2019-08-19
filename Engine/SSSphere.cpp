@@ -67,7 +67,7 @@ void SSSphere::InternalCreate()
 			auto z4 = sectorRadius2 * DirectX::XMScalarSin(XMConvertToRadians(deg2));
 
 			auto V1 = XMFLOAT4{ (float)x1, (float)y1, (float)z1 , 1};
-			auto T1 = XMFLOAT2{ u1, v1 };
+			auto T1 = XMFLOAT2(u1, v1 );
 
 			auto V2 = XMFLOAT4((float)x2, (float)y1, (float)z2, 1);
 			auto T2 = XMFLOAT2(u2, v1);
@@ -156,7 +156,7 @@ void SSSphere::InternalCreate()
 		indexArray.push_back(tbnVertexArray.size()-1);
 
 		XMFLOAT4 normalEnd;
-		XMStoreFloat4( &normalEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&mTempNormalList[i]), 2.0f) );
+		XMStoreFloat4( &normalEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&mTempNormalList[i]), 1.0f) );
 
 		tbnVertexArray.push_back(VT_PositionColor
 		(
@@ -166,7 +166,10 @@ void SSSphere::InternalCreate()
 		indexArray.push_back(tbnVertexArray.size()-1);
 
 		XMFLOAT4 tangentEnd;
-		XMStoreFloat4(&tangentEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat4(&mTempTangentList[i]), 2.0f));
+
+		XMFLOAT3 temp(mTempTangentList[i].x, mTempTangentList[i].y, mTempTangentList[i].z);
+		
+		XMStoreFloat4(&tangentEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&temp), 1.0f));
 
 		tbnVertexArray.push_back(VT_PositionColor
 		(
@@ -262,7 +265,7 @@ void SSSphere::GenerateTangents()
 		tan2Accum[(int)i + 2] += tan2;
 	}
 
-	XMFLOAT4 lastValidTangent;
+	XMFLOAT4 lastValidTangent(0,0,0,0);
 
 	for (UINT i = 0; i < mTempVertexList.size(); ++i)
 	{
@@ -272,14 +275,30 @@ void SSSphere::GenerateTangents()
 		
 		// Gram-Schmidt orthogonalize                
 		XMFLOAT3 temp; 
-		XMStoreFloat3(&temp, XMVector3Normalize(t1 - (XMVector3Dot(n, t1) * n)));
+		//XMStoreFloat3(&temp, XMVector3Normalize(t1 - (XMVector3Dot(n, t1) * n)));
+		
+		XMFLOAT3 normalDotTangent;		
+		XMStoreFloat3(&normalDotTangent, XMVector3Dot(n, t1));
+
+		XMVECTOR computeResult = t1 - XMVectorScale(n, normalDotTangent.x);
+		XMFLOAT4 errCheck;
+		XMStoreFloat4(&errCheck, computeResult);
+
+		bool bValid = true;
+
+		if(errCheck.x == 0 && errCheck.y == 0 && errCheck.z ==0 && errCheck.w == 0)
+		{
+			bValid = false;
+		}
+
+		XMStoreFloat3(&temp, XMVector3Normalize(computeResult));		
+
 		// Store handedness in w                
 		XMFLOAT3 dotResult;
 		XMStoreFloat3(&dotResult, XMVector3Dot(XMVector3Cross(n, t1), t2));
 
 		auto W = (dotResult.x < 0.0f) ? -1.0f : 1.0f;
-
-		bool bValid = true;
+		
 		if (std::isnan(temp.x) || std::isnan(temp.y) || std::isnan(temp.z))
 		{
 			bValid = false;
@@ -310,6 +329,8 @@ void SSSphere::GenerateTangents()
 		mTempTangentList[i].z = temp.z;
 		mTempTangentList[i].w = W;
 	}
+
+	tan1Accum.clear();
 	
 }
 
@@ -337,7 +358,7 @@ void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* m
 
 	material->SetCurrent();
 	
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 20, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 3, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
@@ -352,7 +373,7 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 
 	material->SetCurrent();
 
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 20, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 3, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 

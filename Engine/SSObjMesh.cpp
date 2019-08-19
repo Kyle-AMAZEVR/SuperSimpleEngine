@@ -73,6 +73,25 @@ static inline std::string trim_copy(std::string s)
 	return s;
 }
 
+void SSObjMesh::DebugDraw(ID3D11DeviceContext* deviceContext, SSMaterial* material)
+{
+	material->SetPrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	auto stride = mTBNDebugVB->GetStride();
+	UINT offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &mTBNDebugVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetIndexBuffer(mTBNDebugIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+
+	material->SetCurrent();
+
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
+	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+
+	deviceContext->Draw(mTBNDebugVB->GetVertexCount(), 0);
+}
+
 
 bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath)
 {
@@ -188,6 +207,59 @@ void SSObjMesh::CreateVertexIndexBuffer()
 	mIB = std::make_shared<SSIndexBuffer>();
 	mIB->SetIndexBufferData(mRealVertexIndices);
 
+
+	std::vector<VT_PositionColor> debugVertexArray;
+	std::vector<UINT> indexArray;
+
+	//debugVertexArray.resize(mRealVertexList.size());
+	//indexArray.resize(mRealVertexList.size());
+
+	for(UINT i = 0; i < mRealVertexList.size(); ++i)
+	{
+		
+		debugVertexArray.push_back(VT_PositionColor
+		(
+			mRealVertexList[i].VertexAttribute1, SSMathHelper::UnitY3
+		));
+
+		indexArray.push_back(debugVertexArray.size() - 1);
+
+		XMFLOAT4 normalEnd;
+		XMStoreFloat4(&normalEnd, XMLoadFloat4(&mRealVertexList[i].VertexAttribute1) + XMVectorScale(XMLoadFloat3(&mRealVertexList[i].VertexAttribute2), 5.0f));
+		
+		debugVertexArray.push_back(VT_PositionColor
+		(
+			normalEnd, SSMathHelper::UnitY3
+		));
+
+		indexArray.push_back(debugVertexArray.size() - 1);
+
+		XMFLOAT4 tangentEnd;
+
+		XMFLOAT3 temp(mRealVertexList[i].VertexAttribute4.x, mRealVertexList[i].VertexAttribute4.y, mRealVertexList[i].VertexAttribute4.z);
+
+		XMStoreFloat4(&tangentEnd, XMLoadFloat4(&mRealVertexList[i].VertexAttribute1) + XMVectorScale(XMLoadFloat3(&temp), 5.0f));
+
+		debugVertexArray.push_back(VT_PositionColor
+		(
+			mRealVertexList[i].VertexAttribute1, SSMathHelper::UnitZ3
+		));
+
+		indexArray.push_back(debugVertexArray.size() - 1);
+
+		debugVertexArray.push_back(VT_PositionColor
+		(
+			tangentEnd, SSMathHelper::UnitZ3
+		));
+
+		indexArray.push_back(debugVertexArray.size() - 1);
+	}
+
+	mTBNDebugVB = std::make_shared<SSVertexBuffer>();
+	mTBNDebugVB->SetVertexBufferData(debugVertexArray);
+	
+	mTBNDebugIB = std::make_shared<SSIndexBuffer>();
+	mTBNDebugIB->SetIndexBufferData(indexArray);
 }
 
 
@@ -578,7 +650,7 @@ void SSObjMesh::GenerateTangents()
 		bitangent[mVertexIndexList[i+2]] += bitangentVector;
 	}
 
-	XMFLOAT4 lastValidTangent;
+	XMFLOAT4 lastValidTangent(0,0,0,0);
 
 	for (UINT i = 0; i < mVertexIndexList.size(); ++i)
 	{
@@ -595,10 +667,20 @@ void SSObjMesh::GenerateTangents()
 		XMFLOAT3 temp;
 
 		XMFLOAT3 normalDotTangent;
-		XMStoreFloat3(&normalDotTangent, XMVector3Dot(n, tangent1));		
+		XMStoreFloat3(&normalDotTangent, XMVector3Dot(n, tangent1));
 
-		//XMStoreFloat3(&temp, XMVector3Normalize(t1 - (XMVector3Dot(n, t1) * n)));
-		XMStoreFloat3(&temp, XMVector3Normalize(tangent1 - XMVectorScale(n, normalDotTangent.x)));		
+		XMVECTOR computeResult = tangent1 - XMVectorScale(n, normalDotTangent.x);
+		XMFLOAT4 errCheck;
+		XMStoreFloat4(&errCheck, computeResult);
+
+		bool bValid = true;
+
+		if (errCheck.x == 0 && errCheck.y == 0 && errCheck.z == 0 )
+		{
+			bValid = false;
+		}
+				
+		XMStoreFloat3(&temp, XMVector3Normalize(computeResult));
 
 		// Store handedness in w                
 		XMFLOAT3 dotResult;
@@ -606,7 +688,7 @@ void SSObjMesh::GenerateTangents()
 
 		auto W = (dotResult.x < 0.0f) ? -1.0f : 1.0f;		
 
-		bool bValid = true;
+		
 		if (std::isnan(temp.x) || std::isnan(temp.y) || std::isnan(temp.z))
 		{
 			bValid = false;
@@ -630,6 +712,7 @@ void SSObjMesh::GenerateTangents()
 			temp.x = lastValidTangent.x;
 			temp.y = lastValidTangent.y;
 			temp.z = lastValidTangent.z;
+			
 		}
 
 		mTempTangentList[i].x = temp.x;

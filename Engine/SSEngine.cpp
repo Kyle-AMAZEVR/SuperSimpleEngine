@@ -95,7 +95,7 @@ void SSEngine::TestCreateResources()
 
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
-	mTestSphere = std::make_shared<SSSphere>(20, 20, 2.0f);	
+	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);	
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 	mObjMeshSphere = std::make_shared<SSObjMesh>();
 
@@ -512,11 +512,16 @@ void SSEngine::DrawScene()
 
 	SSDepthStencilStateManager::Get().SetToDefault();
 	SSRaterizeStateManager::Get().SetToDefault();
-	
-	
-	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
-	///mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
+
+	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
 	mTestSphere->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
+
+
+	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
+
+	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
+	mSponzaMesh->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
+	SSDepthStencilStateManager::Get().SetToDefault();
 	
 	mTestMaterial->ReleaseCurrent();
 
