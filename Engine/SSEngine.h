@@ -17,7 +17,7 @@ public:
     void OnWindowResize(int newWidth, int newHeight);
     static bool IsInitialized() { return bInitialized; }
 
-	
+	void ChangeToNextDumpMode();
 
     inline ID3D11Device* GetDevice() { return mDevice; }
     inline ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
@@ -111,7 +111,7 @@ private:
 	std::shared_ptr<class SSObjMesh> mObjMeshSphere;
 
 	std::shared_ptr<class SSPostProcess> mFXAAPostProcess;
-	std::shared_ptr<class SSPostProcess> mGBufferDumpProcess;
+	std::shared_ptr<class SSGBufferDumpPostProcess> mGBufferDumpProcess;
 
 private:
 	bool TryLoadEnvCubemap(std::wstring filepath);

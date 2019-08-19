@@ -2,12 +2,13 @@
 #include "Core.h"
 #include "SSInputManager.h"
 #include "CameraManager.h"
+#include "SSEngine.h"
 
 void SSInputManager::OnKeyDown(ULONGLONG key)
 {
 	switch (key)
 	{
-	case VK_UP:
+	case VK_UP:	
 		SSCameraManager::Get().MoveFoward(2.f);
 		break;
 	case VK_DOWN:
@@ -19,8 +20,10 @@ void SSInputManager::OnKeyDown(ULONGLONG key)
 	case VK_RIGHT:
 		SSCameraManager::Get().RotateYaw(0.01f);
 		break;
-
 	
+	case VK_F1:
+		SSEngine::Get().ChangeToNextDumpMode();
+		break;
 	}
 }
 

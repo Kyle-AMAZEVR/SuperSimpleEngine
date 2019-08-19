@@ -26,7 +26,7 @@ protected:
 	std::shared_ptr<SSVertexShader> mVertexShader;
 	std::shared_ptr<SSPixelShader> mPixelShader;
 
-	EDumpMode mDumpMode = EDumpMode::ENormalDump;
+	EDumpMode mDumpMode = EDumpMode::EPositionDump;
 	//EDumpMode mDumpMode = EDumpMode::EMetalicDump;
 	void UpdateDumpSettings();
 

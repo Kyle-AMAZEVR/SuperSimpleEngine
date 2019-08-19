@@ -98,7 +98,7 @@ using VT_PositionNormalTexcoord = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT
 using VT_PositionNormalTexcoordTangent = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT3, DirectX::XMFLOAT2, DirectX::XMFLOAT4>;
 
 
-UINT GetHashCode(const VT_PositionNormalTexcoordTangent& p);
+
 
 
 
