@@ -9,8 +9,8 @@ class SSDepthRenderTargetTexture2D;
 
 enum class EGBufferType : UINT8
 {
-	Position,
 	Color,
+	Position,
 	Normal,	
 	Max,
 };

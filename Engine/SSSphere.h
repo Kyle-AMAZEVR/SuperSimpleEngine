@@ -25,6 +25,7 @@ protected:
 	static class SSVertexBuffer* mSphereVB;
 
 	std::shared_ptr<SSVertexBuffer> mDebugTBNVB;
+	std::shared_ptr<class SSIndexBuffer> mDebugIB;
 
 	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;

@@ -124,7 +124,6 @@ void SSSphere::InternalCreate()
 	std::vector< VT_PositionNormalTexcoordTangent > vertexArray;
 	std::vector<UINT> indexArray;
 	
-
 	for (UINT i = 0; i < mTempVertexList.size(); i += 3)
 	{
 		// face1
@@ -154,6 +153,8 @@ void SSSphere::InternalCreate()
 			mTempVertexList[i] , SSMathHelper::UnitY3
 		));
 
+		indexArray.push_back(tbnVertexArray.size()-1);
+
 		XMFLOAT4 normalEnd;
 		XMStoreFloat4( &normalEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&mTempNormalList[i]), 2.0f) );
 
@@ -161,6 +162,8 @@ void SSSphere::InternalCreate()
 		(
 			normalEnd, SSMathHelper::UnitY3
 		));
+
+		indexArray.push_back(tbnVertexArray.size()-1);
 
 		XMFLOAT4 tangentEnd;
 		XMStoreFloat4(&tangentEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat4(&mTempTangentList[i]), 2.0f));
@@ -170,10 +173,14 @@ void SSSphere::InternalCreate()
 			mTempVertexList[i], SSMathHelper::UnitZ3
 		));
 
+		indexArray.push_back(tbnVertexArray.size()-1);
+
 		tbnVertexArray.push_back(VT_PositionColor
 		(
 			tangentEnd, SSMathHelper::UnitZ3
 		));
+
+		indexArray.push_back(tbnVertexArray.size()-1);
 	}
 
 
@@ -182,6 +189,9 @@ void SSSphere::InternalCreate()
 
 	mDebugTBNVB = std::make_shared<SSVertexBuffer>();
 	mDebugTBNVB->SetVertexBufferData(tbnVertexArray);
+
+	mDebugIB = std::make_shared<SSIndexBuffer>();
+	mDebugIB->SetIndexBufferData(indexArray);
 	
 }
 
@@ -317,18 +327,21 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 
 void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
 {
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);	
 
 	auto stride = mDebugTBNVB->GetStride();
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &mDebugTBNVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetIndexBuffer(mDebugIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 	material->SetCurrent();
 	
 	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 20, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+
+	
 
 	deviceContext->Draw(mDebugTBNVB->GetVertexCount(), 0);
 }
