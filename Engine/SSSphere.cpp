@@ -315,6 +315,18 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);
 }
 
+void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
+{
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	auto stride = mDebugTBNVB->GetStride();
+	UINT offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &mDebugTBNVB->GetBufferPointerRef(), &stride, &offset);
+
+	deviceContext->Draw(mDebugTBNVB->GetVertexCount(), 0);
+}
+
 void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
 {
 	check(material != nullptr);
