@@ -146,6 +146,11 @@ void SSEngine::TestCompileShader()
 	m2DLUTVertexShader = SSShaderManager::Get().GetVertexShader("2DLUT.vs");
 	m2DLUTPixelShader = SSShaderManager::Get().GetPixelShader("2DLUT.ps");	
     
+	mTBNDebugVertexShader = SSShaderManager::Get().GetVertexShader("TBNDebug.vs");
+	mTBNDebugPixelShader = SSShaderManager::Get().GetPixelShader("TBNDebug.ps");
+
+	mTBNDebugMaterial = std::make_shared<SSMaterial>(mTBNDebugVertexShader.get(), mTBNDebugPixelShader.get());
+
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
 
@@ -511,6 +516,7 @@ void SSEngine::DrawScene()
 	
 	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
 	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
+	mTestSphere->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
 	
 	mTestMaterial->ReleaseCurrent();
 

@@ -324,6 +324,12 @@ void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* m
 
 	deviceContext->IASetVertexBuffers(0, 1, &mDebugTBNVB->GetBufferPointerRef(), &stride, &offset);
 
+	material->SetCurrent();
+	
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 20, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
+	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+
 	deviceContext->Draw(mDebugTBNVB->GetVertexCount(), 0);
 }
 

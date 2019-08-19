@@ -51,6 +51,7 @@ private:
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
 
 	std::shared_ptr<class SSMaterial> mTestMaterial;
+	std::shared_ptr<class SSMaterial> mTBNDebugMaterial;
 
 	std::shared_ptr<class SSCube> mTestCube;
 	std::shared_ptr<class SSSphere> mTestSphere;
@@ -81,6 +82,8 @@ private:
 	std::shared_ptr<class SSVertexShader> m2DLUTVertexShader;
 	std::shared_ptr<class SSPixelShader> m2DLUTPixelShader;
 
+	std::shared_ptr<class SSVertexShader> mTBNDebugVertexShader;
+	std::shared_ptr<class SSPixelShader> mTBNDebugPixelShader;
 	
 
 	// @ cubemap rendertargets
