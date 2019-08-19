@@ -515,7 +515,7 @@ void SSEngine::DrawScene()
 	
 	
 	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
-	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
+	///mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
 	mTestSphere->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
 	
 	mTestMaterial->ReleaseCurrent();

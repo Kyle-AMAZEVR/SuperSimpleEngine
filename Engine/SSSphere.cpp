@@ -327,7 +327,7 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 
 void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
 {
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);	
+	material->SetPrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);	
 
 	auto stride = mDebugTBNVB->GetStride();
 	UINT offset = 0;
