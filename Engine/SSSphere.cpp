@@ -5,6 +5,14 @@
 #include "DXVertexTypes.h"
 #include "DXVertexBuffer.h"
 #include "SSIndexBuffer.h"
+#include "SSMaterial.h"
+#include "SSFreqUsedNames.h"
+#include "SSName.h"
+#include "CameraManager.h"
+#include "FreqUsedConstantBufferTypes.h"
+#include "SSSamplerManager.h"
+#include "SSTextureManager.h"
+#include "SSTexture2D.h"
 
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	: mSectorCount(sector), mStackCount(stack), mRadius(radius)
@@ -270,6 +278,48 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);
 }
 
+void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
+{
+	check(material != nullptr);
+
+	material->SetCurrent();
+
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 20, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
+	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+
+	SSAlignedCBuffer<int, int, int, int, int> settings;
+	settings.value1 = 1; //metalic
+	settings.value2 = 0; //mask
+	settings.value3 = 1; //normal
+	settings.value4 = 1; // roghness
+	settings.value5 = 1; // diffuse
+
+	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
+
+	material->SetPSSampler("DefaultTexSampler", sampler);
+
+	auto stride = mSphereVB->GetStride();
+	UINT offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
+
+	material->SetPSConstantBufferData("TextureExist", settings);
+	
+	auto metal = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_metallic.dds");
+	material->SetPSTexture("MetalicTex", metal.get());
+
+	auto rough = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_roughness.dds");
+	material->SetPSTexture("RoughnessTex", rough.get());
+
+	auto diffuse = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_basecolor.dds");
+	material->SetPSTexture("DiffuseTex", diffuse.get());
+
+	auto normal = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_normal.dds");
+	material->SetPSTexture("NormalTex", normal.get());
+
+	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);	
+}
 
 bool SSSphere::bIsInitialized = false;
 SSVertexBuffer* SSSphere::mSphereVB = nullptr;

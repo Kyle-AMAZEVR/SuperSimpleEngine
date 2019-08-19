@@ -25,15 +25,6 @@
 #include <unordered_map>
 
 
-int GetHashCode(const VT_PositionNormalTexcoordTangent& p)
-{
-	int x = static_cast<int>(p.VertexAttribute1.x * 100.f);
-	int y = static_cast<int>(p.VertexAttribute1.y * 100.f);
-	int z = static_cast<int>(p.VertexAttribute1.z * 100.f);
-
-	return (3 * x + 5 * y + 7 * z) % (1 << 16);
-}
-
 
 
 // trim from start (in place)
@@ -525,11 +516,11 @@ bool SSObjMesh::ParseMtlFile(const std::string& filepath)
 
 void SSObjMesh::GenerateTangents()
 {
-	std::vector<XMVECTOR> tan1Accum;
-	std::vector<XMVECTOR> tan2Accum;
+	std::vector<XMVECTOR> tangent;
+	std::vector<XMVECTOR> bitangent;
 
-	tan1Accum.resize(mTempVertexList.size());
-	tan2Accum.resize(mTempVertexList.size());
+	tangent.resize(mTempVertexList.size());
+	bitangent.resize(mTempVertexList.size());
 
 	mTempTangentList.resize(mVertexIndexList.size());
 	
@@ -565,26 +556,26 @@ void SSObjMesh::GenerateTangents()
 			r = 1 / 0.1f;
 		}
 
-		XMFLOAT3 tmptan1;
-		tmptan1.x = (t2 * q1.x - t1 * q2.x) * r;
-		tmptan1.y = (t2 * q1.y - t1 * q2.y) * r;
-		tmptan1.z = (t2 * q1.z - t1 * q2.z) * r;
+		XMFLOAT3 tmptangent;
+		tmptangent.x = (t2 * q1.x - t1 * q2.x) * r;
+		tmptangent.y = (t2 * q1.y - t1 * q2.y) * r;
+		tmptangent.z = (t2 * q1.z - t1 * q2.z) * r;
 
-		XMFLOAT3 tmptan2;
-		tmptan2.x = (s1 * q2.x - s2 * q1.x) * r;
-		tmptan2.y = (s1 * q2.y - s2 * q1.y) * r;
-		tmptan2.z = (s1 * q2.z - s2 * q1.z) * r;
+		XMFLOAT3 tmpbitangent;
+		tmpbitangent.x = (s1 * q2.x - s2 * q1.x) * r;
+		tmpbitangent.y = (s1 * q2.y - s2 * q1.y) * r;
+		tmpbitangent.z = (s1 * q2.z - s2 * q1.z) * r;
 
-		auto tan1 = XMLoadFloat3(&tmptan1);
-		auto tan2 = XMLoadFloat3(&tmptan2);
+		auto tangentVector = XMLoadFloat3(&tmptangent);
+		auto bitangentVector = XMLoadFloat3(&tmpbitangent);
 
-		tan1Accum[mVertexIndexList[i]] += tan1;
-		tan1Accum[mVertexIndexList[i+1]] += tan1;
-		tan1Accum[mVertexIndexList[i+2]] += tan1;
+		tangent[mVertexIndexList[i]] += tangentVector;
+		tangent[mVertexIndexList[i+1]] += tangentVector;
+		tangent[mVertexIndexList[i+2]] += tangentVector;
 
-		tan2Accum[mVertexIndexList[i]] += tan2;
-		tan2Accum[mVertexIndexList[i+1]] += tan2;
-		tan2Accum[mVertexIndexList[i+2]] += tan2;
+		bitangent[mVertexIndexList[i]] += bitangentVector;
+		bitangent[mVertexIndexList[i+1]] += bitangentVector;
+		bitangent[mVertexIndexList[i+2]] += bitangentVector;
 	}
 
 	XMFLOAT4 lastValidTangent;
@@ -596,22 +587,22 @@ void SSObjMesh::GenerateTangents()
 		auto n = DirectX::XMLoadFloat3(&mTempNormalList[n1]);
 
 		auto vertexIndex = mVertexIndexList[i];
-		check(vertexIndex < tan1Accum.size());
-		auto t1 = tan1Accum[mVertexIndexList[i]];
-		auto t2 = tan2Accum[mVertexIndexList[i]];
+		check(vertexIndex < tangent.size());
+		auto tangent1 = tangent[mVertexIndexList[i]];
+		auto bitangent1 = bitangent[mVertexIndexList[i]];
 
 		// Gram-Schmidt orthogonalize                
 		XMFLOAT3 temp;
 
-		XMFLOAT3 dotResultVector;
-		XMStoreFloat3(&dotResultVector, XMVector3Dot(n, t1));		
+		XMFLOAT3 normalDotTangent;
+		XMStoreFloat3(&normalDotTangent, XMVector3Dot(n, tangent1));		
 
 		//XMStoreFloat3(&temp, XMVector3Normalize(t1 - (XMVector3Dot(n, t1) * n)));
-		XMStoreFloat3(&temp, XMVector3Normalize(t1 - XMVectorScale(n, dotResultVector.x)));		
+		XMStoreFloat3(&temp, XMVector3Normalize(tangent1 - XMVectorScale(n, normalDotTangent.x)));		
 
 		// Store handedness in w                
 		XMFLOAT3 dotResult;
-		XMStoreFloat3(&dotResult, XMVector3Dot(XMVector3Cross(n, t1), t2));
+		XMStoreFloat3(&dotResult, XMVector3Dot(XMVector3Cross(n, tangent1), bitangent1));
 
 		auto W = (dotResult.x < 0.0f) ? -1.0f : 1.0f;		
 

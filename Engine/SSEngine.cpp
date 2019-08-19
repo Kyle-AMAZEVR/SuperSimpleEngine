@@ -508,7 +508,10 @@ void SSEngine::DrawScene()
 	SSDepthStencilStateManager::Get().SetToDefault();
 	SSRaterizeStateManager::Get().SetToDefault();
 	
+	
 	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
+	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
+	
 	mTestMaterial->ReleaseCurrent();
 
 	mFXAAPostProcess->Draw(mGBuffer->GetColorOutput());

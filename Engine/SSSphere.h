@@ -10,6 +10,7 @@ public:
 	SSSphere(UINT sector, UINT stack, float radius);
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
+	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 protected:
 	UINT mSectorCount = 5;
 	UINT mStackCount = 5;
