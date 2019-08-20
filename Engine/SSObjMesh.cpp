@@ -196,27 +196,14 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	return true;
 }
 
-void SSObjMesh::CreateVertexIndexBuffer()
+void SSObjMesh::CreateDebugTBNVertexIndexBuffer()
 {
-	check(mVB == nullptr);
-	check(mIB == nullptr);
-	// @create vertex buffer and index buffer;
-	mVB = std::make_shared<SSVertexBuffer>();
-	mVB->SetVertexBufferData(mRealVertexList);	
-
-	mIB = std::make_shared<SSIndexBuffer>();
-	mIB->SetIndexBufferData(mRealVertexIndices);
-
-
 	std::vector<VT_PositionColor> debugVertexArray;
 	std::vector<UINT> indexArray;
 
-	//debugVertexArray.resize(mRealVertexList.size());
-	//indexArray.resize(mRealVertexList.size());
-
-	for(UINT i = 0; i < mRealVertexList.size(); ++i)
+	for (UINT i = 0; i < mRealVertexList.size(); ++i)
 	{
-		
+
 		debugVertexArray.push_back(VT_PositionColor
 		(
 			mRealVertexList[i].VertexAttribute1, SSMathHelper::UnitY3
@@ -226,7 +213,7 @@ void SSObjMesh::CreateVertexIndexBuffer()
 
 		XMFLOAT4 normalEnd;
 		XMStoreFloat4(&normalEnd, XMLoadFloat4(&mRealVertexList[i].VertexAttribute1) + XMVectorScale(XMLoadFloat3(&mRealVertexList[i].VertexAttribute2), 5.0f));
-		
+
 		debugVertexArray.push_back(VT_PositionColor
 		(
 			normalEnd, SSMathHelper::UnitY3
@@ -257,9 +244,24 @@ void SSObjMesh::CreateVertexIndexBuffer()
 
 	mTBNDebugVB = std::make_shared<SSVertexBuffer>();
 	mTBNDebugVB->SetVertexBufferData(debugVertexArray);
-	
+
 	mTBNDebugIB = std::make_shared<SSIndexBuffer>();
 	mTBNDebugIB->SetIndexBufferData(indexArray);
+}
+
+void SSObjMesh::CreateVertexIndexBuffer()
+{
+	check(mVB == nullptr);
+	check(mIB == nullptr);
+	// @create vertex buffer and index buffer;
+	mVB = std::make_shared<SSVertexBuffer>();
+	mVB->SetVertexBufferData(mRealVertexList);	
+
+	mIB = std::make_shared<SSIndexBuffer>();
+	mIB->SetIndexBufferData(mRealVertexIndices);
+
+
+	
 }
 
 
@@ -338,6 +340,14 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	settings.value4 = 0; // roghness
 	settings.value5 = 1; // diffuse
 
+	SSAlignedCBuffer<float, float> metalicRoughnessOverride;
+	metalicRoughnessOverride.value1 = 0;
+	metalicRoughnessOverride.value2 = 0;
+
+	mbRoughnessOverride = true;
+	mbMetalicOverride = false;
+
+
 	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
 		
 	material->SetPSSampler("DefaultTexSampler", sampler);
@@ -377,7 +387,12 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 				settings.value3 = 0;
 			}
 
-			if (mMeshMaterialMap[section.mSectionName].mRoughnessMap.length() > 0)
+			if(mbRoughnessOverride)
+			{
+				settings.value4 = 0;
+				metalicRoughnessOverride.value2 = 0.1;
+			}
+			else if (mMeshMaterialMap[section.mSectionName].mRoughnessMap.length() > 0)
 			{
 				auto rough = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mRoughnessMap);
 				material->SetPSTexture("RoughnessTex", rough.get());
@@ -388,7 +403,12 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 				settings.value4 = 0;
 			}
 
-			if(mMeshMaterialMap[section.mSectionName].mMetalicMap.length() > 0)
+			if(mbMetalicOverride)
+			{
+				settings.value1 = 0;
+				metalicRoughnessOverride.value1 = 0.1f;
+			}
+			else if(mMeshMaterialMap[section.mSectionName].mMetalicMap.length() > 0)
 			{
 				auto metal = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mMetalicMap);
 				material->SetPSTexture("MetalicTex", metal.get());
@@ -411,6 +431,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			}
 
 			material->SetPSConstantBufferData("TextureExist", settings);
+			material->SetPSConstantBufferData("MetalicRoughness", metalicRoughnessOverride);
 
 			deviceContext->DrawIndexed(section.mEndIndex - section.mStartIndex, section.mStartIndex, 0);
 		}		

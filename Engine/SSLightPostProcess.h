@@ -1,6 +1,14 @@
 #pragma once
 
 #include "SSPostProcess.h"
+#include "FreqUsedConstantBufferTypes.h"
+
+struct LightCBuffer
+{
+	XMFLOAT4 lightPosition[16];
+	XMFLOAT4 lightColors[16];
+	XMFLOAT4 lightMinMaxs[16];
+};
 
 class SSLightPostProcess : public SSPostProcess
 {
@@ -20,5 +28,6 @@ public:
 protected:
 	std::shared_ptr<class SSVertexShader> mVertexShader;
 	std::shared_ptr<class SSPixelShader> mPixelShader;
-	
+
+	LightCBuffer mLightInfo;
 };

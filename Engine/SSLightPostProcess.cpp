@@ -7,13 +7,31 @@
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSScreenBlit.h"
 
+
+
+
+
 SSLightPostProcess::SSLightPostProcess(UINT width, UINT height)
 	: SSPostProcess(width, height)
 {
 	mVertexShader = SSShaderManager::Get().GetVertexShader("DeferredLighting.vs");
 	mPixelShader = SSShaderManager::Get().GetPixelShader("DeferredLighting.ps");
-}
 
+	for (int i = 0; i < 16; ++i)
+	{
+		mLightInfo.lightColors[i].x = mLightInfo.lightColors[i].y = mLightInfo.lightColors[i].z = 0.1;
+
+		mLightInfo.lightPosition[i].x = i * 10;
+		mLightInfo.lightPosition[i].y = 5;
+		mLightInfo.lightPosition[i].z = 0;
+		mLightInfo.lightPosition[i].z = 1;
+
+		mLightInfo.lightMinMaxs[i].x = 1;
+		mLightInfo.lightMinMaxs[i].y = 10;
+		mLightInfo.lightMinMaxs[i].z = 0;
+		mLightInfo.lightMinMaxs[i].w = 0;
+	}
+}
 
 
 
@@ -36,8 +54,10 @@ void SSLightPostProcess::Draw(SSTexture2DBase* input0,
 	drawCmd.SetPSTexture("NormalTex", input2);
 	drawCmd.SetPSTexture("BrdfLUT", input3);
 	drawCmd.SetPSTexture("IrradianceMap", input4);
-	drawCmd.SetPSTexture("PrefilterMap", input5); 
+	drawCmd.SetPSTexture("PrefilterMap", input5);
 
-	//drawCmd.StorePSConstantBufferData("Dump", mDumpSettings);
+	drawCmd.StorePSConstantBufferData("LightPosition", mLightInfo.lightPosition);
+	drawCmd.StorePSConstantBufferData("LightColor", mLightInfo.lightColors);
+	drawCmd.StorePSConstantBufferData("LightMinMax", mLightInfo.lightMinMaxs);
 	drawCmd.Do();
 }

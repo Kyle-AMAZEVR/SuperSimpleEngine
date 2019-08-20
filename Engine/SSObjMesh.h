@@ -22,11 +22,21 @@ public:
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 
+	void SetRoughnessOverride(bool bOverride) { mbRoughnessOverride = bOverride; }
+	void SetMetalicOverride(bool bOverride) { mbMetalicOverride = bOverride; }
+
+	bool IsRoughnessOverride() const { return mbRoughnessOverride; }
+	bool IsMetalicOverride() const { return mbMetalicOverride; }
+
 protected:
+
+	bool mbRoughnessOverride = false;
+	bool mbMetalicOverride = false;
 
 	void GenerateTangents();
 	void OptimizedGenerateVertices();
 	void CreateVertexIndexBuffer();
+	void CreateDebugTBNVertexIndexBuffer();
 	
 	bool ParseMtlFile(const std::string& filepath);
 

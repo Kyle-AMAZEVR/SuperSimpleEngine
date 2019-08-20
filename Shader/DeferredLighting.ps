@@ -70,12 +70,19 @@ float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
 SamplerState DefaultTexSampler : register(s0);
 SamplerState DefaultCubemapSampler : register(s1);
 
-cbuffer LightInfo
+cbuffer LightPosition
+{    
+    float4 lightPositions[16];
+};
+
+cbuffer LightColor
 {
-    int lightCount;
-    float3 lightPositions[64];
-    float3 lightColors[64];
-    float2 lightMinMaxs[64];    
+    float4 lightColors[16];
+};
+
+cbuffer LightMinMax
+{
+    float4 lightMinMaxs[16];
 };
 
 cbuffer CameraTransform
@@ -97,13 +104,13 @@ float4 PSMain(PixelInputType pin): SV_TARGET
 	float4 float4Position = PositionTex.Sample(DefaultTexSampler, pin.InTexCoord);    
     float3 Position = PositionTex.Sample(DefaultTexSampler, pin.InTexCoord).xyz;
 
-	if(float4Position.a == 0)
+	/*if(float4Position.a == 0)
 	{
 		return float4(Color , 1.0);		
-	}
+	}*/
 
-    float3 albedo     = pow(abs(Color), float3(2.2,2.2,2.2));
-    //float3 albedo   = texture(DiffuseTex, TexCoord).rgb;
+    //float3 albedo     = pow(abs(Color), float3(2.2,2.2,2.2));
+    float3 albedo   = Color;
     float metallic  = saturate(NormalTex.Sample(DefaultTexSampler,TexCoord).a);
     float roughness = saturate(DiffuseTex.Sample(DefaultTexSampler, TexCoord).a);
     float3 N = normalize(Normal.xyz);
@@ -116,10 +123,10 @@ float4 PSMain(PixelInputType pin): SV_TARGET
     // reflectance equation
     float3 Lo = float3(0.0,0.0,0.0);
 
-    for(int i = 0; i < lightCount; ++i) 
+    for(int i = 0; i < 16; ++i) 
     {
         // calculate per-light radiance         
-        float4 lightPosInViewSpace = mul(float4(lightPositions[i], 1), View);
+        float4 lightPosInViewSpace = mul(float4(lightPositions[i].xyz, 1), View);
         float3 L = normalize(lightPosInViewSpace.xyz - Position);        
         float3 H = normalize(V + L);
 
@@ -132,7 +139,7 @@ float4 PSMain(PixelInputType pin): SV_TARGET
         //float distanceFactor = ((50-1) / (lightMinMaxs[i].y - lightMinMaxs[i].x)) * (distance - lightMinMaxs[i].x) + 1;
         //float attenuation = 1.0 / (distanceFactor * distanceFactor);                
         
-        float3 radiance     = lightColors[i] * attenuation;
+        float3 radiance     = lightColors[i].xyz * attenuation;
         // cook-torrance brdf
         float NDF = DistributionGGX(N, H, roughness);        
         float G   = GeometrySmith(N, V, L, roughness);        
@@ -182,9 +189,9 @@ float4 PSMain(PixelInputType pin): SV_TARGET
     float3 color = ambient + Lo;
 
     // HDR tonemapping
-    color = color / (color + float3(1.0,1.0,1.0));
+    //color = color / (color + float3(1.0,1.0,1.0));
     // gamma correct
-    color = pow(abs(color), float3(1.0/2.2,1.0/2.2,1.0/2.2)); 
+    //color = pow(abs(color), float3(1.0/2.2,1.0/2.2,1.0/2.2)); 
 
     return float4(color , 1.0);
 }

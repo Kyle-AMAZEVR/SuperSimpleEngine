@@ -120,6 +120,7 @@ private:
 
 	std::shared_ptr<class SSPostProcess> mFXAAPostProcess;
 	std::shared_ptr<class SSGBufferDumpPostProcess> mGBufferDumpProcess;
+	std::shared_ptr<class SSPostProcess> mDeferredLightPostProcess;
 
 private:
 	bool TryLoadEnvCubemap(std::wstring filepath);

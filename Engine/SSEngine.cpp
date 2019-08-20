@@ -28,6 +28,7 @@
 #include "SSFileHelper.h"
 #include "SSFXAAPostProcess.h"
 #include "SSGBufferDumpPostProcess.h"
+#include "SSLightPostProcess.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -51,6 +52,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	
 	mFXAAPostProcess = std::make_shared<SSFXAAPostProcess>(1024, 768);
 	mGBufferDumpProcess = std::make_shared<SSGBufferDumpPostProcess>(512, 512);
+	mDeferredLightPostProcess = std::make_shared<SSLightPostProcess>(1024, 768);
 	
 
 	if(SSFileHelper::DirectoryExists(L"./Prebaked") == false)
@@ -184,6 +186,7 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 		
 		mFXAAPostProcess->OnResize(newWidth, newHeight);
 		mGBufferDumpProcess->OnResize(newWidth, newHeight);
+		mDeferredLightPostProcess->OnResize(newWidth, newHeight);
 	}
 }
 
@@ -518,28 +521,36 @@ void SSEngine::DrawScene()
 	SSRaterizeStateManager::Get().SetToDefault();
 
 	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
-	mTestSphere->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
-
+	
+	//mTestSphere->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
 
 	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
 
-	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
+	/*SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
 	mSponzaMesh->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
-	SSDepthStencilStateManager::Get().SetToDefault();
+	SSDepthStencilStateManager::Get().SetToDefault();*/
 	
 	mTestMaterial->ReleaseCurrent();
 
-	mFXAAPostProcess->Draw(mGBuffer->GetColorOutput());
+	mFXAAPostProcess->Draw(mDeferredLightPostProcess->GetOutput(0));
 
 	mGBufferDumpProcess->Draw(mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
+
+	mDeferredLightPostProcess->Draw(
+		mGBuffer->GetPositionOutput(), 
+		mGBuffer->GetColorOutput(), 
+		mGBuffer->GetNormalOutput(),
+		m2DLUTTexture.get(),
+		mEnvCubemapConvolution.get(),
+		mEnvCubemapPrefilter.get());
 	
 	mViewport->Clear();
 	mViewport->SetCurrentRenderTarget();
 
-	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
+	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };	
 	
-	//blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
-	blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
+	//blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
+	blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
 
 	blitDrawCmd.Do();
 	
