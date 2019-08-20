@@ -13,6 +13,9 @@ public:
 	virtual void Draw(class SSTexture2DBase* input0) {}
 	virtual void Draw(SSTexture2DBase* input0, SSTexture2DBase* input1) {}
 	virtual void Draw(SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2){}
+	virtual void Draw(SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3) {}
+	virtual void Draw(SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3, SSTexture2DBase* input4) {}
+	virtual void Draw(SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3, SSTexture2DBase* input4, SSTexture2DBase* input5 ) {}
 
 	virtual void Destroy() override;
 
