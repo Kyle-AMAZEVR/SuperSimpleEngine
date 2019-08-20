@@ -143,6 +143,9 @@ void SSEngine::TestCompileShader()
 	mPrefilterVertexShader = SSShaderManager::Get().GetVertexShader("Prefilter.vs");
 	mPrefilterPixelShader = SSShaderManager::Get().GetPixelShader("Prefilter.ps");
 
+	mDeferredLightVertexShader = SSShaderManager::Get().GetVertexShader("DeferredLighting.vs");
+	mDeferredLightPixelShader = SSShaderManager::Get().GetPixelShader("DeferredLighting.ps");
+
 	m2DLUTVertexShader = SSShaderManager::Get().GetVertexShader("2DLUT.vs");
 	m2DLUTPixelShader = SSShaderManager::Get().GetPixelShader("2DLUT.ps");	
     
@@ -150,6 +153,7 @@ void SSEngine::TestCompileShader()
 	mTBNDebugPixelShader = SSShaderManager::Get().GetPixelShader("TBNDebug.ps");
 
 	mTBNDebugMaterial = std::make_shared<SSMaterial>(mTBNDebugVertexShader.get(), mTBNDebugPixelShader.get());
+	mDeferredLightMaterial = std::make_shared<SSMaterial>(mDeferredLightVertexShader.get(), mDeferredLightPixelShader.get());
 
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }

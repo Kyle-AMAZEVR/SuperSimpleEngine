@@ -52,6 +52,7 @@ private:
 
 	std::shared_ptr<class SSMaterial> mTestMaterial;
 	std::shared_ptr<class SSMaterial> mTBNDebugMaterial;
+	std::shared_ptr<class SSMaterial> mDeferredLightMaterial;
 
 	std::shared_ptr<class SSCube> mTestCube;
 	std::shared_ptr<class SSSphere> mTestSphere;
@@ -65,6 +66,10 @@ private:
 
 	std::shared_ptr<class SSVertexShader> mDeferredVertexShader;
 	std::shared_ptr<class SSPixelShader> mDeferredPixelShader;
+
+	std::shared_ptr<class SSVertexShader> mDeferredLightVertexShader;
+	std::shared_ptr<class SSPixelShader> mDeferredLightPixelShader;
+
 	std::shared_ptr<class SSTextureCube> mTestCubeTexture;
 
 	std::shared_ptr<class SSVertexShader> mCubemapVertexShader;
