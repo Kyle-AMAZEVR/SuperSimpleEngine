@@ -13,6 +13,11 @@ public:
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 	virtual void DebugDraw(ID3D11DeviceContext* deviceConttext, class SSMaterial* material);
+
+	void SetMetalicValue(float metal) { mMetalic = metal; }
+	void SetRoughnessValue(float rough) { mRoughness = rough; }
+
+
 protected:
 	UINT mSectorCount = 5;
 	UINT mStackCount = 5;
@@ -28,6 +33,10 @@ protected:
 	std::shared_ptr<SSVertexBuffer> mDebugTBNVB;
 	std::shared_ptr<class SSIndexBuffer> mDebugIB;
 
+	float mRoughness = 0.1f;
+	float mMetalic = 0.9f;
+
+
 	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;
 	std::vector<XMFLOAT2> mTempTexCoordList;
@@ -39,6 +48,7 @@ class ENGINE_API SSPBRSphere : public SSSphere
 {
 public:
 	SSPBRSphere(SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);
+
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
 protected:
 

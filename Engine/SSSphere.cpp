@@ -378,11 +378,18 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	SSAlignedCBuffer<int, int, int, int, int> settings;
-	settings.value1 = 1; //metalic
+	settings.value1 = 0; //metalic
 	settings.value2 = 0; //mask
-	settings.value3 = 1; //normal
-	settings.value4 = 1; // roghness
-	settings.value5 = 1; // diffuse
+	settings.value3 = 0; //normal
+	settings.value4 = 0; // roghness
+	settings.value5 = 0; // diffuse
+
+	SSAlignedCBuffer<float, float> metalicRoughnessOverride;
+	metalicRoughnessOverride.value1 = mMetalic;
+	metalicRoughnessOverride.value2 = mRoughness;
+
+	SSAlignedCBuffer<XMFLOAT3> DiffuseColor;
+	DiffuseColor.value1.x = DiffuseColor.value1.y = DiffuseColor.value1.z = 1;
 
 	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
 
@@ -394,18 +401,10 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
 
 	material->SetPSConstantBufferData("TextureExist", settings);
-	
-	auto metal = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_metallic.dds");
-	material->SetPSTexture("MetalicTex", metal.get());
 
-	auto rough = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_roughness.dds");
-	material->SetPSTexture("RoughnessTex", rough.get());
+	material->SetPSConstantBufferData("MetalicRoughness", metalicRoughnessOverride);
 
-	auto diffuse = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_basecolor.dds");
-	material->SetPSTexture("DiffuseTex", diffuse.get());
-
-	auto normal = SSTextureManager::Get().LoadTexture2D("./Resource/Tex/rustediron/rustediron2_normal.dds");
-	material->SetPSTexture("NormalTex", normal.get());
+	material->SetPSConstantBufferData("CBDiffuseColor", DiffuseColor);
 
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);	
 }

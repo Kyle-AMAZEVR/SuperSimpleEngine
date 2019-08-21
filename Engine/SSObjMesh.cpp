@@ -345,7 +345,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	metalicRoughnessOverride.value2 = 0;
 
 	mbRoughnessOverride = true;
-	mbMetalicOverride = false;
+	mbMetalicOverride = true;
 
 
 	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
@@ -390,7 +390,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			if(mbRoughnessOverride)
 			{
 				settings.value4 = 0;
-				metalicRoughnessOverride.value2 = 0.1;
+				metalicRoughnessOverride.value2 = 0.3;
 			}
 			else if (mMeshMaterialMap[section.mSectionName].mRoughnessMap.length() > 0)
 			{
@@ -406,7 +406,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			if(mbMetalicOverride)
 			{
 				settings.value1 = 0;
-				metalicRoughnessOverride.value1 = 0.1f;
+				metalicRoughnessOverride.value1 = 0.60f;
 			}
 			else if(mMeshMaterialMap[section.mSectionName].mMetalicMap.length() > 0)
 			{
