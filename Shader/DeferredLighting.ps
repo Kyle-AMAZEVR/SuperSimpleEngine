@@ -123,7 +123,7 @@ float4 PSMain(PixelInputType pin): SV_TARGET
     // reflectance equation
     float3 Lo = float3(0.0,0.0,0.0);
 
-    for(int i = 0; i < 16; ++i) 
+    for(int i = 0; i < 2; ++i) 
     {
         // calculate per-light radiance         
         float4 lightPosInViewSpace = mul(float4(lightPositions[i].xyz, 1), View);
@@ -131,8 +131,8 @@ float4 PSMain(PixelInputType pin): SV_TARGET
         float3 H = normalize(V + L);
 
 		float scaleFactor = 0.1f;
-        float distance = clamp(length(lightPosInViewSpace.xyz - Position), lightMinMaxs[i].x, lightMinMaxs[i].y) * scaleFactor;
-        float lightRadius = lightMinMaxs[i].y * scaleFactor;
+        float distance = clamp(length(lightPosInViewSpace.xyz - Position), 1, 10) * scaleFactor;
+        float lightRadius = 10 * scaleFactor;
 
         float attenuation = pow( clamp(1 - pow(distance / lightRadius, 4), 0, 1) , 2) / (distance * distance + 1);
 

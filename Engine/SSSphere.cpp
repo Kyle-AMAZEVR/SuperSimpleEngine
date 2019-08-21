@@ -153,7 +153,7 @@ void SSSphere::InternalCreate()
 			mTempVertexList[i] , SSMathHelper::UnitY3
 		));
 
-		indexArray.push_back(tbnVertexArray.size()-1);
+		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size()-1));
 
 		XMFLOAT4 normalEnd;
 		XMStoreFloat4( &normalEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&mTempNormalList[i]), 1.0f) );
@@ -163,7 +163,7 @@ void SSSphere::InternalCreate()
 			normalEnd, SSMathHelper::UnitY3
 		));
 
-		indexArray.push_back(tbnVertexArray.size()-1);
+		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 
 		XMFLOAT4 tangentEnd;
 
@@ -176,14 +176,14 @@ void SSSphere::InternalCreate()
 			mTempVertexList[i], SSMathHelper::UnitZ3
 		));
 
-		indexArray.push_back(tbnVertexArray.size()-1);
+		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 
 		tbnVertexArray.push_back(VT_PositionColor
 		(
 			tangentEnd, SSMathHelper::UnitZ3
 		));
 
-		indexArray.push_back(tbnVertexArray.size()-1);
+		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 	}
 
 
@@ -412,3 +412,64 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 
 bool SSSphere::bIsInitialized = false;
 SSVertexBuffer* SSSphere::mSphereVB = nullptr;
+
+SSPBRSphere::SSPBRSphere(SSName diffuseTexName, SSName normalTexName, SSName metalTexName, SSName roughTexName)
+	: SSSphere(25, 25, 10.f)
+{
+	mMetalTex = SSTextureManager::Get().LoadTexture2D(metalTexName);
+	mNormalTex = SSTextureManager::Get().LoadTexture2D(normalTexName);
+
+	mDiffuseTex = SSTextureManager::Get().LoadTexture2D(diffuseTexName);
+	mRoughTex = SSTextureManager::Get().LoadTexture2D(roughTexName);
+}
+
+void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
+{
+	check(material != nullptr);
+
+	material->SetCurrent();
+
+	material->SetVSConstantBufferData(ModelName,XMMatrixTranspose(GetModelTransform()));
+	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+
+	SSAlignedCBuffer<int, int, int, int, int> settings;
+	settings.value1 = 1; //metalic
+	settings.value2 = 0; //mask
+	settings.value3 = 1; //normal
+	settings.value4 = 1; // roghness
+	settings.value5 = 1; // diffuse
+
+	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
+
+	material->SetPSSampler("DefaultTexSampler", sampler);
+
+	auto stride = mSphereVB->GetStride();
+	UINT offset = 0;
+
+	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
+
+	material->SetPSConstantBufferData("TextureExist", settings);	
+
+	if (mMetalTex != nullptr)
+	{
+		material->SetPSTexture("MetalicTex", mMetalTex.get());
+	}
+
+	if (mNormalTex != nullptr)
+	{
+		material->SetPSTexture("NormalTex", mNormalTex.get());
+	}
+
+	if (mDiffuseTex != nullptr)
+	{
+		material->SetPSTexture("DiffuseTex", mDiffuseTex.get());
+	}
+
+	if (mRoughTex != nullptr)
+	{
+		material->SetPSTexture("RoughnessTex", mRoughTex.get());
+	}
+
+	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);
+}

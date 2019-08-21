@@ -66,10 +66,14 @@ public:
 	friend SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name);
 	friend SerializeReader& operator>> (SerializeReader& Archive, SSName& name);
 
+	// bucket index is less than bucket size
+	// 
+	bool IsValidName() const { return mBucketIndex != 8192; }
+
 protected:
 	friend class SSNameBucket;
 	size_t mHashValue = 0;
-	size_t mBucketIndex = 0;
+	size_t mBucketIndex = 8192;
 };
 
 

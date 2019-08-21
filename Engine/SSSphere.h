@@ -2,6 +2,7 @@
 #pragma once
 
 #include "SSSceneObject.h"
+#include "SSName.h"
 #include <vector>
 
 class ENGINE_API SSSphere : public SSSceneObject
@@ -31,4 +32,23 @@ protected:
 	std::vector<XMFLOAT3> mTempNormalList;
 	std::vector<XMFLOAT2> mTempTexCoordList;
 	std::vector<XMFLOAT4> mTempTangentList;
+};
+
+
+class ENGINE_API SSPBRSphere : public SSSphere
+{
+public:
+	SSPBRSphere(SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);
+	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
+protected:
+
+	std::shared_ptr<class SSTexture2D> mDiffuseTex;
+	std::shared_ptr<class SSTexture2D> mNormalTex;
+	std::shared_ptr<class SSTexture2D> mMetalTex;
+	std::shared_ptr<class SSTexture2D> mRoughTex;
+
+	SSName mDiffuseTexName;
+	SSName mNormalTexName;
+	SSName mMetalTexName;
+	SSName mRoughTexName;
 };
