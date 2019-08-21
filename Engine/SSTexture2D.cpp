@@ -20,7 +20,7 @@ bool SSTexture2D::Release()
 }
 
 
-bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
+bool SSTexture2D::LoadFromHDRFile(std::wstring filename, bool bsrgb)
 {
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;
@@ -49,6 +49,8 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 	description.MipLevels = static_cast<UINT>(metaData.mipLevels);
 	description.ArraySize = static_cast<UINT>(metaData.arraySize);
 	description.CPUAccessFlags = 0;
+
+	bSRGB = bsrgb;
 
 	if (bSRGB)
 	{
@@ -84,7 +86,7 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename)
 	return true;
 }
 
-bool SSTexture2D::LoadFromTGAFile(std::wstring filename)
+bool SSTexture2D::LoadFromTGAFile(std::wstring filename, bool bsrgb)
 {
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;
@@ -113,6 +115,8 @@ bool SSTexture2D::LoadFromTGAFile(std::wstring filename)
 	description.MipLevels = static_cast<UINT>(metaData.mipLevels);
 	description.ArraySize = static_cast<UINT>(metaData.arraySize);
 	description.CPUAccessFlags = 0;
+
+	this->bSRGB = bsrgb;
 
 	if (bSRGB)
 	{
@@ -147,7 +151,7 @@ bool SSTexture2D::LoadFromTGAFile(std::wstring filename)
 	return true;
 }
 
-bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
+bool SSTexture2D::LoadFromDDSFile(std::wstring filename, bool bsrgb)
 {
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;	
@@ -175,6 +179,8 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 	description.MipLevels = static_cast<UINT>(metaData.mipLevels);
 	description.ArraySize = metaData.arraySize;
 	description.CPUAccessFlags = 0;
+
+	this->bSRGB = bsrgb;
 
 	if (bSRGB)
 	{
@@ -211,11 +217,11 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename)
 }
 
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::wstring filename)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::wstring filename, bool bsrgb)
 {
 	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
 
-	if (texture->LoadFromDDSFile(filename))
+	if (texture->LoadFromDDSFile(filename, bsrgb))
 	{
 		return texture;
 	}
@@ -225,20 +231,20 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::wstring filenam
 	}
 }
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::string filename)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::string filename, bool bsrgb)
 {
 	std::wstring wfilename;
 	wfilename.assign(filename.begin(), filename.end());
 
-	return SSTexture2D::CreateFromDDSFile(wfilename);
+	return SSTexture2D::CreateFromDDSFile(wfilename, bsrgb);
 }
 
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::wstring filename)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::wstring filename, bool bsrgb)
 {
 	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
 
-	if (texture->LoadFromTGAFile(filename))
+	if (texture->LoadFromTGAFile(filename, bsrgb))
 	{
 		return texture;
 	}
@@ -249,11 +255,11 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::wstring filenam
 }
 
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::wstring filename)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::wstring filename, bool bsrgb)
 {
 	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
 
-	if (texture->LoadFromHDRFile(filename))
+	if (texture->LoadFromHDRFile(filename, bsrgb))
 	{
 		return texture;
 	}
@@ -263,19 +269,19 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::wstring filenam
 	}
 }
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::string filename)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::string filename, bool bsrgb)
 {
 	std::wstring wfilename;
 	wfilename.assign(filename.begin(), filename.end());
 
-	return SSTexture2D::CreateFromHDRFile(wfilename);
+	return SSTexture2D::CreateFromHDRFile(wfilename, bsrgb);
 }
 
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::string filename)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::string filename, bool bsrgb)
 {
 	std::wstring wfilename;
 	wfilename.assign(filename.begin(), filename.end());
 
-	return SSTexture2D::CreateFromTGAFile(wfilename);
+	return SSTexture2D::CreateFromTGAFile(wfilename, bsrgb);
 }

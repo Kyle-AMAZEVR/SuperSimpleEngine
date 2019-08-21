@@ -109,21 +109,21 @@ float4 PSMain(PixelInputType pin): SV_TARGET
 		return float4(Color , 1.0);		
 	}
 
-    //float3 albedo     = pow(abs(Color), float3(2.2,2.2,2.2));
-    float3 albedo   = Color;
+    float3 albedo     = pow(abs(Color), float3(2.2,2.2,2.2));
+    //float3 albedo   = Color;
     float metallic  = saturate(NormalTex.Sample(DefaultTexSampler,TexCoord).a);
     float roughness = saturate(DiffuseTex.Sample(DefaultTexSampler, TexCoord).a);
     float3 N = normalize(Normal.xyz);
-    float3 V = -normalize(Position);
+    float3 V = normalize(Position);
     float3 R = reflect(V, N); 	
 	
     float3 F0 = float3(0.04, 0.04, 0.04); 
-    F0 = lerp(F0, albedo, metallic);
+    F0 = lerp(F0, albedo, float3(metallic, metallic, metallic));
 	           
     // reflectance equation
     float3 Lo = float3(0.0,0.0,0.0);
 
-    for(int i = 0; i < 2; ++i) 
+    /*for(int i = 0; i < 2; ++i) 
     {
         // calculate per-light radiance         
         //float4 lightPosInViewSpace = mul(float4(lightPositions[i].xyz, 1), View);
@@ -165,7 +165,7 @@ float4 PSMain(PixelInputType pin): SV_TARGET
 
         // add to outgoing radiance Lo
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
-    }  
+    } */ 
 
     
     // ambient lighting (we now use IBL as the ambient term)
@@ -173,7 +173,7 @@ float4 PSMain(PixelInputType pin): SV_TARGET
     
     float3 kS = F;
     float3 kD = 1.0 - kS;
-    kD *= 1.0 - metallic;    
+    kD *= (1.0 - metallic);
     
     float3 irradiance = IrradianceMap.Sample(DefaultCubemapSampler, N).xyz;
     float3 diffuse      = irradiance * albedo;
@@ -191,7 +191,7 @@ float4 PSMain(PixelInputType pin): SV_TARGET
     // HDR tonemapping
     //color = color / (color + float3(1.0,1.0,1.0));
     // gamma correct
-    //color = pow(abs(color), float3(1.0/2.2,1.0/2.2,1.0/2.2)); 
+    // color = pow(abs(color), float3(1.0/2.2,1.0/2.2,1.0/2.2)); 
 
     return float4(color , 1.0);
 }

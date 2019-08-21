@@ -22,7 +22,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::GetTexture2D(SSName texture
 }
 
 
-std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName texturepath)
+std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName texturepath, bool bSRGB)
 {
 	if (m2DTextureMap.count(texturepath) > 0)
 	{
@@ -35,7 +35,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName textur
 		
 		if (path.find(".dds") != std::string::npos)
 		{
-			texture = SSTexture2D::CreateFromDDSFile(path);
+			texture = SSTexture2D::CreateFromDDSFile(path, bSRGB);
 
 			if (texture == nullptr)
 			{
@@ -49,7 +49,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName textur
 		}
 		else if (path.find(".tga") != std::string::npos)
 		{
-			texture = SSTexture2D::CreateFromTGAFile(path);
+			texture = SSTexture2D::CreateFromTGAFile(path, bSRGB);
 
 			if (texture == nullptr)
 			{
@@ -63,7 +63,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(SSName textur
 		}
 		else if (path.find(".hdr") != std::string::npos)
 		{
-			texture = SSTexture2D::CreateFromHDRFile(path);
+			texture = SSTexture2D::CreateFromHDRFile(path, bSRGB);
 
 			if (texture == nullptr)
 			{

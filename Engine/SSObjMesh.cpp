@@ -362,12 +362,21 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	for(UINT i = 0; i < mMeshSectionList.size(); ++i)
 	{		
 		auto& section = mMeshSectionList[i];
+
+		metalicRoughnessOverride.value1 = 0.1;
+		metalicRoughnessOverride.value2 = 0.7;
 		
 		if (mMeshMaterialMap.count(section.mSectionName) > 0)
 		{
+			if(section.mSectionName == "floor")
+			{
+				metalicRoughnessOverride.value1 = 0.8;
+				metalicRoughnessOverride.value2 = 0.3;
+			}
+
 			if (mMeshMaterialMap[section.mSectionName].mDiffuseMap.length() > 0)
 			{
-				auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap);
+				auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap, false);
 				material->SetPSTexture("DiffuseTex", diffuse.get());
 				settings.value5 = 1;
 			}
@@ -378,7 +387,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 
 			if(mMeshMaterialMap[section.mSectionName].mNormalMap.length() > 0)
 			{
-				auto normal = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mNormalMap);
+				auto normal = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mNormalMap, false);
 				material->SetPSTexture("NormalTex", normal.get());
 				settings.value3 = 1;
 			}
@@ -390,7 +399,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			if(mbRoughnessOverride)
 			{
 				settings.value4 = 0;
-				metalicRoughnessOverride.value2 = 0.3;
+				
 			}
 			else if (mMeshMaterialMap[section.mSectionName].mRoughnessMap.length() > 0)
 			{
@@ -405,8 +414,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 
 			if(mbMetalicOverride)
 			{
-				settings.value1 = 0;
-				metalicRoughnessOverride.value1 = 0.60f;
+				settings.value1 = 0;				
 			}
 			else if(mMeshMaterialMap[section.mSectionName].mMetalicMap.length() > 0)
 			{

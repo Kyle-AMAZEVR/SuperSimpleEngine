@@ -41,8 +41,8 @@ cbuffer TextureExist
 
 cbuffer MetalicRoughness
 {
-    float Metalic;
-    float Roughness; 
+    float Metalic = 0.9;
+    float Roughness = 0.9; 
 };
 
 cbuffer CBDiffuseColor
@@ -103,7 +103,7 @@ PixelOutputType PSMain(PixelInputType pin)
 
     if(NormalMapExist)
     {
-        float3 NormalMapNormal = normalize( 2.0f * (NormalTex.Sample(DefaultTexSampler, pin.InTexCoord ).xyz ) - float3(1.0f,1.0f,1.0f) );
+        float3 NormalMapNormal = normalize( 2.0f * (NormalTex.Sample(DefaultTexSampler, pin.InTexCoord ).xyz ) - float3(1.0f,1.0f,1.0f) );        
 	    float3 BumpNormal = normalize(mul(NormalMapNormal.xyz , TangentToModelViewSpaceMatrix));
 	
         output.NormalColor.xyz = BumpNormal;

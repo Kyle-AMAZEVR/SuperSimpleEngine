@@ -12,8 +12,8 @@
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSSamplerManager.h"
 #include "SSTextureManager.h"
-#include "SSTexture2D.h"
 #include "SSMathHelper.h"
+#include "SSTexture2D.h"
 
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	: mSectorCount(sector), mStackCount(stack), mRadius(radius)
@@ -358,7 +358,7 @@ void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* m
 
 	material->SetCurrent();
 	
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 3, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(GetModelTransform()));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
@@ -373,7 +373,7 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 
 	material->SetCurrent();
 
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 3, 0) *  XMMatrixScaling(3.0, 3.0, 3.0)));
+	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(GetModelTransform()));
 	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 

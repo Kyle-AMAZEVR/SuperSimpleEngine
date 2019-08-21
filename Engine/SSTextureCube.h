@@ -12,5 +12,5 @@ public:
 	
 protected:
 	
-	bool bSRGB = true;
+	bool bSRGB = false;
 };

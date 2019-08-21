@@ -2,7 +2,6 @@
 #include "Core.h"
 #include "Util.h"
 #include "SSEngine.h"
-#include "SSShader.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "CameraManager.h"
 #include "DXVertexBuffer.h"
@@ -15,7 +14,6 @@
 #include "SSScreenBlit.h"
 #include "SSRenderTarget2D.h"
 #include "SSTextureCube.h"
-#include "SSSphere.h"
 #include "SSDepthStencilStateManager.h"
 #include "SSRasterizeStateManager.h"
 #include "SSCubemapRenderTarget.h"
@@ -25,10 +23,10 @@
 #include "SSObjMesh.h"
 #include "SSShaderManager.h"
 #include "SSMaterial.h"
-#include "SSFileHelper.h"
 #include "SSFXAAPostProcess.h"
 #include "SSGBufferDumpPostProcess.h"
 #include "SSLightPostProcess.h"
+#include "SSSphere.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -97,7 +95,24 @@ void SSEngine::TestCreateResources()
 
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
-	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);	
+	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);
+	mTestSphere2 = std::make_shared<SSSphere>(25, 25, 10.0f);
+	mTestSphere2->SetPosition(0, 20, 20);
+	mTestSphere2->SetMetalicValue(0.f);
+	mTestSphere2->SetRoughnessValue(1.f);
+
+	// 
+	/*mSphereList.resize(10);
+
+	for(int i = 0; i < 10; ++i)
+	{
+		auto sphere = std::make_shared<SSSphere>(25, 25, 10.0f);
+		mSphereList[i] = sphere;
+		//mSphereList.push_back();
+		sphere->SetPosition(0, 20, i * 20);
+	}*/
+
+
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 	mObjMeshSphere = std::make_shared<SSObjMesh>();
 
@@ -521,6 +536,12 @@ void SSEngine::DrawScene()
 	SSRaterizeStateManager::Get().SetToDefault();
 
 	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
+	mTestSphere2->Draw(GetDeviceContext(), mTestMaterial.get());
+
+	for(size_t i = 0; i < mSphereList.size(); ++i)
+	{
+		//mSphereList[i]->Draw(GetDeviceContext(), mTestMaterial.get());
+	}
 	
 	//mTestSphere->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
 

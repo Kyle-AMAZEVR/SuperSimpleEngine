@@ -3,7 +3,7 @@
 
 #include "Singleton.h"
 #include "SSViewport.h"
-
+#include <vector>
 #include "SSShader.h"
 
 // Super Simple
@@ -55,7 +55,13 @@ private:
 	std::shared_ptr<class SSMaterial> mDeferredLightMaterial;
 
 	std::shared_ptr<class SSCube> mTestCube;
+
+	//std::vector<std::shared_ptr<class SSSPhere>> mSphereList;
+	std::vector<std::shared_ptr<class SSSPhere>> mSphereList;
+
 	std::shared_ptr<class SSSphere> mTestSphere;
+	std::shared_ptr<class SSSphere> mTestSphere2;
+
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;
     // 
     std::shared_ptr<class SSVertexBuffer> mTestVertexBuffer;

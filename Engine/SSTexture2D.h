@@ -7,18 +7,18 @@ class ENGINE_API SSTexture2D : public SSTexture2DBase
 public:
 	SSTexture2D();
 	
-	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(std::wstring filename);
-	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(std::string filename);
+	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(std::wstring filename, bool bSRGB=false);
+	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(std::string filename, bool bSRGB = false);
 
-	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(std::wstring filename);
-	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(std::string filename);
+	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(std::wstring filename, bool bSRGB = false);
+	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(std::string filename, bool bSRGB = false);
 
-	static std::shared_ptr<SSTexture2D> CreateFromTGAFile(std::wstring filename);
-	static std::shared_ptr<SSTexture2D> CreateFromTGAFile(std::string filename);
+	static std::shared_ptr<SSTexture2D> CreateFromTGAFile(std::wstring filename, bool bSRGB = false);
+	static std::shared_ptr<SSTexture2D> CreateFromTGAFile(std::string filename, bool bSRGB = false);
 
-	bool LoadFromDDSFile(std::wstring filename);
-	bool LoadFromTGAFile(std::wstring filename);
-	bool LoadFromHDRFile(std::wstring filename);
+	bool LoadFromDDSFile(std::wstring filename, bool bSRGB = false);
+	bool LoadFromTGAFile(std::wstring filename, bool bSRGB = false);
+	bool LoadFromHDRFile(std::wstring filename, bool bSRGB = false);
 
 	bool Release();
 
@@ -29,5 +29,6 @@ public:
 
 protected:		
 	
-	bool bSRGB = true;
+	//bool bSRGB = false;
+	bool bSRGB = false;
 };
