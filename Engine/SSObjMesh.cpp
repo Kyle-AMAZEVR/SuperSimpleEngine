@@ -363,17 +363,11 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	{		
 		auto& section = mMeshSectionList[i];
 
-		metalicRoughnessOverride.value1 = 0.1;
+		metalicRoughnessOverride.value1 = 0.31;
 		metalicRoughnessOverride.value2 = 0.7;
 		
 		if (mMeshMaterialMap.count(section.mSectionName) > 0)
 		{
-			if(section.mSectionName == "floor")
-			{
-				metalicRoughnessOverride.value1 = 0.8;
-				metalicRoughnessOverride.value2 = 0.3;
-			}
-
 			if (mMeshMaterialMap[section.mSectionName].mDiffuseMap.length() > 0)
 			{
 				auto diffuse = SSTextureManager::Get().LoadTexture2D(mMeshMaterialMap[section.mSectionName].mDiffuseMap, false);
