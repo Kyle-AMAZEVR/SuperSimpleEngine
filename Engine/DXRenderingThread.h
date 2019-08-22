@@ -16,7 +16,7 @@ public:
 	bool IsRunning() { return bIsRunning; }
     void ExecuteInRenderingThread(std::function<void()>&& lambdaFunction);
 
-    static inline bool IsInRenderingThread();
+    static bool IsInRenderingThread();
 
 protected:
 	HANDLE mThreadHandle = nullptr;

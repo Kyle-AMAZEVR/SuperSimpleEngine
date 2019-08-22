@@ -101,17 +101,22 @@ void SSEngine::TestCreateResources()
 	mTestSphere2->SetMetalicValue(0.f);
 	mTestSphere2->SetRoughnessValue(1.f);
 
-	// 
-	/*mSphereList.resize(10);
+	mRustedIron = std::make_shared<SSPBRSphere>(
+		"./Resource/Tex/rustediron/rustediron2_basecolor.dds",
+		"./Resource/Tex/rustediron/rustediron2_normal.dds",
+		"./Resource/Tex/rustediron/rustediron2_metallic.dds",
+		"./Resource/Tex/rustediron/rustediron2_roughness.dds"
+		);
 
-	for(int i = 0; i < 10; ++i)
-	{
-		auto sphere = std::make_shared<SSSphere>(25, 25, 10.0f);
-		mSphereList[i] = sphere;
-		//mSphereList.push_back();
-		sphere->SetPosition(0, 20, i * 20);
-	}*/
+	mTile = std::make_shared<SSPBRSphere>(
+		"./Resource/Tex/tile/Tiles32_col.dds",
+		"./Resource/Tex/tile/Tiles32_nrm.dds",
+		"./Resource/Tex/tile/Tiles32_disp.dds",
+		"./Resource/Tex/tile/Tiles32_rgh.dds"
+		);
 
+	mRustedIron->SetPosition(10, 10, 10);
+	mTile->SetPosition(20, 20, 20);
 
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 	mObjMeshSphere = std::make_shared<SSObjMesh>();
@@ -535,21 +540,13 @@ void SSEngine::DrawScene()
 	SSDepthStencilStateManager::Get().SetToDefault();
 	SSRaterizeStateManager::Get().SetToDefault();
 
-	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());
-	mTestSphere2->Draw(GetDeviceContext(), mTestMaterial.get());
+	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());	
 
-	for(size_t i = 0; i < mSphereList.size(); ++i)
-	{
-		//mSphereList[i]->Draw(GetDeviceContext(), mTestMaterial.get());
-	}
-	
-	//mTestSphere->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
+	mRustedIron->Draw(GetDeviceContext(), mTestMaterial.get());
+
+	mTile->Draw(GetDeviceContext(), mTestMaterial.get());
 
 	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
-
-	/*SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
-	mSponzaMesh->DebugDraw(GetDeviceContext(), mTBNDebugMaterial.get());
-	SSDepthStencilStateManager::Get().SetToDefault();*/
 	
 	mTestMaterial->ReleaseCurrent();
 

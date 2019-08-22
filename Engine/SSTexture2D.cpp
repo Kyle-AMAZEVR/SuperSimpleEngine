@@ -92,6 +92,7 @@ bool SSTexture2D::LoadFromTGAFile(std::wstring filename, bool bsrgb)
 	DirectX::ScratchImage image;
 
 	HRESULT result = DirectX::LoadFromTGAFile(filename.c_str(), &metaData, image);
+	
 
 	if(result != S_OK)
 	{

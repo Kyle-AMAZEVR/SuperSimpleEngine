@@ -55,8 +55,7 @@ private:
 	std::shared_ptr<class SSMaterial> mDeferredLightMaterial;
 
 	std::shared_ptr<class SSCube> mTestCube;
-
-	//std::vector<std::shared_ptr<class SSSPhere>> mSphereList;
+		
 	std::vector<std::shared_ptr<class SSSPhere>> mSphereList;
 
 	std::shared_ptr<class SSSphere> mTestSphere;
@@ -95,6 +94,9 @@ private:
 
 	std::shared_ptr<class SSVertexShader> mTBNDebugVertexShader;
 	std::shared_ptr<class SSPixelShader> mTBNDebugPixelShader;
+
+	std::shared_ptr<class SSPBRSphere> mRustedIron;
+	std::shared_ptr<class SSPBRSphere> mTile;
 	
 
 	// @ cubemap rendertargets
