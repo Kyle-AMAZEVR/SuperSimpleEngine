@@ -22,7 +22,7 @@ SSLightPostProcess::SSLightPostProcess(UINT width, UINT height)
 		mLightInfo.lightColors[i].x = mLightInfo.lightColors[i].y = mLightInfo.lightColors[i].z = 0.01;
 
 		mLightInfo.lightPosition[i].x = i * 30;
-		mLightInfo.lightPosition[i].y = 5;
+		mLightInfo.lightPosition[i].y = 20;
 		mLightInfo.lightPosition[i].z = 0;
 		mLightInfo.lightPosition[i].w = 1;
 

@@ -532,11 +532,9 @@ void SSEngine::DrawScene()
 	mGBuffer->SetCurrentRenderTarget();
 	SSCameraManager::Get().UpdateCurrentCamera();
 	
-	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
-		
-	XMMATRIX scale = XMMatrixScaling(2, 2, 2) * SSCameraManager::Get().GetCurrentCameraTranslation();
-	XMMATRIX modelView = scale * SSCameraManager::Get().GetCurrentCameraView();
-	XMMATRIX mvp = modelView * SSCameraManager::Get().GetCurrentCameraProj();
+	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };	
+	
+	XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
 	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemapPrefilter.get());
