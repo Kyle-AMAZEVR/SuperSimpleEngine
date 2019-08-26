@@ -20,6 +20,9 @@ public:
 	template<class T>
 	void SetPSConstantBufferData(SSName name, const T& value);
 
+	template<class T>
+	void SetVSConstantBufferDataChecked(SSName name, const T& value);
+
 	void SetPSTexture(std::string name, SSTexture2DBase* texture);
 	void SetVSTexture(std::string name, SSTexture2DBase* texture);
 
@@ -58,6 +61,26 @@ void SSMaterial::SetVSConstantBufferData(SSName name, const T& value)
 		auto* deviceContext = SSEngine::Get().GetDeviceContext();
 
 		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
+	}
+}
+
+template<class T>
+void SSMaterial::SetVSConstantBufferDataChecked(SSName name, const T& value)
+{
+	if (mVertexShaderConstantBufferMap.count(name) > 0)
+	{
+		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);
+		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice();
+
+		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
+
+		auto* deviceContext = SSEngine::Get().GetDeviceContext();
+
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
+	}
+	else
+	{
+		check(false);
 	}
 }
 
