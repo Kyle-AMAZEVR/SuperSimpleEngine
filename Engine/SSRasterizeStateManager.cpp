@@ -31,6 +31,12 @@ void SSRaterizeStateManager::Initialize()
 	mFrontCounterClockwiseDesc.FrontCounterClockwise = true;
 
 	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mFrontCounterClockwiseDesc, &mFrontCounterClockwiseState));
+
+	mWireFrameDesc = mDefaultDesc;
+	mWireFrameDesc.FillMode = D3D11_FILL_WIREFRAME;
+
+	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mWireFrameDesc, &mWireFrameState));
+
 }
 
 void SSRaterizeStateManager::SetToDefault()
@@ -47,9 +53,15 @@ void SSRaterizeStateManager::SetFrontCounterClockwise()
 	SSEngine::Get().GetDeviceContext()->RSSetState(mFrontCounterClockwiseState);
 }
 
+void SSRaterizeStateManager::SetWireFrameMode()
+{
+	SSEngine::Get().GetDeviceContext()->RSSetState(mWireFrameState);
+}
+
 void SSRaterizeStateManager::Shutdown()
 {
 	ReleaseCOM(mCullModeNoneState);
 	ReleaseCOM(mDefaultState);
 	ReleaseCOM(mFrontCounterClockwiseState);
+	ReleaseCOM(mWireFrameState);
 }
