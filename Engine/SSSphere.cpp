@@ -144,58 +144,60 @@ void SSSphere::InternalCreate()
 	}
 
 	// debug purpose
-	std::vector<VT_PositionColor> tbnVertexArray;
-	for (UINT i = 0; i < mTempNormalList.size(); i++)
+	if (bCreateDebugTBN)
 	{
-		// 
-		tbnVertexArray.push_back(VT_PositionColor
-		(
-			mTempVertexList[i] , SSMathHelper::UnitY3
-		));
+		std::vector<VT_PositionColor> tbnVertexArray;
+		for (UINT i = 0; i < mTempNormalList.size(); i++)
+		{
+			// 
+			tbnVertexArray.push_back(VT_PositionColor
+			(
+				mTempVertexList[i], SSMathHelper::UnitY3
+			));
 
-		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size()-1));
+			indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 
-		XMFLOAT4 normalEnd;
-		XMStoreFloat4( &normalEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&mTempNormalList[i]), 1.0f) );
+			XMFLOAT4 normalEnd;
+			XMStoreFloat4(&normalEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&mTempNormalList[i]), 1.0f));
 
-		tbnVertexArray.push_back(VT_PositionColor
-		(
-			normalEnd, SSMathHelper::UnitY3
-		));
+			tbnVertexArray.push_back(VT_PositionColor
+			(
+				normalEnd, SSMathHelper::UnitY3
+			));
 
-		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
+			indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 
-		XMFLOAT4 tangentEnd;
+			XMFLOAT4 tangentEnd;
 
-		XMFLOAT3 temp(mTempTangentList[i].x, mTempTangentList[i].y, mTempTangentList[i].z);
-		
-		XMStoreFloat4(&tangentEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&temp), 1.0f));
+			XMFLOAT3 temp(mTempTangentList[i].x, mTempTangentList[i].y, mTempTangentList[i].z);
 
-		tbnVertexArray.push_back(VT_PositionColor
-		(
-			mTempVertexList[i], SSMathHelper::UnitZ3
-		));
+			XMStoreFloat4(&tangentEnd, XMLoadFloat4(&mTempVertexList[i]) + XMVectorScale(XMLoadFloat3(&temp), 1.0f));
 
-		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
+			tbnVertexArray.push_back(VT_PositionColor
+			(
+				mTempVertexList[i], SSMathHelper::UnitZ3
+			));
 
-		tbnVertexArray.push_back(VT_PositionColor
-		(
-			tangentEnd, SSMathHelper::UnitZ3
-		));
+			indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 
-		indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
+			tbnVertexArray.push_back(VT_PositionColor
+			(
+				tangentEnd, SSMathHelper::UnitZ3
+			));
+
+			indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
+		}
+
+		mDebugTBNVB = std::make_shared<SSVertexBuffer>();
+		mDebugTBNVB->SetVertexBufferData(tbnVertexArray);
+
+		mDebugIB = std::make_shared<SSIndexBuffer>();
+		mDebugIB->SetIndexBufferData(indexArray);
 	}
 
 
 	mSphereVB = new SSVertexBuffer();
 	mSphereVB->SetVertexBufferData(vertexArray);	
-
-	mDebugTBNVB = std::make_shared<SSVertexBuffer>();
-	mDebugTBNVB->SetVertexBufferData(tbnVertexArray);
-
-	mDebugIB = std::make_shared<SSIndexBuffer>();
-	mDebugIB->SetIndexBufferData(indexArray);
-	
 }
 
 
@@ -348,23 +350,24 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 
 void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
 {
-	material->SetPrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);	
+	if (bCreateDebugTBN)
+	{
+		material->SetPrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	auto stride = mDebugTBNVB->GetStride();
-	UINT offset = 0;
+		auto stride = mDebugTBNVB->GetStride();
+		UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mDebugTBNVB->GetBufferPointerRef(), &stride, &offset);
-	deviceContext->IASetIndexBuffer(mDebugIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->IASetVertexBuffers(0, 1, &mDebugTBNVB->GetBufferPointerRef(), &stride, &offset);
+		deviceContext->IASetIndexBuffer(mDebugIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
-	material->SetCurrent();
-	
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(GetModelTransform()));
-	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+		material->SetCurrent();
 
-	
-
-	deviceContext->Draw(mDebugTBNVB->GetVertexCount(), 0);
+		material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(GetModelTransform()));
+		material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+		material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+		
+		deviceContext->Draw(mDebugTBNVB->GetVertexCount(), 0);
+	}
 }
 
 void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)

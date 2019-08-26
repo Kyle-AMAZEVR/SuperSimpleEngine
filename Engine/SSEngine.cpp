@@ -115,8 +115,17 @@ void SSEngine::TestCreateResources()
 		"./Resource/Tex/tile/Tiles32_rgh.dds"
 		);
 
-	mRustedIron->SetPosition(10, 10, 10);
+	mMetalGrid = std::make_shared<SSPBRSphere>(
+		"./Resource/Tex/metalgrid/metalgrid4_basecolor.dds",
+		"./Resource/Tex/metalgrid/metalgrid4_normal-dx.dds",
+		"./Resource/Tex/metalgrid/metalgrid4_metallic.dds",
+		"./Resource/Tex/metalgrid/metalgrid4_roughness.dds"
+		);
+
+
+	mRustedIron->SetPosition(0, 20, 0);
 	mTile->SetPosition(20, 20, 20);
+	mMetalGrid->SetPosition(40, 20, 40);
 
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 	mObjMeshSphere = std::make_shared<SSObjMesh>();
@@ -545,6 +554,8 @@ void SSEngine::DrawScene()
 	mRustedIron->Draw(GetDeviceContext(), mTestMaterial.get());
 
 	mTile->Draw(GetDeviceContext(), mTestMaterial.get());
+
+	mMetalGrid->Draw(GetDeviceContext(), mTestMaterial.get());
 
 	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
 	

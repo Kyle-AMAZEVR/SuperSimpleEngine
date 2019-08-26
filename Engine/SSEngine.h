@@ -97,6 +97,7 @@ private:
 
 	std::shared_ptr<class SSPBRSphere> mRustedIron;
 	std::shared_ptr<class SSPBRSphere> mTile;
+	std::shared_ptr<class SSPBRSphere> mMetalGrid;
 	
 
 	// @ cubemap rendertargets

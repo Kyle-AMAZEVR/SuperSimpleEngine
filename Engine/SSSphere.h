@@ -40,7 +40,9 @@ protected:
 	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;
 	std::vector<XMFLOAT2> mTempTexCoordList;
-	std::vector<XMFLOAT4> mTempTangentList;
+	std::vector<XMFLOAT4> mTempTangentList;	
+
+	bool bCreateDebugTBN = false;
 };
 
 
@@ -61,4 +63,6 @@ protected:
 	SSName mNormalTexName;
 	SSName mMetalTexName;
 	SSName mRoughTexName;
+
+
 };
