@@ -65,7 +65,14 @@ void SSDrawCommand::DoWithMaterial()
 	{
 		mMaterial->SetPSTexture(kvp.first, kvp.second);
 	}
+	
+	// @ draw
+	mObject->Draw(deviceContext, mMaterial);
 
+	for (auto& kvp : mPixelShaderTextureMap)
+	{
+		mpPS->SetTextureAsNull(kvp.first);
+	}
 	
 }
 

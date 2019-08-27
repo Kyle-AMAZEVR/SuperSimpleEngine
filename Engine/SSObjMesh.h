@@ -19,7 +19,7 @@ public:
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 
-	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
+	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
 	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 
 	void SetRoughnessOverride(bool bOverride) { mbRoughnessOverride = bOverride; }
