@@ -114,6 +114,6 @@ void SSGenericConstantBuffer::StoreBufferData(const T& value)
 
 	UINT valueSize = sizeof(value);
 	check(valueSize == mBufferSize);
-
+	
 	memcpy_s(mBufferData, mBufferSize, &value, mBufferSize);
 }
