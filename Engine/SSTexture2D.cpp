@@ -76,18 +76,18 @@ bool SSTexture2D::LoadInternal(const DirectX::TexMetadata& metaData, const Direc
 {
 	mWidth = static_cast<UINT>(metaData.width);
 	mHeight = static_cast<UINT>(metaData.height);
-	mMipLevels = metaData.mipLevels;
+	mMipLevels = static_cast<UINT>(metaData.mipLevels);
 
 	D3D11_TEXTURE2D_DESC description;
-	description.Width = mWidth = metaData.width;
-	description.Height = mHeight = metaData.height;
+	description.Width = mWidth = static_cast<UINT>(metaData.width);
+	description.Height = mHeight = static_cast<UINT>(metaData.height);
 	description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	description.MiscFlags = 0;
 	description.Usage = D3D11_USAGE_DEFAULT;
 	description.SampleDesc.Count = 1;
 	description.SampleDesc.Quality = 0;
 	description.MipLevels = static_cast<UINT>(metaData.mipLevels);
-	description.ArraySize = metaData.arraySize;
+	description.ArraySize = static_cast<UINT>(metaData.arraySize);
 	description.CPUAccessFlags = 0;
 
 	this->bSRGB = bsrgb;
@@ -109,7 +109,7 @@ bool SSTexture2D::LoadInternal(const DirectX::TexMetadata& metaData, const Direc
 	resourceViewDesc.Format = description.Format;
 	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-	resourceViewDesc.Texture2D.MipLevels = metaData.mipLevels;
+	resourceViewDesc.Texture2D.MipLevels = static_cast<UINT>(metaData.mipLevels);
 
 	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
 
@@ -118,8 +118,8 @@ bool SSTexture2D::LoadInternal(const DirectX::TexMetadata& metaData, const Direc
 	{
 		auto* pLodImage = image.GetImage(i, 0, 0);
 		check(pLodImage != nullptr);
-		auto dstSubresource = D3D11CalcSubresource(i, 0, metaData.mipLevels);
-		SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
+		auto dstSubresource = D3D11CalcSubresource(i, 0, static_cast<UINT>(metaData.mipLevels));
+		SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
 	}
 
 	return true;
