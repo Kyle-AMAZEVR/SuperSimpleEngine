@@ -2,4 +2,6 @@
 Super Simple DirectX Renderer 
 
 # How to build
-Run 
+1. CMake required
+2. Run VSProjectGen.bat file.
+
