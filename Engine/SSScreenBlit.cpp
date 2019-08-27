@@ -3,7 +3,7 @@
 #include "SSScreenBlit.h"
 #include "DXVertexTypes.h"
 #include <vector>
-#include "DXVertexBuffer.h"
+#include "SSVertexBuffer.h"
 #include "SSIndexBuffer.h"
 
 

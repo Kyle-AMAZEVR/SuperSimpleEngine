@@ -1,6 +1,6 @@
 
 #include "Core.h"
-#include "DXVertexBuffer.h"
+#include "SSVertexBuffer.h"
 
 
 UINT SSVertexBuffer::GetStride() const

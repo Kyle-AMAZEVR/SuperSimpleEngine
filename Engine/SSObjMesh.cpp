@@ -7,7 +7,7 @@
 #include <algorithm> 
 #include <cctype>
 #include <locale>
-#include "DXVertexBuffer.h"
+#include "SSVertexBuffer.h"
 #include "SSISerializable.h"
 #include "SSObjMeshMaterial.h"
 #include "SSMaterial.h"

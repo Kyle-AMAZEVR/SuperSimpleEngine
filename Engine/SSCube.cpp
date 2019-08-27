@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSCube.h"
 #include "DXVertexTypes.h"
-#include "DXVertexBuffer.h"
+#include "SSVertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include <vector>
 

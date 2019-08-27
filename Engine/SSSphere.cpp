@@ -3,7 +3,7 @@
 #include "SSSphere.h"
 #include <cmath>
 #include "DXVertexTypes.h"
-#include "DXVertexBuffer.h"
+#include "SSVertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSMaterial.h"
 #include "SSFreqUsedNames.h"
