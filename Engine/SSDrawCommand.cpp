@@ -5,6 +5,7 @@
 #include "SSDrawCommand.h"
 #include "SSSceneObject.h"
 #include "SSSamplerManager.h"
+#include "SSMaterial.h"
 
 
 SSChangeRenderTargetCmd::SSChangeRenderTargetCmd(IRenderTarget* renderTarget)
@@ -23,6 +24,49 @@ SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_
 {
 	mVertexShaderConstantBufferMap = mpVS->GetConstantBufferMap();
 	mPixelShaderConstantBufferMap = mpPS->GetConstantBufferMap();
+}
+
+void SSDrawCommand::DoWithMaterial()
+{
+	check(mMaterial != nullptr);
+
+	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetDeviceContext();
+
+	mMaterial->SetCurrent();
+
+	// @ set vertex shader constant buffer
+	for (auto& kvp : mVertexShaderConstantBufferMap)
+	{
+		kvp.second->SubmitDataToDevice();
+
+		UINT bufferIndex = kvp.second->GetBufferIndex();
+
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
+	}
+
+	// @ set pixel shader constant buffer
+	for (auto& kvp : mPixelShaderConstantBufferMap)
+	{
+		kvp.second->SubmitDataToDevice();
+
+		UINT bufferIndex = kvp.second->GetBufferIndex();
+
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
+	}
+
+	// @ set pixel shader texture 
+	for (auto& kvp : mVertexShaderTextureMap)
+	{
+		mMaterial->SetVSTexture(kvp.first, kvp.second);
+	}
+	
+	// @set verte shader texture
+	for (auto& kvp : mPixelShaderTextureMap)
+	{
+		mMaterial->SetPSTexture(kvp.first, kvp.second);
+	}
+
+	
 }
 
 void SSDrawCommand::Do()

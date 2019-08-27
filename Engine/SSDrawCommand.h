@@ -44,6 +44,8 @@ class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 public:	
 	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object);
 
+	SSDrawCommand(SSMaterial* material, std::shared_ptr<SSSceneObject> object);
+
 	template<class T>
 	void StoreVSConstantBufferData(SSName name, const T& value);
 
@@ -58,6 +60,8 @@ public:
 
 	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }
 
+	virtual void DoWithMaterial();
+
 	virtual void Do();
 
 	void SetPreDrawJob(std::function<void()> job);
@@ -66,6 +70,7 @@ public:
 protected:
 	class SSVertexShader* mpVS = nullptr;
 	class SSPixelShader* mpPS = nullptr;	
+	class SSMaterial* mMaterial = nullptr;
 
 	//
 	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;

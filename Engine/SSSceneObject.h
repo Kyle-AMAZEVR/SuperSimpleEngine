@@ -9,6 +9,7 @@ public:
 	virtual ~SSSceneObject();
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material){}
 
 	virtual void Tick(float delta){}
 
