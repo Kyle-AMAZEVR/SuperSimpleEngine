@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SSTexture2DBase.h"
+#include "DirectXTex.h"
 
 class ENGINE_API SSTexture2D : public SSTexture2DBase
 {
@@ -28,7 +29,7 @@ public:
 	bool IsSRGB() const { return bSRGB; }
 
 protected:		
-	
+	bool LoadInternal(const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bsrgb);
 	//bool bSRGB = false;
 	bool bSRGB = false;
 };
