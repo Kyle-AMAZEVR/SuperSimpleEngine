@@ -1,7 +1,7 @@
 # SuperSimpleEngine
 Super Simple DirectX Renderer 
 
-https://github.com/ssogal00/SuperSimpleEngine/blob/master/ScreenShot/screenshot.png
+![alt tag](https://github.com/ssogal00/SuperSimpleEngine/blob/master/ScreenShot/screenshot.png)
 
 # How to build
 1. CMake required
