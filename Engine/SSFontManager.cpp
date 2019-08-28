@@ -1,10 +1,8 @@
 
 #include "Core.h"
 #include "SSFontManager.h"
-#include <functional>
-#include <vector>
-#include "ft2build.h"
-#include FT_FREETYPE_H
+
+
 
 void SSFontManager::Initialize(int dpiX, int dpiY)
 {
