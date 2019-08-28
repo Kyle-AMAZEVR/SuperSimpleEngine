@@ -1,19 +1,14 @@
 #pragma once
 #include "Singleton.h"
-#include <functional>
-#include <map>
-#include <vector>
-#include "ft2build.h"
-#include FT_FREETYPE_H
+
 
 
 class ENGINE_API SSFontCharacter
 {
 public:
 	
-	
 
-	FT_ULong mCharCode;
+	unsigned long mCharCode;
 	std::vector<XMFLOAT2> mPoints;
 };
 
@@ -25,6 +20,5 @@ public:
 
 protected:
 	bool bInitialized = false;
-
-	
+	std::map<unsigned long, SSFontCharacter> mFontMap;
 };

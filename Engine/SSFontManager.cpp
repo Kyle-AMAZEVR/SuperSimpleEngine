@@ -1,6 +1,8 @@
 
 #include "Core.h"
 #include "SSFontManager.h"
+#include "ft2build.h"
+#include FT_FREETYPE_H
 
 
 
@@ -23,7 +25,7 @@ void SSFontManager::Initialize(int dpiX, int dpiY)
 
 	FT_UInt index = 0;
 
-	std::vector<std::pair<int, int>> vertices;
+	std::vector<XMFLOAT2> points;
 
 	for(FT_ULong charCode = FT_Get_First_Char(fontFace, &index); index != 0; charCode = FT_Get_Next_Char(fontFace, charCode, &index))
 	{
@@ -50,10 +52,19 @@ void SSFontManager::Initialize(int dpiX, int dpiY)
 				auto x = point.x >> 6;
 				auto y = point.y >> 6;
 
-				vertices.push_back(std::pair<int,int>(x,y));
+				XMFLOAT2 newPoint(x,y);
+				points.push_back(newPoint);
 			}
-		}
-	}
 
-	
+			XMFLOAT2 point(glygh->outline.points[start].x >> 6, glygh->outline.points[start].y >> 6);
+			points.push_back(point);
+		}
+
+		SSFontCharacter newChar;
+		
+		newChar.mCharCode = charCode;
+		newChar.mPoints = points;
+
+		mFontMap[charCode] = newChar;
+	}	
 }

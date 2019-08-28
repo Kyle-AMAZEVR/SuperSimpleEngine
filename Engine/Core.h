@@ -16,6 +16,9 @@
 #include "DirectXMath.h"
 #include <cassert>
 #include <string>
+#include <map>
+#include <vector>
+#include <functional>
 
 #define STRINGFY(x) #x
 #define TOSTRING(x) STRINGFY(x)
