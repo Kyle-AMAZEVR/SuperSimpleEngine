@@ -13,7 +13,7 @@ class ENGINE_API SSName
 public:
 	SSName(){}
 
-	SSName(SSName&& rhs) = default;
+	
 
 	SSName(const std::string& name);
 

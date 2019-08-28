@@ -22,6 +22,7 @@
 #include "Engine/SSTimer.h"
 #include "Engine/CameraManager.h"
 #include "Engine/SSInputManager.h"
+#include "Engine/SSFontManager.h"
 #include "Windowsx.h"
 
 #define MAX_LOADSTRING 100
@@ -159,6 +160,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static int width = 0;
     static int height = 0;
+	
+
     switch (message)
     {
     case WM_COMMAND:
@@ -181,7 +184,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
-            BeginPaint(hWnd, &ps);
+			HDC hdc;
+            hdc = BeginPaint(hWnd, &ps);
+
+			if(!SSFontManager::Get().IsInitialized())
+			{
+				auto dpiX = GetDeviceCaps(hdc, LOGPIXELSX);
+				auto dpiY = GetDeviceCaps(hdc, LOGPIXELSY);
+				SSFontManager::Get().Initialize(dpiX, dpiY);
+			}
+
             // TODO: Add any drawing code that uses hdc here...            
             EndPaint(hWnd, &ps);
         }

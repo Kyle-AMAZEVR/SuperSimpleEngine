@@ -1,9 +1,7 @@
 #pragma once
 #include "SSSceneObject.h"
 #include <vector>
-#include <unordered_map>
 #include <map>
-#include "SSName.h"
 #include "DXVertexTypes.h"
 #include "SSObjMeshSection.h"
 #include "SSObjMeshMaterial.h"
