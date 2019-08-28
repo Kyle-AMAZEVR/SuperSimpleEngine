@@ -17,6 +17,7 @@ public:
     void OnWindowResize(int newWidth, int newHeight);
     static bool IsInitialized() { return bInitialized; }
 
+	void ToggleGBufferDumpMode();
 	void ChangeToNextDumpMode();
 
     inline ID3D11Device* GetDevice() { return mDevice; }
@@ -42,6 +43,8 @@ private:
     UINT m4xMSAAQuality;
 
     static bool bInitialized;
+
+	bool bGbufferDump = false;
 
 private:
     ID3D11Device* mDevice = nullptr;

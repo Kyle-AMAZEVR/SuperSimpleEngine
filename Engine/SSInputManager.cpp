@@ -20,8 +20,12 @@ void SSInputManager::OnKeyDown(ULONGLONG key)
 	case VK_RIGHT:
 		SSCameraManager::Get().RotateYaw(0.01f);
 		break;
-	
+
 	case VK_F1:
+		SSEngine::Get().ToggleGBufferDumpMode();
+		break;
+	
+	case VK_F2:
 		SSEngine::Get().ChangeToNextDumpMode();
 		break;
 	}

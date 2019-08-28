@@ -71,6 +71,11 @@ bool SSEngine::Initialize(HWND windowHandle)
     return true;
 }
 
+void SSEngine::ToggleGBufferDumpMode()
+{
+	bGbufferDump = !bGbufferDump;
+}
+
 void SSEngine::Shutdown()
 {
 	SSDepthStencilStateManager::Get().Shutdown();
@@ -415,6 +420,8 @@ void SSEngine::CreateEnvCubemap()
 {
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);	
+
+	mHDREnvmap = SSTexture2D::CreateFromHDRFile("./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
 	
 	{
 		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
@@ -574,8 +581,14 @@ void SSEngine::DrawScene()
 
 	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };	
 	
-	//blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
-	blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
+	if (bGbufferDump)
+	{
+		blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
+	}
+	else
+	{
+		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
+	}
 
 	blitDrawCmd.Do();
 	
