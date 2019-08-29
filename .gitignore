@@ -32,4 +32,4 @@ Release/*
 Engine/CMakeFiles/*
 Engine/DirectXTex/CMakeFiles/*
 Engine/Release/*
-lib/freetype/**
+
