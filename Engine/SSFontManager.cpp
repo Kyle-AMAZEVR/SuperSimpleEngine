@@ -25,7 +25,7 @@ void SSFontManager::Initialize(int dpiX, int dpiY)
 
 	FT_UInt index = 0;
 
-	std::vector<XMFLOAT2> points;
+	
 
 	for(FT_ULong charCode = FT_Get_First_Char(fontFace, &index); index != 0; charCode = FT_Get_Next_Char(fontFace, charCode, &index))
 	{
@@ -39,6 +39,8 @@ void SSFontManager::Initialize(int dpiX, int dpiY)
 		}		
 
 		FT_GlyphSlot glygh = fontFace->glyph;
+		
+		std::vector<XMFLOAT2> points;
 
 		for(int c = 0; c < glygh->outline.n_contours; ++c)
 		{
@@ -58,13 +60,23 @@ void SSFontManager::Initialize(int dpiX, int dpiY)
 
 			XMFLOAT2 point(glygh->outline.points[start].x >> 6, glygh->outline.points[start].y >> 6);
 			points.push_back(point);
-		}
+		}		
 
 		SSFontCharacter newChar;
 		
 		newChar.mCharCode = charCode;
-		newChar.mPoints = points;
+		newChar.mPoints = std::move(points);
 
 		mFontMap[charCode] = newChar;
-	}	
+	}
+
+	FT_Done_Face(fontFace);
+
+	bInitialized = true;
+}
+
+
+SSFontCharacter& SSFontManager::GetCharacterInfo(unsigned long charCode)
+{
+	return mFontMap[charCode];
 }

@@ -134,6 +134,8 @@ private:
 	std::shared_ptr<class SSGBufferDumpPostProcess> mGBufferDumpProcess;
 	std::shared_ptr<class SSPostProcess> mDeferredLightPostProcess;
 
+	std::shared_ptr<class SSText3D> mText3D;
+
 private:
 	bool TryLoadEnvCubemap(std::wstring filepath);
 	bool TryLoadEnvCubemapConvolution(std::wstring filepath);

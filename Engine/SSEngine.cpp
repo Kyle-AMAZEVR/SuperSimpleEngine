@@ -27,6 +27,7 @@
 #include "SSGBufferDumpPostProcess.h"
 #include "SSLightPostProcess.h"
 #include "SSSphere.h"
+#include "SSText3D.h"
 
 bool SSEngine::bInitialized = false;
 
@@ -97,6 +98,8 @@ void SSEngine::TestCreateResources()
 	mRoughnessTexture = std::make_shared<SSTexture2D>();
 	mDiffuseTexture = std::make_shared<SSTexture2D>();
 	mMetalicTexture = std::make_shared<SSTexture2D>();
+
+	mText3D = std::make_shared<SSText3D>("S");
 
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
@@ -554,6 +557,10 @@ void SSEngine::DrawScene()
 	SSDepthStencilStateManager::Get().SetToDefault();
 	SSRaterizeStateManager::Get().SetToDefault();
 
+	SSRaterizeStateManager::Get().SetCullModeNone();
+	mText3D->Draw(GetDeviceContext(), mTBNDebugMaterial.get());
+	SSRaterizeStateManager::Get().SetToDefault();
+
 	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());	
 
 	mRustedIron->Draw(GetDeviceContext(), mTestMaterial.get());
@@ -562,7 +569,7 @@ void SSEngine::DrawScene()
 
 	mMetalGrid->Draw(GetDeviceContext(), mTestMaterial.get());
 
-	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());
+	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());	
 
 	mFXAAPostProcess->Draw(mDeferredLightPostProcess->GetOutput(0));
 
