@@ -41,7 +41,7 @@ void SSDrawCommand::DoWithMaterial()
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader constant buffer
@@ -51,7 +51,7 @@ void SSDrawCommand::DoWithMaterial()
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader texture 
@@ -106,7 +106,7 @@ void SSDrawCommand::Do()
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader constant buffer
@@ -116,7 +116,7 @@ void SSDrawCommand::Do()
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, &kvp.second->GetBufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader texture 

@@ -3,24 +3,27 @@
 #include "SSRenderTargetBase.h"
 #include "SSTexture2DBase.h"
 
+#include <wrl.h>
+#include <wrl/client.h>
+using Microsoft::WRL::ComPtr;
+
 class ENGINE_API SSRenderTargetTexture2D : public SSTexture2DBase
 {
-public:
-	
+public:	
 	SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
 
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
 	virtual void Destroy() override;
-	virtual void SaveAsDDSFile(std::wstring filename);
+	virtual void SaveAsDDSFile(std::wstring filename);	
 	
-	
-	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip]; }
+	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip].Get(); }
 	void Clear();
 	UINT GetMipLevels() const { return mMipLevels; }
 
 protected:
 	friend class SSGBuffer;
-	ID3D11RenderTargetView* mRenderTargetView[10]{ nullptr };
+
+	ComPtr<ID3D11RenderTargetView> mRenderTargetView[10]{ nullptr };
 	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format, const UINT mipLevels);
 	bool mGenerateMips = false;	
 };
@@ -31,14 +34,13 @@ public:
 	SSDepthRenderTargetTexture2D(const UINT width, const UINT height,  DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
 
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
-	ID3D11DepthStencilView* GetDepthStencilView() { return mDepthStencilView; }
+	ID3D11DepthStencilView* GetDepthStencilView() { return mDepthStencilView.Get(); }
 	void Clear();
 	virtual void Destroy() override;
 protected:
 	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format);
-	
-	ID3D11DepthStencilView* mDepthStencilView = nullptr;
-	
+
+	ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
 };
 
 class ENGINE_API SSGenericRenderTarget : public IRenderTarget

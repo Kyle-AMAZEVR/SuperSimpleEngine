@@ -11,5 +11,5 @@ SSBufferBase::~SSBufferBase()
 
 void SSBufferBase::Destroy()
 {
-	ReleaseCOM(mpBuffer);
+	mpBuffer.Reset();
 }

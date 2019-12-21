@@ -25,7 +25,7 @@ void SSCube::Draw(ID3D11DeviceContext* deviceContext)
 	auto stride = mCubeVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mCubeVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, mCubeVB->GetBufferPointerRef(), &stride, &offset);
 	deviceContext->IASetIndexBuffer(mCubeIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 	deviceContext->DrawIndexed(mCubeIB->GetIndexCount(), 0, 0);

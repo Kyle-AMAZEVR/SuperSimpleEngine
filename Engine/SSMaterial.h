@@ -60,7 +60,7 @@ void SSMaterial::SetVSConstantBufferData(SSName name, const T& value)
 
 		auto* deviceContext = SSEngine::Get().GetDeviceContext();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
 }
 
@@ -76,7 +76,7 @@ void SSMaterial::SetVSConstantBufferDataChecked(SSName name, const T& value)
 
 		auto* deviceContext = SSEngine::Get().GetDeviceContext();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
 	else
 	{
@@ -96,6 +96,6 @@ void SSMaterial::SetPSConstantBufferData(SSName name, const T& value)
 
 		auto* deviceContext = SSEngine::Get().GetDeviceContext();
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, &mPixelShaderConstantBufferMap[name]->GetBufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, mPixelShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
 }

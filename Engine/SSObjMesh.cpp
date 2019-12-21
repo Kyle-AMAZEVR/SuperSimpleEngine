@@ -80,7 +80,7 @@ void SSObjMesh::DebugDraw(ID3D11DeviceContext* deviceContext, SSMaterial* materi
 	auto stride = mTBNDebugVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mTBNDebugVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, mTBNDebugVB->GetBufferPointerRef(), &stride, &offset);
 	deviceContext->IASetIndexBuffer(mTBNDebugIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 	material->SetCurrent();
@@ -318,7 +318,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
 	auto stride = mVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);	
+	deviceContext->IASetVertexBuffers(0, 1, mVB->GetBufferPointerRef(), &stride, &offset);	
 
 	deviceContext->Draw(mVB->GetVertexCount(), 0);	
 }
@@ -355,7 +355,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	auto stride = mVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, mVB->GetBufferPointerRef(), &stride, &offset);
 
 	deviceContext->IASetIndexBuffer(mIB->GetBufferPointer(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
 

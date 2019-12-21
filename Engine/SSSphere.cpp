@@ -343,7 +343,7 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 	auto stride = mSphereVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, mSphereVB->GetBufferPointerRef(), &stride, &offset);
 
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);
 }
@@ -357,7 +357,7 @@ void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* m
 		auto stride = mDebugTBNVB->GetStride();
 		UINT offset = 0;
 
-		deviceContext->IASetVertexBuffers(0, 1, &mDebugTBNVB->GetBufferPointerRef(), &stride, &offset);
+		deviceContext->IASetVertexBuffers(0, 1, mDebugTBNVB->GetBufferPointerRef(), &stride, &offset);
 		deviceContext->IASetIndexBuffer(mDebugIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 		material->SetCurrent();
@@ -401,7 +401,7 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 	auto stride = mSphereVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, mSphereVB->GetBufferPointerRef(), &stride, &offset);
 
 	material->SetPSConstantBufferData("TextureExist", settings);
 
@@ -449,7 +449,7 @@ void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mat
 	auto stride = mSphereVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &mSphereVB->GetBufferPointerRef(), &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, mSphereVB->GetBufferPointerRef(), &stride, &offset);
 
 	material->SetPSConstantBufferData("TextureExist", settings);	
 

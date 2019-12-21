@@ -63,7 +63,7 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 		renderTargetDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		renderTargetDesc.Texture2D.MipSlice = i;
 
-		HR(SSEngine::Get().GetDevice()->CreateRenderTargetView(mTexturePtr.Get(), &renderTargetDesc, &mRenderTargetView[i]));
+		HR(SSEngine::Get().GetDevice()->CreateRenderTargetView(mTexturePtr.Get(), &renderTargetDesc, mRenderTargetView[i].ReleaseAndGetAddressOf()));
 	}
 	
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
@@ -84,7 +84,7 @@ void SSRenderTargetTexture2D::Destroy()
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{
-		ReleaseCOM(mRenderTargetView[i]);
+		mRenderTargetView[i].Reset();		
 	}
 }
 
@@ -109,7 +109,7 @@ void SSRenderTargetTexture2D::Clear()
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{
-		SSEngine::Get().GetDeviceContext()->ClearRenderTargetView(mRenderTargetView[i], Color);
+		SSEngine::Get().GetDeviceContext()->ClearRenderTargetView(mRenderTargetView[i].Get(), Color);
 	}
 }
 
@@ -216,13 +216,13 @@ SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(const UINT width, con
 
 void SSDepthRenderTargetTexture2D::Clear()
 {
-	SSEngine::Get().GetDeviceContext()->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	SSEngine::Get().GetDeviceContext()->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 void SSDepthRenderTargetTexture2D::Destroy()
 {
-	mTexturePtr.Reset();	
-	ReleaseCOM(mDepthStencilView);
+	mTexturePtr.Reset();
+	mDepthStencilView.Reset();	
 }
 
 void SSDepthRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
