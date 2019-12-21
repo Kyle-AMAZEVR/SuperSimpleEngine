@@ -30,7 +30,7 @@ void SSText3D::InternalCreate()
 		v.VertexAttribute1 = XMFLOAT4(charInfo.mPoints[i].x, charInfo.mPoints[i].y, 0 , 1.0f);		
 		v.VertexAttribute2 = SSMathHelper::UnitX3;
 		vertices.push_back(v);
-		indices.push_back(vertices.size() - 1);
+		indices.push_back(static_cast<UINT>(vertices.size() - 1));
 	}
 
 	mTextVB = std::make_shared<SSVertexBuffer>();

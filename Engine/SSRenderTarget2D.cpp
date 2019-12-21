@@ -63,7 +63,7 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 		renderTargetDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		renderTargetDesc.Texture2D.MipSlice = i;
 
-		HR(SSEngine::Get().GetDevice()->CreateRenderTargetView(mTexturePtr, &renderTargetDesc, &mRenderTargetView[i]));
+		HR(SSEngine::Get().GetDevice()->CreateRenderTargetView(mTexturePtr.Get(), &renderTargetDesc, &mRenderTargetView[i]));
 	}
 	
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
@@ -74,13 +74,13 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
 	shaderResourceViewDesc.Texture2D.MipLevels = mipLevels;
 
-	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &shaderResourceViewDesc, &mShaderResourceView));
+	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &shaderResourceViewDesc, &mShaderResourceView));
 }
 
 void SSRenderTargetTexture2D::Destroy()
 {
-	ReleaseCOM(mTexturePtr);
-	ReleaseCOM(mShaderResourceView);
+	mTexturePtr.Reset();
+	mShaderResourceView.Reset();	
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{
@@ -132,7 +132,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 
 	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &copiedTexturePtr));
 
-	SSEngine::Get().GetDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr);
+	SSEngine::Get().GetDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr.Get());
 
 	// copy resource
 	if (mGenerateMips)
@@ -221,7 +221,7 @@ void SSDepthRenderTargetTexture2D::Clear()
 
 void SSDepthRenderTargetTexture2D::Destroy()
 {
-	ReleaseCOM(mTexturePtr);
+	mTexturePtr.Reset();	
 	ReleaseCOM(mDepthStencilView);
 }
 
@@ -258,7 +258,7 @@ void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UIN
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-	HR(SSEngine::Get().GetDevice()->CreateDepthStencilView(mTexturePtr, &depthStencilViewDesc, &mDepthStencilView));
+	HR(SSEngine::Get().GetDevice()->CreateDepthStencilView(mTexturePtr.Get(), &depthStencilViewDesc, &mDepthStencilView));
 }
 
 

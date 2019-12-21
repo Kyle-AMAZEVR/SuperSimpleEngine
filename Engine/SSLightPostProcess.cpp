@@ -19,9 +19,9 @@ SSLightPostProcess::SSLightPostProcess(UINT width, UINT height)
 
 	for (int i = 0; i < 16; ++i)
 	{
-		mLightInfo.lightColors[i].x = mLightInfo.lightColors[i].y = mLightInfo.lightColors[i].z = 0.01;
+		mLightInfo.lightColors[i].x = mLightInfo.lightColors[i].y = mLightInfo.lightColors[i].z = 0.01f;
 
-		mLightInfo.lightPosition[i].x = i * 30;
+		mLightInfo.lightPosition[i].x = i * 30.f;
 		mLightInfo.lightPosition[i].y = 20;
 		mLightInfo.lightPosition[i].z = 0;
 		mLightInfo.lightPosition[i].w = 1;

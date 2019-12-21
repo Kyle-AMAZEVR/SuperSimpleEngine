@@ -363,8 +363,8 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	{		
 		auto& section = mMeshSectionList[i];
 
-		metalicRoughnessOverride.value1 = 0.31;
-		metalicRoughnessOverride.value2 = 0.7;
+		metalicRoughnessOverride.value1 = 0.31f;
+		metalicRoughnessOverride.value2 = 0.7f;
 		
 		if (mMeshMaterialMap.count(section.mSectionName) > 0)
 		{

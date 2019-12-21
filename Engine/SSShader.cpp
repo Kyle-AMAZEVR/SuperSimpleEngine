@@ -192,7 +192,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 
 	 auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
 
-	 dxDeviceContext->VSSetShaderResources(slotIndex, 1, &texture->GetShaderResourceViewRef());
+	 dxDeviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
  }
 
  void SSVertexShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
@@ -253,7 +253,7 @@ void SSPixelShader::SetTexture(std::string name, SSTexture2DBase* texture)
 
 		auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
 
-		dxDeviceContext->PSSetShaderResources(slotIndex, 1, &texture->GetShaderResourceViewRef());
+		dxDeviceContext->PSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
 	}
 }
 

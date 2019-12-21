@@ -1,6 +1,10 @@
 #pragma once
 
 #include "DXRenderResource.h"
+#include <wrl/internal.h>
+#include <wrl/client.h>
+
+using Microsoft::WRL::ComPtr;
 
 class ENGINE_API SSTexture2DBase : public DXRenderResource
 {
@@ -9,11 +13,11 @@ public:
 	UINT GetWidth() { return mWidth; }
 	UINT GetHeight() {	return mHeight; }
 	
-	virtual ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView; }
-	virtual ID3D11ShaderResourceView*& GetShaderResourceViewRef() { return mShaderResourceView; }
+	virtual ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView.Get(); }
+	virtual ID3D11ShaderResourceView* const* GetShaderResourceViewRef() { return mShaderResourceView.GetAddressOf(); }
 	
-	virtual ID3D11Texture2D* GetTextureResource() { return mTexturePtr; }
-	virtual ID3D11Texture2D*& GetTextureResourceRef() { return mTexturePtr; }
+	virtual ID3D11Texture2D* GetTextureResource() { return mTexturePtr.Get(); }
+	virtual ID3D11Texture2D* const* GetTextureResourceRef() { return mTexturePtr.GetAddressOf(); }
 	
 
 protected:
@@ -22,6 +26,6 @@ protected:
 	UINT mMipLevels = 1;
 	DXGI_FORMAT mTextureFormat = DXGI_FORMAT_UNKNOWN;
 
-	ID3D11Texture2D* mTexturePtr = nullptr;		
-	ID3D11ShaderResourceView* mShaderResourceView = nullptr;
+	ComPtr<ID3D11Texture2D> mTexturePtr = nullptr;		
+	ComPtr<ID3D11ShaderResourceView> mShaderResourceView = nullptr;
 };

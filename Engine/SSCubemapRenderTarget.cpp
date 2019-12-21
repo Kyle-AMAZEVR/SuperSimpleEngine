@@ -82,7 +82,7 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource()
 	resourceViewDesc.TextureCube.MostDetailedMip = 0;
 	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
 
-	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
+	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
 	//	
 	
 	for (UINT face = 0; face < 6; ++face)
@@ -90,10 +90,10 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource()
 		auto dstSubresource = D3D11CalcSubresource(0, face, mMipLevels);
 		auto srcSubresource = D3D11CalcSubresource(0, 0, mMipLevels);
 
-		SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr, dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
+		SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr.Get(), dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
 	}
 	
-	SSEngine::Get().GetDeviceContext()->GenerateMips(mShaderResourceView);
+	SSEngine::Get().GetDeviceContext()->GenerateMips(mShaderResourceView.Get());
 }
 
 void SSCubemapRenderTarget::Destroy()
@@ -156,7 +156,7 @@ void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource()
 	resourceViewDesc.TextureCube.MostDetailedMip = 0;
 	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
 
-	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
+	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
 
 	//
 	for (UINT mipLevel = 0; mipLevel < mMipLevels; ++mipLevel)
@@ -166,7 +166,7 @@ void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource()
 			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, mMipLevels);
 			auto srcSubresource = D3D11CalcSubresource(mipLevel, 0, mMipLevels);
 
-			SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr, dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
+			SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(mTexturePtr.Get(), dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
 		}
 	}
 }
@@ -224,7 +224,7 @@ void SSCubemapRenderTarget::SaveAsCubemapDDSFile(std::wstring filename)
 
 	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &copiedTexturePtr));
 
-	SSEngine::Get().GetDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr);	
+	SSEngine::Get().GetDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr.Get());	
 
 	DirectX::Image* imageList = new DirectX::Image[6 * mMipLevels];
 	
@@ -308,7 +308,7 @@ void SSCubemapRenderTarget::SaveFaceAsDDSFile(ECubemapFace eFace)
 		auto srcSubResource = D3D11CalcSubresource(mip, face, mMipLevels);
 		auto dstSubResource = D3D11CalcSubresource(mip, 0, mMipLevels);
 
-		SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(copiedTexturePtr, dstSubResource, 0, 0, 0, mTexturePtr, srcSubResource, nullptr);
+		SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(copiedTexturePtr, dstSubResource, 0, 0, 0, mTexturePtr.Get(), srcSubResource, nullptr);
 	}	
 
 	DirectX::Image* imageList = new DirectX::Image[mMipLevels];
@@ -386,7 +386,7 @@ void SSCubemapRenderTarget::SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip)
 	// copy resource	
 	auto srcSubResource = D3D11CalcSubresource(mip, face, mMipLevels);
 
-	SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(copiedTexturePtr, 0, 0, 0, 0, mTexturePtr, srcSubResource, nullptr);
+	SSEngine::Get().GetDeviceContext()->CopySubresourceRegion(copiedTexturePtr, 0, 0, 0, 0, mTexturePtr.Get(), srcSubResource, nullptr);
 
 	D3D11_MAPPED_SUBRESOURCE mapped;
 	HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr, 0, D3D11_MAP_READ, 0, &mapped));

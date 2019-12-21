@@ -37,7 +37,7 @@ bool SSEngine::Initialize(HWND windowHandle)
     CreateDevice();
     CreateSwapChain();	
 
-	bInitialized = true;
+	bInitialized = true;	
 
 	SSShaderManager::Get().Initialize();
 
@@ -84,9 +84,9 @@ void SSEngine::Shutdown()
 	SSSamplerManager::Get().Shutdown();
 	SSShaderManager::Get().Shutdown();
 
-	ReleaseCOM(mSwapChain);
-	ReleaseCOM(mDevice);
-	ReleaseCOM(mDeviceContext);
+	mSwapChain.Reset();
+	mDevice.Reset();
+	mDeviceContext.Reset();	
 }
 
 void SSEngine::TestCreateResources()
@@ -201,7 +201,7 @@ bool SSEngine::CreateDevice()
 {
     //
     D3D_FEATURE_LEVEL featureLevel;        
-    HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, &mDevice, &featureLevel, &mDeviceContext));     
+    HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, &mDeviceContext));     
     return true;
 }
 
@@ -265,7 +265,7 @@ bool SSEngine::CreateSwapChain()
     IDXGIFactory* dxgiFactory = nullptr;
     HR(dxgiAdaptor->GetParent(__uuidof(IDXGIFactory), (void**) &dxgiFactory));
 
-    HR(dxgiFactory->CreateSwapChain(mDevice, &sd, &mSwapChain));
+    HR(dxgiFactory->CreateSwapChain(mDevice.Get(), &sd, &mSwapChain));
 
     ReleaseCOM(dxgiDevice);
     ReleaseCOM(dxgiAdaptor);

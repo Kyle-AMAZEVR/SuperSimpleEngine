@@ -13,7 +13,7 @@ void SSIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_
     mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
     mBufferDescription.MiscFlags = 0;
     mBufferDescription.StructureByteStride = 0;
-    mBufferDescription.ByteWidth = sizeof(unsigned int) * indexData.size();
+    mBufferDescription.ByteWidth = static_cast<UINT>(sizeof(unsigned int) * indexData.size());
 
     D3D11_SUBRESOURCE_DATA indexSubresourceData;
 

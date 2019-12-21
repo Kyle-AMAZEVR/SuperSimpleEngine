@@ -5,12 +5,16 @@
 #include "SSViewport.h"
 #include <vector>
 #include "SSShader.h"
+#include <wrl.h>
+#include <wrl/client.h>
+
+using Microsoft::WRL::ComPtr;
 
 // Super Simple
 class ENGINE_API SSEngine : public Singleton<SSEngine>
 {
 public:
-	SSEngine() = default;
+	SSEngine() = default;	
 
     bool Initialize(HWND windowHandle);
 	void Shutdown();
@@ -20,9 +24,9 @@ public:
 	void ToggleGBufferDumpMode();
 	void ChangeToNextDumpMode();
 
-    inline ID3D11Device* GetDevice() { return mDevice; }
-    inline ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
-    inline IDXGISwapChain* GetSwapChain() {return mSwapChain;}    
+    inline ID3D11Device* GetDevice() const { return mDevice.Get(); }
+    inline ID3D11DeviceContext* GetDeviceContext() const { return mDeviceContext.Get(); }
+    inline IDXGISwapChain* GetSwapChain() const {return mSwapChain.Get();}    
 
     void DrawScene();
 
@@ -47,9 +51,10 @@ private:
 	bool bGbufferDump = false;
 
 private:
-    ID3D11Device* mDevice = nullptr;
-    ID3D11DeviceContext* mDeviceContext = nullptr;
-    IDXGISwapChain* mSwapChain = nullptr;
+	ComPtr<ID3D11Device> mDevice = nullptr;
+	ComPtr<ID3D11DeviceContext> mDeviceContext = nullptr;
+	ComPtr<IDXGISwapChain> mSwapChain = nullptr;
+
     ID3D11Debug* mDebug = nullptr;
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
 

@@ -66,7 +66,7 @@ bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 	resourceViewDesc.Texture2D.MipLevels = static_cast<UINT>(metaData.mipLevels);
 
-	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr, &resourceViewDesc, &mShaderResourceView));
+	HR(SSEngine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
 
 	for (UINT face = 0; face < 6; ++face)
 	{
@@ -76,7 +76,7 @@ bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 			check(pLodImage != nullptr);
 
 			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, metaData.mipLevels);			
-			SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr, dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
+			SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, pLodImage->rowPitch, 0);
 		}
 	}	
 

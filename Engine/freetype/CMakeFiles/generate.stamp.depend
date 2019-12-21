@@ -1,0 +1,14 @@
+# CMake generation dependency list for this directory.
+E:/Program Files/CMake/share/cmake-3.14/Modules/CPack.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/CPackComponent.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/CheckIncludeFile.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/FindBZip2.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/FindPNG.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/FindPackageHandleStandardArgs.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/FindPackageMessage.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/FindPkgConfig.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/FindZLIB.cmake
+E:/Program Files/CMake/share/cmake-3.14/Modules/SelectLibraryConfigurations.cmake
+E:/Program Files/CMake/share/cmake-3.14/Templates/CPackConfig.cmake.in
+E:/github/DXEngine/lib/freetype/CMakeLists.txt
+E:/github/DXEngine/lib/freetype/builds/cmake/FindHarfBuzz.cmake
