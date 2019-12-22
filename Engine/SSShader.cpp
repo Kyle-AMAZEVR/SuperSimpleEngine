@@ -190,7 +190,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 
 	 UINT slotIndex = mTextureMap[name];
 
-	 auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+	 auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 	 dxDeviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
  }
@@ -199,7 +199,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
  {
 	 UINT slotIndex = mSamplerMap[name];
 	 	 
-	 auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+	 auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 	 
 	 dxDeviceContext->VSSetSamplers(slotIndex, 1, &sampler);
  }
@@ -251,7 +251,7 @@ void SSPixelShader::SetTexture(std::string name, SSTexture2DBase* texture)
 	{
 		UINT slotIndex = mTextureMap[name];
 
-		auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+		auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		dxDeviceContext->PSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
 	}
@@ -263,7 +263,7 @@ void SSPixelShader::SetTextureAsNull(std::string name)
 	{
 		UINT slotIndex = mTextureMap[name];
 
-		auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+		auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		ID3D11ShaderResourceView* nullResourceView = nullptr;
 
@@ -276,7 +276,7 @@ void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
 {
 	UINT slotIndex = mSamplerMap[name];
 
-	auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+	auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 	dxDeviceContext->PSSetSamplers(slotIndex, 1, &sampler);
 }

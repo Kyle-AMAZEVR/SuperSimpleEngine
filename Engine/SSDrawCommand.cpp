@@ -30,7 +30,7 @@ void SSDrawCommand::DoWithMaterial()
 {
 	check(mMaterial != nullptr);
 
-	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetDeviceContext();
+	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 	mMaterial->SetCurrent();
 
@@ -87,7 +87,7 @@ void SSDrawCommand::Do()
 		mPreDrawJob();
 	}
 
-	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetDeviceContext();
+	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 	// @ set input layout
 	deviceContext->IASetInputLayout(mpVS->GetInputLayout());

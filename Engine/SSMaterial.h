@@ -3,6 +3,8 @@
 #include "DXRenderResource.h"
 #include "SSName.h"
 
+using namespace std;
+
 class SSVertexShader;
 class SSPixelShader;
 class SSTexture2DBase;
@@ -11,6 +13,7 @@ class ENGINE_API SSMaterial : public DXRenderResource
 {
 public:
 	SSMaterial(SSVertexShader* vs, SSPixelShader* ps);
+	//SSMaterial(SSVertexShader* vs, SSPixelShader* ps);
 
 	virtual void SetCurrent();
 	virtual void ReleaseCurrent();
@@ -32,8 +35,8 @@ public:
 	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }	
 
 protected:
-	class SSVertexShader* mpVS = nullptr;
-	class SSPixelShader* mpPS = nullptr;
+	class SSVertexShader* mpVS;
+	class SSPixelShader* mpPS;
 
 	//
 	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;
@@ -58,7 +61,7 @@ void SSMaterial::SetVSConstantBufferData(SSName name, const T& value)
 		
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
 
-		auto* deviceContext = SSEngine::Get().GetDeviceContext();
+		auto* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
@@ -74,7 +77,7 @@ void SSMaterial::SetVSConstantBufferDataChecked(SSName name, const T& value)
 
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
 
-		auto* deviceContext = SSEngine::Get().GetDeviceContext();
+		auto* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
@@ -94,7 +97,7 @@ void SSMaterial::SetPSConstantBufferData(SSName name, const T& value)
 
 		UINT bufferIndex = mPixelShaderConstantBufferMap[name]->GetBufferIndex();
 
-		auto* deviceContext = SSEngine::Get().GetDeviceContext();
+		auto* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		deviceContext->PSSetConstantBuffers(bufferIndex, 1, mPixelShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}

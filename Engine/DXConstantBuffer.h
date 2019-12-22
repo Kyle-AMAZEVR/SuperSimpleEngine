@@ -39,11 +39,11 @@ void SSTypedConstantBuffer<TBufferType>::Write(const TBufferType& data)
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-    HR(SSEngine::Get().GetDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
+    HR(SSEngine::Get().GetImmediateDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
     
     memcpy(mappedResource.pData, &data, sizeof(data));
 
-    HR(SSEngine::Get().GetDeviceContext()->Unmap(mpBuffer, 0));   
+    HR(SSEngine::Get().GetImmediateDeviceContext()->Unmap(mpBuffer, 0));   
     
 }
 

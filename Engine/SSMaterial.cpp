@@ -6,14 +6,14 @@
 
 SSMaterial::SSMaterial(SSVertexShader* vs, SSPixelShader* ps)
 	: mpVS(vs), mpPS(ps)
-{
+{	
 	mVertexShaderConstantBufferMap = mpVS->GetConstantBufferMap();
 	mPixelShaderConstantBufferMap = mpPS->GetConstantBufferMap();
 }
 
 void SSMaterial::SetCurrent()
 {
-	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetDeviceContext();
+	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 	// @ set input layout
 	deviceContext->IASetInputLayout(mpVS->GetInputLayout());

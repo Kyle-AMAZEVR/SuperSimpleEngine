@@ -201,7 +201,9 @@ bool SSEngine::CreateDevice()
 {
     //
     D3D_FEATURE_LEVEL featureLevel;        
-    HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, &mDeviceContext));     
+    HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mDeviceContext.ReleaseAndGetAddressOf()));
+	HR(mDevice->CreateDeferredContext(0, mDeferredContext.ReleaseAndGetAddressOf()));
+
     return true;
 }
 
@@ -486,6 +488,8 @@ void SSEngine::DrawScene()
 		return;
 	}
 
+
+
 	check(mDeviceContext != nullptr);
 
 	// @equirect to cube
@@ -558,18 +562,18 @@ void SSEngine::DrawScene()
 	SSRaterizeStateManager::Get().SetToDefault();
 
 	SSRaterizeStateManager::Get().SetCullModeNone();
-	mText3D->Draw(GetDeviceContext(), mTBNDebugMaterial.get());
+	mText3D->Draw(GetImmediateDeviceContext(), mTBNDebugMaterial.get());
 	SSRaterizeStateManager::Get().SetToDefault();
 
-	mTestSphere->Draw(GetDeviceContext(), mTestMaterial.get());	
+	mTestSphere->Draw(GetImmediateDeviceContext(), mTestMaterial.get());	
 
-	mRustedIron->Draw(GetDeviceContext(), mTestMaterial.get());
+	mRustedIron->Draw(GetImmediateDeviceContext(), mTestMaterial.get());
 
-	mTile->Draw(GetDeviceContext(), mTestMaterial.get());
+	mTile->Draw(GetImmediateDeviceContext(), mTestMaterial.get());
 
-	mMetalGrid->Draw(GetDeviceContext(), mTestMaterial.get());
+	mMetalGrid->Draw(GetImmediateDeviceContext(), mTestMaterial.get());
 
-	mSponzaMesh->Draw(GetDeviceContext(), mTestMaterial.get());	
+	mSponzaMesh->Draw(GetImmediateDeviceContext(), mTestMaterial.get());	
 
 	mFXAAPostProcess->Draw(mDeferredLightPostProcess->GetOutput(0));
 

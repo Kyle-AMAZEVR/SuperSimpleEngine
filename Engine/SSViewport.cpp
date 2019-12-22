@@ -7,7 +7,7 @@ void SSViewport::Clear()
 {
     float Color[4] { 0.0f, 1.0f, 0.0f, 1.0f};
     
-    auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+    auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
     if(dxDeviceContext != nullptr)
     {
@@ -19,7 +19,7 @@ void SSViewport::Clear()
 void SSViewport::SetCurrentRenderTarget()
 {
 	// Bind the render target view and depth/stencil view to the pipeline.
-	SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
+	SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
 
 	// Set the viewport transform.
 	mScreenViewport.TopLeftX = 0;
@@ -29,13 +29,13 @@ void SSViewport::SetCurrentRenderTarget()
 	mScreenViewport.MinDepth = 0.0f;
 	mScreenViewport.MaxDepth = 1.0f;
 
-	SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mScreenViewport);
+	SSEngine::Get().GetImmediateDeviceContext()->RSSetViewports(1, &mScreenViewport);
 }
 
 void SSViewport::Resize(UINT newWidth, UINT newHeight)
 {
     auto* dxDevice = SSEngine::Get().GetDevice();
-    auto* dxDeviceContext = SSEngine::Get().GetDeviceContext();
+    auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
     auto* dxSwapChain = SSEngine::Get().GetSwapChain();
     
 	check(dxDevice != nullptr);

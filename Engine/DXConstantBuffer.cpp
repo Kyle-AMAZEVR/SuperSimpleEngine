@@ -66,7 +66,7 @@ SSGenericConstantBuffer::~SSGenericConstantBuffer()
 void SSGenericConstantBuffer::SubmitDataToDevice()
 { 	
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    HR(SSEngine::Get().GetDeviceContext()->Map(mpBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+    HR(SSEngine::Get().GetImmediateDeviceContext()->Map(mpBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
     memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
-    SSEngine::Get().GetDeviceContext()->Unmap(mpBuffer.Get(), 0);
+    SSEngine::Get().GetImmediateDeviceContext()->Unmap(mpBuffer.Get(), 0);
 }

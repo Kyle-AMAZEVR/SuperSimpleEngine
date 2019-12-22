@@ -25,7 +25,8 @@ public:
 	void ChangeToNextDumpMode();
 
     inline ID3D11Device* GetDevice() const { return mDevice.Get(); }
-    inline ID3D11DeviceContext* GetDeviceContext() const { return mDeviceContext.Get(); }
+    inline ID3D11DeviceContext* GetImmediateDeviceContext() const { return mDeviceContext.Get(); }
+	inline ID3D11DeviceContext* GetDeferredDeviceContext() const { return mDeferredContext.Get(); }
     inline IDXGISwapChain* GetSwapChain() const {return mSwapChain.Get();}    
 
     void DrawScene();
@@ -53,6 +54,7 @@ private:
 private:
 	ComPtr<ID3D11Device> mDevice = nullptr;
 	ComPtr<ID3D11DeviceContext> mDeviceContext = nullptr;
+	ComPtr<ID3D11DeviceContext> mDeferredContext = nullptr;
 	ComPtr<IDXGISwapChain> mSwapChain = nullptr;
 
     ID3D11Debug* mDebug = nullptr;

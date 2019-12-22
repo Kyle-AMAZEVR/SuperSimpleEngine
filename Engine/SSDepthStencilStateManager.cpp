@@ -37,17 +37,17 @@ void SSDepthStencilStateManager::Initialize()
 
 void SSDepthStencilStateManager::SetToDefault()
 {
-	SSEngine::Get().GetDeviceContext()->OMSetDepthStencilState(nullptr, 1);
+	SSEngine::Get().GetImmediateDeviceContext()->OMSetDepthStencilState(nullptr, 1);
 }
 
 void SSDepthStencilStateManager::SetDepthTestDisabled()
 {
-	SSEngine::Get().GetDeviceContext()->OMSetDepthStencilState(mDepthTestDisabledState, 1);
+	SSEngine::Get().GetImmediateDeviceContext()->OMSetDepthStencilState(mDepthTestDisabledState, 1);
 }
 
 void SSDepthStencilStateManager::SetDepthCompLessEqual()
 {
-	SSEngine::Get().GetDeviceContext()->OMSetDepthStencilState(mDepthFuncLessEqualState, 1);
+	SSEngine::Get().GetImmediateDeviceContext()->OMSetDepthStencilState(mDepthFuncLessEqualState, 1);
 }
 
 void SSDepthStencilStateManager::Shutdown()

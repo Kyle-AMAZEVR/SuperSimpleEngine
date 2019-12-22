@@ -119,7 +119,7 @@ bool SSTexture2D::LoadInternal(const DirectX::TexMetadata& metaData, const Direc
 		auto* pLodImage = image.GetImage(i, 0, 0);
 		check(pLodImage != nullptr);
 		auto dstSubresource = D3D11CalcSubresource(i, 0, static_cast<UINT>(metaData.mipLevels));
-		SSEngine::Get().GetDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
+		SSEngine::Get().GetImmediateDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
 	}
 
 	return true;

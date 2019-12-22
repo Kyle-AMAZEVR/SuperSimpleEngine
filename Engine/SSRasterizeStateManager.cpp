@@ -41,21 +41,21 @@ void SSRaterizeStateManager::Initialize()
 
 void SSRaterizeStateManager::SetToDefault()
 {
-	SSEngine::Get().GetDeviceContext()->RSSetState(mDefaultState);
+	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mDefaultState);
 }
 void SSRaterizeStateManager::SetCullModeNone()
 {
-	SSEngine::Get().GetDeviceContext()->RSSetState(mCullModeNoneState);
+	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mCullModeNoneState);
 }
 
 void SSRaterizeStateManager::SetFrontCounterClockwise()
 {
-	SSEngine::Get().GetDeviceContext()->RSSetState(mFrontCounterClockwiseState);
+	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mFrontCounterClockwiseState);
 }
 
 void SSRaterizeStateManager::SetWireFrameMode()
 {
-	SSEngine::Get().GetDeviceContext()->RSSetState(mWireFrameState);
+	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mWireFrameState);
 }
 
 void SSRaterizeStateManager::Shutdown()

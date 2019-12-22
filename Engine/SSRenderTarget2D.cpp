@@ -109,7 +109,7 @@ void SSRenderTargetTexture2D::Clear()
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{
-		SSEngine::Get().GetDeviceContext()->ClearRenderTargetView(mRenderTargetView[i].Get(), Color);
+		SSEngine::Get().GetImmediateDeviceContext()->ClearRenderTargetView(mRenderTargetView[i].Get(), Color);
 	}
 }
 
@@ -132,7 +132,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 
 	HR(SSEngine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &copiedTexturePtr));
 
-	SSEngine::Get().GetDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr.Get());
+	SSEngine::Get().GetImmediateDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr.Get());
 
 	// copy resource
 	if (mGenerateMips)
@@ -147,7 +147,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 			UINT subresource = D3D11CalcSubresource(i, 0, mMipLevels);
 
 			D3D11_MAPPED_SUBRESOURCE mapped;
-			HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr, subresource, D3D11_MAP_READ, 0, &mapped));
+			HR(SSEngine::Get().GetImmediateDeviceContext()->Map(copiedTexturePtr, subresource, D3D11_MAP_READ, 0, &mapped));
 						
 			InitD3DDesc(imageList[i]);
 			imageList[i].width = mipTextureWidth;
@@ -160,7 +160,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 			// copy raw data
 			memcpy_s(imageList[i].pixels, mapped.RowPitch * mipTextureHeight, mapped.pData, mapped.RowPitch * mipTextureHeight);
 
-			SSEngine::Get().GetDeviceContext()->Unmap(copiedTexturePtr, subresource);
+			SSEngine::Get().GetImmediateDeviceContext()->Unmap(copiedTexturePtr, subresource);
 		}
 
 		TexMetadata metaData;
@@ -181,7 +181,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 	else
 	{
 		D3D11_MAPPED_SUBRESOURCE mapped;
-		HR(SSEngine::Get().GetDeviceContext()->Map(copiedTexturePtr, 0, D3D11_MAP_READ, 0, &mapped));
+		HR(SSEngine::Get().GetImmediateDeviceContext()->Map(copiedTexturePtr, 0, D3D11_MAP_READ, 0, &mapped));
 
 		DirectX::Image image;
 		InitD3DDesc(image);
@@ -195,7 +195,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 		// copy raw data
 		memcpy_s(image.pixels, mapped.RowPitch * mHeight, mapped.pData, mapped.RowPitch * mHeight);
 
-		SSEngine::Get().GetDeviceContext()->Unmap(copiedTexturePtr, 0);
+		SSEngine::Get().GetImmediateDeviceContext()->Unmap(copiedTexturePtr, 0);
 
 		HR(DirectX::SaveToDDSFile(image, 0, filename.c_str()));
 		delete[] image.pixels;
@@ -216,7 +216,7 @@ SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(const UINT width, con
 
 void SSDepthRenderTargetTexture2D::Clear()
 {
-	SSEngine::Get().GetDeviceContext()->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	SSEngine::Get().GetImmediateDeviceContext()->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 void SSDepthRenderTargetTexture2D::Destroy()
@@ -303,15 +303,15 @@ void SSGenericRenderTarget::SetCurrentRenderTarget()
 	{
 		ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
 
-		SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(mCount, renderTargets, depthStencil);
+		SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(mCount, renderTargets, depthStencil);
 
-		SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+		SSEngine::Get().GetImmediateDeviceContext()->RSSetViewports(1, &mViewport);
 	}
 	else
 	{
-		SSEngine::Get().GetDeviceContext()->OMSetRenderTargets(mCount, renderTargets, nullptr);
+		SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(mCount, renderTargets, nullptr);
 
-		SSEngine::Get().GetDeviceContext()->RSSetViewports(1, &mViewport);
+		SSEngine::Get().GetImmediateDeviceContext()->RSSetViewports(1, &mViewport);
 	}
 }
 
