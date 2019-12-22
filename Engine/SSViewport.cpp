@@ -11,15 +11,15 @@ void SSViewport::Clear()
 
     if(dxDeviceContext != nullptr)
     {
-        dxDeviceContext->ClearRenderTargetView(mRenderTargetView, Color);
-        dxDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+        dxDeviceContext->ClearRenderTargetView(mRenderTargetView.Get(), Color);
+        dxDeviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     }
 }
 
 void SSViewport::SetCurrentRenderTarget()
 {
 	// Bind the render target view and depth/stencil view to the pipeline.
-	SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
+	SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
 	// Set the viewport transform.
 	mScreenViewport.TopLeftX = 0;
@@ -52,9 +52,9 @@ void SSViewport::Resize(UINT newWidth, UINT newHeight)
 
 	// Release the old views, as they hold references to the buffers we
 	// will be destroying.  Also release the old depth/stencil buffer.
-	ReleaseCOM(mRenderTargetView);
-	ReleaseCOM(mDepthStencilView);
-	ReleaseCOM(mDepthStencilBuffer);
+	mRenderTargetView.Reset();
+	mDepthStencilView.Reset();
+	mDepthStencilBuffer.Reset();	
 
 
 	// Resize the swap chain and recreate the render target view.
@@ -84,7 +84,7 @@ void SSViewport::Resize(UINT newWidth, UINT newHeight)
 	depthStencilDesc.MiscFlags      = 0;
 
 	HR(dxDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
-	HR(dxDevice->CreateDepthStencilView(mDepthStencilBuffer, 0, &mDepthStencilView));
+	HR(dxDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), 0, &mDepthStencilView));
 
 	SetCurrentRenderTarget();
 
