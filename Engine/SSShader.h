@@ -11,17 +11,20 @@ using Microsoft::WRL::ComPtr;
 class ENGINE_API SSShader : public DXRenderResource
 {
 public:
-	virtual ~SSShader();
+	virtual ~SSShader(){}
 
     template<class T>
     void SetConstantBufferData(std::string bufferName, const T& data);	
 
     virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
-	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* textrue ){}
+	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* textrue ){}	
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture){}
-	virtual void SetTextureAsNull(std::string name){}
 
+	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name){}
+	virtual void SetTextureAsNull(std::string name){}
+	
+	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) {}
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) {}
 
 	std::vector<std::string> GetSamplerNames();
@@ -70,6 +73,8 @@ public:
 	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* texture) override;
 
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
+
+	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) override;	
 	
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 protected:	
@@ -77,7 +82,6 @@ protected:
     ID3D11VertexShader* mVertexShader = nullptr;
     ID3D11InputLayout* mInputLayout = nullptr;
 };
-
 
 template<class T>
 void SSVertexShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data)
@@ -93,8 +97,6 @@ void SSVertexShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, s
 	}
 }
 
-
-
 // pixel shader
 class ENGINE_API SSPixelShader : public SSShader
 {
@@ -107,6 +109,7 @@ public:
 	template<class T>
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
+	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name)override;
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
 	virtual void SetTextureAsNull(std::string name) override;
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;

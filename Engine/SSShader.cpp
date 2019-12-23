@@ -184,6 +184,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
     return true;
  }
 
+
 void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture)
 {
 	check(mTextureMap.count(name) > 0);
@@ -204,7 +205,15 @@ void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string 
 
 	 dxDeviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
  }
- 
+
+void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string name, ID3D11SamplerState* sampler)
+{
+	UINT slotIndex = mSamplerMap[name];
+
+	check(deviceContext != nullptr);
+
+	deviceContext->VSSetSamplers(slotIndex, 1, &sampler);
+}
 
  void SSVertexShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
  {
@@ -265,6 +274,20 @@ void SSPixelShader::SetTexture(std::string name, SSTexture2DBase* texture)
 		auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		dxDeviceContext->PSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
+	}
+}
+
+void SSPixelShader::SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name)
+{
+	check(deviceContext != nullptr);
+
+	if (mTextureMap.count(name) > 0)
+	{
+		UINT slotIndex = mTextureMap[name];		
+
+		ID3D11ShaderResourceView* nullResourceView = nullptr;
+
+		deviceContext->PSSetShaderResources(slotIndex, 1, &nullResourceView);
 	}
 }
 
