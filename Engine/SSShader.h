@@ -3,19 +3,22 @@
 #include "DXRenderResource.h"
 #include "DXConstantBuffer.h"
 #include "SSName.h"
+#include "wrl/client.h"
 #include <map>
+
+using Microsoft::WRL::ComPtr;
 
 class ENGINE_API SSShader : public DXRenderResource
 {
 public:
-    virtual ~SSShader() {}
-	
+	virtual ~SSShader();
 
     template<class T>
     void SetConstantBufferData(std::string bufferName, const T& data);	
 
     virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
+	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* textrue ){}
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture){}
 	virtual void SetTextureAsNull(std::string name){}
 
@@ -30,7 +33,8 @@ protected:
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
     virtual bool CompileFromFile(std::wstring filepath) { return true; }	
     void PrintCompileError(ID3D10Blob* errorMsg);
-    ID3DBlob* mShaderBuffer = nullptr;
+    
+	ComPtr<ID3DBlob> mShaderBuffer = nullptr;
 
     //std::map<std::string, SSGenericConstantBuffer*> mConstantBufferMap;
 	std::map<SSName, SSGenericConstantBuffer*> mConstantBufferMap;
@@ -62,6 +66,8 @@ public:
 
 	template<class T>
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
+
+	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* texture) override;
 
 	virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
 	

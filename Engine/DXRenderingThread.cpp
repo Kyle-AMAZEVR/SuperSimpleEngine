@@ -9,7 +9,8 @@ void DXRenderingThread::Start(HWND handle)
 {
     mWindowHandle = handle;
 	mThreadHandle = CreateThread(nullptr, 0, &DXRenderingThread::Run, this, 0, &mRenderingThreadId);
-	InitializeCriticalSection(&mCriticalSection);
+	InitializeCriticalSection(&mCriticalSection);	
+	mRenderingDoneEventHandle = CreateEvent(nullptr, false, false, mEventName);
 }
 
 DWORD DXRenderingThread::Run()
@@ -41,6 +42,8 @@ DWORD DXRenderingThread::Run()
 		renderingThreadTimer.Tick();
 			   
 		SSEngine::Get().DrawScene();
+
+		SetEvent(mRenderingDoneEventHandle);
 
 		if (bRequestExit)
 		{

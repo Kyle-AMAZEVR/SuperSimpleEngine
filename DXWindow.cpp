@@ -193,6 +193,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				auto dpiY = GetDeviceCaps(hdc, LOGPIXELSY);
 				SSFontManager::Get().Initialize(dpiX, dpiY);
 			}
+			HANDLE handle = renderingThread.GetRenderingDoneEventHandle();
+			WaitForSingleObject(handle, INFINITE);
+
             // TODO: Add any drawing code that uses hdc here...            
             EndPaint(hWnd, &ps);
         }

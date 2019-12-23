@@ -29,6 +29,7 @@ public:
 	inline ID3D11DeviceContext* GetDeferredDeviceContext() const { return mDeferredContext.Get(); }
     inline IDXGISwapChain* GetSwapChain() const {return mSwapChain.Get();}    
 
+	void DrawScene(ID3D11DeviceContext* DeviceContext);
     void DrawScene();
 
 protected:

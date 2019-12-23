@@ -18,6 +18,8 @@ public:
 
     static bool IsInRenderingThread();
 
+	HANDLE GetRenderingDoneEventHandle() { return mRenderingDoneEventHandle; }
+
 protected:
 	HANDLE mThreadHandle = nullptr;
 	static DWORD mRenderingThreadId;
@@ -29,6 +31,8 @@ protected:
     std::deque<std::function<void()>> mCommandQueue;
 	//    
 
+	HANDLE mRenderingDoneEventHandle;
     HWND mWindowHandle;
     bool bRequestExit = false;
+	LPCSTR mEventName;
 };
