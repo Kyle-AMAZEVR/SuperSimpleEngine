@@ -6,9 +6,8 @@
 #include "stb_image.h"
 #include "SSEngine.h"
 
-
 SSTexture2D::SSTexture2D()
-{
+{	
 }
 
 bool SSTexture2D::Release()
@@ -20,7 +19,7 @@ bool SSTexture2D::Release()
 }
 
 
-bool SSTexture2D::LoadFromHDRFile(std::wstring filename, bool bsrgb)
+bool SSTexture2D::LoadFromHDRFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bsrgb)
 {
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;
@@ -34,10 +33,10 @@ bool SSTexture2D::LoadFromHDRFile(std::wstring filename, bool bsrgb)
 
 	check(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
-	return LoadInternal(metaData, image, bsrgb);
+	return LoadInternal(deviceContext, metaData, image, bsrgb);
 }
 
-bool SSTexture2D::LoadFromTGAFile(std::wstring filename, bool bsrgb)
+bool SSTexture2D::LoadFromTGAFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bsrgb)
 {
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;
@@ -52,10 +51,10 @@ bool SSTexture2D::LoadFromTGAFile(std::wstring filename, bool bsrgb)
 
 	check(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
-	return LoadInternal(metaData, image, bsrgb);
+	return LoadInternal(deviceContext, metaData, image, bsrgb);
 }
 
-bool SSTexture2D::LoadFromDDSFile(std::wstring filename, bool bsrgb)
+bool SSTexture2D::LoadFromDDSFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bsrgb)
 {
 	DirectX::TexMetadata metaData;
 	DirectX::ScratchImage image;	
@@ -68,11 +67,11 @@ bool SSTexture2D::LoadFromDDSFile(std::wstring filename, bool bsrgb)
 
 	check(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
-	return LoadInternal(metaData, image, bsrgb);
+	return LoadInternal(deviceContext, metaData, image, bsrgb);
 }
 
 
-bool SSTexture2D::LoadInternal(const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bsrgb)
+bool SSTexture2D::LoadInternal(ID3D11DeviceContext* deviceContext, const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bsrgb)
 {
 	mWidth = static_cast<UINT>(metaData.width);
 	mHeight = static_cast<UINT>(metaData.height);
@@ -118,18 +117,21 @@ bool SSTexture2D::LoadInternal(const DirectX::TexMetadata& metaData, const Direc
 	{
 		auto* pLodImage = image.GetImage(i, 0, 0);
 		check(pLodImage != nullptr);
-		auto dstSubresource = D3D11CalcSubresource(i, 0, static_cast<UINT>(metaData.mipLevels));
-		SSEngine::Get().GetImmediateDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
+
+		auto dstSubresource = D3D11CalcSubresource(i, 0, static_cast<UINT>(metaData.mipLevels));		
+		check(deviceContext != nullptr);
+
+		deviceContext->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
 	}
 
 	return true;
 }
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::wstring filename, bool bsrgb)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bsrgb)
 {
 	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
 
-	if (texture->LoadFromDDSFile(filename, bsrgb))
+	if (texture->LoadFromDDSFile(deviceContext, filename, bsrgb))
 	{
 		return texture;
 	}
@@ -139,20 +141,20 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::wstring filenam
 	}
 }
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(std::string filename, bool bsrgb)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromDDSFile(ID3D11DeviceContext* deviceContext, std::string filename, bool bsrgb)
 {
 	std::wstring wfilename;
 	wfilename.assign(filename.begin(), filename.end());
 
-	return SSTexture2D::CreateFromDDSFile(wfilename, bsrgb);
+	return SSTexture2D::CreateFromDDSFile(deviceContext, wfilename, bsrgb);
 }
 
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::wstring filename, bool bsrgb)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bsrgb)
 {
 	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
 
-	if (texture->LoadFromTGAFile(filename, bsrgb))
+	if (texture->LoadFromTGAFile(deviceContext, filename, bsrgb))
 	{
 		return texture;
 	}
@@ -163,11 +165,11 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::wstring filenam
 }
 
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::wstring filename, bool bsrgb)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bsrgb)
 {
 	std::shared_ptr<SSTexture2D> texture = std::make_shared<SSTexture2D>();
 
-	if (texture->LoadFromHDRFile(filename, bsrgb))
+	if (texture->LoadFromHDRFile(deviceContext, filename, bsrgb))
 	{
 		return texture;
 	}
@@ -177,19 +179,19 @@ std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::wstring filenam
 	}
 }
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(std::string filename, bool bsrgb)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromHDRFile(ID3D11DeviceContext* deviceContext, std::string filename, bool bsrgb)
 {
 	std::wstring wfilename;
 	wfilename.assign(filename.begin(), filename.end());
 
-	return SSTexture2D::CreateFromHDRFile(wfilename, bsrgb);
+	return SSTexture2D::CreateFromHDRFile(deviceContext, wfilename, bsrgb);
 }
 
 
-std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(std::string filename, bool bsrgb)
+std::shared_ptr<SSTexture2D> SSTexture2D::CreateFromTGAFile(ID3D11DeviceContext* deviceContext, std::string filename, bool bsrgb)
 {
 	std::wstring wfilename;
 	wfilename.assign(filename.begin(), filename.end());
 
-	return SSTexture2D::CreateFromTGAFile(wfilename, bsrgb);
+	return SSTexture2D::CreateFromTGAFile(deviceContext, wfilename, bsrgb);
 }

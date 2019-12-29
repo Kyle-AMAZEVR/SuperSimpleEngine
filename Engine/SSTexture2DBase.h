@@ -28,4 +28,5 @@ protected:
 
 	ComPtr<ID3D11Texture2D> mTexturePtr = nullptr;		
 	ComPtr<ID3D11ShaderResourceView> mShaderResourceView = nullptr;
+	
 };

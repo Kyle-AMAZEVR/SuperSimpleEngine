@@ -415,14 +415,14 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 bool SSSphere::bIsInitialized = false;
 SSVertexBuffer* SSSphere::mSphereVB = nullptr;
 
-SSPBRSphere::SSPBRSphere(SSName diffuseTexName, SSName normalTexName, SSName metalTexName, SSName roughTexName)
+SSPBRSphere::SSPBRSphere(ID3D11DeviceContext* deviceContext, SSName diffuseTexName, SSName normalTexName, SSName metalTexName, SSName roughTexName)
 	: SSSphere(25, 25, 10.f)
 {
-	mMetalTex = SSTextureManager::Get().LoadTexture2D(metalTexName);
-	mNormalTex = SSTextureManager::Get().LoadTexture2D(normalTexName);
+	mMetalTex = SSTextureManager::Get().LoadTexture2D(deviceContext, metalTexName);
+	mNormalTex = SSTextureManager::Get().LoadTexture2D(deviceContext, normalTexName);
 
-	mDiffuseTex = SSTextureManager::Get().LoadTexture2D(diffuseTexName);
-	mRoughTex = SSTextureManager::Get().LoadTexture2D(roughTexName);
+	mDiffuseTex = SSTextureManager::Get().LoadTexture2D(deviceContext, diffuseTexName);
+	mRoughTex = SSTextureManager::Get().LoadTexture2D(deviceContext, roughTexName);
 }
 
 void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)

@@ -93,6 +93,8 @@ void SSEngine::TestCreateResources()
 {   
     mTestVertexBuffer = std::make_shared<SSVertexBuffer>();
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
+
+	auto* deviceContext = GetImmediateDeviceContext();
 	
 	mNormalTexture = std::make_shared<SSTexture2D>();
 	mRoughnessTexture = std::make_shared<SSTexture2D>();
@@ -110,6 +112,7 @@ void SSEngine::TestCreateResources()
 	mTestSphere2->SetRoughnessValue(1.f);
 
 	mRustedIron = std::make_shared<SSPBRSphere>(
+		deviceContext,
 		"./Resource/Tex/rustediron/rustediron2_basecolor.dds",
 		"./Resource/Tex/rustediron/rustediron2_normal.dds",
 		"./Resource/Tex/rustediron/rustediron2_metallic.dds",
@@ -117,6 +120,7 @@ void SSEngine::TestCreateResources()
 		);
 
 	mTile = std::make_shared<SSPBRSphere>(
+		deviceContext,
 		"./Resource/Tex/tile/Tiles32_col.dds",
 		"./Resource/Tex/tile/Tiles32_nrm.dds",
 		"./Resource/Tex/tile/Tiles32_disp.dds",
@@ -124,6 +128,7 @@ void SSEngine::TestCreateResources()
 		);
 
 	mMetalGrid = std::make_shared<SSPBRSphere>(
+		deviceContext,
 		"./Resource/Tex/metalgrid/metalgrid4_basecolor.dds",
 		"./Resource/Tex/metalgrid/metalgrid4_normal-dx.dds",
 		"./Resource/Tex/metalgrid/metalgrid4_metallic.dds",
@@ -152,10 +157,12 @@ void SSEngine::TestCreateResources()
 		mSponzaMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
 	}
 
-	mNormalTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_normal.dds");
-	mRoughnessTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
-	mDiffuseTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_basecolor.dds");
-	mMetalicTexture->LoadFromDDSFile(L"./Resource/Tex/rustediron/rustediron2_metallic.dds");
+	
+
+	mNormalTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_normal.dds");
+	mRoughnessTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
+	mDiffuseTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_basecolor.dds");
+	mMetalicTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_metallic.dds");
 
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");	
 }
@@ -418,7 +425,7 @@ bool SSEngine::TryLoadEnvCubemapConvolution(std::wstring filepath)
 
 bool SSEngine::TryLoad2DLUTTexture()
 {
-	m2DLUTTexture = SSTexture2D::CreateFromDDSFile(L"./Prebaked/2DLUT.dds");
+	m2DLUTTexture = SSTexture2D::CreateFromDDSFile(GetImmediateDeviceContext(), L"./Prebaked/2DLUT.dds");
 	return m2DLUTTexture != nullptr;
 }
 
@@ -427,7 +434,7 @@ void SSEngine::CreateEnvCubemap()
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);	
 
-	mHDREnvmap = SSTexture2D::CreateFromHDRFile("./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
+	mHDREnvmap = SSTexture2D::CreateFromHDRFile(GetImmediateDeviceContext(), "./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
 	
 	{
 		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };

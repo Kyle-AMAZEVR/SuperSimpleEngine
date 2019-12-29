@@ -49,7 +49,7 @@ protected:
 class ENGINE_API SSPBRSphere : public SSSphere
 {
 public:
-	SSPBRSphere(SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);
+	SSPBRSphere(ID3D11DeviceContext* deviceContext, SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
 protected:
