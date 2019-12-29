@@ -65,10 +65,7 @@ public:
     virtual ~SSGenericConstantBuffer() override;
     
     template<class T>
-    void SetBufferSubData(std::string name, const T& value);
-
-    template<class T>
-    void SetBufferData(const T& value);
+    void SetBufferData(ID3D11DeviceContext* deviceContext, const T& value);
 
 	template<class T>
 	void StoreBufferData(const T& value);
@@ -80,31 +77,16 @@ protected:
 	friend class SSDrawCommand;
 	friend class SSMaterial;
 
-    virtual void SubmitDataToDevice() override;
+    virtual void SubmitDataToDevice(ID3D11DeviceContext* deviceContext) override;
 };
 
-template<class T>
-void SSGenericConstantBuffer::SetBufferSubData(std::string name , const T& value)
-{
-    for(auto& iter : mVariableInfoArray)
-    {
-        if(iter->Name == name)
-        {
-            check(iter->Size == sizeof(T));                       
-			memcpy_s(mBufferData + iter->StartOffset, iter->Size, &value, iter->Size);
-            break;
-        }
-    }
-
-    SubmitDataToDevice();
-}
 
 template<class T>
-void SSGenericConstantBuffer::SetBufferData(const T& value)
+void SSGenericConstantBuffer::SetBufferData(ID3D11DeviceContext* deviceContext, const T& value)
 {
 	StoreBufferData<T>(value);
 
-    SubmitDataToDevice();
+    SubmitDataToDevice(deviceContext);
 }
 
 template<class T>

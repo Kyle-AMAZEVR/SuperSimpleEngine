@@ -18,6 +18,7 @@ public:
 
 protected:
 
+	virtual void SubmitDataToDevice(ID3D11DeviceContext* deviceContext){}
     virtual void SubmitDataToDevice() {}
 
     virtual ~SSBufferBase();

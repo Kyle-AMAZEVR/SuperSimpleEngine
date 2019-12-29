@@ -63,10 +63,12 @@ SSGenericConstantBuffer::~SSGenericConstantBuffer()
     }
 }
 
-void SSGenericConstantBuffer::SubmitDataToDevice()
+void SSGenericConstantBuffer::SubmitDataToDevice(ID3D11DeviceContext* deviceContext)
 { 	
+	check(deviceContext);
+
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    HR(SSEngine::Get().GetImmediateDeviceContext()->Map(mpBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+	deviceContext->Map(mpBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
-    SSEngine::Get().GetImmediateDeviceContext()->Unmap(mpBuffer.Get(), 0);
+	deviceContext->Unmap(mpBuffer.Get(), 0);
 }

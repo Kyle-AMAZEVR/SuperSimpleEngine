@@ -37,7 +37,7 @@ void SSDrawCommand::DoWithMaterial()
 	// @ set vertex shader constant buffer
 	for (auto& kvp : mVertexShaderConstantBufferMap)
 	{
-		kvp.second->SubmitDataToDevice();
+		kvp.second->SubmitDataToDevice(deviceContext);
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
@@ -47,7 +47,7 @@ void SSDrawCommand::DoWithMaterial()
 	// @ set pixel shader constant buffer
 	for (auto& kvp : mPixelShaderConstantBufferMap)
 	{
-		kvp.second->SubmitDataToDevice();
+		kvp.second->SubmitDataToDevice(deviceContext);
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
@@ -102,7 +102,7 @@ void SSDrawCommand::Do()
 	// @ set vertex shader constant buffer
 	for (auto& kvp : mVertexShaderConstantBufferMap)
 	{		
-		kvp.second->SubmitDataToDevice();
+		kvp.second->SubmitDataToDevice(deviceContext);
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
@@ -112,7 +112,7 @@ void SSDrawCommand::Do()
 	// @ set pixel shader constant buffer
 	for (auto& kvp : mPixelShaderConstantBufferMap)
 	{
-		kvp.second->SubmitDataToDevice();
+		kvp.second->SubmitDataToDevice(deviceContext);
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 

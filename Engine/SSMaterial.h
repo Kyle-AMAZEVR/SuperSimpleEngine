@@ -57,9 +57,11 @@ void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSN
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
 		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);
-		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice();
+		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
 		
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
+
+		check(deviceContext != nullptr);
 
 		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
@@ -71,7 +73,7 @@ void SSMaterial::SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceConte
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
 		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);
-		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice();
+		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
 
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
 
@@ -89,7 +91,7 @@ void SSMaterial::SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSN
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{
 		mPixelShaderConstantBufferMap[name]->StoreBufferData(value);
-		mPixelShaderConstantBufferMap[name]->SubmitDataToDevice();
+		mPixelShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
 
 		UINT bufferIndex = mPixelShaderConstantBufferMap[name]->GetBufferIndex();
 
