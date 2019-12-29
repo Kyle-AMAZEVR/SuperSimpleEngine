@@ -85,9 +85,9 @@ void SSObjMesh::DebugDraw(ID3D11DeviceContext* deviceContext, SSMaterial* materi
 
 	material->SetCurrent();
 
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
-	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+	material->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
+	material->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	deviceContext->Draw(mTBNDebugVB->GetVertexCount(), 0);
 }
@@ -329,9 +329,9 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 	
 	material->SetCurrent();
 	
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
-	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+	material->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
+	material->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	SSAlignedCBuffer<int, int, int, int, int> settings;
 	settings.value1 = 0; //metalic
@@ -432,8 +432,8 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 				settings.value2 = 0;
 			}
 
-			material->SetPSConstantBufferData("TextureExist", settings);
-			material->SetPSConstantBufferData("MetalicRoughness", metalicRoughnessOverride);
+			material->SetPSConstantBufferData(deviceContext, "TextureExist", settings);
+			material->SetPSConstantBufferData(deviceContext, "MetalicRoughness", metalicRoughnessOverride);
 
 			deviceContext->DrawIndexed(section.mEndIndex - section.mStartIndex, section.mStartIndex, 0);
 		}		

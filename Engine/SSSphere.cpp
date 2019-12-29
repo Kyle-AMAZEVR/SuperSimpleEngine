@@ -362,9 +362,9 @@ void SSSphere::DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* m
 
 		material->SetCurrent();
 
-		material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(GetModelTransform()));
-		material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-		material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+		material->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(GetModelTransform()));
+		material->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+		material->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 		
 		deviceContext->Draw(mDebugTBNVB->GetVertexCount(), 0);
 	}
@@ -376,9 +376,9 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 
 	material->SetCurrent();
 
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(GetModelTransform()));
-	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+	material->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(GetModelTransform()));
+	material->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	SSAlignedCBuffer<int, int, int, int, int> settings;
 	settings.value1 = 0; //metalic
@@ -403,11 +403,11 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 
 	deviceContext->IASetVertexBuffers(0, 1, mSphereVB->GetBufferPointerRef(), &stride, &offset);
 
-	material->SetPSConstantBufferData("TextureExist", settings);
+	material->SetPSConstantBufferData(deviceContext, "TextureExist", settings);
 
-	material->SetPSConstantBufferData("MetalicRoughness", metalicRoughnessOverride);
+	material->SetPSConstantBufferData(deviceContext, "MetalicRoughness", metalicRoughnessOverride);
 
-	material->SetPSConstantBufferData("CBDiffuseColor", DiffuseColor);
+	material->SetPSConstantBufferData(deviceContext, "CBDiffuseColor", DiffuseColor);
 
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);	
 }
@@ -431,9 +431,9 @@ void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mat
 
 	material->SetCurrent();
 
-	material->SetVSConstantBufferData(ModelName,XMMatrixTranspose(GetModelTransform()));
-	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+	material->SetVSConstantBufferData(deviceContext, ModelName,XMMatrixTranspose(GetModelTransform()));
+	material->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	SSAlignedCBuffer<int, int, int, int, int> settings;
 	settings.value1 = 1; //metalic
@@ -451,7 +451,7 @@ void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mat
 
 	deviceContext->IASetVertexBuffers(0, 1, mSphereVB->GetBufferPointerRef(), &stride, &offset);
 
-	material->SetPSConstantBufferData("TextureExist", settings);	
+	material->SetPSConstantBufferData(deviceContext, "TextureExist", settings);
 
 	if (mMetalTex != nullptr)
 	{

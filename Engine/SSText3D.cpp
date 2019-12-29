@@ -53,9 +53,9 @@ void SSText3D::Draw(ID3D11DeviceContext* deviceContext, SSMaterial* material)
 
 	material->SetCurrent();
 
-	material->SetVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
-	material->SetVSConstantBufferData(ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
-	material->SetVSConstantBufferData(ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+	material->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(XMMatrixScaling(1.0, 1.0, 1.0)));
+	material->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	material->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
 	deviceContext->Draw(mTextVB->GetVertexCount(), 0);
 }

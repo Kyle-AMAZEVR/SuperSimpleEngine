@@ -19,12 +19,12 @@ public:
 	virtual void ReleaseCurrent();
 
 	template<class T>
-	void SetVSConstantBufferData(SSName name, const T& value);
+	void SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 	template<class T>
-	void SetPSConstantBufferData(SSName name, const T& value);
+	void SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 
 	template<class T>
-	void SetVSConstantBufferDataChecked(SSName name, const T& value);
+	void SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 
 	void SetPSTexture(std::string name, SSTexture2DBase* texture);
 	void SetVSTexture(std::string name, SSTexture2DBase* texture);
@@ -52,7 +52,7 @@ protected:
 
 
 template<class T>
-void SSMaterial::SetVSConstantBufferData(SSName name, const T& value)
+void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
@@ -61,14 +61,12 @@ void SSMaterial::SetVSConstantBufferData(SSName name, const T& value)
 		
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
 
-		auto* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
-
 		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
 }
 
 template<class T>
-void SSMaterial::SetVSConstantBufferDataChecked(SSName name, const T& value)
+void SSMaterial::SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
@@ -76,8 +74,6 @@ void SSMaterial::SetVSConstantBufferDataChecked(SSName name, const T& value)
 		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice();
 
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
-
-		auto* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
@@ -88,7 +84,7 @@ void SSMaterial::SetVSConstantBufferDataChecked(SSName name, const T& value)
 }
 
 template<class T>
-void SSMaterial::SetPSConstantBufferData(SSName name, const T& value)
+void SSMaterial::SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{
@@ -96,8 +92,6 @@ void SSMaterial::SetPSConstantBufferData(SSName name, const T& value)
 		mPixelShaderConstantBufferMap[name]->SubmitDataToDevice();
 
 		UINT bufferIndex = mPixelShaderConstantBufferMap[name]->GetBufferIndex();
-
-		auto* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
 		deviceContext->PSSetConstantBuffers(bufferIndex, 1, mPixelShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
