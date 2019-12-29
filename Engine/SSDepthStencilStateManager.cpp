@@ -35,19 +35,19 @@ void SSDepthStencilStateManager::Initialize()
 
 }
 
-void SSDepthStencilStateManager::SetToDefault()
+void SSDepthStencilStateManager::SetToDefault(ID3D11DeviceContext* deviceContext)
 {
-	SSEngine::Get().GetImmediateDeviceContext()->OMSetDepthStencilState(nullptr, 1);
+	deviceContext->OMSetDepthStencilState(nullptr, 1);
 }
 
-void SSDepthStencilStateManager::SetDepthTestDisabled()
+void SSDepthStencilStateManager::SetDepthTestDisabled(ID3D11DeviceContext* deviceContext)
 {
-	SSEngine::Get().GetImmediateDeviceContext()->OMSetDepthStencilState(mDepthTestDisabledState, 1);
+	deviceContext->OMSetDepthStencilState(mDepthTestDisabledState, 1);
 }
 
-void SSDepthStencilStateManager::SetDepthCompLessEqual()
+void SSDepthStencilStateManager::SetDepthCompLessEqual(ID3D11DeviceContext* deviceContext)
 {
-	SSEngine::Get().GetImmediateDeviceContext()->OMSetDepthStencilState(mDepthFuncLessEqualState, 1);
+	deviceContext->OMSetDepthStencilState(mDepthFuncLessEqualState, 1);
 }
 
 void SSDepthStencilStateManager::Shutdown()

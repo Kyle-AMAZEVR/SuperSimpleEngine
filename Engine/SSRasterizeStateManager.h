@@ -3,16 +3,16 @@
 #include "SSManagerBase.h"
 #include "Singleton.h"
 
-class SSRaterizeStateManager : public Singleton<SSRaterizeStateManager>, public SSManagerBase
+class SSRasterizeStateManager : public Singleton<SSRasterizeStateManager>, public SSManagerBase
 {
 public:
 	virtual void Initialize() override;
 	virtual void Shutdown() override;
-	
-	void SetToDefault();
-	void SetCullModeNone();
-	void SetFrontCounterClockwise();
-	void SetWireFrameMode();
+
+	void SetToDefault(ID3D11DeviceContext* deviceContext);	
+	void SetCullModeNone(ID3D11DeviceContext* deviceContext);
+	void SetFrontCounterClockwise(ID3D11DeviceContext* deviceContext);
+	void SetWireFrameMode(ID3D11DeviceContext* deviceContext);	
 	
 private:
 	D3D11_RASTERIZER_DESC mDefaultDesc;

@@ -63,7 +63,7 @@ bool SSEngine::Initialize(HWND windowHandle)
 	
 	SSSamplerManager::Get().Initialize();
 	SSDepthStencilStateManager::Get().Initialize();
-	SSRaterizeStateManager::Get().Initialize();
+	SSRasterizeStateManager::Get().Initialize();
 	
 
     TestCompileShader();
@@ -80,7 +80,7 @@ void SSEngine::ToggleGBufferDumpMode()
 void SSEngine::Shutdown()
 {
 	SSDepthStencilStateManager::Get().Shutdown();
-	SSRaterizeStateManager::Get().Shutdown();
+	SSRasterizeStateManager::Get().Shutdown();
 	SSSamplerManager::Get().Shutdown();
 	SSShaderManager::Get().Shutdown();
 
@@ -202,6 +202,7 @@ bool SSEngine::CreateDevice()
     //
     D3D_FEATURE_LEVEL featureLevel;        
     HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mDeviceContext.ReleaseAndGetAddressOf()));
+
 	HR(mDevice->CreateDeferredContext(0, mDeferredContext.ReleaseAndGetAddressOf()));
 
     return true;
@@ -302,7 +303,7 @@ void SSEngine::CreateEnvCubemapConvolution()
 		convolutionDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
 		convolutionDrawCmd.SetPSTexture("EnvironmentMap", mEnvCubemap.get());
 
-		SSRaterizeStateManager::Get().SetCullModeNone();
+		SSRasterizeStateManager::Get().SetCullModeNone(GetImmediateDeviceContext());
 
 		convolutionDrawCmd.Do();
 
@@ -326,7 +327,7 @@ void SSEngine::CreateEnvCubemapConvolution()
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
 		convolutionDrawCmd.Do();
 
-		SSRaterizeStateManager::Get().SetToDefault();
+		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
 		mConvolutionRenderTarget->CreateCubemapShaderResource();	
 
@@ -345,7 +346,7 @@ void SSEngine::CreateEnvCubemapPrefilter()
 
 		mPrefilterRenderTarget->Clear();
 
-		SSRaterizeStateManager::Get().SetCullModeNone();
+		SSRasterizeStateManager::Get().SetCullModeNone(GetImmediateDeviceContext());
 
 		const int maxMipLevels = 5;
 
@@ -386,7 +387,7 @@ void SSEngine::CreateEnvCubemapPrefilter()
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
 			prefilterDrawCmd.Do();
 		}
-		SSRaterizeStateManager::Get().SetToDefault();
+		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
 		mPrefilterRenderTarget->CreateCubemapShaderResource();
 
@@ -439,7 +440,7 @@ void SSEngine::CreateEnvCubemap()
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
 		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mHDREnvmap.get());
 
-		SSRaterizeStateManager::Get().SetCullModeNone();
+		SSRasterizeStateManager::Get().SetCullModeNone(GetImmediateDeviceContext());
 
 		equirectToCubeDrawCmd.Do();
 
@@ -463,7 +464,7 @@ void SSEngine::CreateEnvCubemap()
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
 		equirectToCubeDrawCmd.Do();
 
-		SSRaterizeStateManager::Get().SetToDefault();
+		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
 		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
 		
@@ -551,17 +552,17 @@ void SSEngine::DrawScene(ID3D11DeviceContext* DeviceContext)
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
 	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemapPrefilter.get());
 
-	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
-	SSRaterizeStateManager::Get().SetCullModeNone();
+	SSDepthStencilStateManager::Get().SetDepthCompLessEqual(GetImmediateDeviceContext());
+	SSRasterizeStateManager::Get().SetCullModeNone(DeviceContext);
 
 	testDrawCmd.Do();
 
-	SSDepthStencilStateManager::Get().SetToDefault();
-	SSRaterizeStateManager::Get().SetToDefault();
+	SSDepthStencilStateManager::Get().SetToDefault(GetImmediateDeviceContext());
+	SSRasterizeStateManager::Get().SetToDefault(DeviceContext);
 
-	SSRaterizeStateManager::Get().SetCullModeNone();
+	SSRasterizeStateManager::Get().SetCullModeNone(DeviceContext);
 	mText3D->Draw(GetImmediateDeviceContext(), mTBNDebugMaterial.get());
-	SSRaterizeStateManager::Get().SetToDefault();
+	SSRasterizeStateManager::Get().SetToDefault(DeviceContext);
 
 	mTestSphere->Draw(GetImmediateDeviceContext(), mTestMaterial.get());
 
@@ -676,17 +677,17 @@ void SSEngine::DrawScene()
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));	
 	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemapPrefilter.get());
 		
-	SSDepthStencilStateManager::Get().SetDepthCompLessEqual();
-	SSRaterizeStateManager::Get().SetCullModeNone();
+	SSDepthStencilStateManager::Get().SetDepthCompLessEqual(GetImmediateDeviceContext());
+	SSRasterizeStateManager::Get().SetCullModeNone(GetImmediateDeviceContext());
 
 	testDrawCmd.Do();
 
-	SSDepthStencilStateManager::Get().SetToDefault();
-	SSRaterizeStateManager::Get().SetToDefault();
+	SSDepthStencilStateManager::Get().SetToDefault(GetImmediateDeviceContext());
+	SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
+	SSRasterizeStateManager::Get().SetCullModeNone(GetImmediateDeviceContext());
 
-	SSRaterizeStateManager::Get().SetCullModeNone();
 	mText3D->Draw(GetImmediateDeviceContext(), mTBNDebugMaterial.get());
-	SSRaterizeStateManager::Get().SetToDefault();
+	SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
 	mTestSphere->Draw(GetImmediateDeviceContext(), mTestMaterial.get());	
 

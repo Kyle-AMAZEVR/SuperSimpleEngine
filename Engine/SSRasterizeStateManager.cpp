@@ -3,7 +3,7 @@
 #include "SSRasterizeStateManager.h"
 #include "SSEngine.h"
 
-void SSRaterizeStateManager::Initialize()
+void SSRasterizeStateManager::Initialize()
 {
 	InitD3DDesc(mDefaultDesc);
 	
@@ -39,26 +39,27 @@ void SSRaterizeStateManager::Initialize()
 
 }
 
-void SSRaterizeStateManager::SetToDefault()
+void SSRasterizeStateManager::SetToDefault(ID3D11DeviceContext* deviceContext)
 {
-	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mDefaultState);
-}
-void SSRaterizeStateManager::SetCullModeNone()
-{
-	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mCullModeNoneState);
+	deviceContext->RSSetState(mDefaultState);
 }
 
-void SSRaterizeStateManager::SetFrontCounterClockwise()
+void SSRasterizeStateManager::SetCullModeNone(ID3D11DeviceContext* deviceContext)
 {
-	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mFrontCounterClockwiseState);
+	deviceContext->RSSetState(mCullModeNoneState);
 }
 
-void SSRaterizeStateManager::SetWireFrameMode()
+void SSRasterizeStateManager::SetFrontCounterClockwise(ID3D11DeviceContext* deviceContext)
 {
-	SSEngine::Get().GetImmediateDeviceContext()->RSSetState(mWireFrameState);
+	deviceContext->RSSetState(mFrontCounterClockwiseState);
 }
 
-void SSRaterizeStateManager::Shutdown()
+void SSRasterizeStateManager::SetWireFrameMode(ID3D11DeviceContext* deviceContext)
+{
+	deviceContext->RSSetState(mWireFrameState);
+}
+
+void SSRasterizeStateManager::Shutdown()
 {
 	ReleaseCOM(mCullModeNoneState);
 	ReleaseCOM(mDefaultState);

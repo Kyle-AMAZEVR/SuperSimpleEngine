@@ -196,14 +196,10 @@ void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string 
 }
 
  void SSVertexShader::SetTexture(std::string name, SSTexture2DBase* texture)
- {
-	 check(mTextureMap.count(name) > 0);
-
-	 UINT slotIndex = mTextureMap[name];
-
+ { 
 	 auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 
-	 dxDeviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
+	 SetTexture(dxDeviceContext, name, texture);
  }
 
 void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string name, ID3D11SamplerState* sampler)
@@ -216,12 +212,10 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 }
 
  void SSVertexShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
- {
-	 UINT slotIndex = mSamplerMap[name];
-	 	 
+ { 	 
 	 auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
 	 
-	 dxDeviceContext->VSSetSamplers(slotIndex, 1, &sampler);
+	 SetSampler(dxDeviceContext, name, sampler);
  }
 
 #pragma region PixelShader

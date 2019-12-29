@@ -12,11 +12,11 @@ public:
 	virtual void Shutdown() override;
 
 	// default
-	void SetToDefault();
+	void SetToDefault(ID3D11DeviceContext* deviceContext);
 
 	// variation
-	void SetDepthTestDisabled();
-	void SetDepthCompLessEqual();
+	void SetDepthTestDisabled(ID3D11DeviceContext* deviceContext);
+	void SetDepthCompLessEqual(ID3D11DeviceContext* deviceContext);
 
 private:
 	D3D11_DEPTH_STENCIL_DESC mDefaultDesc;
