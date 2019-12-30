@@ -16,9 +16,11 @@ SSFXAAPostProcess::SSFXAAPostProcess(UINT width, UINT height)
 	mFXAAPixelShader = SSShaderManager::Get().GetPixelShader("FXAA.ps");
 }
 
-void SSFXAAPostProcess::Draw(SSTexture2DBase* input0)
+void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0)
 {
-	mRenderTarget->Clear();
+	check(deviceContext != nullptr);
+
+	mRenderTarget->Clear(deviceContext);
 	mRenderTarget->SetCurrentRenderTarget();
 
 	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader.get(), mFXAAPixelShader.get(), mScreenBlit };

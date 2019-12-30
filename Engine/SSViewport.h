@@ -12,7 +12,8 @@ class ENGINE_API SSViewport : public IRenderTarget
 public:
     virtual UINT GetRenderTargetWidth() const override { return mWidth; }
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
-    virtual void Clear() override;
+
+	virtual void Clear(ID3D11DeviceContext* deviceContext) override;    
     virtual void Resize(UINT newWidth, UINT newHeight) override;	
 	virtual void SetCurrentRenderTarget() override;
 	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override;

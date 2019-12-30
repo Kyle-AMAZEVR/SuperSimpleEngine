@@ -17,7 +17,7 @@ public:
 	virtual void SaveAsDDSFile(std::wstring filename);	
 	
 	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip].Get(); }
-	void Clear();
+	virtual void Clear(ID3D11DeviceContext* deviceContext);
 	UINT GetMipLevels() const { return mMipLevels; }
 
 protected:
@@ -35,7 +35,7 @@ public:
 
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
 	ID3D11DepthStencilView* GetDepthStencilView() { return mDepthStencilView.Get(); }
-	void Clear();
+	virtual void Clear(ID3D11DeviceContext* deviceContext);
 	virtual void Destroy() override;
 protected:
 	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format);
@@ -56,7 +56,8 @@ public:
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
 	virtual void SetCurrentRenderTarget() override;
 	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override;
-	virtual void Clear() override;
+
+	virtual void Clear(ID3D11DeviceContext* deviceContext) override;	
 	virtual void Resize(UINT width, UINT height) override;
 
 	virtual void Destroy();

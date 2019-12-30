@@ -3,17 +3,17 @@
 #include "SSViewport.h"
 #include "CameraManager.h"
 
-void SSViewport::Clear()
+void SSViewport::Clear(ID3D11DeviceContext* deviceContext)
 {
-    float Color[4] { 0.0f, 1.0f, 0.0f, 1.0f};
-    
-    auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
+	float Color[4]{ 0.0f, 1.0f, 0.0f, 1.0f };
 
-    if(dxDeviceContext != nullptr)
-    {
-        dxDeviceContext->ClearRenderTargetView(mRenderTargetView.Get(), Color);
-        dxDeviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    }
+	check(deviceContext);
+
+	if (deviceContext != nullptr)
+	{
+		deviceContext->ClearRenderTargetView(mRenderTargetView.Get(), Color);
+		deviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	}
 }
 
 void SSViewport::SetCurrentRenderTarget()

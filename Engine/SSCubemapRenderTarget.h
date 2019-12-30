@@ -33,7 +33,7 @@ public:
 
 	virtual void CreateCubemapShaderResource();	
 
-	void ClearFace(ECubemapFace eFace);
+	void ClearFace(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
 
 	virtual void Destroy() override;
 
@@ -44,7 +44,7 @@ public:
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
 	virtual void SetCurrentRenderTarget() override {}
 	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override {}
-	virtual void Clear() override;	
+	virtual void Clear(ID3D11DeviceContext* deviceContext) override;	
 	virtual void Resize(UINT width, UINT height) override {}
 	// @IRenderTarget Interface
 

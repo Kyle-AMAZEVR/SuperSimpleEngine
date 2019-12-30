@@ -103,13 +103,16 @@ void SSRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
 	}
 }
 
-void SSRenderTargetTexture2D::Clear()
+
+void SSRenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 {
+	check(deviceContext);
+
 	float Color[4]{ 1.0f, 1.0f, 0.0f, 1.0f };
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{
-		SSEngine::Get().GetImmediateDeviceContext()->ClearRenderTargetView(mRenderTargetView[i].Get(), Color);
+		deviceContext->ClearRenderTargetView(mRenderTargetView[i].Get(), Color);
 	}
 }
 
@@ -214,9 +217,11 @@ SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(const UINT width, con
 	InternalCreate(width, height, eFormat);
 }
 
-void SSDepthRenderTargetTexture2D::Clear()
+void SSDepthRenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 {
-	SSEngine::Get().GetImmediateDeviceContext()->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	check(deviceContext);
+
+	deviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 void SSDepthRenderTargetTexture2D::Destroy()
@@ -400,16 +405,16 @@ void SSGenericRenderTarget::SaveRTTexture(UINT index, std::wstring filename)
 	mRenderTargetArray[index]->SaveAsDDSFile(filename);
 }
 
-void SSGenericRenderTarget::Clear()
+void SSGenericRenderTarget::Clear(ID3D11DeviceContext* deviceContext)
 {
 	for(UINT i = 0; i < mCount;++i)
 	{
-		mRenderTargetArray[i]->Clear();
+		mRenderTargetArray[i]->Clear(deviceContext);
 	}
 
 	if (mDepthExist)
 	{
-		mDepthTarget->Clear();
+		mDepthTarget->Clear(deviceContext);
 	}
 
 	

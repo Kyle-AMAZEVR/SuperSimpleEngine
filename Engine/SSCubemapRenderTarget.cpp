@@ -33,18 +33,18 @@ void SSCubemapRenderTarget::InternalCreate()
 	mViewport.MaxDepth = 1.0f;
 }
 
-void SSCubemapRenderTarget::Clear()
+void SSCubemapRenderTarget::Clear(ID3D11DeviceContext* deviceContext)
 {
 	for(int i = 0 ; i < static_cast<int>(ECubemapFace::MAX); ++i)
 	{
-		mRenderTargetArray[i]->Clear();
+		mRenderTargetArray[i]->Clear(deviceContext);
 	}
 }
 
-void SSCubemapRenderTarget::ClearFace(ECubemapFace eFace)
+void SSCubemapRenderTarget::ClearFace(ID3D11DeviceContext* deviceContext, ECubemapFace eFace)
 {
 	int nFace = static_cast<int>(eFace);
-	mRenderTargetArray[nFace]->Clear();
+	mRenderTargetArray[nFace]->Clear(deviceContext);
 }
 
 

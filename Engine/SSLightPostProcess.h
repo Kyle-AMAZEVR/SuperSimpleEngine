@@ -15,7 +15,9 @@ class SSLightPostProcess : public SSPostProcess
 public:
 	SSLightPostProcess(UINT width, UINT height);
 
-	virtual void Draw(SSTexture2DBase* input0,
+	virtual void Draw(
+		ID3D11DeviceContext* deviceContext,
+		SSTexture2DBase* input0,
 		SSTexture2DBase* input1,
 		SSTexture2DBase* input2,
 		SSTexture2DBase* input3,

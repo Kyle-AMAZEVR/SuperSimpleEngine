@@ -17,9 +17,11 @@ SSGBufferDumpPostProcess::SSGBufferDumpPostProcess(UINT width, UINT height)
 	UpdateDumpSettings();
 }
 
-void SSGBufferDumpPostProcess::Draw(SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2)
+void SSGBufferDumpPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2)
 {
-	mRenderTarget->Clear();
+	check(deviceContext != nullptr);
+
+	mRenderTarget->Clear(deviceContext);
 	mRenderTarget->SetCurrentRenderTarget();
 
 	SSAlignedCBuffer<int, int, int, int,int> mDumpSettings;

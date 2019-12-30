@@ -35,11 +35,15 @@ SSLightPostProcess::SSLightPostProcess(UINT width, UINT height)
 
 
 
-void SSLightPostProcess::Draw(SSTexture2DBase* input0, 
+void SSLightPostProcess::Draw(
+	ID3D11DeviceContext* deviceContext,
+	SSTexture2DBase* input0, 
 	SSTexture2DBase* input1, SSTexture2DBase* input2,
 	SSTexture2DBase* input3, SSTexture2DBase* input4, SSTexture2DBase* input5)
 {
-	mRenderTarget->Clear();
+	check(deviceContext != nullptr);
+
+	mRenderTarget->Clear(deviceContext);
 	mRenderTarget->SetCurrentRenderTarget();
 		
 	SSDrawCommand drawCmd{mVertexShader.get(), mPixelShader.get(), mScreenBlit };
