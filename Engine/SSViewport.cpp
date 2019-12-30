@@ -32,6 +32,24 @@ void SSViewport::SetCurrentRenderTarget()
 	SSEngine::Get().GetImmediateDeviceContext()->RSSetViewports(1, &mScreenViewport);
 }
 
+void SSViewport::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
+{
+	check(deviceContext != nullptr);
+	// Bind the render target view and depth/stencil view to the pipeline.
+	deviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
+
+	// Set the viewport transform.
+	mScreenViewport.TopLeftX = 0;
+	mScreenViewport.TopLeftY = 0;
+	mScreenViewport.Width = static_cast<float>(mWidth);
+	mScreenViewport.Height = static_cast<float>(mHeight);
+	mScreenViewport.MinDepth = 0.0f;
+	mScreenViewport.MaxDepth = 1.0f;
+
+	deviceContext->RSSetViewports(1, &mScreenViewport);
+}
+
+
 void SSViewport::Resize(UINT newWidth, UINT newHeight)
 {
     auto* dxDevice = SSEngine::Get().GetDevice();

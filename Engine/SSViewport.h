@@ -15,6 +15,7 @@ public:
     virtual void Clear() override;
     virtual void Resize(UINT newWidth, UINT newHeight) override;	
 	virtual void SetCurrentRenderTarget() override;
+	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override;
 
 protected:
 

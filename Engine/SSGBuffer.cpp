@@ -15,9 +15,9 @@ void SSGBuffer::Destroy()
 	for (UINT8 i = 0; i < static_cast<UINT8>(EGBufferType::Max); ++i)
 	{
 		mRenderTargetArray[i]->Destroy();
+		delete mRenderTargetArray[i];
+		mRenderTargetArray[i] = nullptr;
 	}
-
-	delete[] mRenderTargetArray;
 	
 	mDepthTarget->Destroy();
 	

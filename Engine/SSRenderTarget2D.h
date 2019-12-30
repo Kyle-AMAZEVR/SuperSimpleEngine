@@ -55,6 +55,7 @@ public:
 	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
 	virtual void SetCurrentRenderTarget() override;
+	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override;
 	virtual void Clear() override;
 	virtual void Resize(UINT width, UINT height) override;
 
@@ -63,7 +64,8 @@ public:
 protected:
 	SSRenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
 	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
-
+	ID3D11RenderTargetView** mRenderTargetViews{ nullptr };
+	
 	D3D11_VIEWPORT mViewport;
 	DXGI_FORMAT mFormat;
 
