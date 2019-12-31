@@ -15,8 +15,8 @@ class IRenderTarget;
 
 class ENGINE_API SSDrawCmdBase : public DXRenderResource
 {
-public :
-	virtual void Do() = 0;
+public :	
+	virtual void Do(ID3D11DeviceContext* deviceContext) = 0;
 };
 
 
@@ -24,7 +24,8 @@ class ENGINE_API SSChangeRenderTargetCmd : public SSDrawCmdBase
 {
 public:
 	SSChangeRenderTargetCmd(IRenderTarget* renderTarget);
-	virtual void Do() override;
+	
+	virtual void Do(ID3D11DeviceContext* deviceContext) override;
 protected:
 	IRenderTarget* mRenderTarget = nullptr;
 };
@@ -62,7 +63,7 @@ public:
 
 	virtual void DoWithMaterial();
 
-	virtual void Do();
+	virtual void Do(ID3D11DeviceContext* deviceContext) override;
 
 	void SetPreDrawJob(std::function<void()> job);
 	void SetPostDrawJob(std::function<void()> job);

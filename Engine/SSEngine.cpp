@@ -289,10 +289,10 @@ void SSEngine::Create2DLUTTexture()
 	auto* deviceContext = GetImmediateDeviceContext();
 
 	m2DLUTRenderTarget->Clear(deviceContext);
-	m2DLUTRenderTarget->SetCurrentRenderTarget();
+	m2DLUTRenderTarget->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand blitDrawCmd{ m2DLUTVertexShader.get(), m2DLUTPixelShader.get(), mScreenBlit };	
-	blitDrawCmd.Do();
+	blitDrawCmd.Do(deviceContext);
 
 	m2DLUTRenderTarget->SaveRTTexture(0, L"./Prebaked/2DLUT.dds");
 }
@@ -316,27 +316,27 @@ void SSEngine::CreateEnvCubemapConvolution()
 
 		SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
-		convolutionDrawCmd.Do();
+		convolutionDrawCmd.Do(deviceContext);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
-		convolutionDrawCmd.Do();
+		convolutionDrawCmd.Do(deviceContext);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
-		convolutionDrawCmd.Do();
+		convolutionDrawCmd.Do(deviceContext);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
-		convolutionDrawCmd.Do();
+		convolutionDrawCmd.Do(deviceContext);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
-		convolutionDrawCmd.Do();
+		convolutionDrawCmd.Do(deviceContext);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
-		convolutionDrawCmd.Do();
+		convolutionDrawCmd.Do(deviceContext);
 
 		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
@@ -350,14 +350,16 @@ void SSEngine::CreateEnvCubemapConvolution()
 
 void SSEngine::CreateEnvCubemapPrefilter()
 {
+	auto* deviceContext = GetImmediateDeviceContext();
+
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0); 
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 	{
 		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader.get(), mPrefilterPixelShader.get(), mTestCube };
 
-		mPrefilterRenderTarget->Clear(GetImmediateDeviceContext());
+		mPrefilterRenderTarget->Clear(deviceContext);
 
-		SSRasterizeStateManager::Get().SetCullModeNone(GetImmediateDeviceContext());
+		SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
 		const int maxMipLevels = 5;
 
@@ -376,27 +378,27 @@ void SSEngine::CreateEnvCubemapPrefilter()
 			prefilterDrawCmd.StorePSConstantBufferData(RoughnessName, temp);
 			prefilterDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());
 
-			prefilterDrawCmd.Do();
+			prefilterDrawCmd.Do(deviceContext);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
-			prefilterDrawCmd.Do();
+			prefilterDrawCmd.Do(deviceContext);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
-			prefilterDrawCmd.Do();
+			prefilterDrawCmd.Do(deviceContext);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
-			prefilterDrawCmd.Do();
+			prefilterDrawCmd.Do(deviceContext);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
-			prefilterDrawCmd.Do();
+			prefilterDrawCmd.Do(deviceContext);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
-			prefilterDrawCmd.Do();
+			prefilterDrawCmd.Do(deviceContext);
 		}
 		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
@@ -435,15 +437,17 @@ bool SSEngine::TryLoad2DLUTTexture()
 
 void SSEngine::CreateEnvCubemap()
 {
+	auto* deviceContext = GetImmediateDeviceContext();
+
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);	
 
-	mHDREnvmap = SSTexture2D::CreateFromHDRFile(GetImmediateDeviceContext(), "./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
+	mHDREnvmap = SSTexture2D::CreateFromHDRFile(deviceContext, "./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
 	
 	{
 		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
 
-		mEquirectToCubemapRenderTarget->Clear(GetImmediateDeviceContext());
+		mEquirectToCubemapRenderTarget->Clear(deviceContext);
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X);
 
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
@@ -451,31 +455,31 @@ void SSEngine::CreateEnvCubemap()
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ProjName, XMMatrixTranspose(proj));
 		equirectToCubeDrawCmd.SetPSTexture("sampleTexture", mHDREnvmap.get());
 
-		SSRasterizeStateManager::Get().SetCullModeNone(GetImmediateDeviceContext());
+		SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
-		equirectToCubeDrawCmd.Do();
+		equirectToCubeDrawCmd.Do(deviceContext);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
-		equirectToCubeDrawCmd.Do();
+		equirectToCubeDrawCmd.Do(deviceContext);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
-		equirectToCubeDrawCmd.Do();
+		equirectToCubeDrawCmd.Do(deviceContext);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
-		equirectToCubeDrawCmd.Do();
+		equirectToCubeDrawCmd.Do(deviceContext);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
-		equirectToCubeDrawCmd.Do();
+		equirectToCubeDrawCmd.Do(deviceContext);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
-		equirectToCubeDrawCmd.Do();
+		equirectToCubeDrawCmd.Do(deviceContext);
 
-		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
+		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
 		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
 		
@@ -553,7 +557,7 @@ void SSEngine::DrawScene(ID3D11DeviceContext* DeviceContext)
 	// @draw cubemap to gbuffer
 	// @start
 	mGBuffer->Clear(DeviceContext);
-	mGBuffer->SetCurrentRenderTarget();
+	mGBuffer->SetCurrentRenderTarget(DeviceContext);
 	SSCameraManager::Get().UpdateCurrentCamera();
 
 	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
@@ -566,7 +570,7 @@ void SSEngine::DrawScene(ID3D11DeviceContext* DeviceContext)
 	SSDepthStencilStateManager::Get().SetDepthCompLessEqual(DeviceContext);
 	SSRasterizeStateManager::Get().SetCullModeNone(DeviceContext);
 
-	testDrawCmd.Do();
+	testDrawCmd.Do(DeviceContext);
 
 	SSDepthStencilStateManager::Get().SetToDefault(DeviceContext);
 	SSRasterizeStateManager::Get().SetToDefault(DeviceContext);
@@ -599,7 +603,7 @@ void SSEngine::DrawScene(ID3D11DeviceContext* DeviceContext)
 		mEnvCubemapPrefilter.get());
 
 	mViewport->Clear(DeviceContext);
-	mViewport->SetCurrentRenderTarget();
+	mViewport->SetCurrentRenderTarget(DeviceContext);
 
 	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
 
@@ -612,7 +616,7 @@ void SSEngine::DrawScene(ID3D11DeviceContext* DeviceContext)
 		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
 	}
 
-	blitDrawCmd.Do();
+	blitDrawCmd.Do(DeviceContext);
 
 	HR(mSwapChain->Present(0, 0));
 }
@@ -682,7 +686,7 @@ void SSEngine::DrawScene()
 	// @draw cubemap to gbuffer
 	// @start
 	mGBuffer->Clear(deviceContext);
-	mGBuffer->SetCurrentRenderTarget();
+	mGBuffer->SetCurrentRenderTarget(deviceContext);
 	SSCameraManager::Get().UpdateCurrentCamera();
 	
 	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };	
@@ -695,7 +699,7 @@ void SSEngine::DrawScene()
 	SSDepthStencilStateManager::Get().SetDepthCompLessEqual(deviceContext);
 	SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
-	testDrawCmd.Do();
+	testDrawCmd.Do(deviceContext);
 
 	SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
 	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
@@ -728,7 +732,7 @@ void SSEngine::DrawScene()
 		mEnvCubemapPrefilter.get());
 	
 	mViewport->Clear(deviceContext);
-	mViewport->SetCurrentRenderTarget();
+	mViewport->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };	
 	
@@ -741,7 +745,7 @@ void SSEngine::DrawScene()
 		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
 	}
 
-	blitDrawCmd.Do();
+	blitDrawCmd.Do(deviceContext);
 	
     HR(mSwapChain->Present(0,0));
 }

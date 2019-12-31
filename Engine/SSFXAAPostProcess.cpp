@@ -21,7 +21,7 @@ void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase
 	check(deviceContext != nullptr);
 
 	mRenderTarget->Clear(deviceContext);
-	mRenderTarget->SetCurrentRenderTarget();
+	mRenderTarget->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader.get(), mFXAAPixelShader.get(), mScreenBlit };
 	fxaaDrawCmd.SetPSTexture("ScreenTex", input0);
@@ -32,5 +32,5 @@ void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase
 	
 	fxaaDrawCmd.StorePSConstantBufferData("CBInverseScreenSize", invScreenSize);
 
-	fxaaDrawCmd.Do();
+	fxaaDrawCmd.Do(deviceContext);
 }

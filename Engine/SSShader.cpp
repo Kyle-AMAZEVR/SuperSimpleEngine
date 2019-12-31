@@ -195,14 +195,6 @@ void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string 
 	deviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
 }
 
- /*void SSVertexShader::SetTexture(std::string name, SSTexture2DBase* texture)
- { 
-	 auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
-
-	 SetTexture(dxDeviceContext, name, texture);
- }
-*/
-
 void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string name, ID3D11SamplerState* sampler)
 {
 	UINT slotIndex = mSamplerMap[name];

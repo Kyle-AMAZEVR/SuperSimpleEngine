@@ -19,8 +19,6 @@ public:
     virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
 	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* textrue ){}	
-	//virtual void SetTexture(std::string name, class SSTexture2DBase* texture){}
-
 	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name){}
 	virtual void SetTextureAsNull(std::string name){}
 	
@@ -55,8 +53,6 @@ void SSShader::SetConstantBufferData(std::string bufferName, const T& data)
 }
 
 
-
-
 // vertex shader
 class ENGINE_API SSVertexShader : public SSShader
 {
@@ -71,8 +67,6 @@ public:
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
 	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* texture) override;
-
-	//virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
 
 	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) override;	
 	

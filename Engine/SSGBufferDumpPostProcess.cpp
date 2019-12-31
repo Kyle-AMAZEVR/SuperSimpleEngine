@@ -22,7 +22,7 @@ void SSGBufferDumpPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTextur
 	check(deviceContext != nullptr);
 
 	mRenderTarget->Clear(deviceContext);
-	mRenderTarget->SetCurrentRenderTarget();
+	mRenderTarget->SetCurrentRenderTarget(deviceContext);
 
 	SSAlignedCBuffer<int, int, int, int,int> mDumpSettings;
 
@@ -39,7 +39,7 @@ void SSGBufferDumpPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTextur
 
 	gbufferDumpDrawCmd.StorePSConstantBufferData("Dump", mDumpSettings);
 
-	gbufferDumpDrawCmd.Do();
+	gbufferDumpDrawCmd.Do(deviceContext);
 }
 
 void SSGBufferDumpPostProcess::ChangeNextDumpMode()

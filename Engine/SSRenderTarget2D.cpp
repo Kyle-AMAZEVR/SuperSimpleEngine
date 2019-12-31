@@ -297,49 +297,24 @@ SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count
 	mRenderTargetViews = new ID3D11RenderTargetView*[mCount];
 }
 
-void SSGenericRenderTarget::SetCurrentRenderTarget()
-{
-	for(UINT i = 0; i < mCount; ++i)
-	{
-		mRenderTargetViews[i] = mRenderTargetArray[i]->GetRenderTargetView();
-	}
-
-	if(mDepthExist)
-	{
-		ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
-
-		SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(mCount, mRenderTargetViews, depthStencil);
-
-		SSEngine::Get().GetImmediateDeviceContext()->RSSetViewports(1, &mViewport);
-	}
-	else
-	{
-		SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(mCount, mRenderTargetViews, nullptr);
-
-		SSEngine::Get().GetImmediateDeviceContext()->RSSetViewports(1, &mViewport);
-	}	
-}
-
 void SSGenericRenderTarget::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
 {
-	ID3D11RenderTargetView** renderTargets = new ID3D11RenderTargetView*[mCount];
-
 	for (UINT i = 0; i < mCount; ++i)
 	{
-		renderTargets[i] = mRenderTargetArray[i]->GetRenderTargetView();
+		mRenderTargetViews[i] = mRenderTargetArray[i]->GetRenderTargetView();
 	}
 
 	if (mDepthExist)
 	{
 		ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
 
-		deviceContext->OMSetRenderTargets(mCount, renderTargets, depthStencil);
+		deviceContext->OMSetRenderTargets(mCount, mRenderTargetViews, depthStencil);
 
 		deviceContext->RSSetViewports(1, &mViewport);
 	}
 	else
 	{
-		deviceContext->OMSetRenderTargets(mCount, renderTargets, nullptr);
+		deviceContext->OMSetRenderTargets(mCount, mRenderTargetViews, nullptr);
 
 		deviceContext->RSSetViewports(1, &mViewport);
 	}
@@ -366,9 +341,7 @@ void SSGenericRenderTarget::Resize(UINT width, UINT height)
 	mViewport.Width = static_cast<float>(mWidth);
 	mViewport.Height = static_cast<float>(mHeight);
 	mViewport.MinDepth = 0.0f;
-	mViewport.MaxDepth = 1.0f;
-
-	SetCurrentRenderTarget();
+	mViewport.MaxDepth = 1.0f;	
 }
 
 SSRenderTargetTexture2D* SSGenericRenderTarget::GetOutput(UINT nIndex)

@@ -44,7 +44,7 @@ void SSLightPostProcess::Draw(
 	check(deviceContext != nullptr);
 
 	mRenderTarget->Clear(deviceContext);
-	mRenderTarget->SetCurrentRenderTarget();
+	mRenderTarget->SetCurrentRenderTarget(deviceContext);
 		
 	SSDrawCommand drawCmd{mVertexShader.get(), mPixelShader.get(), mScreenBlit };
 
@@ -63,5 +63,5 @@ void SSLightPostProcess::Draw(
 	drawCmd.StorePSConstantBufferData("LightPosition", mLightInfo.lightPosition);
 	drawCmd.StorePSConstantBufferData("LightColor", mLightInfo.lightColors);
 	drawCmd.StorePSConstantBufferData("LightMinMax", mLightInfo.lightMinMaxs);
-	drawCmd.Do();
+	drawCmd.Do(deviceContext);
 }

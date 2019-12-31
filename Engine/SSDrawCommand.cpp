@@ -13,9 +13,9 @@ SSChangeRenderTargetCmd::SSChangeRenderTargetCmd(IRenderTarget* renderTarget)
 {	
 }
 
-void SSChangeRenderTargetCmd::Do()
+void SSChangeRenderTargetCmd::Do(ID3D11DeviceContext* deviceContext)
 {
-	mRenderTarget->SetCurrentRenderTarget();	
+	mRenderTarget->SetCurrentRenderTarget(deviceContext);	
 }
 
 
@@ -76,18 +76,17 @@ void SSDrawCommand::DoWithMaterial()
 	
 }
 
-void SSDrawCommand::Do()
+void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 {
 	check(mpVS != nullptr);
 	check(mpPS != nullptr);
+	check(deviceContext != nullptr);
 
 	//
 	if(mPreDrawJob != nullptr)
 	{
 		mPreDrawJob();
-	}
-
-	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
+	}	
 
 	// @ set input layout
 	deviceContext->IASetInputLayout(mpVS->GetInputLayout());
