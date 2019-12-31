@@ -29,19 +29,19 @@ void SSMaterial::SetCurrent()
 }
 
 
-void SSMaterial::SetPSTexture(std::string name, SSTexture2DBase* texture)
+void SSMaterial::SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture)
 {
 	check(mpPS != nullptr);
 	mPixelShaderTextureMap[name] = texture;
-	mpPS->SetTexture(name, texture);
+	mpPS->SetTexture(deviceContext, name, texture);
 }
 
 
-void SSMaterial::SetVSTexture(std::string name, SSTexture2DBase* texture)
+void SSMaterial::SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture)
 {
 	check(mpVS != nullptr);
 	mVertexShaderTextureMap[name] = texture;
-	mpVS->SetTexture(name, texture);
+	mpVS->SetTexture(deviceContext, name, texture);
 }
 
 void SSMaterial::SetPSSampler(std::string name, ID3D11SamplerState* sampler)

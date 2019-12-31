@@ -19,7 +19,7 @@ public:
     virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
 	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* textrue ){}	
-	virtual void SetTexture(std::string name, class SSTexture2DBase* texture){}
+	//virtual void SetTexture(std::string name, class SSTexture2DBase* texture){}
 
 	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name){}
 	virtual void SetTextureAsNull(std::string name){}
@@ -72,7 +72,7 @@ public:
 
 	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* texture) override;
 
-	virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
+	//virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
 
 	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) override;	
 	
@@ -110,7 +110,7 @@ public:
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
 	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name)override;
-	virtual void SetTexture(std::string name, class SSTexture2DBase* texture) override;
+	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* texture) override;
 	virtual void SetTextureAsNull(std::string name) override;
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 protected:

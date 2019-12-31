@@ -57,13 +57,13 @@ void SSDrawCommand::DoWithMaterial()
 	// @ set pixel shader texture 
 	for (auto& kvp : mVertexShaderTextureMap)
 	{
-		mMaterial->SetVSTexture(kvp.first, kvp.second);
+		mMaterial->SetVSTexture(deviceContext, kvp.first, kvp.second);
 	}
 	
 	// @set verte shader texture
 	for (auto& kvp : mPixelShaderTextureMap)
 	{
-		mMaterial->SetPSTexture(kvp.first, kvp.second);
+		mMaterial->SetPSTexture(deviceContext, kvp.first, kvp.second);
 	}
 	
 	// @ draw
@@ -122,13 +122,13 @@ void SSDrawCommand::Do()
 	// @ set pixel shader texture 
 	for (auto& kvp : mPixelShaderTextureMap)
 	{
-		mpPS->SetTexture(kvp.first, kvp.second);
+		mpPS->SetTexture(deviceContext, kvp.first, kvp.second);
 	}
 
 	// @ set vertex shader texture 
 	for (auto& kvp : mVertexShaderTextureMap)
 	{
-		mpVS->SetTexture(kvp.first, kvp.second);
+		mpVS->SetTexture(deviceContext, kvp.first, kvp.second);
 	}
 
 	// @ set pixel shader sampler

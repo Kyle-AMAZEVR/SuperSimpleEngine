@@ -455,22 +455,22 @@ void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mat
 
 	if (mMetalTex != nullptr)
 	{
-		material->SetPSTexture("MetalicTex", mMetalTex.get());
+		material->SetPSTexture(deviceContext, "MetalicTex", mMetalTex.get());
 	}
 
 	if (mNormalTex != nullptr)
 	{
-		material->SetPSTexture("NormalTex", mNormalTex.get());
+		material->SetPSTexture(deviceContext, "NormalTex", mNormalTex.get());
 	}
 
 	if (mDiffuseTex != nullptr)
 	{
-		material->SetPSTexture("DiffuseTex", mDiffuseTex.get());
+		material->SetPSTexture(deviceContext, "DiffuseTex", mDiffuseTex.get());
 	}
 
 	if (mRoughTex != nullptr)
 	{
-		material->SetPSTexture("RoughnessTex", mRoughTex.get());
+		material->SetPSTexture(deviceContext, "RoughnessTex", mRoughTex.get());
 	}
 
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);

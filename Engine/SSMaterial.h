@@ -26,8 +26,8 @@ public:
 	template<class T>
 	void SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 
-	void SetPSTexture(std::string name, SSTexture2DBase* texture);
-	void SetVSTexture(std::string name, SSTexture2DBase* texture);
+	void SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture);
+	void SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture);
 
 	virtual void SetPSSampler(std::string name, ID3D11SamplerState* sampler);
 

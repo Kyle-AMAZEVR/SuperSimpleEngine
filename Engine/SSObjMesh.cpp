@@ -371,7 +371,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			if (mMeshMaterialMap[section.mSectionName].mDiffuseMap.length() > 0)
 			{
 				auto diffuse = SSTextureManager::Get().LoadTexture2D(deviceContext, mMeshMaterialMap[section.mSectionName].mDiffuseMap, false);
-				material->SetPSTexture("DiffuseTex", diffuse.get());
+				material->SetPSTexture(deviceContext, "DiffuseTex", diffuse.get());
 				settings.value5 = 1;
 			}
 			else
@@ -382,7 +382,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			if(mMeshMaterialMap[section.mSectionName].mNormalMap.length() > 0)
 			{
 				auto normal = SSTextureManager::Get().LoadTexture2D(deviceContext, mMeshMaterialMap[section.mSectionName].mNormalMap, false);
-				material->SetPSTexture("NormalTex", normal.get());
+				material->SetPSTexture(deviceContext, "NormalTex", normal.get());
 				settings.value3 = 1;
 			}
 			else
@@ -398,7 +398,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			else if (mMeshMaterialMap[section.mSectionName].mRoughnessMap.length() > 0)
 			{
 				auto rough = SSTextureManager::Get().LoadTexture2D(deviceContext, mMeshMaterialMap[section.mSectionName].mRoughnessMap);
-				material->SetPSTexture("RoughnessTex", rough.get());
+				material->SetPSTexture(deviceContext, "RoughnessTex", rough.get());
 				settings.value4 = 1;
 			}
 			else
@@ -413,7 +413,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			else if(mMeshMaterialMap[section.mSectionName].mMetalicMap.length() > 0)
 			{
 				auto metal = SSTextureManager::Get().LoadTexture2D(deviceContext, mMeshMaterialMap[section.mSectionName].mMetalicMap);
-				material->SetPSTexture("MetalicTex", metal.get());
+				material->SetPSTexture(deviceContext, "MetalicTex", metal.get());
 				settings.value1 = 1;
 			}
 			else
@@ -424,7 +424,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 			if(mMeshMaterialMap[section.mSectionName].mMaskMap.length() > 0)
 			{
 				auto mask = SSTextureManager::Get().LoadTexture2D(deviceContext, mMeshMaterialMap[section.mSectionName].mMaskMap);
-				material->SetPSTexture("MaskTex", mask.get());
+				material->SetPSTexture(deviceContext, "MaskTex", mask.get());
 				settings.value2 = 1;
 			}
 			else
