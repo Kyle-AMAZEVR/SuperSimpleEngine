@@ -340,7 +340,7 @@ void SSEngine::CreateEnvCubemapConvolution()
 
 		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
-		mConvolutionRenderTarget->CreateCubemapShaderResource();	
+		mConvolutionRenderTarget->CreateCubemapShaderResource(deviceContext);	
 
 		mEnvCubemapConvolution = mConvolutionRenderTarget;
 
@@ -366,7 +366,7 @@ void SSEngine::CreateEnvCubemapPrefilter()
 
 		for (UINT mip = 0; mip < 5; ++mip)
 		{
-			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_X, mip);
+			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X, mip);
 
 			prefilterDrawCmd.StoreVSConstantBufferData(ModelName, XMMatrixTranspose(XMMatrixTranslation(0, 0, 0)));
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveXViewMatrix));
@@ -380,29 +380,29 @@ void SSEngine::CreateEnvCubemapPrefilter()
 
 			prefilterDrawCmd.Do(deviceContext);
 
-			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Y, mip);
+			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Y, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
 			prefilterDrawCmd.Do(deviceContext);
 
-			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::POSITIVE_Z, mip);
+			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Z, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
 			prefilterDrawCmd.Do(deviceContext);
 
-			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_X, mip);
+			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_X, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
 			prefilterDrawCmd.Do(deviceContext);
 
-			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Y, mip);
+			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Y, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
 			prefilterDrawCmd.Do(deviceContext);
 
-			mPrefilterRenderTarget->SetCurrentRTAs(ECubemapFace::NEGATIVE_Z, mip);
+			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Z, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
 			prefilterDrawCmd.Do(deviceContext);
 		}
 		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
-		mPrefilterRenderTarget->CreateCubemapShaderResource();
+		mPrefilterRenderTarget->CreateCubemapShaderResource(deviceContext);
 
 		mEnvCubemapPrefilter = mPrefilterRenderTarget;
 		
@@ -481,7 +481,7 @@ void SSEngine::CreateEnvCubemap()
 
 		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
-		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource();
+		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource(deviceContext);
 		
 		mEquirectToCubemapRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvCubemap.dds");
 

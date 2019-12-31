@@ -60,8 +60,10 @@ void SSCubemapRenderTarget::SetCurrentRTAs(ID3D11DeviceContext* deviceContext, E
 }
 
 
-void SSCubemapRenderTarget::CreateCubemapShaderResource()
+void SSCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext)
 {
+	check(deviceContext != nullptr);
+
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth;
 	description.Height = mHeight;
@@ -92,10 +94,10 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource()
 		auto dstSubresource = D3D11CalcSubresource(0, face, mMipLevels);
 		auto srcSubresource = D3D11CalcSubresource(0, 0, mMipLevels);
 
-		SSEngine::Get().GetImmediateDeviceContext()->CopySubresourceRegion(mTexturePtr.Get(), dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
+		deviceContext->CopySubresourceRegion(mTexturePtr.Get(), dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
 	}
 	
-	SSEngine::Get().GetImmediateDeviceContext()->GenerateMips(mShaderResourceView.Get());
+	deviceContext->GenerateMips(mShaderResourceView.Get());
 }
 
 void SSCubemapRenderTarget::Destroy()
@@ -134,7 +136,7 @@ SSPrefilterCubemapRenderTarget::SSPrefilterCubemapRenderTarget(UINT width, UINT 
 	InternalCreate();
 }
 
-void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource()
+void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext)
 {
 	D3D11_TEXTURE2D_DESC description;
 	description.Width = mWidth;
@@ -168,13 +170,15 @@ void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource()
 			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, mMipLevels);
 			auto srcSubresource = D3D11CalcSubresource(mipLevel, 0, mMipLevels);
 
-			SSEngine::Get().GetImmediateDeviceContext()->CopySubresourceRegion(mTexturePtr.Get(), dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
+			deviceContext->CopySubresourceRegion(mTexturePtr.Get(), dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
 		}
 	}
 }
 
-void SSPrefilterCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace, UINT mip)
+void SSPrefilterCubemapRenderTarget::SetCurrentRTAs(ID3D11DeviceContext* deviceContext, ECubemapFace eFace, UINT mip)
 {	
+	check(deviceContext != nullptr);
+
 	if (mip != mLastRTMip)
 	{
 		mViewport.Width = mWidth / static_cast<float>(std::pow(2, mip));
@@ -184,9 +188,9 @@ void SSPrefilterCubemapRenderTarget::SetCurrentRTAs(ECubemapFace eFace, UINT mip
 
 	ID3D11RenderTargetView* renderTarget[1]{ mRenderTargetArray[static_cast<int>(eFace)]->GetRenderTargetView(mip) };
 
-	SSEngine::Get().GetImmediateDeviceContext()->OMSetRenderTargets(1, renderTarget, nullptr);
+	deviceContext->OMSetRenderTargets(1, renderTarget, nullptr);
 
-	SSEngine::Get().GetImmediateDeviceContext()->RSSetViewports(1, &mViewport);
+	deviceContext->RSSetViewports(1, &mViewport);
 }
 
 void SSPrefilterCubemapRenderTarget::InternalCreate()
