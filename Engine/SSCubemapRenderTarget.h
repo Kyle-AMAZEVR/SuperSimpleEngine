@@ -25,11 +25,11 @@ class SSCubemapRenderTarget : public IRenderTarget, public SSTextureCube
 public:
 	SSCubemapRenderTarget(UINT width, UINT height ,DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
 	
-	void SetCurrentRTAs(ECubemapFace eFace);
+	void SetCurrentRTAs(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
 
 	virtual void SaveAsCubemapDDSFile(std::wstring filename);
-	virtual void SaveFaceAsDDSFile(ECubemapFace eFace);
-	virtual void SaveFaceOfMipAsDDSFile(ECubemapFace eFace, UINT mip = 0);	
+	virtual void SaveFaceAsDDSFile(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
+	virtual void SaveFaceOfMipAsDDSFile(ID3D11DeviceContext* deviceContext, ECubemapFace eFace, UINT mip = 0);
 
 	virtual void CreateCubemapShaderResource();	
 
