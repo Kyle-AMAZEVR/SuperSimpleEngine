@@ -28,9 +28,24 @@ protected:
 	ComPtr<ID3D12CommandQueue> mCommandQueue;
 	ComPtr<ID3D12GraphicsCommandList> mCommandList;
 	ComPtr<ID3D12PipelineState> mPipelineState;
+	ComPtr<IDXGISwapChain3> mSwapChain;
+	ComPtr<ID3D12DescriptorHeap> mRTVHeap;
+
 	
 	bool mUseWarpDevice = false;
 	HWND mWindowHandle;
 
 	void GetHardwareAdapter(IDXGIFactory2* pFactory, IDXGIAdapter1** ppAdapter);
+
+	UINT mWidth = 1024;
+	UINT mHeight = 768;
+	UINT mRTVDescriptorSize = 0;
+
+	static const UINT FrameCount = 2;
+
+	UINT mFrameIndex;
+
+	ComPtr<ID3D12Fence> mFence;
+
+	HANDLE mFenceEvent;
 };
