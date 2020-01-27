@@ -33,7 +33,7 @@ set_source_files_properties("Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(Core d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib directxtex freetype) 
+target_link_libraries(Core d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype) 
 
 target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
