@@ -93,15 +93,46 @@ void SSEngine12::LoadPipeline()
 
 	swapChainDesc.SampleDesc.Count = 4;
 	swapChainDesc.BufferCount = 1;
-	
-
-	
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	swapChainDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	swapChainDesc.Width = mWidth;
+	swapChainDesc.Height = mHeight;
+			
 
 	ComPtr<IDXGISwapChain1> swapChain;
 
 	HR(mFactory->CreateSwapChainForHwnd(mCommandQueue.Get(), mWindowHandle, &swapChainDesc, nullptr, nullptr, &swapChain));
 
+	HR(mFactory->MakeWindowAssociation(mWindowHandle, 0));
 
+	HR(swapChain.As(&mSwapChain));
+
+	mFrameIndex = mSwapChain->GetCurrentBackBufferIndex();
+
+	{
+		D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
+
+		heapDesc.NumDescriptors = FrameCount;
+		heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+		heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+
+		HR(mDevice->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&mRTVHeap)));
+
+		mRTVDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	}
+
+	// Create frame resources.
+	{
+		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
+
+		// Create a RTV for each frame.
+		for (UINT n = 0; n < FrameCount; n++)
+		{
+			HR(mSwapChain->GetBuffer(n, IID_PPV_ARGS(&m_renderTargets[n])));
+			mDevice->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle);
+			rtvHandle.Offset(1, mRTVDescriptorSize);
+		}
+	}
 
 }
 
