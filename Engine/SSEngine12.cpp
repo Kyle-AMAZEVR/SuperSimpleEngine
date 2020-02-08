@@ -21,12 +21,15 @@ void SSEngine12::Initialize(HWND windowHandle)
 	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
 	HR(mDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mRTVHeap)));
+	mRTVDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
 
 	for(UINT n = 0; n < FrameCount; ++n)
 	{		
-
+		HR(mSwapChain->GetBuffer(n, IID_PPV_ARGS(&mRenderTargets[n])));
+		mDevice->CreateRenderTargetView(mRenderTargets[n].Get(), nullptr, rtvHandle);
+		rtvHandle.Offset(1, mRTVDescriptorSize);
 	}
 }
 
