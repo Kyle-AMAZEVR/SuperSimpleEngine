@@ -8,35 +8,55 @@ void SSEngine12::Initialize(HWND windowHandle)
 {
 	mWindowHandle = windowHandle;
 	
-	CreateDevice();
+	bool bDeviceCreated = CreateDevice();
 
-}
+	D3D12_COMMAND_QUEUE_DESC desc{};
+	HRESULT hr = mDevice->CreateCommandQueue(&desc, IID_PPV_ARGS(&mCommandQueue));
 
-bool SSEngine12::CreateDevice()
-{
-	if (mUseWarpDevice)
-	{
-		ComPtr<IDXGIAdapter> warpAdapter;
 
-		HR(mFactory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter)));
-
-		HR(D3D12CreateDevice(warpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&mDevice)));
-	}
-	else
-	{
-		ComPtr<IDXGIAdapter1> hardwareAdapter;
-
-		GetHardwareAdapter(mFactory.Get(), &hardwareAdapter);
-
-		HR(D3D12CreateDevice(hardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&mDevice)));
-	}
-
-	return true;
 }
 
 bool SSEngine12::CreateSwapChain()
 {
-		
+	return true;
+}
+
+bool SSEngine12::CreateDevice()
+{	
+	ComPtr<IDXGIAdapter1> hardwareAdapter;
+	
+	HR(CreateDXGIFactory1(IID_PPV_ARGS(&mFactory)));
+	IDXGIAdapter1* adapter;
+
+	int adapterIndex = 0;
+	bool adapterFound = false;
+
+	while(mFactory->EnumAdapters1(adapterIndex, &adapter) != DXGI_ERROR_NOT_FOUND)
+	{
+		DXGI_ADAPTER_DESC1 desc;
+		adapter->GetDesc1(&desc);
+		if(desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+		{
+			adapterIndex++;
+			continue;
+		}
+
+		HRESULT hr = D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), &mDevice);
+		if(SUCCEEDED(hr))
+		{
+			adapterFound = true;
+			break;
+		}
+
+		adapterIndex++;
+	}
+
+	return adapterFound;
+}
+
+bool SSEngine12::CreateSwapChain()
+{
+	return true;
 }
 
 

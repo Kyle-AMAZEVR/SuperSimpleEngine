@@ -4,6 +4,7 @@
 #include "SSEngine.h"
 #include "Windows.h"
 #include "SSTimer.h"
+#include "SSEngine12.h"
 
 void DXRenderingThread::Start(HWND handle)
 {
@@ -16,7 +17,8 @@ void DXRenderingThread::Start(HWND handle)
 DWORD DXRenderingThread::Run()
 {
 	// init engine
-	SSEngine::Get().Initialize(mWindowHandle);
+	//SSEngine::Get().Initialize(mWindowHandle);
+	SSEngine12::Get().Initialize(mWindowHandle);
 
 	bIsRunning = true;
 
