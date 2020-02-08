@@ -16,12 +16,11 @@ public:
 
 protected:
 
+	static const UINT FrameCount = 3;
+
 	bool CreateDevice();
 
 	bool CreateSwapChain();
-
-	void LoadPipeline();
-
 	ComPtr<IDXGIFactory4> mFactory;
 	ComPtr<ID3D12Device> mDevice;
 	ComPtr<ID3D12CommandAllocator> mCommandAllocator;
@@ -30,18 +29,15 @@ protected:
 	ComPtr<ID3D12PipelineState> mPipelineState;
 	ComPtr<IDXGISwapChain3> mSwapChain;
 	ComPtr<ID3D12DescriptorHeap> mRTVHeap;
+	ComPtr<ID3D12Resource> mRenderTargets[FrameCount];
 
+	int mBufferWidth = 1024;
+	int mBufferHeight = 768;
 	
-	bool mUseWarpDevice = false;
-	HWND mWindowHandle;
-
-	void GetHardwareAdapter(IDXGIFactory2* pFactory, IDXGIAdapter1** ppAdapter);
-
-	UINT mWidth = 1024;
-	UINT mHeight = 768;
+	HWND mWindowHandle;	
 	UINT mRTVDescriptorSize = 0;
 
-	static const UINT FrameCount = 2;
+	
 
 	UINT mFrameIndex;
 
