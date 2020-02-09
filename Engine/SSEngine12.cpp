@@ -47,6 +47,21 @@ void SSEngine12::Initialize(HWND windowHandle)
 	}
 }
 
+void SSEngine12::DrawScene()
+{
+	PopulateCommandList();
+
+	// Execute the command list.
+	ID3D12CommandList* ppCommandLists[] = { mCommandList.Get() };
+	
+	mCommandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+	// Present the frame.
+	HR(mSwapChain->Present(1, 0));
+
+	WaitForPreviousFrame();
+}
+
 bool SSEngine12::CreateSwapChain()
 {	
 	DXGI_SWAP_CHAIN_DESC1 sd{};	
@@ -72,8 +87,20 @@ void SSEngine12::PopulateCommandList()
 {
 	HR(mCommandAllocator->Reset());
 
-	HR(mCommandList->());
+	HR(mCommandList->Reset(mCommandAllocator.Get(), mPipelineState.Get()));
 
+	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+
+	// Record commands.
+	const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart(), mFrameIndex, mRTVDescriptorSize);
+
+	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+
+	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+
+	mCommandList->Close();
 }
 
 
@@ -81,7 +108,7 @@ bool SSEngine12::CreateDevice()
 {	
 	ComPtr<IDXGIAdapter1> hardwareAdapter;
 	
-	HR(CreateDXGIFactory1(IID_PPV_ARGS(&mFactory)));
+	HR(CreateDXGIFactory2(IID_PPV_ARGS(&mFactory)));
 	IDXGIAdapter1* adapter;
 
 	int adapterIndex = 0;

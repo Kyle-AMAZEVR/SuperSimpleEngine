@@ -43,7 +43,7 @@ DWORD DXRenderingThread::Run()
 		//
 		renderingThreadTimer.Tick();
 			   
-		SSEngine::Get().DrawScene();
+		SSEngine12::Get().DrawScene();
 
 		SetEvent(mRenderingDoneEventHandle);
 

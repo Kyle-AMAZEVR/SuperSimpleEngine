@@ -13,6 +13,7 @@ class SSEngine12 : public Singleton<SSEngine12>
 public:
 	void Initialize(HWND windowHandle);
 
+	void DrawScene();
 
 protected:
 
