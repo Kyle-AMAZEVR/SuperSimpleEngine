@@ -16,6 +16,9 @@ public:
 
 protected:
 
+	void WaitForPreviousFrame();
+	void PopulateCommandList();
+
 	static const UINT FrameCount = 3;
 
 	bool CreateDevice();
@@ -37,11 +40,12 @@ protected:
 	HWND mWindowHandle;	
 	UINT mRTVDescriptorSize = 0;
 
+	UINT64 mFenceValue = 0;
 	
 
 	UINT mFrameIndex;
 
 	ComPtr<ID3D12Fence> mFence;
-
 	HANDLE mFenceEvent;
+
 };

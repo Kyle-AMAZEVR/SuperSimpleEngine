@@ -31,6 +31,20 @@ void SSEngine12::Initialize(HWND windowHandle)
 		mDevice->CreateRenderTargetView(mRenderTargets[n].Get(), nullptr, rtvHandle);
 		rtvHandle.Offset(1, mRTVDescriptorSize);
 	}
+
+	HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator)));
+
+	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
+	
+	HR(mDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));
+
+	mFenceValue = 1;
+	mFenceEvent = CreateEvent(nullptr, false, false, nullptr);
+
+	if(mFenceEvent == nullptr)
+	{
+		check(false);
+	}
 }
 
 bool SSEngine12::CreateSwapChain()
@@ -53,6 +67,15 @@ bool SSEngine12::CreateSwapChain()
 
 	return true;
 }
+
+void SSEngine12::PopulateCommandList()
+{
+	HR(mCommandAllocator->Reset());
+
+	HR(mCommandList->());
+
+}
+
 
 bool SSEngine12::CreateDevice()
 {	
@@ -85,5 +108,21 @@ bool SSEngine12::CreateDevice()
 	}
 
 	return adapterFound;
+}
+
+void SSEngine12::WaitForPreviousFrame()
+{
+	const UINT64 fence = mFenceValue;
+	mCommandQueue->Signal(mFence.Get(), fence);
+	mFenceValue++;
+
+	if(mFence->GetCompletedValue() < fence)
+	{
+		HR(mFence->SetEventOnCompletion(fence, mFenceEvent));
+
+		WaitForSingleObject(mFenceEvent, INFINITE);
+	}
+
+	mFrameIndex = mSwapChain->GetCurrentBackBufferIndex();
 }
 
