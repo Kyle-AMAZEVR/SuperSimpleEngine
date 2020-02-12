@@ -35,6 +35,8 @@ void SSEngine12::Initialize(HWND windowHandle)
 	HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator)));
 
 	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
+
+	HR(mCommandList->Close());
 	
 	HR(mDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));
 
@@ -107,8 +109,23 @@ void SSEngine12::PopulateCommandList()
 bool SSEngine12::CreateDevice()
 {	
 	ComPtr<IDXGIAdapter1> hardwareAdapter;
+
+	UINT dxgiFactoryFlags = 0;
+
+#if defined(_DEBUG)
+	{
+		ComPtr<ID3D12Debug> debugController;
+		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+		{
+			debugController->EnableDebugLayer();
+
+			// Enable additional debug layers.
+			dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
+		}
+	}
+#endif
 	
-	HR(CreateDXGIFactory2(IID_PPV_ARGS(&mFactory)));
+	HR(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&mFactory)));
 	IDXGIAdapter1* adapter;
 
 	int adapterIndex = 0;
