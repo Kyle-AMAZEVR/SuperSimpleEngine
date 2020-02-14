@@ -7,8 +7,8 @@
 
 bool DXShaderCompiler::CompileVertexShader(std::wstring filename)
 {    
-    ID3D10Blob* vertexShaderBuffer = nullptr;
-    ID3D10Blob* errorMsg = nullptr;
+    ID3DBlob* vertexShaderBuffer = nullptr;
+    ID3DBlob* errorMsg = nullptr;
 
     check(std::filesystem::exists(filename));
 
@@ -26,8 +26,8 @@ bool DXShaderCompiler::CompileVertexShader(std::wstring filename)
 
 bool DXShaderCompiler::CompilePixelShader(std::wstring filename)
 {
-    ID3D10Blob* pixelShaderBuffer = nullptr;
-    ID3D10Blob* errorMsg = nullptr;
+    ID3DBlob* pixelShaderBuffer = nullptr;
+    ID3DBlob* errorMsg = nullptr;
 
     check(std::filesystem::exists(filename));
 

@@ -16,7 +16,7 @@ public:
 	void DrawScene();
 
 protected:
-
+	void LoadAssets();
 	void WaitForPreviousFrame();
 	void PopulateCommandList();
 
@@ -34,6 +34,8 @@ protected:
 	ComPtr<IDXGISwapChain3> mSwapChain;
 	ComPtr<ID3D12DescriptorHeap> mRTVHeap;
 	ComPtr<ID3D12Resource> mRenderTargets[FrameCount];
+	ComPtr<ID3D12RootSignature> mRootSignature;
+	
 
 	int mBufferWidth = 1024;
 	int mBufferHeight = 768;

@@ -152,7 +152,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 
  bool SSVertexShader::CompileFromFile(std::wstring filepath)
  {
-    ID3D10Blob* errorMsg = nullptr;
+    ID3DBlob* errorMsg = nullptr;
 
     check(std::filesystem::exists(filepath));
 

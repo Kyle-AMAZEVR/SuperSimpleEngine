@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSEngine12.h"
 #include "d3dx12.h"
-
+#include "SSVertexElementDeclaration.h"
 
 void SSEngine12::Initialize(HWND windowHandle)
 {
@@ -47,6 +47,36 @@ void SSEngine12::Initialize(HWND windowHandle)
 	{
 		check(false);
 	}
+}
+
+void SSEngine12::LoadAssets()
+{
+	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
+	rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+	ComPtr<ID3DBlob> signature;
+	ComPtr<ID3DBlob> error;
+
+	HR(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
+
+	HR(mDevice->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&mRootSignature)));
+
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
+
+	psoDesc.InputLayout = { SSVertexElementDeclaration::PositionColorElementDesc, 2 };
+	psoDesc.pRootSignature = mRootSignature.Get();	
+	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+	psoDesc.DepthStencilState.DepthEnable = false;
+	psoDesc.DepthStencilState.StencilEnable = false;	
+	psoDesc.SampleMask = UINT_MAX;
+	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	psoDesc.NumRenderTargets = 1;
+	psoDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	psoDesc.SampleDesc.Count = 1;
+
+	HR(mDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mPipelineState)));
+
 }
 
 void SSEngine12::DrawScene()
@@ -94,7 +124,7 @@ void SSEngine12::PopulateCommandList()
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 	// Record commands.
-	const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+	const float clearColor[] = { 1.0f, 0.2f, 0.4f, 1.0f };
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart(), mFrameIndex, mRTVDescriptorSize);
 
