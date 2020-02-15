@@ -11,7 +11,7 @@
 
 #pragma region DXShaderImplementation
 
-void SSShader::PrintCompileError(ID3D10Blob* errorMessage)
+void SSShader::PrintCompileError(ID3DBlob* errorMessage)
 {	
     auto buffSize = errorMessage->GetBufferSize();
 

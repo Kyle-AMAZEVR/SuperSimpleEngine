@@ -29,11 +29,13 @@ public:
 
 	inline std::map<SSName, SSGenericConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
 
+	ID3DBlob* GetCompiledShader() { return mShaderBuffer.Get(); }
+
 protected:
 	
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
     virtual bool CompileFromFile(std::wstring filepath) { return true; }	
-    void PrintCompileError(ID3D10Blob* errorMsg);
+    void PrintCompileError(ID3DBlob* errorMsg);
     
 	ComPtr<ID3DBlob> mShaderBuffer = nullptr;
 

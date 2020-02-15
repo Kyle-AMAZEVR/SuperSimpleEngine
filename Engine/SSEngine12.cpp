@@ -1,12 +1,24 @@
 
 #include "Core.h"
 #include "SSEngine12.h"
-#include "d3dx12.h"
 #include "SSVertexElementDeclaration.h"
+#include "DXVertexTypes.h"
+
+#include <filesystem>
 
 void SSEngine12::Initialize(HWND windowHandle)
 {
 	mWindowHandle = windowHandle;
+
+	mAspectRatio = static_cast<float>(mBufferWidth) / static_cast<float>(mBufferHeight);
+
+	mViewport.TopLeftX = mViewport.TopLeftY = 0;
+	mViewport.Width = static_cast<float>(mBufferWidth);
+	mViewport.Height = static_cast<float>(mBufferHeight);
+
+	mScissorRect.left = mScissorRect.top = 0;
+	mScissorRect.right = mBufferWidth;
+	mScissorRect.bottom = mBufferHeight;
 	
 	bool bDeviceCreated = CreateDevice();
 
@@ -37,6 +49,8 @@ void SSEngine12::Initialize(HWND windowHandle)
 	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
 
 	HR(mCommandList->Close());
+
+	LoadAssets();
 	
 	HR(mDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));
 
@@ -61,10 +75,20 @@ void SSEngine12::LoadAssets()
 
 	HR(mDevice->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&mRootSignature)));
 
+	ComPtr<ID3DBlob> vertexShader;
+	ComPtr<ID3DBlob> pixelShader;
+
+	check(std::filesystem::exists(L"./Shader\\SimpleShader.vs"));
+
+	HR(D3DCompileFromFile(L"./Shader\\SimpleShader.vs", nullptr, nullptr, "VSMain", "vs_5_0", 0, 0, &vertexShader, &error));
+	HR(D3DCompileFromFile(L"./Shader\\SimpleShader.ps", nullptr, nullptr, "PSMain", "ps_5_0", 0, 0, &pixelShader, nullptr));
+
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 
 	psoDesc.InputLayout = { SSVertexElementDeclaration::PositionColorElementDesc, 2 };
-	psoDesc.pRootSignature = mRootSignature.Get();	
+	psoDesc.pRootSignature = mRootSignature.Get();		
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
+	psoDesc.PS = CD3DX12_SHADER_BYTECODE(pixelShader.Get());
 	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 	psoDesc.DepthStencilState.DepthEnable = false;
@@ -74,8 +98,33 @@ void SSEngine12::LoadAssets()
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	psoDesc.SampleDesc.Count = 1;
-
 	HR(mDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mPipelineState)));
+
+	VT_Position3Color4 vertices[]=
+	{
+		{ { 0.0f, 0.25f * mAspectRatio, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
+		{ { 0.25f, -0.25f * mAspectRatio, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
+		{ { -0.25f, -0.25f * mAspectRatio, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }
+	};
+
+	const UINT bufferSize = sizeof(vertices);
+
+	HR(mDevice->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer(bufferSize),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&mVertexBuffer)));
+
+	UINT8* pVertexDataBegin = 0;
+	CD3DX12_RANGE readRange(0, 0);
+	HR(mVertexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&pVertexDataBegin)));
+	memcpy(pVertexDataBegin, vertices, bufferSize);
+	mVertexBuffer->Unmap(0, nullptr);
+
+	mVertexBufferView.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
+	mVertexBufferView.StrideInBytes = sizeof(VT_Position3Color4);
+	mVertexBufferView.SizeInBytes = bufferSize;
 
 }
 
@@ -121,17 +170,25 @@ void SSEngine12::PopulateCommandList()
 
 	HR(mCommandList->Reset(mCommandAllocator.Get(), mPipelineState.Get()));
 
-	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
+	mCommandList->RSSetViewports(1, &mViewport);
+	mCommandList->RSSetScissorRects(1, &mScissorRect);
 
-	// Record commands.
-	const float clearColor[] = { 1.0f, 0.2f, 0.4f, 1.0f };
+	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT,  D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart(), mFrameIndex, mRTVDescriptorSize);
+	mCommandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
 
+	// Record commands.
+	const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
 	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	mCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
+	mCommandList->DrawInstanced(3, 1, 0, 0);
 
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
+	
 	mCommandList->Close();
 }
 
