@@ -19,16 +19,17 @@ public:
 protected:
 	void LoadAssets();
 	void WaitForPreviousFrame();
+	void MoveToNextFrame();
+	void WaitForGPU();
 	void PopulateCommandList();
 
 	static const UINT FrameCount = 3;
 
 	bool CreateDevice();
-
 	bool CreateSwapChain();
 	ComPtr<IDXGIFactory4> mFactory;
 	ComPtr<ID3D12Device> mDevice;
-	ComPtr<ID3D12CommandAllocator> mCommandAllocator;
+	ComPtr<ID3D12CommandAllocator> mCommandAllocator[FrameCount];
 	ComPtr<ID3D12CommandQueue> mCommandQueue;
 	ComPtr<ID3D12GraphicsCommandList> mCommandList;
 	ComPtr<ID3D12PipelineState> mPipelineState;
@@ -47,9 +48,10 @@ protected:
 	float mAspectRatio = 1.f;
 	
 	HWND mWindowHandle;	
-	UINT mRTVDescriptorSize = 0;
-	UINT64 mFenceValue = 0;
-
+	UINT mRTVDescriptorSize = 0;	
+	
+	UINT64 mFenceValues[FrameCount]{ 0 };
+	
 	CD3DX12_VIEWPORT mViewport;
 	CD3DX12_RECT mScissorRect;	
 
