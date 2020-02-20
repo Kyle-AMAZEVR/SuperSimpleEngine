@@ -16,6 +16,8 @@ public:
 
 	void DrawScene();
 
+	void OnWindowResize(int newWidth, int newHeight);
+
 protected:
 	void LoadAssets();
 	void WaitForPreviousFrame();
@@ -34,8 +36,12 @@ protected:
 	ComPtr<ID3D12GraphicsCommandList> mCommandList;
 	ComPtr<ID3D12PipelineState> mPipelineState;
 	ComPtr<IDXGISwapChain3> mSwapChain;
+	
 	ComPtr<ID3D12DescriptorHeap> mRTVHeap;
+	ComPtr<ID3D12DescriptorHeap> mDSVHeap;
 	ComPtr<ID3D12Resource> mRenderTargets[FrameCount];
+	ComPtr<ID3D12Resource> mDepthStencilBuffer;
+
 	ComPtr<ID3D12RootSignature> mRootSignature;
 
 	ComPtr<ID3D12Resource> mVertexBuffer;
@@ -48,7 +54,10 @@ protected:
 	float mAspectRatio = 1.f;
 	
 	HWND mWindowHandle;	
-	UINT mRTVDescriptorSize = 0;	
+
+	UINT mRTVDescriptorSize = 0;
+	UINT mDSVDescriptorSize = 0;
+	UINT mCBVSRVUAVDescriptorSize = 0;
 	
 	UINT64 mFenceValues[FrameCount]{ 0 };
 	

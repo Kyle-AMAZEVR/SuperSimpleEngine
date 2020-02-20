@@ -21,19 +21,36 @@ void SSEngine12::Initialize(HWND windowHandle)
 	mScissorRect.bottom = mBufferHeight;
 	
 	bool bDeviceCreated = CreateDevice();
+	check(bDeviceCreated);
 
+	//@ Create Command Queue , Command Allocator
 	D3D12_COMMAND_QUEUE_DESC desc{};
 	HR(mDevice->CreateCommandQueue(&desc, IID_PPV_ARGS(&mCommandQueue)));
-
+	
+	//@ Create swap chain
 	CreateSwapChain();
+
+	for(UINT i = 0; i < FrameCount; ++i)
+	{
+		HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator[i])));
+	}
+	
+	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator[mFrameIndex].Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
+
+	HR(mCommandList->Close());
+	//
+
+	//@ save descriptor size
+	mRTVDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	mDSVDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	mCBVSRVUAVDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//
 
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	rtvHeapDesc.NumDescriptors = FrameCount;
 	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-
-	HR(mDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mRTVHeap)));
-	mRTVDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	HR(mDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mRTVHeap)));	
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
 
@@ -41,15 +58,21 @@ void SSEngine12::Initialize(HWND windowHandle)
 	{		
 		HR(mSwapChain->GetBuffer(n, IID_PPV_ARGS(&mRenderTargets[n])));
 		mDevice->CreateRenderTargetView(mRenderTargets[n].Get(), nullptr, rtvHandle);
-		rtvHandle.Offset(1, mRTVDescriptorSize);
-
-		HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator[n])));
+		rtvHandle.Offset(1, mRTVDescriptorSize);		
 	}
 
-	
-	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator[mFrameIndex].Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	dsvHeapDesc.NumDescriptors = 1;
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-	HR(mCommandList->Close());
+	HR(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
+
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(mDSVHeap->GetCPUDescriptorHandleForHeapStart());
+
+
+	
 
 	LoadAssets();
 
@@ -68,6 +91,43 @@ void SSEngine12::Initialize(HWND windowHandle)
 	}
 
 	//WaitForGPU();
+}
+
+void SSEngine12::OnWindowResize(int newWidth, int newHeight)
+{
+	check(mDevice != nullptr);
+	check(mSwapChain != nullptr);
+
+	mBufferWidth = newWidth;
+	mBufferHeight = newHeight;
+
+
+	WaitForPreviousFrame();
+
+	HR(mCommandList->Reset(mCommandAllocator[mFrameIndex].Get(), mPipelineState.Get()));
+
+	for(int i = 0; i < FrameCount; ++i)
+	{
+		mRenderTargets[i].Reset();
+	}
+
+	mDepthStencilBuffer.Reset();
+
+	HR(mSwapChain->ResizeBuffers(FrameCount, mBufferWidth, mBufferHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
+
+	mFrameIndex = 0;
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
+	for(int i = 0; i < FrameCount; ++i)
+	{
+		HR(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&mRenderTargets[i])));
+		mDevice->CreateRenderTargetView(mRenderTargets[i].Get(), nullptr, rtvHeapHandle);
+		rtvHeapHandle.Offset(1, mRTVDescriptorSize);
+	}
+
+	//
+	
+
 }
 
 void SSEngine12::LoadAssets()
@@ -160,7 +220,7 @@ bool SSEngine12::CreateSwapChain()
 	sd.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	sd.SampleDesc.Count = 1;
+	sd.SampleDesc.Count = 1;	
 
 	ComPtr<IDXGISwapChain1> tempSwapChain = nullptr;
 	HR(mFactory->CreateSwapChainForHwnd(mCommandQueue.Get(), mWindowHandle, &sd, nullptr, nullptr, &tempSwapChain));

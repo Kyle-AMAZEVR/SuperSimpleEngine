@@ -42,12 +42,12 @@ void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 {
 	check(mShaderBuffer != nullptr);
 	check(shaderReflection != nullptr);
-
+	
 	D3D11_SHADER_DESC shaderDescription;
 	shaderReflection->GetDesc(&shaderDescription);
 
 	for (unsigned int i = 0; i < shaderDescription.ConstantBuffers; ++i)
-	{
+	{		
 		ID3D11ShaderReflectionConstantBuffer* constantBuffer = shaderReflection->GetConstantBufferByIndex(i);
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
@@ -170,8 +170,8 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
     auto* dxDevice = SSEngine::Get().GetDevice();
     
 	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
+	
 
-    
     ID3D11ShaderReflection* vertexShaderReflection = nullptr;    
     HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection));  
 	
