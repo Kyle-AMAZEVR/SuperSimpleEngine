@@ -176,7 +176,12 @@ void SSEngine12::OnWindowResize(int newWidth, int newHeight)
 
 	mViewport.TopLeftX = 0;
 	mViewport.TopLeftY = 0;
+	mViewport.Width = static_cast<float>(mBufferWidth);
+	mViewport.Height = static_cast<float>(mBufferHeight);
 
+	mScissorRect.left = mScissorRect.top = 0;
+	mScissorRect.right = mBufferWidth;
+	mScissorRect.bottom = mBufferHeight;
 }
 
 void SSEngine12::LoadAssets()
