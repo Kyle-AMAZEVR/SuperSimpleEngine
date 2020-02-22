@@ -8,7 +8,7 @@
 using Microsoft::WRL::ComPtr;
 
 
-class SSEngine12 : public Singleton<SSEngine12>
+class ENGINE_API SSEngine12 : public Singleton<SSEngine12>
 {
 	
 public:
@@ -31,7 +31,7 @@ protected:
 	bool CreateSwapChain();
 	ComPtr<IDXGIFactory4> mFactory;
 	ComPtr<ID3D12Device> mDevice;
-	ComPtr<ID3D12CommandAllocator> mCommandAllocator[FrameCount];
+	ComPtr<ID3D12CommandAllocator> mCommandAllocator;
 	ComPtr<ID3D12CommandQueue> mCommandQueue;
 	ComPtr<ID3D12GraphicsCommandList> mCommandList;
 	ComPtr<ID3D12PipelineState> mPipelineState;
@@ -59,7 +59,7 @@ protected:
 	UINT mDSVDescriptorSize = 0;
 	UINT mCBVSRVUAVDescriptorSize = 0;
 	
-	UINT64 mFenceValues[FrameCount]{ 0 };
+	UINT64 mFenceValues{ 0 };
 	
 	CD3DX12_VIEWPORT mViewport;
 	CD3DX12_RECT mScissorRect;	

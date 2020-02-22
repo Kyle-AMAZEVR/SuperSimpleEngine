@@ -32,10 +32,10 @@ void SSEngine12::Initialize(HWND windowHandle)
 
 	for(UINT i = 0; i < FrameCount; ++i)
 	{
-		HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator[i])));
+		HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator)));
 	}
 	
-	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator[mFrameIndex].Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
+	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
 
 	HR(mCommandList->Close());
 	//
@@ -80,14 +80,11 @@ void SSEngine12::Initialize(HWND windowHandle)
 	HR(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
 	
 
-	LoadAssets();
-
-	for(UINT i = 0; i < FrameCount; ++i)
-	{
-		mFenceValues[i] = 0;		
-	}
+	LoadAssets();	
 	
-	HR(mDevice->CreateFence(mFenceValues[mFrameIndex], D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));	
+	mFenceValues = 0;
+	
+	HR(mDevice->CreateFence(mFenceValues, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));	
 	   	
 	mFenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
@@ -107,10 +104,9 @@ void SSEngine12::OnWindowResize(int newWidth, int newHeight)
 	mBufferWidth = newWidth;
 	mBufferHeight = newHeight;
 
-
 	WaitForPreviousFrame();
 
-	HR(mCommandList->Reset(mCommandAllocator[mFrameIndex].Get(), mPipelineState.Get()));
+	HR(mCommandList->Reset(mCommandAllocator.Get(), mPipelineState.Get()));
 
 	for(int i = 0; i < FrameCount; ++i)
 	{
@@ -161,17 +157,25 @@ void SSEngine12::OnWindowResize(int newWidth, int newHeight)
 
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc;
 	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2DMS;
 	dsvDesc.Format = mDepthStencilFormat;
 	dsvDesc.Texture2D.MipSlice = 0;
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mDSVHeap->GetCPUDescriptorHandleForHeapStart());
 	mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), &dsvDesc, handle);
+	
+	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mDepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE));
 
+	HR(mCommandList->Close());
+
+	ID3D12CommandList* cmdLists[] = { mCommandList.Get() };
+	mCommandQueue->ExecuteCommandLists(_countof(cmdLists), cmdLists);
 
 	
-	
-	
+	WaitForPreviousFrame();
+
+	mViewport.TopLeftX = 0;
+	mViewport.TopLeftY = 0;
 
 }
 
@@ -278,9 +282,9 @@ bool SSEngine12::CreateSwapChain()
 
 void SSEngine12::PopulateCommandList()
 {
-	HR(mCommandAllocator[mFrameIndex]->Reset());
+	HR(mCommandAllocator->Reset());
 
-	HR(mCommandList->Reset(mCommandAllocator[mFrameIndex].Get(), mPipelineState.Get()));
+	HR(mCommandList->Reset(mCommandAllocator.Get(), mPipelineState.Get()));
 
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 	mCommandList->RSSetViewports(1, &mViewport);
@@ -355,7 +359,7 @@ bool SSEngine12::CreateDevice()
 
 void SSEngine12::WaitForPreviousFrame()
 {	
-	const UINT64 currentFenceValue = mFenceValues[mFrameIndex];
+	const UINT64 currentFenceValue = mFenceValues;
 	HR(mCommandQueue->Signal(mFence.Get(), currentFenceValue));
 
 	auto CompletedValue = mFence->GetCompletedValue();
@@ -363,14 +367,14 @@ void SSEngine12::WaitForPreviousFrame()
 	mFrameIndex = mSwapChain->GetCurrentBackBufferIndex();
 
 	// If the next frame is not ready to be rendered yet, wait until it is ready.
-	if (CompletedValue < mFenceValues[mFrameIndex])
+	if (CompletedValue < mFenceValues)
 	{
-		HR(mFence->SetEventOnCompletion(mFenceValues[mFrameIndex], mFenceEvent));
+		HR(mFence->SetEventOnCompletion(mFenceValues, mFenceEvent));
 		WaitForSingleObjectEx(mFenceEvent, INFINITE, FALSE);
 	}	
 
 	// Set the fence value for the next frame.
-	mFenceValues[mFrameIndex] = currentFenceValue + 1;	
+	mFenceValues = currentFenceValue + 1;	
 
 }
 
@@ -378,12 +382,12 @@ void SSEngine12::WaitForPreviousFrame()
 void SSEngine12::WaitForGPU()
 {
 	// Schedule a Signal command in the queue.
-	HR(mCommandQueue->Signal(mFence.Get(), mFenceValues[mFrameIndex]));
+	HR(mCommandQueue->Signal(mFence.Get(), mFenceValues));
 
 	// Wait until the fence has been processed.
-	HR(mFence->SetEventOnCompletion(mFenceValues[mFrameIndex], mFenceEvent));
+	HR(mFence->SetEventOnCompletion(mFenceValues, mFenceEvent));
 	WaitForSingleObjectEx(mFenceEvent, INFINITE, FALSE);
 
 	// Increment the fence value for the current frame.
-	mFenceValues[mFrameIndex]++;
+	mFenceValues++;
 }

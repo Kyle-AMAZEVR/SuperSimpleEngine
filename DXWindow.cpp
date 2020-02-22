@@ -24,6 +24,7 @@
 #include "Engine/SSInputManager.h"
 #include "Engine/SSFontManager.h"
 #include "Windowsx.h"
+#include "SSEngine12.h"
 
 #define MAX_LOADSTRING 100
 
@@ -209,7 +210,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				renderingThread.ExecuteInRenderingThread([]()
 				{
-					SSEngine::Get().OnWindowResize(width, height);
+					SSEngine12::Get().OnWindowResize(width, height);
+					//SSEngine::Get().OnWindowResize(width, height);
 				});
 			}
         }
