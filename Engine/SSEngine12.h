@@ -69,4 +69,8 @@ protected:
 	ComPtr<ID3D12Fence> mFence;
 	HANDLE mFenceEvent;
 
+	UINT m4xMsaaQuality = 0;
+
+	DXGI_FORMAT mBackbufferFormat = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	DXGI_FORMAT mDepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 };
