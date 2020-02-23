@@ -1,20 +1,20 @@
 
 #include "SSCommon.h"
-#include "DXRenderingThread.h"
+#include "SSRenderingThread.h"
 #include "Windows.h"
 #include "SSTimer.h"
 #include "SSEngineBase.h"
 
-void DXRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
+void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 {
 	mEngineInstance = pEngine;
     mWindowHandle = handle;
-	mThreadHandle = CreateThread(nullptr, 0, &DXRenderingThread::Run, this, 0, &mRenderingThreadId);
+	mThreadHandle = CreateThread(nullptr, 0, &SSRenderingThread::Run, this, 0, &mRenderingThreadId);
 	InitializeCriticalSection(&mCriticalSection);	
 	mRenderingDoneEventHandle = CreateEvent(nullptr, false, false, mEventName);
 }
 
-DWORD DXRenderingThread::Run()
+DWORD SSRenderingThread::Run()
 {
 	// init engine
 	mEngineInstance->Initialize(mWindowHandle);
@@ -55,19 +55,19 @@ DWORD DXRenderingThread::Run()
 	}	
 }
 
-DWORD DXRenderingThread::Run(LPVOID param)
+DWORD SSRenderingThread::Run(LPVOID param)
 {
-	DXRenderingThread* threadInstance = (DXRenderingThread*)param;
+	SSRenderingThread* threadInstance = (SSRenderingThread*)param;
 	return threadInstance->Run();
 }
 
-void DXRenderingThread::Join()
+void SSRenderingThread::Join()
 {
 	DWORD waitResult = WaitForSingleObject(mThreadHandle, INFINITE);
 	check(waitResult == WAIT_OBJECT_0);
 }
 
-bool DXRenderingThread::IsInRenderingThread()
+bool SSRenderingThread::IsInRenderingThread()
 {
     if(mRenderingThreadId == GetCurrentThreadId())
     {
@@ -79,7 +79,7 @@ bool DXRenderingThread::IsInRenderingThread()
     }
 }
 
-void DXRenderingThread::ExecuteInRenderingThread(std::function<void()>&& lambdaFunction)
+void SSRenderingThread::ExecuteInRenderingThread(std::function<void()>&& lambdaFunction)
 {
     if(IsInRenderingThread())
     {
@@ -93,4 +93,4 @@ void DXRenderingThread::ExecuteInRenderingThread(std::function<void()>&& lambdaF
     }    
 }
 
-DWORD DXRenderingThread::mRenderingThreadId = 0;
+DWORD SSRenderingThread::mRenderingThreadId = 0;

@@ -6,7 +6,7 @@
 #include <deque>
 
 
-class COMMON_API DXRenderingThread 
+class COMMON_API SSRenderingThread 
 {
 public:	
     void Start(HWND handle, class SSEngineBase* pEngine);

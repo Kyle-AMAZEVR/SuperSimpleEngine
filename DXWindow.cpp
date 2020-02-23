@@ -18,7 +18,7 @@
 #include "DXWindow.h"
 #include "Engine/Core.h"
 #include "Engine/SSEngine.h"
-#include "Common/DXRenderingThread.h"
+#include "Common/SSRenderingThread.h"
 #include "Common/SSTimer.h"
 #include "Engine/CameraManager.h"
 #include "Engine/SSInputManager.h"
@@ -34,7 +34,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 HWND WindowHandle;
-DXRenderingThread renderingThread; 
+SSRenderingThread renderingThread; 
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);

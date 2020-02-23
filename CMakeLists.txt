@@ -34,7 +34,7 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(SuperSimpleEngine Core)
+target_link_libraries(SuperSimpleEngine SSDX11)
 target_link_libraries(SuperSimpleEngine SSDX12)
 
 #INSTALL( TARGETS SuperSimpleEngine Engine DESTINATION ${CMAKE_BUILD_TYPE})
