@@ -5,7 +5,7 @@
 #include "SSVertexElementDeclaration.h"
 #include <filesystem>
 
-void SSEngine12::Initialize(HWND windowHandle)
+void SSDX12Engine::Initialize(HWND windowHandle)
 {
 	mWindowHandle = windowHandle;
 
@@ -70,7 +70,7 @@ void SSEngine12::Initialize(HWND windowHandle)
 	}
 }
 
-void SSEngine12::CreateDescriptorHeaps()
+void SSDX12Engine::CreateDescriptorHeaps()
 {
 	//@ create rtv descriptor heap
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
@@ -105,7 +105,7 @@ void SSEngine12::CreateDescriptorHeaps()
 }
 
 
-void SSEngine12::OnWindowResize(int newWidth, int newHeight)
+void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 {
 	check(mDevice != nullptr);
 	check(mSwapChain != nullptr);
@@ -193,7 +193,7 @@ void SSEngine12::OnWindowResize(int newWidth, int newHeight)
 	mScissorRect.bottom = mBufferHeight;
 }
 
-void SSEngine12::LoadAssets()
+void SSDX12Engine::LoadAssets()
 {
 	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
@@ -257,7 +257,7 @@ void SSEngine12::LoadAssets()
 	mVertexBufferView.SizeInBytes = bufferSize;
 }
 
-void SSEngine12::DrawScene()
+void SSDX12Engine::DrawScene()
 {
 	PopulateCommandList();
 
@@ -272,7 +272,7 @@ void SSEngine12::DrawScene()
 	WaitForPreviousFrame();
 }
 
-bool SSEngine12::CreateSwapChain()
+bool SSDX12Engine::CreateSwapChain()
 {	
 	DXGI_SWAP_CHAIN_DESC1 sd{};	
 	
@@ -293,7 +293,7 @@ bool SSEngine12::CreateSwapChain()
 	return true;
 }
 
-void SSEngine12::PopulateCommandList()
+void SSDX12Engine::PopulateCommandList()
 {
 	HR(mCommandAllocator->Reset());
 
@@ -322,7 +322,7 @@ void SSEngine12::PopulateCommandList()
 }
 
 
-bool SSEngine12::CreateDevice()
+bool SSDX12Engine::CreateDevice()
 {	
 	ComPtr<IDXGIAdapter1> hardwareAdapter;
 
@@ -370,7 +370,7 @@ bool SSEngine12::CreateDevice()
 	return adapterFound;
 }
 
-void SSEngine12::WaitForPreviousFrame()
+void SSDX12Engine::WaitForPreviousFrame()
 {	
 	const UINT64 currentFenceValue = mFenceValues;
 	HR(mCommandQueue->Signal(mFence.Get(), currentFenceValue));
@@ -392,7 +392,7 @@ void SSEngine12::WaitForPreviousFrame()
 }
 
 
-void SSEngine12::WaitForGPU()
+void SSDX12Engine::WaitForGPU()
 {
 	// Schedule a Signal command in the queue.
 	HR(mCommandQueue->Signal(mFence.Get(), mFenceValues));

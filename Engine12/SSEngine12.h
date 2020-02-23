@@ -9,7 +9,7 @@
 using Microsoft::WRL::ComPtr;
 
 
-class SSDX12_API SSEngine12 : public SSEngineBase
+class SSDX12_API SSDX12Engine : public SSEngineBase
 {
 	
 public:

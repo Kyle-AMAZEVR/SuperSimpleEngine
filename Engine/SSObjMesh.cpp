@@ -209,7 +209,7 @@ void SSObjMesh::CreateDebugTBNVertexIndexBuffer()
 			mRealVertexList[i].VertexAttribute1, SSMathHelper::UnitY3
 		));
 
-		indexArray.push_back(debugVertexArray.size() - 1);
+		indexArray.push_back(static_cast<UINT>(debugVertexArray.size() - 1));
 
 		XMFLOAT4 normalEnd;
 		XMStoreFloat4(&normalEnd, XMLoadFloat4(&mRealVertexList[i].VertexAttribute1) + XMVectorScale(XMLoadFloat3(&mRealVertexList[i].VertexAttribute2), 5.0f));
@@ -219,7 +219,7 @@ void SSObjMesh::CreateDebugTBNVertexIndexBuffer()
 			normalEnd, SSMathHelper::UnitY3
 		));
 
-		indexArray.push_back(debugVertexArray.size() - 1);
+		indexArray.push_back(static_cast<UINT>(debugVertexArray.size() - 1));
 
 		XMFLOAT4 tangentEnd;
 
@@ -232,14 +232,14 @@ void SSObjMesh::CreateDebugTBNVertexIndexBuffer()
 			mRealVertexList[i].VertexAttribute1, SSMathHelper::UnitZ3
 		));
 
-		indexArray.push_back(debugVertexArray.size() - 1);
+		indexArray.push_back(static_cast<UINT>(debugVertexArray.size() - 1));
 
 		debugVertexArray.push_back(VT_PositionColor
 		(
 			tangentEnd, SSMathHelper::UnitZ3
 		));
 
-		indexArray.push_back(debugVertexArray.size() - 1);
+		indexArray.push_back(static_cast<UINT>(debugVertexArray.size() - 1));
 	}
 
 	mTBNDebugVB = std::make_shared<SSVertexBuffer>();

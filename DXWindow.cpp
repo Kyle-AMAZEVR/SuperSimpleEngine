@@ -16,10 +16,10 @@
 
 #include "d3d11.h"
 #include "DXWindow.h"
-#include "Core.h"
+#include "Engine/Core.h"
 #include "Engine/SSEngine.h"
-#include "Engine/DXRenderingThread.h"
-#include "Engine/SSTimer.h"
+#include "Common/DXRenderingThread.h"
+#include "Common/SSTimer.h"
 #include "Engine/CameraManager.h"
 #include "Engine/SSInputManager.h"
 #include "Engine/SSFontManager.h"
@@ -64,8 +64,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     // start rendering thread
-    
-    renderingThread.Start(WindowHandle);
+	SSEngine* DX11Engine = SSEngine::GetPtr();
+	SSDX12Engine* DX12Engine = new SSDX12Engine();
+
+    renderingThread.Start(WindowHandle, DX11Engine);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
 

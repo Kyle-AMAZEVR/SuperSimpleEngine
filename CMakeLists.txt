@@ -14,6 +14,7 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 include_directories("Engine")
 include_directories("Engine12")
+include_directories("Common")
 
 message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 

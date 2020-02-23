@@ -31,7 +31,29 @@
 
 bool SSEngine::bInitialized = false;
 
-bool SSEngine::Initialize(HWND windowHandle)
+SSEngine* SSEngine::mInstance = nullptr;
+
+SSEngine& SSEngine::Get()
+{
+	if(mInstance == nullptr)
+	{
+		mInstance = new SSEngine();
+	}
+
+	return (*mInstance);
+}
+
+SSEngine* SSEngine::GetPtr()
+{
+	if (mInstance == nullptr)
+	{
+		mInstance = new SSEngine();
+	}
+
+	return mInstance;
+}
+
+void SSEngine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;
     CreateDevice();
@@ -69,7 +91,6 @@ bool SSEngine::Initialize(HWND windowHandle)
     TestCompileShader();
     TestCreateResources();
 
-    return true;
 }
 
 void SSEngine::ToggleGBufferDumpMode()

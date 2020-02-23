@@ -5,22 +5,25 @@
 #include "SSViewport.h"
 #include <vector>
 #include "SSShader.h"
-#include <wrl.h>
+#include "SSEngineBase.h"
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;
 
 // Super Simple
-class ENGINE_API SSEngine : public Singleton<SSEngine>
+class ENGINE_API SSEngine : public SSEngineBase
 {
 public:
+	static SSEngine& Get();
+	static SSEngine* GetPtr();
+
 	SSEngine() = default;	
 
-    bool Initialize(HWND windowHandle);
-	void Shutdown();
-    void OnWindowResize(int newWidth, int newHeight);
-    static bool IsInitialized() { return bInitialized; }
-
+    virtual void Initialize(HWND windowHandle) override;
+	virtual void Shutdown() override;
+    virtual void OnWindowResize(int newWidth, int newHeight) override;
+    
+	static bool IsInitialized() { return bInitialized; }
 	void ToggleGBufferDumpMode();
 	void ChangeToNextDumpMode();
 
@@ -30,11 +33,11 @@ public:
     inline IDXGISwapChain* GetSwapChain() const {return mSwapChain.Get();}    
 
 	void DrawScene(ID3D11DeviceContext* DeviceContext);
-    void DrawScene();
+    virtual void DrawScene() override;
 
 protected:
-    int mBufferWidth = 1024;
-    int mBufferHeight = 768;
+
+	static SSEngine* mInstance;
 
     std::shared_ptr<SSViewport> mViewport = nullptr;
 
@@ -42,7 +45,7 @@ protected:
     void TestCreateResources();
 
 private:
-    bool CreateDevice();
+    virtual bool CreateDevice() override;
     bool CreateSwapChain();
 
     HWND mWindowHandle;

@@ -6,10 +6,10 @@
 #include <deque>
 
 
-class ENGINE_API DXRenderingThread 
+class COMMON_API DXRenderingThread 
 {
-public:
-    void Start(HWND handle);
+public:	
+    void Start(HWND handle, class SSEngineBase* pEngine);
     void Join();
     void RequestExit() { bRequestExit = true;}
 
@@ -35,4 +35,6 @@ protected:
     HWND mWindowHandle;
     bool bRequestExit = false;
 	LPCSTR mEventName;
+
+	class SSEngineBase* mEngineInstance = nullptr;
 };
