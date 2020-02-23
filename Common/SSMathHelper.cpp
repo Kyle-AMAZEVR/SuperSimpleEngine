@@ -1,6 +1,6 @@
 
 
-#include "Core.h"
+#include "SSCommon.h"
 #include "SSMathHelper.h"
 #include "DirectXMath.h"
 

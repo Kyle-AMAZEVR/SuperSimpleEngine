@@ -1,7 +1,9 @@
 #pragma once
 #include "DirectXMath.h"
 
-class ENGINE_API SSMathHelper
+using namespace DirectX;
+
+class COMMON_API SSMathHelper
 {
 
 public :
