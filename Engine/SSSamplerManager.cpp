@@ -21,7 +21,7 @@ void SSSamplerManager::CreateDefaultSampler()
 	desc.MaxLOD = D3D11_FLOAT32_MAX;
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
-	auto* dxDevice = SSEngine::Get().GetDevice();
+	auto* dxDevice = SSDX11Engine::Get().GetDevice();
 
 	HR(dxDevice->CreateSamplerState(&desc, &mDefaultSamplerState));
 }

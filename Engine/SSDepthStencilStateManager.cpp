@@ -20,18 +20,18 @@ void SSDepthStencilStateManager::Initialize()
 	mDefaultDesc.FrontFace.StencilPassOp = mDefaultDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	mDefaultDesc.FrontFace.StencilFailOp = mDefaultDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 
-	HR(SSEngine::Get().GetDevice()->CreateDepthStencilState(&mDefaultDesc, &mDefaultState));
+	HR(SSDX11Engine::Get().GetDevice()->CreateDepthStencilState(&mDefaultDesc, &mDefaultState));
 
 	// depth disable
 	mDepthTestDisabledDesc = mDefaultDesc;
 	mDepthTestDisabledDesc.DepthEnable = false;
-	HR(SSEngine::Get().GetDevice()->CreateDepthStencilState(&mDepthTestDisabledDesc, &mDepthTestDisabledState));
+	HR(SSDX11Engine::Get().GetDevice()->CreateDepthStencilState(&mDepthTestDisabledDesc, &mDepthTestDisabledState));
 
 	// depth func less equal
 	// for cubemap
 	mDepthFuncLessEqualDesc = mDefaultDesc;
 	mDepthFuncLessEqualDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;	
-	HR(SSEngine::Get().GetDevice()->CreateDepthStencilState(&mDepthFuncLessEqualDesc, &mDepthFuncLessEqualState));	
+	HR(SSDX11Engine::Get().GetDevice()->CreateDepthStencilState(&mDepthFuncLessEqualDesc, &mDepthFuncLessEqualState));	
 
 }
 

@@ -29,31 +29,31 @@
 #include "SSSphere.h"
 #include "SSText3D.h"
 
-bool SSEngine::bInitialized = false;
+bool SSDX11Engine::bInitialized = false;
 
-SSEngine* SSEngine::mInstance = nullptr;
+SSDX11Engine* SSDX11Engine::mInstance = nullptr;
 
-SSEngine& SSEngine::Get()
+SSDX11Engine& SSDX11Engine::Get()
 {
 	if(mInstance == nullptr)
 	{
-		mInstance = new SSEngine();
+		mInstance = new SSDX11Engine();
 	}
 
 	return (*mInstance);
 }
 
-SSEngine* SSEngine::GetPtr()
+SSDX11Engine* SSDX11Engine::GetPtr()
 {
 	if (mInstance == nullptr)
 	{
-		mInstance = new SSEngine();
+		mInstance = new SSDX11Engine();
 	}
 
 	return mInstance;
 }
 
-void SSEngine::Initialize(HWND windowHandle)
+void SSDX11Engine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;
     CreateDevice();
@@ -93,12 +93,12 @@ void SSEngine::Initialize(HWND windowHandle)
 
 }
 
-void SSEngine::ToggleGBufferDumpMode()
+void SSDX11Engine::ToggleGBufferDumpMode()
 {
 	bGbufferDump = !bGbufferDump;
 }
 
-void SSEngine::Shutdown()
+void SSDX11Engine::Shutdown()
 {
 	SSDepthStencilStateManager::Get().Shutdown();
 	SSRasterizeStateManager::Get().Shutdown();
@@ -110,7 +110,7 @@ void SSEngine::Shutdown()
 	mDeviceContext.Reset();	
 }
 
-void SSEngine::TestCreateResources()
+void SSDX11Engine::TestCreateResources()
 {   
     mTestVertexBuffer = std::make_shared<SSVertexBuffer>();
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
@@ -188,7 +188,7 @@ void SSEngine::TestCreateResources()
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");	
 }
 
-void SSEngine::TestCompileShader()
+void SSDX11Engine::TestCompileShader()
 {   
     mTestVertexShader = SSShaderManager::Get().GetVertexShader("Screen.vs");
 	mTestPixelShader = SSShaderManager::Get().GetPixelShader("Screen.ps");
@@ -225,7 +225,7 @@ void SSEngine::TestCompileShader()
     //mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
 
-bool SSEngine::CreateDevice()
+bool SSDX11Engine::CreateDevice()
 {
     //
     D3D_FEATURE_LEVEL featureLevel;        
@@ -236,7 +236,7 @@ bool SSEngine::CreateDevice()
     return true;
 }
 
-void SSEngine::OnWindowResize(int newWidth, int newHeight)
+void SSDX11Engine::OnWindowResize(int newWidth, int newHeight)
 {
 	if (bInitialized)
 	{
@@ -259,7 +259,7 @@ void SSEngine::OnWindowResize(int newWidth, int newHeight)
 }
 
 
-bool SSEngine::CreateSwapChain()
+bool SSDX11Engine::CreateSwapChain()
 {
     HR(mDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R16G16B16A16_FLOAT,4,&m4xMSAAQuality));    
 
@@ -305,7 +305,7 @@ bool SSEngine::CreateSwapChain()
     return true;
 }
 
-void SSEngine::Create2DLUTTexture()
+void SSDX11Engine::Create2DLUTTexture()
 {
 	auto* deviceContext = GetImmediateDeviceContext();
 
@@ -318,7 +318,7 @@ void SSEngine::Create2DLUTTexture()
 	m2DLUTRenderTarget->SaveRTTexture(0, L"./Prebaked/2DLUT.dds");
 }
 
-void SSEngine::CreateEnvCubemapConvolution()
+void SSDX11Engine::CreateEnvCubemapConvolution()
 {
 	auto* deviceContext = GetImmediateDeviceContext();
 
@@ -369,7 +369,7 @@ void SSEngine::CreateEnvCubemapConvolution()
 	}
 }
 
-void SSEngine::CreateEnvCubemapPrefilter()
+void SSDX11Engine::CreateEnvCubemapPrefilter()
 {
 	auto* deviceContext = GetImmediateDeviceContext();
 
@@ -431,32 +431,32 @@ void SSEngine::CreateEnvCubemapPrefilter()
 	}
 }
 
-bool SSEngine::TryLoadEnvCubemap(std::wstring filepath) 
+bool SSDX11Engine::TryLoadEnvCubemap(std::wstring filepath) 
 {
 	mEnvCubemap = SSTextureCube::CreateFromDDSFile(filepath);	
 	return mEnvCubemap != nullptr;
 }
 
-bool SSEngine::TryLoadEnvCubemapPrefilter(std::wstring filepath)
+bool SSDX11Engine::TryLoadEnvCubemapPrefilter(std::wstring filepath)
 {
 	mEnvCubemapPrefilter = SSTextureCube::CreateFromDDSFile(filepath);
 	return mEnvCubemapPrefilter != nullptr;
 }
 
-bool SSEngine::TryLoadEnvCubemapConvolution(std::wstring filepath)
+bool SSDX11Engine::TryLoadEnvCubemapConvolution(std::wstring filepath)
 {
 	mEnvCubemapConvolution = SSTextureCube::CreateFromDDSFile(filepath);
 	return mEnvCubemapConvolution != nullptr;
 }
 
 
-bool SSEngine::TryLoad2DLUTTexture()
+bool SSDX11Engine::TryLoad2DLUTTexture()
 {
 	m2DLUTTexture = SSTexture2D::CreateFromDDSFile(GetImmediateDeviceContext(), L"./Prebaked/2DLUT.dds");
 	return m2DLUTTexture != nullptr;
 }
 
-void SSEngine::CreateEnvCubemap()
+void SSDX11Engine::CreateEnvCubemap()
 {
 	auto* deviceContext = GetImmediateDeviceContext();
 
@@ -510,7 +510,7 @@ void SSEngine::CreateEnvCubemap()
 	}
 }
 
-void SSEngine::ChangeToNextDumpMode()
+void SSDX11Engine::ChangeToNextDumpMode()
 {
 	if (mGBufferDumpProcess != nullptr)
 	{
@@ -518,7 +518,7 @@ void SSEngine::ChangeToNextDumpMode()
 	}
 }
 
-void SSEngine::DrawScene(ID3D11DeviceContext* DeviceContext)
+void SSDX11Engine::DrawScene(ID3D11DeviceContext* DeviceContext)
 {
 	check(DeviceContext != nullptr);
 
@@ -644,7 +644,7 @@ void SSEngine::DrawScene(ID3D11DeviceContext* DeviceContext)
 
 
 
-void SSEngine::DrawScene()
+void SSDX11Engine::DrawScene()
 {
 	if (bInitialized == false)
 	{

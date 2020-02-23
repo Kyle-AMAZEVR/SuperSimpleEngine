@@ -30,7 +30,7 @@ void SSDrawCommand::DoWithMaterial()
 {
 	check(mMaterial != nullptr);
 
-	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
+	ID3D11DeviceContext* deviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
 
 	mMaterial->SetCurrent();
 

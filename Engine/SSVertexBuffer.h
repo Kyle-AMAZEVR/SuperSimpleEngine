@@ -48,7 +48,7 @@ void SSVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData
 	vertexSubresourceData.SysMemPitch = 0;
 	vertexSubresourceData.SysMemSlicePitch = 0;
 
-    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
+    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
 
 	mStride = sizeof(T);
 	mVertexCount = static_cast<UINT>(vertexData.size());

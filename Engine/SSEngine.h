@@ -11,13 +11,13 @@
 using Microsoft::WRL::ComPtr;
 
 // Super Simple
-class ENGINE_API SSEngine : public SSEngineBase
+class ENGINE_API SSDX11Engine : public SSEngineBase
 {
 public:
-	static SSEngine& Get();
-	static SSEngine* GetPtr();
+	static SSDX11Engine& Get();
+	static SSDX11Engine* GetPtr();
 
-	SSEngine() = default;	
+	SSDX11Engine() = default;	
 
     virtual void Initialize(HWND windowHandle) override;
 	virtual void Shutdown() override;
@@ -37,7 +37,7 @@ public:
 
 protected:
 
-	static SSEngine* mInstance;
+	static SSDX11Engine* mInstance;
 
     std::shared_ptr<SSViewport> mViewport = nullptr;
 

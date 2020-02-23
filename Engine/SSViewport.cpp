@@ -36,9 +36,9 @@ void SSViewport::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
 
 void SSViewport::Resize(UINT newWidth, UINT newHeight)
 {
-    auto* dxDevice = SSEngine::Get().GetDevice();
-    auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
-    auto* dxSwapChain = SSEngine::Get().GetSwapChain();
+    auto* dxDevice = SSDX11Engine::Get().GetDevice();
+    auto* dxDeviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
+    auto* dxSwapChain = SSDX11Engine::Get().GetSwapChain();
     
 	check(dxDevice != nullptr);
 	check(dxDeviceContext != nullptr);

@@ -22,11 +22,11 @@ void SSInputManager::OnKeyDown(ULONGLONG key)
 		break;
 
 	case VK_F1:
-		SSEngine::Get().ToggleGBufferDumpMode();
+		SSDX11Engine::Get().ToggleGBufferDumpMode();
 		break;
 	
 	case VK_F2:
-		SSEngine::Get().ChangeToNextDumpMode();
+		SSDX11Engine::Get().ChangeToNextDumpMode();
 		break;
 	}
 }

@@ -103,7 +103,7 @@ void SSVertexShader::Destroy()
 
 void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 {
-    auto* dxDevice = SSEngine::Get().GetDevice();
+    auto* dxDevice = SSDX11Engine::Get().GetDevice();
     
     check(dxDevice != nullptr);    
 	check(shaderReflection != nullptr);
@@ -127,7 +127,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 
 	for (UINT i = 0; i < shaderDescription.InputParameters; ++i)
 	{
-		auto* dxDevice = SSEngine::Get().GetDevice();
+		auto* dxDevice = SSDX11Engine::Get().GetDevice();
 
 		check(dxDevice != nullptr);
 
@@ -167,7 +167,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
         return false;
     }
 
-    auto* dxDevice = SSEngine::Get().GetDevice();
+    auto* dxDevice = SSDX11Engine::Get().GetDevice();
     
 	HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
 	
@@ -206,7 +206,7 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 
  void SSVertexShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
  { 	 
-	 auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
+	 auto* dxDeviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
 	 
 	 SetSampler(dxDeviceContext, name, sampler);
  }
@@ -239,7 +239,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
         return false;
     }
 
-    auto* dxDevice = SSEngine::Get().GetDevice();
+    auto* dxDevice = SSDX11Engine::Get().GetDevice();
     HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
 
 	// @constant buffer reflection
@@ -284,7 +284,7 @@ void SSPixelShader::SetTextureAsNull(std::string name)
 	{
 		UINT slotIndex = mTextureMap[name];
 
-		auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
+		auto* dxDeviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
 
 		ID3D11ShaderResourceView* nullResourceView = nullptr;
 
@@ -297,7 +297,7 @@ void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
 {
 	UINT slotIndex = mSamplerMap[name];
 
-	auto* dxDeviceContext = SSEngine::Get().GetImmediateDeviceContext();
+	auto* dxDeviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
 
 	dxDeviceContext->PSSetSamplers(slotIndex, 1, &sampler);
 }

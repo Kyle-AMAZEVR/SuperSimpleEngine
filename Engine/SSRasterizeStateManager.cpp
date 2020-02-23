@@ -19,23 +19,23 @@ void SSRasterizeStateManager::Initialize()
 	mDefaultDesc.MultisampleEnable = false;
 	mDefaultDesc.AntialiasedLineEnable = false;
 
-	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mDefaultDesc, &mDefaultState));
+	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mDefaultDesc, &mDefaultState));
 	
 	mCullModeNoneDesc = mDefaultDesc;
 	mCullModeNoneDesc.CullMode = D3D11_CULL_NONE;
 
-	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mCullModeNoneDesc, &mCullModeNoneState));
+	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mCullModeNoneDesc, &mCullModeNoneState));
 
 
 	mFrontCounterClockwiseDesc = mDefaultDesc;
 	mFrontCounterClockwiseDesc.FrontCounterClockwise = true;
 
-	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mFrontCounterClockwiseDesc, &mFrontCounterClockwiseState));
+	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mFrontCounterClockwiseDesc, &mFrontCounterClockwiseState));
 
 	mWireFrameDesc = mDefaultDesc;
 	mWireFrameDesc.FillMode = D3D11_FILL_WIREFRAME;
 
-	HR(SSEngine::Get().GetDevice()->CreateRasterizerState(&mWireFrameDesc, &mWireFrameState));
+	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mWireFrameDesc, &mWireFrameState));
 
 }
 

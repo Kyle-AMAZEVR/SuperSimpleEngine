@@ -64,7 +64,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     // start rendering thread
-	SSEngine* DX11Engine = SSEngine::GetPtr();
+	SSDX11Engine* DX11Engine = SSDX11Engine::GetPtr();
 	SSDX12Engine* DX12Engine = new SSDX12Engine();
 
     renderingThread.Start(WindowHandle, DX11Engine);
@@ -213,7 +213,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				renderingThread.ExecuteInRenderingThread([]()
 				{
 					//SSEngine12::Get().OnWindowResize(width, height);
-					SSEngine::Get().OnWindowResize(width, height);
+					SSDX11Engine::Get().OnWindowResize(width, height);
 				});
 			}
         }

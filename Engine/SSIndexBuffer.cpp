@@ -21,5 +21,5 @@ void SSIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_
 	indexSubresourceData.SysMemPitch = 0;
 	indexSubresourceData.SysMemSlicePitch = 0;
 
-    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &indexSubresourceData, &mpBuffer));
+    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &indexSubresourceData, &mpBuffer));
 }

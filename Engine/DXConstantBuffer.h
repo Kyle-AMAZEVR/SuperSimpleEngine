@@ -28,7 +28,7 @@ SSTypedConstantBuffer<TBufferType>::SSTypedConstantBuffer()
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = sizeof(TBufferType);
 
-    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
+    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
 }
 
 
@@ -39,11 +39,11 @@ void SSTypedConstantBuffer<TBufferType>::Write(const TBufferType& data)
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-    HR(SSEngine::Get().GetImmediateDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
+    HR(SSDX11Engine::Get().GetImmediateDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
     
     memcpy(mappedResource.pData, &data, sizeof(data));
 
-    HR(SSEngine::Get().GetImmediateDeviceContext()->Unmap(mpBuffer, 0));   
+    HR(SSDX11Engine::Get().GetImmediateDeviceContext()->Unmap(mpBuffer, 0));   
     
 }
 

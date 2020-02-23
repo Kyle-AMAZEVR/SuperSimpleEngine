@@ -51,7 +51,7 @@ SSGenericConstantBuffer::SSGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = mBufferSize;
 
-    HR(SSEngine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, mpBuffer.ReleaseAndGetAddressOf()));
+    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, mpBuffer.ReleaseAndGetAddressOf()));
 }
 
 SSGenericConstantBuffer::~SSGenericConstantBuffer()

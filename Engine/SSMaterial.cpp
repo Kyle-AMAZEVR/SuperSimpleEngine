@@ -13,7 +13,7 @@ SSMaterial::SSMaterial(SSVertexShader* vs, SSPixelShader* ps)
 
 void SSMaterial::SetCurrent()
 {
-	ID3D11DeviceContext* deviceContext = SSEngine::Get().GetImmediateDeviceContext();
+	ID3D11DeviceContext* deviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
 
 	// @ set input layout
 	deviceContext->IASetInputLayout(mpVS->GetInputLayout());
