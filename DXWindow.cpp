@@ -25,6 +25,7 @@
 #include "Engine/SSFontManager.h"
 #include "Windowsx.h"
 #include "SSEngine12.h"
+#include "SSGameThread.h"
 
 #define MAX_LOADSTRING 100
 
@@ -34,7 +35,8 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 HWND WindowHandle;
-SSRenderingThread renderingThread; 
+SSRenderingThread renderingThread;
+SSGameThread gameThread;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -67,6 +69,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	SSDX11Engine* DX11Engine = SSDX11Engine::GetPtr();
 	SSDX12Engine* DX12Engine = new SSDX12Engine();
 
+	gameThread.SetGameThreadId(GetCurrentThreadId());
     renderingThread.Start(WindowHandle, DX11Engine);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
