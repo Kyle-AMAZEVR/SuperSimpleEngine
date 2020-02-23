@@ -1,10 +1,10 @@
 
-
-
 #   ifdef COMMON_EXPORTS
 #       define COMMON_API __declspec(dllexport)
+#		define COMMON_API_EXTERN 
 #   elif defined(COMMON_IMPORTS)
 #       define COMMON_API __declspec(dllimport)
+#		define COMMON_API_EXTERN extern
 #   else
 #       define COMMON_API
 #   endif

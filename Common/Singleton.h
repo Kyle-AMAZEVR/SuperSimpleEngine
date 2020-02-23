@@ -4,7 +4,7 @@
 
 
 template<class T>
-class COMMON_API Singleton
+class Singleton
 {
 public:
 	Singleton() = default;
