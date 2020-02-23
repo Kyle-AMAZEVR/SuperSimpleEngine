@@ -1,6 +1,6 @@
 
 #include "Core.h"
-#include "DXFreeCamera.h"
+#include "SSFreeCamera.h"
 #include "CameraManager.h"
 
 SSCameraManager::SSCameraManager()

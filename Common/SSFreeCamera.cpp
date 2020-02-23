@@ -1,6 +1,6 @@
 
-#include "Core.h"
-#include "DXFreeCamera.h"
+#include "SSCommon.h"
+#include "SSFreeCamera.h"
 
 using namespace DirectX;
 

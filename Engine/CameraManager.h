@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Camera.h"
+#include "SSCameraBase.h"
 #include "Singleton.h"
 
 class ENGINE_API SSCameraManager : public Singleton<SSCameraManager>

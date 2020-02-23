@@ -33,14 +33,14 @@ endforeach(src_file ${SOURCES})
 
 set_source_files_properties("Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
 
-add_library(Core SHARED ${SOURCES} ${HEADERS})
+add_library(SSDX11 SHARED ${SOURCES} ${HEADERS})
 
-add_dependencies(Core Common)
+add_dependencies(SSDX11 Common)
 
-target_link_libraries(Core d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
+target_link_libraries(SSDX11 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
 
-target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
-target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
+target_compile_definitions(SSDX11 PRIVATE ENGINE_EXPORTS)
+target_compile_definitions(SSDX11 INTERFACE ENGINE_IMPORTS)
 
 
 ###########################################################

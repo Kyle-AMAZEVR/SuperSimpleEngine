@@ -1,15 +1,15 @@
 #pragma once
 
 
-#include "Camera.h"
+#include "SSCameraBase.h"
 #include "DirectXMath.h"
 
-class ENGINE_API SSFreeCamera : public SSCameraBase
+class COMMON_API SSFreeCamera : public SSCameraBase
 {
 public:
 	SSFreeCamera();
 	virtual void Update() override;
-	virtual XMMATRIX GetTranslation() const override;
+	virtual DirectX::XMMATRIX GetTranslation() const override;
 	virtual void RotatePitch(float amount) override;
 	virtual void RotateYaw(float amount) override;
 	virtual void MoveFoward(float amount) override;

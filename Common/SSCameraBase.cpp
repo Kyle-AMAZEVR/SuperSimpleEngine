@@ -1,6 +1,6 @@
 
-#include "Core.h"
-#include "Camera.h"
+#include "SSCommon.h"
+#include "SSCameraBase.h"
 #include "SSMathHelper.h"
 
 XMMATRIX SSCameraBase::GetViewProj() const 
