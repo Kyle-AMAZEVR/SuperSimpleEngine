@@ -1,7 +1,6 @@
 
 
-#include "Core.h"
-#include "DXVertexTypes.h"
+#include "SSCommon.h"
 #include "SSVertexElementDeclaration.h"
 
 D3D11_INPUT_ELEMENT_DESC SSVertexElementDeclaration::PositionColor[2]

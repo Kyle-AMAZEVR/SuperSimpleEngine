@@ -1,9 +1,8 @@
 
-#include "Core.h"
+#include "SSDX12.h"
 #include "SSEngine12.h"
-#include "SSVertexElementDeclaration.h"
 #include "DXVertexTypes.h"
-
+#include "SSVertexElementDeclaration.h"
 #include <filesystem>
 
 void SSEngine12::Initialize(HWND windowHandle)
@@ -56,30 +55,7 @@ void SSEngine12::Initialize(HWND windowHandle)
 
 	m4xMsaaQuality = msQualityLevels.NumQualityLevels;
 
-	//@ create rtv descriptor heap
-	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
-	rtvHeapDesc.NumDescriptors = FrameCount;
-	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-	HR(mDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mRTVHeap)));	
-
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
-
-	for(UINT n = 0; n < FrameCount; ++n)
-	{		
-		HR(mSwapChain->GetBuffer(n, IID_PPV_ARGS(&mRenderTargets[n])));
-		mDevice->CreateRenderTargetView(mRenderTargets[n].Get(), nullptr, rtvHandle);
-		rtvHandle.Offset(1, mRTVDescriptorSize);		
-	}
-
-	//@ create dsv descriptor heap
-	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
-	dsvHeapDesc.NumDescriptors = 1;
-	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-	HR(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
-	
-
+	CreateDescriptorHeaps();	
 	LoadAssets();	
 	
 	mFenceValues = 0;
@@ -92,9 +68,42 @@ void SSEngine12::Initialize(HWND windowHandle)
 	{
 		check(false);
 	}
-
-	//WaitForGPU();
 }
+
+void SSEngine12::CreateDescriptorHeaps()
+{
+	//@ create rtv descriptor heap
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
+	rtvHeapDesc.NumDescriptors = FrameCount;
+	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	HR(mDevice->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&mRTVHeap)));
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
+
+	for (UINT n = 0; n < FrameCount; ++n)
+	{
+		HR(mSwapChain->GetBuffer(n, IID_PPV_ARGS(&mRenderTargets[n])));
+		mDevice->CreateRenderTargetView(mRenderTargets[n].Get(), nullptr, rtvHandle);
+		rtvHandle.Offset(1, mRTVDescriptorSize);
+	}
+
+	//@ create dsv descriptor heap
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	dsvHeapDesc.NumDescriptors = 1;
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	HR(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
+
+	//@ create constant buffer descriptor heap
+	D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
+	cbvHeapDesc.NumDescriptors = 1;
+	cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+	HR(mDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mCBVHeap)));
+}
+
 
 void SSEngine12::OnWindowResize(int newWidth, int newHeight)
 {
@@ -246,7 +255,6 @@ void SSEngine12::LoadAssets()
 	mVertexBufferView.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
 	mVertexBufferView.StrideInBytes = sizeof(VT_Position3Color4);
 	mVertexBufferView.SizeInBytes = bufferSize;
-
 }
 
 void SSEngine12::DrawScene()

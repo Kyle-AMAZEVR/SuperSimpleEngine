@@ -210,8 +210,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				renderingThread.ExecuteInRenderingThread([]()
 				{
-					SSEngine12::Get().OnWindowResize(width, height);
-					//SSEngine::Get().OnWindowResize(width, height);
+					//SSEngine12::Get().OnWindowResize(width, height);
+					SSEngine::Get().OnWindowResize(width, height);
 				});
 			}
         }

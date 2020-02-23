@@ -17,30 +17,26 @@ file(GLOB HEADERS "./*.h")
 
 include_directories("../lib/DirectXMath/Include")
 
-#include_directories("lib/DirectXTK/Inc")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
 include_directories("../Common")
 
-#add_subdirectory("lib/DirectXTK")
-add_subdirectory("../lib/DirectXTex" "./DirectXTex")
-add_subdirectory("../lib/freetype" "./freetype")
-
+add_subdirectory("../Common/" "./Common")
 
 foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
+	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuSSDX12.h")	
 endforeach(src_file ${SOURCES})
 
-set_source_files_properties("Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
+set_source_files_properties("SSDX12.cpp" PROPERTIES COMPILE_FLAGS "/YcSSDX12.h")
 
-add_library(Core SHARED ${SOURCES} ${HEADERS})
+add_library(SSDX12 SHARED ${SOURCES} ${HEADERS})
 
-add_dependencies(Core Common)
+add_dependencies(SSDX12 Common)
 
-target_link_libraries(Core d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
+target_link_libraries(SSDX12 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
 
-target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
-target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
+target_compile_definitions(SSDX12 PRIVATE SSDX12_EXPORTS)
+target_compile_definitions(SSDX12 INTERFACE SSDX12_IMPORTS)
 
 
 ###########################################################

@@ -20,27 +20,21 @@ include_directories("../lib/DirectXMath/Include")
 #include_directories("lib/DirectXTK/Inc")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
-include_directories("../Common")
-
-#add_subdirectory("lib/DirectXTK")
-add_subdirectory("../lib/DirectXTex" "./DirectXTex")
-add_subdirectory("../lib/freetype" "./freetype")
-
 
 foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
+	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuSSCommon.h")	
 endforeach(src_file ${SOURCES})
 
-set_source_files_properties("Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
+set_source_files_properties("SSCommon.cpp" PROPERTIES COMPILE_FLAGS "/YcSSCommon.h")
 
-add_library(Core SHARED ${SOURCES} ${HEADERS})
+add_library(Common SHARED ${SOURCES} ${HEADERS})
 
-add_dependencies(Core Common)
+target_link_libraries(Common d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype) 
 
-target_link_libraries(Core d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
+target_compile_definitions(Common PRIVATE COMMON_EXPORTS)
+target_compile_definitions(Common INTERFACE COMMON_IMPORTS)
 
-target_compile_definitions(Core PRIVATE ENGINE_EXPORTS)
-target_compile_definitions(Core INTERFACE ENGINE_IMPORTS)
+
 
 
 ###########################################################

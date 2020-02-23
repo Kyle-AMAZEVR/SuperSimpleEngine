@@ -13,15 +13,18 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 include_directories("Engine")
+include_directories("Engine12")
 
 message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory("Engine")
+add_subdirectory("Engine12")
 
 
 add_executable(SuperSimpleEngine resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
 
 add_dependencies(SuperSimpleEngine Core)
+add_dependencies(SuperSimpleEngine SSDX12)
 
 
 if(WIN32)
@@ -31,6 +34,7 @@ endif(WIN32)
 
 
 target_link_libraries(SuperSimpleEngine Core)
+target_link_libraries(SuperSimpleEngine SSDX12)
 
 #INSTALL( TARGETS SuperSimpleEngine Engine DESTINATION ${CMAKE_BUILD_TYPE})
 

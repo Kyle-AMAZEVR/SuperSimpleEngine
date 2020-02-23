@@ -1,4 +1,5 @@
 #pragma once
+#include "SSDX12.h"
 #include "Singleton.h"
 #include <wrl.h>
 #include <wrl/client.h>
@@ -8,7 +9,7 @@
 using Microsoft::WRL::ComPtr;
 
 
-class ENGINE_API SSEngine12 : public Singleton<SSEngine12>
+class SSDX12_API SSEngine12 : public Singleton<SSEngine12>
 {
 	
 public:
@@ -19,6 +20,10 @@ public:
 	void OnWindowResize(int newWidth, int newHeight);
 
 protected:
+
+	void CalcDescriptorHeapSize();
+	void CreateDescriptorHeaps();
+
 	void LoadAssets();
 	void WaitForPreviousFrame();
 	void MoveToNextFrame();
@@ -39,6 +44,8 @@ protected:
 	
 	ComPtr<ID3D12DescriptorHeap> mRTVHeap;
 	ComPtr<ID3D12DescriptorHeap> mDSVHeap;
+	ComPtr<ID3D12DescriptorHeap> mCBVHeap;
+
 	ComPtr<ID3D12Resource> mRenderTargets[FrameCount];
 	ComPtr<ID3D12Resource> mDepthStencilBuffer;
 

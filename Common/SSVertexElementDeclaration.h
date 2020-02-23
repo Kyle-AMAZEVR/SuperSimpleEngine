@@ -2,9 +2,9 @@
 
 #pragma once
 
+#include "SSCommon.h"
 
-
-class ENGINE_API SSVertexElementDeclaration
+class COMMON_API SSVertexElementDeclaration
 {
 public:
     // POSTION, COLOR
