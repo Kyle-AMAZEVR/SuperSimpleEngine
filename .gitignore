@@ -33,3 +33,6 @@ Engine/CMakeFiles/*
 Engine/DirectXTex/CMakeFiles/*
 Engine/Release/*
 
+
+*.stamp
+*.stamp.depend
