@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "DXConstantBuffer.h"
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 #include "SSName.h"
 #include <functional>
 #include <map>
@@ -13,7 +13,7 @@ class SSTexture2DBase;
 class IRenderTarget;
 
 
-class ENGINE_API SSDrawCmdBase : public DXRenderResource
+class ENGINE_API SSDrawCmdBase : public SSRenderThreadObject
 {
 public :	
 	virtual void Do(ID3D11DeviceContext* deviceContext) = 0;

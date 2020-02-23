@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 #include "DXConstantBuffer.h"
 #include "SSName.h"
 #include "wrl/client.h"
@@ -8,7 +8,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSShader : public DXRenderResource
+class ENGINE_API SSShader : public SSRenderThreadObject
 {
 public:
 	virtual ~SSShader(){}

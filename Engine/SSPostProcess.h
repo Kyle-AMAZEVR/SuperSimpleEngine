@@ -1,11 +1,11 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 #include "SSRenderTarget2D.h"
 
 class SSTexture2DBase;
 
-class ENGINE_API SSPostProcess : public DXRenderResource
+class ENGINE_API SSPostProcess : public SSRenderThreadObject
 {
 public:	
 	SSPostProcess(UINT width , UINT height, UINT rtCount=1, bool bDepthExist =false, bool bFixed =false, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);

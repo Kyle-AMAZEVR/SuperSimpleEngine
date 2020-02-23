@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 
-class ENGINE_API SSSceneObject : public DXRenderResource
+class ENGINE_API SSSceneObject : public SSRenderThreadObject
 {
 public:
 	SSSceneObject();

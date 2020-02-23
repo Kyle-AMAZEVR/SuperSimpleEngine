@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 #include "SSName.h"
 
 using namespace std;
@@ -9,7 +9,7 @@ class SSVertexShader;
 class SSPixelShader;
 class SSTexture2DBase;
 
-class ENGINE_API SSMaterial : public DXRenderResource
+class ENGINE_API SSMaterial : public SSRenderThreadObject
 {
 public:
 	SSMaterial(SSVertexShader* vs, SSPixelShader* ps);

@@ -1,16 +1,16 @@
 
 #include "Core.h"
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 #include "SSEngine.h"
 #include "SSRenderingThread.h"
 
-DXRenderResource::DXRenderResource()
+SSRenderThreadObject::SSRenderThreadObject()
 {
     check(SSDX11Engine::IsInitialized() == true);
     check(SSRenderingThread::IsInRenderingThread() == true);
 }
 
-DXRenderResource::~DXRenderResource()
+SSRenderThreadObject::~SSRenderThreadObject()
 {
 	check(SSDX11Engine::IsInitialized() == true);
 	check(SSRenderingThread::IsInRenderingThread() == true);

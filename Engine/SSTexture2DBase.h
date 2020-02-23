@@ -1,12 +1,12 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 #include <wrl/internal.h>
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSTexture2DBase : public DXRenderResource
+class ENGINE_API SSTexture2DBase : public SSRenderThreadObject
 {
 public:
 

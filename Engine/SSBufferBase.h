@@ -1,11 +1,11 @@
 #pragma once
 
-#include "DXRenderResource.h"
+#include "SSRenderThreadObject.h"
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;
 
-class SSBufferBase : public DXRenderResource
+class SSBufferBase : public SSRenderThreadObject
 {
 public:	
 	virtual void Destroy() override;
