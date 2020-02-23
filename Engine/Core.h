@@ -15,7 +15,7 @@
 #include <windows.h>
 #include <wrl.h>
 #include <combaseapi.h>
-
+#include "SSCommon.h"
 #include "d3dcompiler.h"
 #include "DirectXMath.h"
 #include <cassert>

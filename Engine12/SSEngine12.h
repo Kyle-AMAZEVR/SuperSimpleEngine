@@ -1,29 +1,26 @@
 #pragma once
 #include "SSDX12.h"
-#include "Singleton.h"
-#include <wrl.h>
+
 #include <wrl/client.h>
 #include <d3d12.h>
 #include "d3dx12.h"
+#include "SSEngineBase.h"
 
 using Microsoft::WRL::ComPtr;
 
 
-class SSDX12_API SSEngine12 : public Singleton<SSEngine12>
+class SSDX12_API SSEngine12 : public SSEngineBase
 {
 	
 public:
-	void Initialize(HWND windowHandle);
-
-	void DrawScene();
-
-	void OnWindowResize(int newWidth, int newHeight);
+	virtual void Initialize(HWND windowHandle) override;
+	virtual void DrawScene() override;
+	virtual void OnWindowResize(int newWidth, int newHeight) override;
+	virtual void Shutdown() override {}
 
 protected:
-
 	void CalcDescriptorHeapSize();
 	void CreateDescriptorHeaps();
-
 	void LoadAssets();
 	void WaitForPreviousFrame();
 	void MoveToNextFrame();
@@ -32,7 +29,8 @@ protected:
 
 	static const UINT FrameCount = 3;
 
-	bool CreateDevice();
+	virtual bool CreateDevice() override;
+
 	bool CreateSwapChain();
 	ComPtr<IDXGIFactory4> mFactory;
 	ComPtr<ID3D12Device> mDevice;
@@ -55,12 +53,7 @@ protected:
 	D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;
 	
 
-	int mBufferWidth = 1024;
-	int mBufferHeight = 768;
-
-	float mAspectRatio = 1.f;
-	
-	HWND mWindowHandle;	
+	float mAspectRatio = 1.f;	
 
 	UINT mRTVDescriptorSize = 0;
 	UINT mDSVDescriptorSize = 0;
@@ -75,8 +68,6 @@ protected:
 
 	ComPtr<ID3D12Fence> mFence;
 	HANDLE mFenceEvent;
-
-	UINT m4xMsaaQuality = 0;
 
 	DXGI_FORMAT mBackbufferFormat = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	DXGI_FORMAT mDepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;

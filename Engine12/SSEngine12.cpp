@@ -53,7 +53,7 @@ void SSEngine12::Initialize(HWND windowHandle)
 
 	HR(mDevice->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, &msQualityLevels, sizeof(msQualityLevels)));
 
-	m4xMsaaQuality = msQualityLevels.NumQualityLevels;
+	m4xMSAAQuality = msQualityLevels.NumQualityLevels;
 
 	CreateDescriptorHeaps();	
 	LoadAssets();	
@@ -149,7 +149,7 @@ void SSEngine12::OnWindowResize(int newWidth, int newHeight)
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
 	depthStencilDesc.SampleDesc.Count = 4;
-	depthStencilDesc.SampleDesc.Quality = m4xMsaaQuality - 1;
+	depthStencilDesc.SampleDesc.Quality = m4xMSAAQuality - 1;
 	depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 	depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 

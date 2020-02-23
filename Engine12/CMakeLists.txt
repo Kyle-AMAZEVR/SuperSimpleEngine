@@ -21,7 +21,7 @@ include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
 include_directories("../Common")
 
-add_subdirectory("../Common/" "./Common")
+add_subdirectory("../Common/" "../Common")
 
 foreach(src_file ${SOURCES})
 	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuSSDX12.h")	
