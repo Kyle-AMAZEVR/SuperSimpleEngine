@@ -26,22 +26,25 @@ public:
 
 	static UINT CalcConstantBufferByteSize(UINT ByteSize);
 
-protected:
-	void CalcDescriptorHeapSize();
-	void CreateDescriptorHeaps();
+protected:	
+	
 	void LoadAssets();
-	void WaitForPreviousFrame();
-	void MoveToNextFrame();
+	
+	void WaitForPreviousFrame();	
 	void WaitForGPU();
 	void PopulateCommandList();
+
+	virtual bool CreateDevice() override;
+	void CreateDescriptorHeaps();
 	void CreateRootSignature();
 	void CreateConstantBuffers();
+	void CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList);
 
 	ComPtr<ID3D12Resource> CreateDefaultBuffer(ID3D12GraphicsCommandList* CmdList, const void* InitialData, const UINT64 ByteSize, ComPtr<ID3D12Resource>& UploadBuffer);
 
 	static const UINT FrameCount = 3;
 
-	virtual bool CreateDevice() override;
+	
 
 	bool CreateSwapChain();
 	ComPtr<IDXGIFactory4> mFactory;
@@ -85,4 +88,5 @@ protected:
 	DXGI_FORMAT mDepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	std::unique_ptr<class SSUploadBuffer<ModelViewProjConstant>> mMVPUploadBuffer;
+	std::unique_ptr<class SSMeshGeometry> mMeshGeom = nullptr;
 };

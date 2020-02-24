@@ -6,8 +6,14 @@
 #include <filesystem>
 #include "SSUploadBuffer.h"
 #include "SSMathHelper.h"
+#include "SSMeshGeometry.h"
+#include <array>
 
-
+struct Vertex
+{
+	XMFLOAT3 Pos;
+	XMFLOAT4 Color;
+};
 
 void SSDX12Engine::Initialize(HWND windowHandle)
 {
@@ -59,7 +65,7 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 	m4xMSAAQuality = msQualityLevels.NumQualityLevels;
 
-	CreateDescriptorHeaps();	
+	CreateDescriptorHeaps();
 	LoadAssets();	
 	
 	mFenceValues = 0;
@@ -449,6 +455,63 @@ void SSDX12Engine::WaitForGPU()
 
 	// Increment the fence value for the current frame.
 	mFenceValues++;
+}
+
+void SSDX12Engine::CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList)
+{
+	std::array<Vertex, 8> vertices =
+	{
+		Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1,1,1,1) }),
+		Vertex({ XMFLOAT3(-1.0f, +1.0f, -1.0f), XMFLOAT4(0,0,0,1) }),
+		Vertex({ XMFLOAT3(+1.0f, +1.0f, -1.0f), XMFLOAT4(1,0,0,1) }),
+		Vertex({ XMFLOAT3(+1.0f, -1.0f, -1.0f), XMFLOAT4(0,1,0,1) }),
+		Vertex({ XMFLOAT3(-1.0f, -1.0f, +1.0f), XMFLOAT4(0,0,1,1) }),
+		Vertex({ XMFLOAT3(-1.0f, +1.0f, +1.0f), XMFLOAT4(1,1,0,1) }),
+		Vertex({ XMFLOAT3(+1.0f, +1.0f, +1.0f), XMFLOAT4(1,0,1,1) }),
+		Vertex({ XMFLOAT3(+1.0f, -1.0f, +1.0f), XMFLOAT4(0,1,1,1) })
+	};
+
+	std::array<std::uint16_t, 36> indices =
+	{
+		// front face
+		0, 1, 2,
+		0, 2, 3,
+
+		// back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// left face
+		4, 5, 1,
+		4, 1, 0,
+
+		// right face
+		3, 2, 6,
+		3, 6, 7,
+
+		// top face
+		1, 5, 6,
+		1, 6, 2,
+
+		// bottom face
+		4, 0, 3,
+		4, 3, 7
+	};
+
+
+	mMeshGeom = std::make_unique<SSMeshGeometry>();
+
+	const UINT VBByteSize = sizeof(Vertex) * static_cast<UINT>(vertices.size());
+	const UINT IBByteSize = sizeof(std::uint16_t) * static_cast<UINT>(indices.size());
+
+	mMeshGeom->mVertexBufferGPU = CreateDefaultBuffer(CmdList, vertices.data(), VBByteSize, mMeshGeom->mVertexBufferUploader);
+	mMeshGeom->mIndexBufferGPU = CreateDefaultBuffer(CmdList, indices.data(), IBByteSize, mMeshGeom->mIndexBufferUploader);
+
+	mMeshGeom->mVertexBufferByteSize = VBByteSize;
+	mMeshGeom->mVertexByteStride = sizeof(Vertex);
+
+	mMeshGeom->mIndexBufferFormat = DXGI_FORMAT_R16_UINT;
+	mMeshGeom->mIndexBufferByteSize = IBByteSize;
 }
 
 
