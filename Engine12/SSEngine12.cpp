@@ -51,7 +51,7 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS msQualityLevels;
 	msQualityLevels.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-	msQualityLevels.SampleCount = 4;
+	msQualityLevels.SampleCount = 1;
 	msQualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
 	msQualityLevels.NumQualityLevels = 0;
 
@@ -59,23 +59,28 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 	m4xMSAAQuality = msQualityLevels.NumQualityLevels;
 
-	
-	CreateDescriptorHeaps();
-	CreateConstantBuffers();
-	CreateRootSignature();
-	CreateBoxGeometry(mCommandList.Get());
-	LoadAssets();
-	
 	mFenceValues = 0;
-	
-	HR(mDevice->CreateFence(mFenceValues, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));	
-	   	
+
+	HR(mDevice->CreateFence(mFenceValues, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&mFence)));
+
 	mFenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
-	if(mFenceEvent == nullptr)
+	if (mFenceEvent == nullptr)
 	{
 		check(false);
 	}
+	CreateDescriptorHeaps();
+	LoadAssets();
+	OnWindowResize(mBufferWidth, mBufferHeight);
+		
+	//mCommandList->Close();
+	mCommandList->Reset(mCommandAllocator.Get(), nullptr);
+	
+	
+	CreateConstantBuffers();
+	CreateRootSignature();
+	CreateBoxGeometry(mCommandList.Get());	
+	
 
 	HR(mCommandList->Close());
 
@@ -172,6 +177,7 @@ void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 
 	WaitForPreviousFrame();
 
+	HR(mCommandList->Close());
 	HR(mCommandList->Reset(mCommandAllocator.Get(), mPipelineState.Get()));
 
 	for(int i = 0; i < FrameCount; ++i)
@@ -188,7 +194,7 @@ void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
 	for(int i = 0; i < FrameCount; ++i)
 	{
-		HR(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&mRenderTargets[i])));
+		HR(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&mRenderTargets[i])));		
 		mDevice->CreateRenderTargetView(mRenderTargets[i].Get(), nullptr, rtvHeapHandle);
 		rtvHeapHandle.Offset(1, mRTVDescriptorSize);
 	}
@@ -205,7 +211,7 @@ void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 	depthStencilDesc.DepthOrArraySize = 1;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
-	depthStencilDesc.SampleDesc.Count = 4;
+	depthStencilDesc.SampleDesc.Count = 1;
 	depthStencilDesc.SampleDesc.Quality = m4xMSAAQuality - 1;
 	depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 	depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
@@ -223,7 +229,7 @@ void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc;
 	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2DMS;
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	dsvDesc.Format = mDepthStencilFormat;
 	dsvDesc.Texture2D.MipSlice = 0;
 
