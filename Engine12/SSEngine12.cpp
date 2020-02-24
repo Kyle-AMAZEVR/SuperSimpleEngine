@@ -74,13 +74,11 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 	OnWindowResize(mBufferWidth, mBufferHeight);
 		
 	//mCommandList->Close();
-	mCommandList->Reset(mCommandAllocator.Get(), nullptr);
-	
+	mCommandList->Reset(mCommandAllocator.Get(), nullptr);	
 	
 	CreateConstantBuffers();
 	CreateRootSignature();
 	CreateBoxGeometry(mCommandList.Get());	
-	
 
 	HR(mCommandList->Close());
 
@@ -269,8 +267,8 @@ void SSDX12Engine::LoadAssets()
 
 	check(std::filesystem::exists(L"./Shader\\SimpleShader.vs"));
 
-	HR(D3DCompileFromFile(L"./Shader\\SimpleShader.vs", nullptr, nullptr, "VSMain", "vs_5_0", 0, 0, &vertexShader, &error));
-	HR(D3DCompileFromFile(L"./Shader\\SimpleShader.ps", nullptr, nullptr, "PSMain", "ps_5_0", 0, 0, &pixelShader, nullptr));
+	HR(D3DCompileFromFile(L"./Shader\\Color.hlsl", nullptr, nullptr, "VS", "vs_5_0", 0, 0, &vertexShader, &error));
+	HR(D3DCompileFromFile(L"./Shader\\Color.hlsl", nullptr, nullptr, "PS", "ps_5_0", 0, 0, &pixelShader, nullptr));
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 
@@ -305,7 +303,7 @@ void SSDX12Engine::Update()
 	XMMATRIX view = XMMatrixLookAtLH(pos, target, up);
 	XMStoreFloat4x4(&mView, view);
 
-	XMMATRIX world = XMLoadFloat4x4(&mModel);
+	XMMATRIX world = SSMathHelper::IdentityMatrix4X4;
 	XMMATRIX proj = XMLoadFloat4x4(&mProj);
 	XMMATRIX worldViewProj = world * view*proj;
 
