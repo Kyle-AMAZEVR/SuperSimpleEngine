@@ -38,16 +38,10 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 	
 	//@ Create swap chain
 	CreateSwapChain();
-
-	for(UINT i = 0; i < FrameCount; ++i)
-	{
-		HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator)));
-	}
+	   
+	HR(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&mCommandAllocator)));
 	
-	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&mCommandList)));
-
-	HR(mCommandList->Close());
-	//
+	HR(mDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, mCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&mCommandList)));	
 
 	//@ save descriptor size
 	mRTVDescriptorSize = mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
@@ -65,8 +59,12 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 	m4xMSAAQuality = msQualityLevels.NumQualityLevels;
 
+	
 	CreateDescriptorHeaps();
-	LoadAssets();	
+	CreateConstantBuffers();
+	CreateRootSignature();
+	CreateBoxGeometry(mCommandList.Get());
+	LoadAssets();
 	
 	mFenceValues = 0;
 	
@@ -78,6 +76,13 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 	{
 		check(false);
 	}
+
+	HR(mCommandList->Close());
+
+	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
+	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+
+	WaitForPreviousFrame();
 }
 
 void SSDX12Engine::CreateRootSignature()
@@ -243,22 +248,18 @@ void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 	mScissorRect.left = mScissorRect.top = 0;
 	mScissorRect.right = mBufferWidth;
 	mScissorRect.bottom = mBufferHeight;
+
+	XMMATRIX P = XMMatrixPerspectiveFovLH(0.25 * XM_PI, mAspectRatio, 1.f, 1000.f);
+	XMStoreFloat4x4(&mProj, P);
 }
 
 void SSDX12Engine::LoadAssets()
 {
-	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-	ComPtr<ID3DBlob> signature;
-	ComPtr<ID3DBlob> error;
-
-	HR(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
-
-	HR(mDevice->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&mRootSignature)));
+	CreateRootSignature();
 
 	ComPtr<ID3DBlob> vertexShader;
 	ComPtr<ID3DBlob> pixelShader;
+	ComPtr<ID3DBlob> error;
 
 	check(std::filesystem::exists(L"./Shader\\SimpleShader.vs"));
 
@@ -281,36 +282,37 @@ void SSDX12Engine::LoadAssets()
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	psoDesc.SampleDesc.Count = 1;
 	HR(mDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mPipelineState)));
+}
 
-	VT_Position3Color4 vertices[]=
-	{
-		{ { 0.0f, 0.25f * mAspectRatio, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-		{ { 0.25f, -0.25f * mAspectRatio, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
-		{ { -0.25f, -0.25f * mAspectRatio, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }
-	};
+void SSDX12Engine::Update()
+{
+	// Convert Spherical to Cartesian coordinates.
+	float x = mRadius * sinf(mPhi)*cosf(mTheta);
+	float z = mRadius * sinf(mPhi)*sinf(mTheta);
+	float y = mRadius * cosf(mPhi);
 
-	const UINT bufferSize = sizeof(vertices);
+	// Build the view matrix.
+	XMVECTOR pos = XMVectorSet(x, y, z, 1.0f);
+	XMVECTOR target = XMVectorZero();
+	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
-	HR(mDevice->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(bufferSize),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&mVertexBuffer)));
+	XMMATRIX view = XMMatrixLookAtLH(pos, target, up);
+	XMStoreFloat4x4(&mView, view);
 
-	UINT8* pVertexDataBegin = 0;
-	CD3DX12_RANGE readRange(0, 0);
-	HR(mVertexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&pVertexDataBegin)));
-	memcpy(pVertexDataBegin, vertices, bufferSize);
-	mVertexBuffer->Unmap(0, nullptr);
+	XMMATRIX world = XMLoadFloat4x4(&mModel);
+	XMMATRIX proj = XMLoadFloat4x4(&mProj);
+	XMMATRIX worldViewProj = world * view*proj;
 
-	mVertexBufferView.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
-	mVertexBufferView.StrideInBytes = sizeof(VT_Position3Color4);
-	mVertexBufferView.SizeInBytes = bufferSize;
+	// Update the constant buffer with the latest worldViewProj matrix.
+	ModelViewProjConstant objConstants;
+	XMStoreFloat4x4(&objConstants.ModelViewProj, XMMatrixTranspose(worldViewProj));
+	mMVPUploadBuffer->CopyData(0, objConstants);
 }
 
 void SSDX12Engine::DrawScene()
 {
+	Update();
+
 	PopulateCommandList();
 
 	// Execute the command list.
@@ -350,25 +352,36 @@ void SSDX12Engine::PopulateCommandList()
 	HR(mCommandAllocator->Reset());
 
 	HR(mCommandList->Reset(mCommandAllocator.Get(), mPipelineState.Get()));
-
-	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
+		
 	mCommandList->RSSetViewports(1, &mViewport);
 	mCommandList->RSSetScissorRects(1, &mScissorRect);
 
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT,  D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart(), mFrameIndex, mRTVDescriptorSize);
-	mCommandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(mDSVHeap->GetCPUDescriptorHandleForHeapStart());
+	
 
 	// Record commands.
 	const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+
+	mCommandList->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
 	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	mCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+	
+	ID3D12DescriptorHeap* descriptorHeaps[]{ mCBVHeap.Get() };
+	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
+
 	mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	mCommandList->IASetVertexBuffers(0, 1, &mVertexBufferView);
-	mCommandList->DrawInstanced(3, 1, 0, 0);
+	mCommandList->IASetVertexBuffers(0, 1, &mMeshGeom->GetVertexBufferView());
+	mCommandList->IASetIndexBuffer(&mMeshGeom->GetIndexBufferView());
+
+	mCommandList->SetGraphicsRootDescriptorTable(0, mCBVHeap->GetGPUDescriptorHandleForHeapStart());
+	   
+	mCommandList->DrawIndexedInstanced(mMeshGeom->mIndexCount, 1, 0, 0, 0);
 
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
-
 	
 	mCommandList->Close();
 }
@@ -512,6 +525,7 @@ void SSDX12Engine::CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList)
 
 	mMeshGeom->mIndexBufferFormat = DXGI_FORMAT_R16_UINT;
 	mMeshGeom->mIndexBufferByteSize = IBByteSize;
+	mMeshGeom->mIndexCount = static_cast<UINT>(indices.size());
 }
 
 

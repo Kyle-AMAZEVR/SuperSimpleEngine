@@ -6,7 +6,7 @@
 #include "d3dx12.h"
 #include "SSEngineBase.h"
 #include "SSUploadBuffer.h"
-
+#include "SSMeshGeometry.h"
 
 
 struct ModelViewProjConstant
@@ -39,12 +39,16 @@ protected:
 	void CreateRootSignature();
 	void CreateConstantBuffers();
 	void CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList);
+	void Update();
 
 	ComPtr<ID3D12Resource> CreateDefaultBuffer(ID3D12GraphicsCommandList* CmdList, const void* InitialData, const UINT64 ByteSize, ComPtr<ID3D12Resource>& UploadBuffer);
 
 	static const UINT FrameCount = 3;
 
-	
+	XMFLOAT4X4 mProj;
+	XMFLOAT4X4 mView;
+	XMFLOAT4X4 mModel;
+
 
 	bool CreateSwapChain();
 	ComPtr<IDXGIFactory4> mFactory;
@@ -65,7 +69,7 @@ protected:
 	ComPtr<ID3D12RootSignature> mRootSignature;
 
 	ComPtr<ID3D12Resource> mVertexBuffer;
-	D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;
+	
 	
 
 	float mAspectRatio = 1.f;	
@@ -89,4 +93,10 @@ protected:
 
 	std::unique_ptr<class SSUploadBuffer<ModelViewProjConstant>> mMVPUploadBuffer;
 	std::unique_ptr<class SSMeshGeometry> mMeshGeom = nullptr;
+
+	
+
+	float mTheta = 1.5f*XM_PI;
+	float mPhi = XM_PIDIV4;
+	float mRadius = 5.0f;
 };

@@ -1,5 +1,4 @@
 #pragma once
-#include "../../../Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/um/d3d12.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -18,6 +17,7 @@ public:
 
 	DXGI_FORMAT mIndexBufferFormat = DXGI_FORMAT_R16_UINT;
 	UINT mIndexBufferByteSize = 0;
+	UINT mIndexCount = 0;
 
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView() const
 	{
@@ -34,6 +34,8 @@ public:
 		IBV.BufferLocation = mIndexBufferGPU->GetGPUVirtualAddress();
 		IBV.Format = mIndexBufferFormat;
 		IBV.SizeInBytes = mIndexBufferByteSize;
+
+		return IBV;
 	}
 
 

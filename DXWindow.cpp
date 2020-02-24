@@ -70,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	SSDX12Engine* DX12Engine = new SSDX12Engine();
 
 	gameThread.SetGameThreadId(GetCurrentThreadId());
-    renderingThread.Start(WindowHandle, DX11Engine);
+    renderingThread.Start(WindowHandle, DX12Engine);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
 
