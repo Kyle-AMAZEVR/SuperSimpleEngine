@@ -70,6 +70,34 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 	}
 }
 
+void SSDX12Engine::CreateRootSignature()
+{
+	CD3DX12_ROOT_PARAMETER slotRootParameter[1];
+
+	CD3DX12_DESCRIPTOR_RANGE cbvTable;
+	cbvTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
+	slotRootParameter[0].InitAsDescriptorTable(1, &cbvTable);
+
+	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc(1, slotRootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	ComPtr<ID3DBlob> serializeRootSig = nullptr;
+	ComPtr<ID3DBlob> errorBlob = nullptr;
+
+	HR(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &serializeRootSig, &errorBlob));
+
+	if(errorBlob != nullptr)
+	{
+		check(false);
+	}
+
+	HR(mDevice->CreateRootSignature(0, serializeRootSig->GetBufferPointer(), serializeRootSig->GetBufferSize(), IID_PPV_ARGS(&mRootSignature)));
+}
+
+void SSDX12Engine::CreateConstantBuffers()
+{
+	
+}
+
+
 void SSDX12Engine::CreateDescriptorHeaps()
 {
 	//@ create rtv descriptor heap
@@ -403,4 +431,39 @@ void SSDX12Engine::WaitForGPU()
 
 	// Increment the fence value for the current frame.
 	mFenceValues++;
+}
+
+
+ComPtr<ID3D12Resource> SSDX12Engine::CreateDefaultBuffer(ID3D12GraphicsCommandList* CmdList, const void* InitialData, const UINT64 ByteSize, ComPtr<ID3D12Resource>& UploadBuffer)
+{
+	ComPtr<ID3D12Resource> DefaultBuffer;
+	
+	HR(mDevice->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+		D3D12_HEAP_FLAG_NONE, 
+		&CD3DX12_RESOURCE_DESC::Buffer(ByteSize),
+		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&DefaultBuffer)));
+
+
+	HR(mDevice->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer(ByteSize),
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&UploadBuffer)));
+
+
+	D3D12_SUBRESOURCE_DATA subResourceData{};
+	subResourceData.pData = InitialData;
+	subResourceData.RowPitch = ByteSize;
+	subResourceData.SlicePitch = ByteSize;
+
+	CmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(DefaultBuffer.Get(),
+		D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST));
+
+	UpdateSubresources<1>(CmdList, DefaultBuffer.Get(), UploadBuffer.Get(), 0, 0, 1, &subResourceData);
+
+	CmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(DefaultBuffer.Get(),
+		D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ));
+
+	return DefaultBuffer;
 }

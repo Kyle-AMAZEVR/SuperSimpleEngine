@@ -26,6 +26,10 @@ protected:
 	void MoveToNextFrame();
 	void WaitForGPU();
 	void PopulateCommandList();
+	void CreateRootSignature();
+	void CreateConstantBuffers();
+
+	ComPtr<ID3D12Resource> CreateDefaultBuffer(ID3D12GraphicsCommandList* CmdList, const void* InitialData, const UINT64 ByteSize, ComPtr<ID3D12Resource>& UploadBuffer);
 
 	static const UINT FrameCount = 3;
 
