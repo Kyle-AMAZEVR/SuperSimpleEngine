@@ -4,6 +4,10 @@
 #include "DXVertexTypes.h"
 #include "SSVertexElementDeclaration.h"
 #include <filesystem>
+#include "SSUploadBuffer.h"
+#include "SSMathHelper.h"
+
+
 
 void SSDX12Engine::Initialize(HWND windowHandle)
 {
@@ -94,9 +98,23 @@ void SSDX12Engine::CreateRootSignature()
 
 void SSDX12Engine::CreateConstantBuffers()
 {
+	mMVPUploadBuffer = std::make_unique<SSUploadBuffer<ModelViewProjConstant>>(mDevice.Get(), 1, true);
 	
+	const UINT ObjByteSize = CalcConstantBufferByteSize(sizeof(ModelViewProjConstant));
+
+	D3D12_GPU_VIRTUAL_ADDRESS Address = mMVPUploadBuffer->GetResource()->GetGPUVirtualAddress();
+	
+	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc;
+	CBVDesc.BufferLocation = Address;
+	CBVDesc.SizeInBytes = CalcConstantBufferByteSize(sizeof(ModelViewProjConstant));
+
+	mDevice->CreateConstantBufferView(&CBVDesc, mCBVHeap->GetCPUDescriptorHandleForHeapStart());
 }
 
+UINT SSDX12Engine::CalcConstantBufferByteSize(UINT ByteSize)
+{
+	return (ByteSize + 255) & ~255;
+}
 
 void SSDX12Engine::CreateDescriptorHeaps()
 {

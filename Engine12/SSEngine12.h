@@ -5,8 +5,14 @@
 #include <d3d12.h>
 #include "d3dx12.h"
 #include "SSEngineBase.h"
+#include "SSUploadBuffer.h"
 
-using Microsoft::WRL::ComPtr;
+
+
+struct ModelViewProjConstant
+{
+	XMFLOAT4X4 ModelViewProj;
+};
 
 
 class SSDX12_API SSDX12Engine : public SSEngineBase
@@ -17,6 +23,8 @@ public:
 	virtual void DrawScene() override;
 	virtual void OnWindowResize(int newWidth, int newHeight) override;
 	virtual void Shutdown() override {}
+
+	static UINT CalcConstantBufferByteSize(UINT ByteSize);
 
 protected:
 	void CalcDescriptorHeapSize();
@@ -75,4 +83,6 @@ protected:
 
 	DXGI_FORMAT mBackbufferFormat = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	DXGI_FORMAT mDepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	std::unique_ptr<class SSUploadBuffer<ModelViewProjConstant>> mMVPUploadBuffer;
 };

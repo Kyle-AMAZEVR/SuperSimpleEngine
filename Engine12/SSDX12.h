@@ -13,6 +13,7 @@
 #include <dxgi1_4.h>
 #include <windows.h>
 #include <wrl.h>
+#include <wrl/client.h>
 #include <combaseapi.h>
 #include "SSCommon.h"
 #include "d3dcompiler.h"
@@ -22,6 +23,9 @@
 #include <map>
 #include <vector>
 #include <functional>
+
+using Microsoft::WRL::ComPtr;
+using namespace DirectX;
 
 #define STRINGFY(x) #x
 #define TOSTRING(x) STRINGFY(x)
