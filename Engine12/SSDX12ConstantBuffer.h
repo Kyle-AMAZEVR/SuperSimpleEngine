@@ -8,10 +8,19 @@ public:
 	SSDX12ConstantBuffer() = default;
 	SSDX12ConstantBuffer(ID3D12Device* device, const UINT bufferSize = 256);
 
+	// @
+	virtual ComPtr<ID3D12Resource> GetResource() const override { return mResource; }
+	virtual ID3D12Resource* GetResourcePtr() const override { return mResource.Get(); }
+	virtual ComPtr<ID3D12DescriptorHeap> GetDescriptorHeap() const override { return mDescriptorHeap; }
+	// @
+
 	UINT GetBufferSize() const { return mCBufferSize; }
 
 protected:
 	bool Create(ID3D12Device* device, const UINT bufferSize = 256);
+
+	ComPtr<ID3D12Resource> mResource = nullptr;
+	ComPtr<ID3D12DescriptorHeap> mDescriptorHeap = nullptr;
 	
 	UINT mCBufferSize = 0;
 	bool mCreated = false;

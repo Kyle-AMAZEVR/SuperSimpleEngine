@@ -2,12 +2,13 @@
 #include "SSDX12.h"
 #include "SSDX12VertexBuffer.h"
 
-SSDX12VertexBuffer::SSDX12VertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const void* pVertexData, const UINT byteSize)
+SSDX12VertexBuffer::SSDX12VertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const void* pVertexData, const UINT byteSize, const UINT byteStride)
+	: mVertexBufferSize(byteSize), mVertexByteStride(byteStride)
 {
-	CreateVertexBuffer(device, cmdList, pVertexData, byteSize);
+	CreateVertexBuffer(device, cmdList, pVertexData, byteSize, byteStride);
 }
 
-void SSDX12VertexBuffer::CreateVertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const void* pVertexData, const UINT byteSize)
+void SSDX12VertexBuffer::CreateVertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const void* pVertexData, const UINT byteSize, const UINT byteStride)
 {
 	mVertexBufferSize = byteSize;
 
@@ -34,7 +35,19 @@ void SSDX12VertexBuffer::CreateVertexBuffer(ID3D12Device* device, ID3D12Graphics
 	UpdateSubresources<1>(cmdList, mResource.Get(), mVertexDataUploadBuffer.Get(), 0, 0, 1, &subResourceData);
 
 	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mResource.Get(),
-		D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_COMMON));
+		D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_COMMON));	
 
 	mVertexDataUploadBuffer.Reset();
+}
+
+D3D12_VERTEX_BUFFER_VIEW SSDX12VertexBuffer::GetVertexBufferView() const
+{
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView
+	{
+		mResource->GetGPUVirtualAddress(),
+		mVertexBufferSize,
+		mVertexByteStride 
+	};
+
+	return vertexBufferView;
 }

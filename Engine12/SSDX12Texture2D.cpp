@@ -74,8 +74,7 @@ bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandLi
 	delete subresourceData;
 
 	cmdList->ResourceBarrier(1, 
-		&CD3DX12_RESOURCE_BARRIER::Transition(mResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
-
+		&CD3DX12_RESOURCE_BARRIER::Transition(mResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));	
 
 	return true;
 }
