@@ -16,18 +16,10 @@ bool SSDX12Texture2D::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsComman
 
 	check(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
 
-	LoadInternal(device, cmdList, metaData, image, bSRGB);
+	check(LoadInternal(device, cmdList, metaData, image, bSRGB));
 
 	return true;
 }
-
-bool LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::string filename, bool bSRGB)
-{
-	
-
-	return true;
-}
-
 
 bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bSRGB)
 {

@@ -10,8 +10,7 @@ public:
 	UINT GetHeight() { return mHeight; }
 
 	
-	bool LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::wstring filename, bool bSRGB = false);
-	bool LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::string filename, bool bSRGB = false);
+	bool LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::wstring filename, bool bSRGB = false);	
 
 protected:
 	UINT mWidth;
