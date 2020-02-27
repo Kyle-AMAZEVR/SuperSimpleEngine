@@ -8,6 +8,7 @@
 #include "SSMathHelper.h"
 #include "SSMeshGeometry.h"
 #include <array>
+
 #include "SSDX12ConstantBuffer.h"
 
 struct Vertex

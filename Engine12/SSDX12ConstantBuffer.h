@@ -1,9 +1,8 @@
 #pragma once
 
-#include "SSDX12Buffer.h"
+#include "SSDX12Resource.h"
 
-
-class SSDX12ConstantBuffer : public SSDX12Resource
+class SSDX12_API SSDX12ConstantBuffer : public SSDX12Resource
 {
 public:
 	SSDX12ConstantBuffer() = default;
@@ -35,13 +34,13 @@ protected:
 template <typename T>
 void SSDX12TypedConstantBuffer<T>::WriteData(const T& data)
 {
-	if (mBuffer)
+	if (mResource)
 	{
-		mBuffer->Map(0, nullptr, reinterpret_cast<void**>(&mMappedData));
+		mResource->Map(0, nullptr, reinterpret_cast<void**>(&mMappedData));
 
 		memcpy(mMappedData, &data, sizeof(T));
 
-		mBuffer->Unmap(0, nullptr);
+		mResource->Unmap(0, nullptr);
 	}
 }
 

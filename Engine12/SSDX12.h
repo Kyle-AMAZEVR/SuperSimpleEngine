@@ -23,6 +23,7 @@
 #include <map>
 #include <vector>
 #include <functional>
+#include "d3dx12.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
