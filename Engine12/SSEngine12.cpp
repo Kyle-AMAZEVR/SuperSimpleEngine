@@ -8,6 +8,7 @@
 #include "SSMathHelper.h"
 #include "SSMeshGeometry.h"
 #include <array>
+#include "SSDX12ConstantBuffer.h"
 
 struct Vertex
 {
@@ -70,6 +71,7 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 		check(false);
 	}
 	CreateDescriptorHeaps();
+
 	LoadAssets();
 	OnWindowResize(mBufferWidth, mBufferHeight);
 		
@@ -113,6 +115,8 @@ void SSDX12Engine::CreateRootSignature()
 void SSDX12Engine::CreateConstantBuffers()
 {
 	mMVPUploadBuffer = std::make_unique<SSUploadBuffer<ModelViewProjConstant>>(mDevice.Get(), 1, true);
+
+	mTestCBuffer = std::make_unique<SSDX12TypedConstantBuffer<ModelViewProjConstant>>(mDevice.Get());
 	
 	const UINT ObjByteSize = CalcConstantBufferByteSize(sizeof(ModelViewProjConstant));
 
@@ -189,7 +193,7 @@ void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 
 	mFrameIndex = 0;
 
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(mRTVHeap->GetCPUDescriptorHandleForHeapStart());	
 	for(int i = 0; i < FrameCount; ++i)
 	{
 		HR(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&mRenderTargets[i])));		
@@ -199,7 +203,7 @@ void SSDX12Engine::OnWindowResize(int newWidth, int newHeight)
 
 	//
 
-	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHeapHandle(mDSVHeap->GetCPUDescriptorHandleForHeapStart());
+	
 
 	D3D12_RESOURCE_DESC depthStencilDesc;
 	depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -310,7 +314,16 @@ void SSDX12Engine::Update()
 	// Update the constant buffer with the latest worldViewProj matrix.
 	ModelViewProjConstant objConstants;
 	XMStoreFloat4x4(&objConstants.ModelViewProj, XMMatrixTranspose(worldViewProj));
-	mMVPUploadBuffer->CopyData(0, objConstants);
+
+	if (mMVPUploadBuffer)
+	{
+		mMVPUploadBuffer->CopyData(0, objConstants);
+	}
+
+	if(mTestCBuffer)
+	{
+		mTestCBuffer->WriteData(objConstants);
+	}
 }
 
 void SSDX12Engine::DrawScene()
@@ -373,7 +386,8 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	mCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
 	
-	ID3D12DescriptorHeap* descriptorHeaps[]{ mCBVHeap.Get() };
+	//ID3D12DescriptorHeap* descriptorHeaps[]{ mCBVHeap.Get() };
+	ID3D12DescriptorHeap* descriptorHeaps[]{ mTestCBuffer->GetDescriptorHeap().Get() };
 	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 

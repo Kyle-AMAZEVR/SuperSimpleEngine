@@ -7,6 +7,7 @@
 #include "SSEngineBase.h"
 #include "SSUploadBuffer.h"
 #include "SSMeshGeometry.h"
+#include "SSDX12ConstantBuffer.h"
 
 
 struct ModelViewProjConstant
@@ -93,6 +94,8 @@ protected:
 
 	std::unique_ptr<class SSUploadBuffer<ModelViewProjConstant>> mMVPUploadBuffer;
 	std::unique_ptr<class SSMeshGeometry> mMeshGeom = nullptr;
+
+	std::unique_ptr<class SSDX12TypedConstantBuffer<ModelViewProjConstant>> mTestCBuffer;
 
 	
 

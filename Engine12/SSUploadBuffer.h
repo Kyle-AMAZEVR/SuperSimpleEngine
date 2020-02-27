@@ -25,7 +25,7 @@ public:
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr, IID_PPV_ARGS(&mUploadBuffer)));		
 
-		HR(mUploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&mMappedData)));
+		HR(mUploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&mMappedData)));		
 	}
 
 	SSUploadBuffer(const SSUploadBuffer& rhs) = delete;
