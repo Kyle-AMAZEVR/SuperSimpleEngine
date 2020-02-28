@@ -8,7 +8,14 @@
 #include "SSUploadBuffer.h"
 #include "SSMeshGeometry.h"
 #include "SSDX12ConstantBuffer.h"
+#include "SSDX12VertexBuffer.h"
+#include "SSDX12IndexBuffer.h"
 
+struct Vertex
+{
+	XMFLOAT3 Pos;
+	XMFLOAT4 Color;
+};
 
 struct ModelViewProjConstant
 {
@@ -96,6 +103,8 @@ protected:
 	std::unique_ptr<class SSMeshGeometry> mMeshGeom = nullptr;
 
 	std::unique_ptr<class SSDX12TypedConstantBuffer<ModelViewProjConstant>> mTestCBuffer;
+	std::unique_ptr<class SSDX12TypedVertexBuffer<Vertex>> mTestVertexBuffer;
+	std::unique_ptr<class SSDX12IndexBuffer> mTestIndexBuffer;
 
 	
 

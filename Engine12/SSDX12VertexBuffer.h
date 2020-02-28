@@ -4,6 +4,7 @@
 class SSDX12VertexBuffer : public SSDX12Resource
 {
 public:
+	SSDX12VertexBuffer() = default;
 	SSDX12VertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const void* pVertexData, const UINT byteSize, const UINT byteStride);
 
 	// @
@@ -30,11 +31,12 @@ template<class T>
 class SSDX12TypedVertexBuffer : public SSDX12VertexBuffer
 {
 public:
+	SSDX12TypedVertexBuffer() = default;
 	SSDX12TypedVertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const std::vector<T>& vertexData);
 };
 
 template <class T>
 SSDX12TypedVertexBuffer<T>::SSDX12TypedVertexBuffer(struct ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const std::vector<T>& vertexData)
 {	
-	CreateVertexBuffer(device, cmdList, vertexData.data(), vertexData.size() * sizeof(T), sizeof(T));
+	CreateVertexBuffer(device, cmdList, vertexData.data(), static_cast<UINT>(vertexData.size() * sizeof(T)), sizeof(T));
 }

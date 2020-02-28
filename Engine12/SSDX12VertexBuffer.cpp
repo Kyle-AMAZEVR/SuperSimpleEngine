@@ -11,6 +11,7 @@ SSDX12VertexBuffer::SSDX12VertexBuffer(ID3D12Device* device, ID3D12GraphicsComma
 void SSDX12VertexBuffer::CreateVertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const void* pVertexData, const UINT byteSize, const UINT byteStride)
 {
 	mVertexBufferSize = byteSize;
+	mVertexByteStride = byteStride;
 
 	check(mVertexBufferSize > 0);
 
@@ -36,8 +37,6 @@ void SSDX12VertexBuffer::CreateVertexBuffer(ID3D12Device* device, ID3D12Graphics
 
 	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mResource.Get(),
 		D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_COMMON));	
-
-	mVertexDataUploadBuffer.Reset();
 }
 
 D3D12_VERTEX_BUFFER_VIEW SSDX12VertexBuffer::GetVertexBufferView() const

@@ -2,6 +2,12 @@
 #include "SSDX12.h"
 #include "SSDX12IndexBuffer.h"
 
+SSDX12IndexBuffer::SSDX12IndexBuffer(ID3D12Device * device, ID3D12GraphicsCommandList * cmdList, const std::vector<UINT>& indexData)
+{
+	CreateIndexBuffer(device, cmdList, indexData);
+}
+
+
 D3D12_INDEX_BUFFER_VIEW SSDX12IndexBuffer::GetIndexBufferView() const
 {
 	D3D12_INDEX_BUFFER_VIEW indexBufferView;
@@ -15,6 +21,7 @@ D3D12_INDEX_BUFFER_VIEW SSDX12IndexBuffer::GetIndexBufferView() const
 void SSDX12IndexBuffer::CreateIndexBuffer(ID3D12Device * device, ID3D12GraphicsCommandList * cmdList, const std::vector<UINT>& indexData)
 {
 	mIndexBufferSize = sizeof(UINT) * static_cast<UINT>(indexData.size());
+	mIndexCount = static_cast<UINT>(indexData.size());
 
 	HR(device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
@@ -38,6 +45,4 @@ void SSDX12IndexBuffer::CreateIndexBuffer(ID3D12Device * device, ID3D12GraphicsC
 
 	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mIndexBuffer.Get(),
 		D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_COMMON));
-
-	mIndexDataUploadBuffer.Reset();	
 }

@@ -11,11 +11,6 @@
 
 #include "SSDX12ConstantBuffer.h"
 
-struct Vertex
-{
-	XMFLOAT3 Pos;
-	XMFLOAT4 Color;
-};
 
 void SSDX12Engine::Initialize(HWND windowHandle)
 {
@@ -393,12 +388,11 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 
 	mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	mCommandList->IASetVertexBuffers(0, 1, &mMeshGeom->GetVertexBufferView());
-	mCommandList->IASetIndexBuffer(&mMeshGeom->GetIndexBufferView());
-
-	mCommandList->SetGraphicsRootDescriptorTable(0, mCBVHeap->GetGPUDescriptorHandleForHeapStart());
-	   
-	mCommandList->DrawIndexedInstanced(mMeshGeom->mIndexCount, 1, 0, 0, 0);
+	
+	mCommandList->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetVertexBufferView());
+	mCommandList->IASetIndexBuffer(&mTestIndexBuffer->GetIndexBufferView());
+	mCommandList->SetGraphicsRootDescriptorTable(0, mCBVHeap->GetGPUDescriptorHandleForHeapStart());	   
+	mCommandList->DrawIndexedInstanced(mTestIndexBuffer->GetIndexCount(), 1, 0, 0, 0);
 
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 	
@@ -491,7 +485,7 @@ void SSDX12Engine::WaitForGPU()
 
 void SSDX12Engine::CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList)
 {
-	std::array<Vertex, 8> vertices =
+	std::vector<Vertex> vertices =
 	{
 		Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1,1,1,1) }),
 		Vertex({ XMFLOAT3(-1.0f, +1.0f, -1.0f), XMFLOAT4(0,0,0,1) }),
@@ -503,7 +497,7 @@ void SSDX12Engine::CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList)
 		Vertex({ XMFLOAT3(+1.0f, -1.0f, +1.0f), XMFLOAT4(0,1,1,1) })
 	};
 
-	std::array<std::uint16_t, 36> indices =
+	std::vector<UINT> indices =
 	{
 		// front face
 		0, 1, 2,
@@ -528,23 +522,10 @@ void SSDX12Engine::CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList)
 		// bottom face
 		4, 0, 3,
 		4, 3, 7
-	};
+	};		
 
-
-	mMeshGeom = std::make_unique<SSMeshGeometry>();
-
-	const UINT VBByteSize = sizeof(Vertex) * static_cast<UINT>(vertices.size());
-	const UINT IBByteSize = sizeof(std::uint16_t) * static_cast<UINT>(indices.size());
-
-	mMeshGeom->mVertexBufferGPU = CreateDefaultBuffer(CmdList, vertices.data(), VBByteSize, mMeshGeom->mVertexBufferUploader);
-	mMeshGeom->mIndexBufferGPU = CreateDefaultBuffer(CmdList, indices.data(), IBByteSize, mMeshGeom->mIndexBufferUploader);
-
-	mMeshGeom->mVertexBufferByteSize = VBByteSize;
-	mMeshGeom->mVertexByteStride = sizeof(Vertex);
-
-	mMeshGeom->mIndexBufferFormat = DXGI_FORMAT_R16_UINT;
-	mMeshGeom->mIndexBufferByteSize = IBByteSize;
-	mMeshGeom->mIndexCount = static_cast<UINT>(indices.size());
+	mTestVertexBuffer = std::make_unique<SSDX12TypedVertexBuffer<Vertex>>(mDevice.Get(), CmdList, vertices);
+	mTestIndexBuffer = std::make_unique<SSDX12IndexBuffer>(mDevice.Get(), CmdList, indices);	
 }
 
 
