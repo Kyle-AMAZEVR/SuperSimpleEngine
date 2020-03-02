@@ -118,11 +118,7 @@ void SSDX12Engine::CreateConstantBuffers()
 
 	D3D12_GPU_VIRTUAL_ADDRESS Address = mMVPUploadBuffer->GetResource()->GetGPUVirtualAddress();
 	
-	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc;
-	CBVDesc.BufferLocation = Address;
-	CBVDesc.SizeInBytes = CalcConstantBufferByteSize(sizeof(ModelViewProjConstant));
-
-	mDevice->CreateConstantBufferView(&CBVDesc, mCBVHeap->GetCPUDescriptorHandleForHeapStart());
+	
 }
 
 UINT SSDX12Engine::CalcConstantBufferByteSize(UINT ByteSize)
@@ -155,13 +151,7 @@ void SSDX12Engine::CreateDescriptorHeaps()
 	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	HR(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
 
-	//@ create constant buffer descriptor heap
-	D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc{};
-	cbvHeapDesc.NumDescriptors = 1;
-	cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-
-	HR(mDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&mCBVHeap)));
+	
 }
 
 
@@ -295,6 +285,8 @@ void SSDX12Engine::Update()
 	float z = mRadius * sinf(mPhi)*sinf(mTheta);
 	float y = mRadius * cosf(mPhi);
 
+	mTheta += (0.1f / XM_PI);
+
 	// Build the view matrix.
 	XMVECTOR pos = XMVectorSet(x, y, z, 1.0f);
 	XMVECTOR target = XMVectorZero();
@@ -380,9 +372,8 @@ void SSDX12Engine::PopulateCommandList()
 
 	mCommandList->OMSetRenderTargets(1, &rtvHandle, true, &dsvHandle);
 	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	mCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+	mCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);	
 	
-	//ID3D12DescriptorHeap* descriptorHeaps[]{ mCBVHeap.Get() };
 	ID3D12DescriptorHeap* descriptorHeaps[]{ mTestCBuffer->GetDescriptorHeap().Get() };
 	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
@@ -390,8 +381,9 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	
 	mCommandList->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetVertexBufferView());
-	mCommandList->IASetIndexBuffer(&mTestIndexBuffer->GetIndexBufferView());
-	mCommandList->SetGraphicsRootDescriptorTable(0, mCBVHeap->GetGPUDescriptorHandleForHeapStart());	   
+	mCommandList->IASetIndexBuffer(&mTestIndexBuffer->GetIndexBufferView());	
+	mCommandList->SetGraphicsRootDescriptorTable(0, mTestCBuffer->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
+
 	mCommandList->DrawIndexedInstanced(mTestIndexBuffer->GetIndexCount(), 1, 0, 0, 0);
 
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(mRenderTargets[mFrameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));

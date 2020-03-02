@@ -1,6 +1,7 @@
 
 #include "SSDX12.h"
 #include "SSDX12Texture2D.h"
+#include "SSEngine12.h"
 
 bool SSDX12Texture2D::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::wstring filename, bool bSRGB)
 {
@@ -8,15 +9,23 @@ bool SSDX12Texture2D::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsComman
 	
 	DirectX::ScratchImage image;
 
+	// 1. First Load texture using DXT Lib
 	HRESULT result = (DirectX::LoadFromDDSFile(filename.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metaData, image));
 	if (result != S_OK)
 	{
 		return false;
 	}
 
-	check(metaData.dimension == DirectX::TEX_DIMENSION_TEXTURE2D);
+	// 2. check dimension
+	if(metaData.dimension != DirectX::TEX_DIMENSION_TEXTURE2D)
+	{
+		return false;
+	}
 
-	check(LoadInternal(device, cmdList, metaData, image, bSRGB));
+	if(!LoadInternal(device, cmdList, metaData, image, bSRGB))
+	{
+		return false;
+	}	
 
 	return true;
 }
@@ -43,20 +52,20 @@ bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandLi
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
 		D3D12_HEAP_FLAG_NONE,
 		&textureDesc,
-		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&mResource)));
+		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&mTextureResource)));
 
 	const UINT num2DSubresources = 1 * static_cast<UINT>(metaData.mipLevels);
-	const UINT64 uploadBufferSize = GetRequiredIntermediateSize(mResource.Get(), 0, num2DSubresources);
+	const UINT64 uploadBufferSize = GetRequiredIntermediateSize(mTextureResource.Get(), 0, num2DSubresources);
 
 	// create upload buffer resource
 	HR(device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
-		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&mResource)));	
+		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&mUploadBuffer)));
 	
 	cmdList->ResourceBarrier(1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(mResource.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST));
+		&CD3DX12_RESOURCE_BARRIER::Transition(mTextureResource.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST));
 		
 	D3D12_SUBRESOURCE_DATA* subresourceData = new D3D12_SUBRESOURCE_DATA[metaData.mipLevels];
 
@@ -69,12 +78,39 @@ bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandLi
 		subresourceData[i].pData = pLodImage->pixels;
 	}
 	
-	UpdateSubresources(cmdList, mResource.Get(), mUploadBuffer.Get(), 0, 0, num2DSubresources, subresourceData);
+	UpdateSubresources(cmdList, mTextureResource.Get(), mUploadBuffer.Get(), 0, 0, num2DSubresources, subresourceData);
 
 	delete subresourceData;
 
 	cmdList->ResourceBarrier(1, 
-		&CD3DX12_RESOURCE_BARRIER::Transition(mResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));	
+		&CD3DX12_RESOURCE_BARRIER::Transition(mTextureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));			
+
+	
+	// create descriptor heap
+	CreateDescriptorHeap(device);
+	D3D12_CPU_DESCRIPTOR_HANDLE handle(mTextureDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	srvDesc.Format = mTextureFormat;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.Texture2D.MipLevels = mMipLevels;
+	srvDesc.Texture2D.ResourceMinLODClamp = 0.f;
+	
+	//
+	device->CreateShaderResourceView(mTextureResource.Get(), &srvDesc, handle);
 
 	return true;
+}
+
+// 
+void SSDX12Texture2D::CreateDescriptorHeap(ID3D12Device* device)
+{
+	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
+	srvHeapDesc.NumDescriptors = 1;
+	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	HR(device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&mTextureDescriptorHeap)));
 }

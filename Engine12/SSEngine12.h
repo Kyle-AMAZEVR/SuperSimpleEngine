@@ -68,8 +68,7 @@ protected:
 	ComPtr<IDXGISwapChain3> mSwapChain;
 	
 	ComPtr<ID3D12DescriptorHeap> mRTVHeap;
-	ComPtr<ID3D12DescriptorHeap> mDSVHeap;
-	ComPtr<ID3D12DescriptorHeap> mCBVHeap;
+	ComPtr<ID3D12DescriptorHeap> mDSVHeap;	
 
 	ComPtr<ID3D12Resource> mRenderTargets[FrameCount];
 	ComPtr<ID3D12Resource> mDepthStencilBuffer;
