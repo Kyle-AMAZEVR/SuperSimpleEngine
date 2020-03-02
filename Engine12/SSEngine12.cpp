@@ -1,15 +1,13 @@
 
 #include "SSDX12.h"
 #include "SSEngine12.h"
-#include "DXVertexTypes.h"
 #include "SSVertexElementDeclaration.h"
 #include <filesystem>
 #include "SSUploadBuffer.h"
 #include "SSMathHelper.h"
-#include "SSMeshGeometry.h"
-#include <array>
-
+#include "SSTemplates.h"
 #include "SSDX12ConstantBuffer.h"
+#include "SSDX12Texture2D.h"
 
 
 void SSDX12Engine::Initialize(HWND windowHandle)
@@ -75,6 +73,7 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 	mCommandList->Reset(mCommandAllocator.Get(), nullptr);	
 	
 	CreateConstantBuffers();
+	CreateTextures();
 	CreateRootSignature();
 	CreateBoxGeometry(mCommandList.Get());	
 
@@ -88,13 +87,17 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 void SSDX12Engine::CreateRootSignature()
 {
-	CD3DX12_ROOT_PARAMETER slotRootParameter[1];
+	CD3DX12_ROOT_PARAMETER slotRootParameter[2];
 
 	CD3DX12_DESCRIPTOR_RANGE cbvTable;
 	cbvTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
 	slotRootParameter[0].InitAsDescriptorTable(1, &cbvTable);
 
-	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc(1, slotRootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	CD3DX12_DESCRIPTOR_RANGE textureTable;
+	textureTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	slotRootParameter[1].InitAsDescriptorTable(1, &textureTable);		
+
+	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc(sizeof_array(slotRootParameter), slotRootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 	ComPtr<ID3DBlob> serializeRootSig = nullptr;
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 
@@ -110,16 +113,15 @@ void SSDX12Engine::CreateRootSignature()
 
 void SSDX12Engine::CreateConstantBuffers()
 {
-	mMVPUploadBuffer = std::make_unique<SSUploadBuffer<ModelViewProjConstant>>(mDevice.Get(), 1, true);
-
 	mTestCBuffer = std::make_unique<SSDX12TypedConstantBuffer<ModelViewProjConstant>>(mDevice.Get());
-	
-	const UINT ObjByteSize = CalcConstantBufferByteSize(sizeof(ModelViewProjConstant));
-
-	D3D12_GPU_VIRTUAL_ADDRESS Address = mMVPUploadBuffer->GetResource()->GetGPUVirtualAddress();
-	
-	
 }
+
+void SSDX12Engine::CreateTextures()
+{
+	mTexture2D = std::make_unique<SSDX12Texture2D>();
+	mTexture2D->LoadFromDDSFile(mDevice.Get(), mCommandList.Get(), L"./Resource/Tex/rustediron2_basecolor.dds");
+}
+
 
 UINT SSDX12Engine::CalcConstantBufferByteSize(UINT ByteSize)
 {
@@ -301,12 +303,7 @@ void SSDX12Engine::Update()
 
 	// Update the constant buffer with the latest worldViewProj matrix.
 	ModelViewProjConstant objConstants;
-	XMStoreFloat4x4(&objConstants.ModelViewProj, XMMatrixTranspose(worldViewProj));
-
-	if (mMVPUploadBuffer)
-	{
-		mMVPUploadBuffer->CopyData(0, objConstants);
-	}
+	XMStoreFloat4x4(&objConstants.ModelViewProj, XMMatrixTranspose(worldViewProj));	
 
 	if(mTestCBuffer)
 	{

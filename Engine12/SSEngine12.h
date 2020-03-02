@@ -46,6 +46,7 @@ protected:
 	void CreateDescriptorHeaps();
 	void CreateRootSignature();
 	void CreateConstantBuffers();
+	void CreateTextures();
 	void CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList);
 	void Update();
 
@@ -104,7 +105,7 @@ protected:
 	std::unique_ptr<class SSDX12TypedConstantBuffer<ModelViewProjConstant>> mTestCBuffer;
 	std::unique_ptr<class SSDX12TypedVertexBuffer<Vertex>> mTestVertexBuffer;
 	std::unique_ptr<class SSDX12IndexBuffer> mTestIndexBuffer;
-
+	std::unique_ptr<class SSDX12Texture2D> mTexture2D;
 	
 
 	float mTheta = 1.5f*XM_PI;
