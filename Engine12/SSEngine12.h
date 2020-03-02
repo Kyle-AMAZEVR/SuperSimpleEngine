@@ -9,12 +9,15 @@
 #include "SSMeshGeometry.h"
 #include "SSDX12ConstantBuffer.h"
 #include "SSDX12VertexBuffer.h"
+#include <array>
+#include <vector>
 #include "SSDX12IndexBuffer.h"
 
 struct Vertex
 {
 	XMFLOAT3 Pos;
 	XMFLOAT4 Color;
+	XMFLOAT2 TexCoord;
 };
 
 struct ModelViewProjConstant
@@ -49,6 +52,7 @@ protected:
 	void CreateTextures();
 	void CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList);
 	void Update();
+	std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> GetStaticSamplers();
 
 	ComPtr<ID3D12Resource> CreateDefaultBuffer(ID3D12GraphicsCommandList* CmdList, const void* InitialData, const UINT64 ByteSize, ComPtr<ID3D12Resource>& UploadBuffer);
 

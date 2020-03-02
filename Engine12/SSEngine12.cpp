@@ -3,7 +3,6 @@
 #include "SSEngine12.h"
 #include "SSVertexElementDeclaration.h"
 #include <filesystem>
-#include "SSUploadBuffer.h"
 #include "SSMathHelper.h"
 #include "SSTemplates.h"
 #include "SSDX12ConstantBuffer.h"
@@ -87,17 +86,19 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 void SSDX12Engine::CreateRootSignature()
 {
-	CD3DX12_ROOT_PARAMETER slotRootParameter[2];
-
-	CD3DX12_DESCRIPTOR_RANGE cbvTable;
-	cbvTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
-	slotRootParameter[0].InitAsDescriptorTable(1, &cbvTable);
+	CD3DX12_ROOT_PARAMETER slotRootParameter[2];	
 
 	CD3DX12_DESCRIPTOR_RANGE textureTable;
 	textureTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
-	slotRootParameter[1].InitAsDescriptorTable(1, &textureTable);		
+	slotRootParameter[0].InitAsDescriptorTable(1, &textureTable, D3D12_SHADER_VISIBILITY_PIXEL);
+	slotRootParameter[1].InitAsConstantBufferView(0);
 
-	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc(sizeof_array(slotRootParameter), slotRootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	auto staticSamplers = GetStaticSamplers();
+
+	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc(sizeof_array(slotRootParameter), slotRootParameter, 
+		staticSamplers.size(), staticSamplers.data(), 
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
 	ComPtr<ID3DBlob> serializeRootSig = nullptr;
 	ComPtr<ID3DBlob> errorBlob = nullptr;
 
@@ -264,7 +265,7 @@ void SSDX12Engine::LoadAssets()
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 
-	psoDesc.InputLayout = { SSVertexElementDeclaration::PositionColorElementDesc, 2 };
+	psoDesc.InputLayout = { SSVertexElementDeclaration::PositionColorTexcoordElementDesc, 3 };
 	psoDesc.pRootSignature = mRootSignature.Get();		
 	psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
 	psoDesc.PS = CD3DX12_SHADER_BYTECODE(pixelShader.Get());
@@ -371,15 +372,18 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	mCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);	
 	
-	ID3D12DescriptorHeap* descriptorHeaps[]{ mTestCBuffer->GetDescriptorHeap().Get() };
+	ID3D12DescriptorHeap* descriptorHeaps[]{ mTexture2D->GetDescriptorHeap().Get() };
 	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 
 	mCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	
 	mCommandList->IASetVertexBuffers(0, 1, &mTestVertexBuffer->GetVertexBufferView());
-	mCommandList->IASetIndexBuffer(&mTestIndexBuffer->GetIndexBufferView());	
-	mCommandList->SetGraphicsRootDescriptorTable(0, mTestCBuffer->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
+	mCommandList->IASetIndexBuffer(&mTestIndexBuffer->GetIndexBufferView());
+	
+
+	mCommandList->SetGraphicsRootDescriptorTable(0, mTexture2D->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
+	mCommandList->SetGraphicsRootConstantBufferView(1, mTestCBuffer->GetResource()->GetGPUVirtualAddress());
 
 	mCommandList->DrawIndexedInstanced(mTestIndexBuffer->GetIndexCount(), 1, 0, 0, 0);
 
@@ -476,14 +480,14 @@ void SSDX12Engine::CreateBoxGeometry(ID3D12GraphicsCommandList* CmdList)
 {
 	std::vector<Vertex> vertices =
 	{
-		Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1,1,1,1) }),
-		Vertex({ XMFLOAT3(-1.0f, +1.0f, -1.0f), XMFLOAT4(0,0,0,1) }),
-		Vertex({ XMFLOAT3(+1.0f, +1.0f, -1.0f), XMFLOAT4(1,0,0,1) }),
-		Vertex({ XMFLOAT3(+1.0f, -1.0f, -1.0f), XMFLOAT4(0,1,0,1) }),
-		Vertex({ XMFLOAT3(-1.0f, -1.0f, +1.0f), XMFLOAT4(0,0,1,1) }),
-		Vertex({ XMFLOAT3(-1.0f, +1.0f, +1.0f), XMFLOAT4(1,1,0,1) }),
-		Vertex({ XMFLOAT3(+1.0f, +1.0f, +1.0f), XMFLOAT4(1,0,1,1) }),
-		Vertex({ XMFLOAT3(+1.0f, -1.0f, +1.0f), XMFLOAT4(0,1,1,1) })
+		Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1,1,1,1), XMFLOAT2(0,0) }),
+		Vertex({ XMFLOAT3(-1.0f, +1.0f, -1.0f), XMFLOAT4(0,0,0,1), XMFLOAT2(0,1) }),
+		Vertex({ XMFLOAT3(+1.0f, +1.0f, -1.0f), XMFLOAT4(1,0,0,1), XMFLOAT2(1,1) }),
+		Vertex({ XMFLOAT3(+1.0f, -1.0f, -1.0f), XMFLOAT4(0,1,0,1), XMFLOAT2(1,0) }),
+		Vertex({ XMFLOAT3(-1.0f, -1.0f, +1.0f), XMFLOAT4(0,0,1,1), XMFLOAT2(0,0) }),
+		Vertex({ XMFLOAT3(-1.0f, +1.0f, +1.0f), XMFLOAT4(1,1,0,1), XMFLOAT2(0,1) }),
+		Vertex({ XMFLOAT3(+1.0f, +1.0f, +1.0f), XMFLOAT4(1,0,1,1), XMFLOAT2(1,1) }),
+		Vertex({ XMFLOAT3(+1.0f, -1.0f, +1.0f), XMFLOAT4(0,1,1,1), XMFLOAT2(1,0) })
 	};
 
 	std::vector<UINT> indices =
@@ -551,3 +555,62 @@ ComPtr<ID3D12Resource> SSDX12Engine::CreateDefaultBuffer(ID3D12GraphicsCommandLi
 
 	return DefaultBuffer;
 }
+
+
+std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> SSDX12Engine::GetStaticSamplers()
+{
+	// Applications usually only need a handful of samplers.  So just define them all up front
+	// and keep them available as part of the root signature.  
+
+	const CD3DX12_STATIC_SAMPLER_DESC pointWrap(
+		0, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_POINT, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC pointClamp(
+		1, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_POINT, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC linearWrap(
+		2, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_LINEAR, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC linearClamp(
+		3, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_LINEAR, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC anisotropicWrap(
+		4, // shaderRegister
+		D3D12_FILTER_ANISOTROPIC, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressW
+		0.0f,                             // mipLODBias
+		8);                               // maxAnisotropy
+
+	const CD3DX12_STATIC_SAMPLER_DESC anisotropicClamp(
+		5, // shaderRegister
+		D3D12_FILTER_ANISOTROPIC, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressW
+		0.0f,                              // mipLODBias
+		8);                                // maxAnisotropy
+
+	return {
+		pointWrap, pointClamp,
+		linearWrap, linearClamp,
+		anisotropicWrap, anisotropicClamp };
+}
+
