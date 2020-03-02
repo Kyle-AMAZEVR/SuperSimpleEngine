@@ -6,7 +6,7 @@ class SSDX12_API SSDX12ConstantBuffer : public SSDX12Resource
 {
 public:
 	SSDX12ConstantBuffer() = default;
-	SSDX12ConstantBuffer(ID3D12Device* device, const UINT bufferSize = 256);
+	SSDX12ConstantBuffer(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, const UINT bufferSize = 256);
 
 	// @
 	virtual ComPtr<ID3D12Resource> GetResource() const override { return mResource; }
@@ -16,10 +16,11 @@ public:
 
 	UINT GetBufferSize() const { return mCBufferSize; }
 
-	void CreateConstantBufferView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle);
+	
 
 protected:
-	bool Create(ID3D12Device* device, const UINT bufferSize = 256);
+	bool Create(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, const UINT bufferSize = 256);
+	void CreateConstantBufferView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle);
 
 	ComPtr<ID3D12Resource> mResource = nullptr;
 	ComPtr<ID3D12DescriptorHeap> mDescriptorHeap = nullptr;
@@ -33,8 +34,8 @@ template<typename T>
 class SSDX12TypedConstantBuffer : public SSDX12ConstantBuffer
 {
 public:
-	SSDX12TypedConstantBuffer(ID3D12Device* device)
-		: SSDX12ConstantBuffer(device, sizeof(T))
+	SSDX12TypedConstantBuffer(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle)
+		: SSDX12ConstantBuffer(device, handle, sizeof(T))
 	{
 	}
 

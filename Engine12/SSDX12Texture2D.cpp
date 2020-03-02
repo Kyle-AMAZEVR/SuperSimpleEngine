@@ -3,7 +3,7 @@
 #include "SSDX12Texture2D.h"
 #include "SSEngine12.h"
 
-bool SSDX12Texture2D::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::wstring filename, bool bSRGB)
+bool SSDX12Texture2D::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, std::wstring filename, bool bSRGB)
 {
 	DirectX::TexMetadata metaData;
 	
@@ -22,7 +22,7 @@ bool SSDX12Texture2D::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsComman
 		return false;
 	}
 
-	if(!LoadInternal(device, cmdList, metaData, image, bSRGB))
+	if(!LoadInternal(device, cmdList, handle, metaData, image, bSRGB))
 	{
 		return false;
 	}	
@@ -30,7 +30,7 @@ bool SSDX12Texture2D::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsComman
 	return true;
 }
 
-bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bSRGB)
+bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bSRGB)
 {
 	mWidth = static_cast<UINT>(metaData.width);
 	mHeight = static_cast<UINT>(metaData.height);
@@ -84,6 +84,8 @@ bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandLi
 
 	cmdList->ResourceBarrier(1, 
 		&CD3DX12_RESOURCE_BARRIER::Transition(mTextureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+
+	CreateShaderResourceView(device, handle);
 
 	return true;
 }

@@ -112,6 +112,7 @@ protected:
 	std::unique_ptr<class SSDX12IndexBuffer> mTestIndexBuffer;
 	std::unique_ptr<class SSDX12Texture2D> mTexture2D;
 	
+	CD3DX12_CPU_DESCRIPTOR_HANDLE mCurrentHandle;
 
 	float mTheta = 1.5f*XM_PI;
 	float mPhi = XM_PIDIV4;

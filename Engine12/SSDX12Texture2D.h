@@ -15,11 +15,11 @@ public:
 	virtual ComPtr<ID3D12DescriptorHeap> GetDescriptorHeap() const override { return mTextureDescriptorHeap; }
 	// @	
 
-	void CreateShaderResourceView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle);
-	
-	bool LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::wstring filename, bool bSRGB = false);	
+	bool LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, std::wstring filename, bool bSRGB = false);	
 
 protected:
+
+	void CreateShaderResourceView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle);
 
 	void CreateDescriptorHeap(ID3D12Device* device);
 
@@ -33,6 +33,6 @@ protected:
 
 	ComPtr<ID3D12DescriptorHeap> mTextureDescriptorHeap = nullptr;
 
-	bool LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bSRGB);
+	bool LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bSRGB);
 };
 

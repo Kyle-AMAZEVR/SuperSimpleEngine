@@ -121,18 +121,16 @@ void SSDX12Engine::CreateRootSignature()
 
 void SSDX12Engine::CreateConstantBuffers()
 {
-	mTestCBuffer = std::make_unique<SSDX12TypedConstantBuffer<ModelViewProjConstant>>(mDevice.Get());
-	CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mCBVSRVUAVHeap->GetCPUDescriptorHandleForHeapStart());
-	handle.Offset(1, mCBVSRVUAVDescriptorSize);
-	mTestCBuffer->CreateConstantBufferView(mDevice.Get(), handle);
+	mCurrentHandle.Offset(1, mCBVSRVUAVDescriptorSize);
+	mTestCBuffer = std::make_unique<SSDX12TypedConstantBuffer<ModelViewProjConstant>>(mDevice.Get(), mCurrentHandle);	
+	
 }
 
 void SSDX12Engine::CreateTextures()
 {
 	mTexture2D = std::make_unique<SSDX12Texture2D>();
-	mTexture2D->LoadFromDDSFile(mDevice.Get(), mCommandList.Get(), L"./Resource/Tex/rustediron2_basecolor.dds");
-	CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mCBVSRVUAVHeap->GetCPUDescriptorHandleForHeapStart());
-	mTexture2D->CreateShaderResourceView(mDevice.Get(), handle);
+	mCurrentHandle = mCBVSRVUAVHeap->GetCPUDescriptorHandleForHeapStart();
+	mTexture2D->LoadFromDDSFile(mDevice.Get(), mCommandList.Get(), mCurrentHandle, L"./Resource/Tex/rustediron2_basecolor.dds");	
 }
 
 

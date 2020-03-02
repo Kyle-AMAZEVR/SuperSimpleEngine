@@ -3,12 +3,12 @@
 #include "SSDX12ConstantBuffer.h"
 #include "d3dx12.h"
 
-SSDX12ConstantBuffer::SSDX12ConstantBuffer(ID3D12Device* device, const UINT bufferSize)
+SSDX12ConstantBuffer::SSDX12ConstantBuffer(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, const UINT bufferSize)
 {
-	check(Create(device, bufferSize) == true);
+	check(Create(device, handle, bufferSize) == true);
 }
 
-bool SSDX12ConstantBuffer::Create(ID3D12Device* device, const UINT bufferSize)
+bool SSDX12ConstantBuffer::Create(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, const UINT bufferSize)
 {
 	// create descriptor heap
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
@@ -31,9 +31,7 @@ bool SSDX12ConstantBuffer::Create(ID3D12Device* device, const UINT bufferSize)
 	desc.BufferLocation = mResource->GetGPUVirtualAddress();
 	desc.SizeInBytes = mCBufferSize;
 
-	// create descriptor
-	// CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-	// device->CreateConstantBufferView(&desc, handle);
+	CreateConstantBufferView(device, handle);
 
 	mCreated = true;
 
