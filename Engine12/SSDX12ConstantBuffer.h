@@ -16,6 +16,8 @@ public:
 
 	UINT GetBufferSize() const { return mCBufferSize; }
 
+	void CreateConstantBufferView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle);
+
 protected:
 	bool Create(ID3D12Device* device, const UINT bufferSize = 256);
 

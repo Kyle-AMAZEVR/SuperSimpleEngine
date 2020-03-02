@@ -83,14 +83,13 @@ bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandLi
 	delete subresourceData;
 
 	cmdList->ResourceBarrier(1, 
-		&CD3DX12_RESOURCE_BARRIER::Transition(mTextureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));			
+		&CD3DX12_RESOURCE_BARRIER::Transition(mTextureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 
-	
-	// create descriptor heap
-	CreateDescriptorHeap(device);
-	D3D12_CPU_DESCRIPTOR_HANDLE handle(mTextureDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-	
+	return true;
+}
 
+void SSDX12Texture2D::CreateShaderResourceView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle)
+{
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc;
 	ZeroMemory(&srvDesc, sizeof(srvDesc));
 	srvDesc.Format = mTextureFormat;
@@ -99,11 +98,8 @@ bool SSDX12Texture2D::LoadInternal(ID3D12Device* device, ID3D12GraphicsCommandLi
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = mMipLevels;
 	srvDesc.Texture2D.ResourceMinLODClamp = 0.f;
-	
-	//
-	device->CreateShaderResourceView(mTextureResource.Get(), &srvDesc, handle);
 
-	return true;
+	device->CreateShaderResourceView(mTextureResource.Get(), &srvDesc, handle);
 }
 
 // 

@@ -32,10 +32,19 @@ bool SSDX12ConstantBuffer::Create(ID3D12Device* device, const UINT bufferSize)
 	desc.SizeInBytes = mCBufferSize;
 
 	// create descriptor
-	CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-	device->CreateConstantBufferView(&desc, handle);
+	// CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	// device->CreateConstantBufferView(&desc, handle);
 
 	mCreated = true;
 
 	return true;
+}
+
+void SSDX12ConstantBuffer::CreateConstantBufferView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle)
+{
+	D3D12_CONSTANT_BUFFER_VIEW_DESC desc;
+	desc.BufferLocation = mResource->GetGPUVirtualAddress();
+	desc.SizeInBytes = mCBufferSize;
+
+	device->CreateConstantBufferView(&desc, handle);
 }

@@ -70,9 +70,10 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 		
 	//mCommandList->Close();
 	mCommandList->Reset(mCommandAllocator.Get(), nullptr);	
-	
-	CreateConstantBuffers();
+
 	CreateTextures();
+	CreateConstantBuffers();
+	
 	CreateRootSignature();
 	CreateBoxGeometry(mCommandList.Get());	
 
@@ -86,17 +87,17 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 void SSDX12Engine::CreateRootSignature()
 {
-	CD3DX12_ROOT_PARAMETER slotRootParameter[3];	
+	CD3DX12_ROOT_PARAMETER slotRootParameter[2];	
 
 	CD3DX12_DESCRIPTOR_RANGE textureTable;
 	textureTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	slotRootParameter[0].InitAsDescriptorTable(1, &textureTable, D3D12_SHADER_VISIBILITY_PIXEL);
 
-	slotRootParameter[1].InitAsConstantBufferView(0);
+	//slotRootParameter[1].InitAsConstantBufferView(0);
 
 	CD3DX12_DESCRIPTOR_RANGE cbvTable;
-	cbvTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
-	slotRootParameter[2].InitAsDescriptorTable(1, &cbvTable, D3D12_SHADER_VISIBILITY_ALL);	
+	cbvTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
+	slotRootParameter[1].InitAsDescriptorTable(1, &cbvTable, D3D12_SHADER_VISIBILITY_ALL);	
 
 	auto staticSamplers = GetStaticSamplers();
 
@@ -121,13 +122,19 @@ void SSDX12Engine::CreateRootSignature()
 void SSDX12Engine::CreateConstantBuffers()
 {
 	mTestCBuffer = std::make_unique<SSDX12TypedConstantBuffer<ModelViewProjConstant>>(mDevice.Get());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mCBVSRVUAVHeap->GetCPUDescriptorHandleForHeapStart());
+	handle.Offset(1, mCBVSRVUAVDescriptorSize);
+	mTestCBuffer->CreateConstantBufferView(mDevice.Get(), handle);
 }
 
 void SSDX12Engine::CreateTextures()
 {
 	mTexture2D = std::make_unique<SSDX12Texture2D>();
 	mTexture2D->LoadFromDDSFile(mDevice.Get(), mCommandList.Get(), L"./Resource/Tex/rustediron2_basecolor.dds");
+	CD3DX12_CPU_DESCRIPTOR_HANDLE handle(mCBVSRVUAVHeap->GetCPUDescriptorHandleForHeapStart());
+	mTexture2D->CreateShaderResourceView(mDevice.Get(), handle);
 }
+
 
 
 UINT SSDX12Engine::CalcConstantBufferByteSize(UINT ByteSize)
@@ -160,7 +167,14 @@ void SSDX12Engine::CreateDescriptorHeaps()
 	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	HR(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
 
-	
+	// @ for test
+	D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
+	heapDesc.NumDescriptors = 2;
+	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	heapDesc.NodeMask = 0;
+
+	HR(mDevice->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&mCBVSRVUAVHeap)));
 
 }
 
@@ -379,7 +393,7 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	mCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);	
 	
-	ID3D12DescriptorHeap* descriptorHeaps[]{ mTexture2D->GetDescriptorHeap().Get()};
+	ID3D12DescriptorHeap* descriptorHeaps[]{ mCBVSRVUAVHeap.Get()};
 	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 
@@ -389,8 +403,13 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->IASetIndexBuffer(&mTestIndexBuffer->GetIndexBufferView());
 	
 
-	mCommandList->SetGraphicsRootDescriptorTable(0, mTexture2D->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());	
-	mCommandList->SetGraphicsRootConstantBufferView(1, mTestCBuffer->GetResource()->GetGPUVirtualAddress());
+	//mCommandList->SetGraphicsRootDescriptorTable(0, mTexture2D->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
+	CD3DX12_GPU_DESCRIPTOR_HANDLE handle(mCBVSRVUAVHeap->GetGPUDescriptorHandleForHeapStart());
+	mCommandList->SetGraphicsRootDescriptorTable(0, handle);
+	handle.Offset(1, mCBVSRVUAVDescriptorSize);
+
+	mCommandList->SetGraphicsRootDescriptorTable(1, handle);
+	//mCommandList->SetGraphicsRootConstantBufferView(1, mTestCBuffer->GetResource()->GetGPUVirtualAddress());
 
 	mCommandList->DrawIndexedInstanced(mTestIndexBuffer->GetIndexCount(), 1, 0, 0, 0);
 

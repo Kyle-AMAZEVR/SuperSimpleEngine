@@ -14,6 +14,8 @@ public:
 	virtual ID3D12Resource* GetResourcePtr() const override { return mTextureResource.Get(); }
 	virtual ComPtr<ID3D12DescriptorHeap> GetDescriptorHeap() const override { return mTextureDescriptorHeap; }
 	// @	
+
+	void CreateShaderResourceView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle);
 	
 	bool LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, std::wstring filename, bool bSRGB = false);	
 
