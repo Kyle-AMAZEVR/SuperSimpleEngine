@@ -34,6 +34,8 @@ using namespace DirectX;
 
 void PrintError(const char* loc, const char* msg);
 
+void PrintDXError(ID3DBlob* errorMsg);
+
 #define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
 
 #define checkMsg(expression,msg) if(!(expression)) { PrintError(AT, STRINGFY(msg));}

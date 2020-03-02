@@ -86,17 +86,22 @@ void SSDX12Engine::Initialize(HWND windowHandle)
 
 void SSDX12Engine::CreateRootSignature()
 {
-	CD3DX12_ROOT_PARAMETER slotRootParameter[2];	
+	CD3DX12_ROOT_PARAMETER slotRootParameter[3];	
 
 	CD3DX12_DESCRIPTOR_RANGE textureTable;
 	textureTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	slotRootParameter[0].InitAsDescriptorTable(1, &textureTable, D3D12_SHADER_VISIBILITY_PIXEL);
+
 	slotRootParameter[1].InitAsConstantBufferView(0);
+
+	CD3DX12_DESCRIPTOR_RANGE cbvTable;
+	cbvTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
+	slotRootParameter[2].InitAsDescriptorTable(1, &cbvTable, D3D12_SHADER_VISIBILITY_ALL);	
 
 	auto staticSamplers = GetStaticSamplers();
 
 	CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc(sizeof_array(slotRootParameter), slotRootParameter, 
-		staticSamplers.size(), staticSamplers.data(), 
+		static_cast<UINT>(staticSamplers.size()), staticSamplers.data(), 
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> serializeRootSig = nullptr;
@@ -107,6 +112,7 @@ void SSDX12Engine::CreateRootSignature()
 	if(errorBlob != nullptr)
 	{
 		check(false);
+		PrintDXError(errorBlob.Get());
 	}
 
 	HR(mDevice->CreateRootSignature(0, serializeRootSig->GetBufferPointer(), serializeRootSig->GetBufferSize(), IID_PPV_ARGS(&mRootSignature)));
@@ -155,6 +161,7 @@ void SSDX12Engine::CreateDescriptorHeaps()
 	HR(mDevice->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&mDSVHeap)));
 
 	
+
 }
 
 
@@ -372,7 +379,7 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	mCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);	
 	
-	ID3D12DescriptorHeap* descriptorHeaps[]{ mTexture2D->GetDescriptorHeap().Get() };
+	ID3D12DescriptorHeap* descriptorHeaps[]{ mTexture2D->GetDescriptorHeap().Get()};
 	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 
@@ -382,7 +389,7 @@ void SSDX12Engine::PopulateCommandList()
 	mCommandList->IASetIndexBuffer(&mTestIndexBuffer->GetIndexBufferView());
 	
 
-	mCommandList->SetGraphicsRootDescriptorTable(0, mTexture2D->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
+	mCommandList->SetGraphicsRootDescriptorTable(0, mTexture2D->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());	
 	mCommandList->SetGraphicsRootConstantBufferView(1, mTestCBuffer->GetResource()->GetGPUVirtualAddress());
 
 	mCommandList->DrawIndexedInstanced(mTestIndexBuffer->GetIndexCount(), 1, 0, 0, 0);
