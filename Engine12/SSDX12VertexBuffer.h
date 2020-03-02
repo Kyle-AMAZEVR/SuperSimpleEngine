@@ -9,8 +9,7 @@ public:
 
 	// @
 	virtual ComPtr<ID3D12Resource> GetResource() const override { return mResource; }
-	virtual ID3D12Resource* GetResourcePtr() const override { return mResource.Get(); }
-	virtual ComPtr<ID3D12DescriptorHeap> GetDescriptorHeap() const override { return nullptr; }
+	virtual ID3D12Resource* GetResourcePtr() const override { return mResource.Get(); }	
 	// @
 
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView() const;

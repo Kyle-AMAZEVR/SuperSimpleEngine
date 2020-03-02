@@ -10,20 +10,16 @@ public:
 
 	// @
 	virtual ComPtr<ID3D12Resource> GetResource() const override { return mResource; }
-	virtual ID3D12Resource* GetResourcePtr() const override { return mResource.Get(); }
-	virtual ComPtr<ID3D12DescriptorHeap> GetDescriptorHeap() const override { return mDescriptorHeap; }
+	virtual ID3D12Resource* GetResourcePtr() const override { return mResource.Get(); }	
 	// @
 
-	UINT GetBufferSize() const { return mCBufferSize; }
-
-	
+	UINT GetBufferSize() const { return mCBufferSize; }	
 
 protected:
 	bool Create(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle, const UINT bufferSize = 256);
 	void CreateConstantBufferView(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_HANDLE handle);
 
-	ComPtr<ID3D12Resource> mResource = nullptr;
-	ComPtr<ID3D12DescriptorHeap> mDescriptorHeap = nullptr;
+	ComPtr<ID3D12Resource> mResource = nullptr;	
 	
 	UINT mCBufferSize = 0;
 	bool mCreated = false;

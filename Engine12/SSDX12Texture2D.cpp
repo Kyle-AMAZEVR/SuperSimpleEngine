@@ -104,12 +104,4 @@ void SSDX12Texture2D::CreateShaderResourceView(ID3D12Device* device, CD3DX12_CPU
 	device->CreateShaderResourceView(mTextureResource.Get(), &srvDesc, handle);
 }
 
-// 
-void SSDX12Texture2D::CreateDescriptorHeap(ID3D12Device* device)
-{
-	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
-	srvHeapDesc.NumDescriptors = 1;
-	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	HR(device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&mTextureDescriptorHeap)));
-}
+

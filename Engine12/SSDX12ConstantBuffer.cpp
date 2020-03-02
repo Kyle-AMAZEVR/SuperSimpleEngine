@@ -15,9 +15,7 @@ bool SSDX12ConstantBuffer::Create(ID3D12Device* device, CD3DX12_CPU_DESCRIPTOR_H
 	heapDesc.NumDescriptors = 1;
 	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	heapDesc.NodeMask = 0;
-
-	HR(device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&mDescriptorHeap)));
+	heapDesc.NodeMask = 0;	
 
 	mCBufferSize = (bufferSize + 255) & (~255);
 
