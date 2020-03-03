@@ -38,8 +38,7 @@ void SSVertexShader::CreateInputLayout(ID3D12Device* device, ID3D12ShaderReflect
 		shaderReflection->GetInputParameterDesc(i, &inputDesc);
 
 
-		inputDescriptions[i].SemanticName = inputDesc.SemanticName;
-		inputDescriptions[i].Format = format;
+		inputDescriptions[i].SemanticName = inputDesc.SemanticName;		
 		
 	}
 }
