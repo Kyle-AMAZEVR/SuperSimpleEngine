@@ -3,10 +3,8 @@
 #include "SSEngine.h"
 #include "SSVertexElementDeclaration.h"
 #include <filesystem>
-#include <fstream>
 #include <map>
-#include "Templates.h"
-#include "Translator.h"
+#include "SSDXTranslator.h"
 #include "SSTexture2D.h"
 
 #pragma region DXShaderImplementation
@@ -134,7 +132,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 		D3D11_SIGNATURE_PARAMETER_DESC inputDesc;
 		shaderReflection->GetInputParameterDesc(i, &inputDesc);
 
-		auto format = Translator::GetVertexShaderInputType(inputDesc);
+		auto format = SSDXTranslator::GetVertexShaderInputType(inputDesc);
 		inputDescriptions[i].SemanticName = inputDesc.SemanticName;
 		inputDescriptions[i].Format = format;
 		inputDescriptions[i].InputSlotClass = D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA;
@@ -143,7 +141,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 		inputDescriptions[i].InputSlot = 0;
 		inputDescriptions[i].AlignedByteOffset = byteOffset;
 
-		byteOffset += Translator::GetDXGIFormatByteSize(format);
+		byteOffset += SSDXTranslator::GetDXGIFormatByteSize(format);
 	}
 
 	HR(dxDevice->CreateInputLayout(inputDescriptions, inputParamCount, mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &mInputLayout));

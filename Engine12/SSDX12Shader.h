@@ -30,4 +30,5 @@ class SSVertexShader : public SSDX12Shader
 public:
 	virtual void CompileFromFile(ID3D12Device* device, std::wstring filepath) override;
 
+	void CreateInputLayout(ID3D12Device* device, ID3D12ShaderReflection* shaderReflection);
 };
