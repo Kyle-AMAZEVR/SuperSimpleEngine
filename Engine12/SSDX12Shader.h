@@ -16,7 +16,7 @@ protected:
 class SSDX12Shader
 {
 public:
-	ID3DBlob* GetCompiledShader();
+	ID3DBlob* GetCompiledShader();	
 
 protected:
 	virtual void ReflectCompiledShader(ID3D12ShaderReflection* reflection);
@@ -31,4 +31,7 @@ public:
 	virtual void CompileFromFile(ID3D12Device* device, std::wstring filepath) override;
 
 	void CreateInputLayout(ID3D12Device* device, ID3D12ShaderReflection* shaderReflection);
+
+protected:
+
 };
