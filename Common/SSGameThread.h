@@ -9,5 +9,10 @@ public:
 	static bool IsInGameThread();
 
 protected:
+
+	HANDLE mThreadHandle = nullptr;
+
+	HANDLE mGameThreadDoneEventHandle = nullptr;
+
 	static DWORD mGameThreadId;
 };
