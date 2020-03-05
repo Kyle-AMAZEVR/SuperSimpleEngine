@@ -4,9 +4,11 @@
 class COMMON_API SSGameThread
 {
 public:
-	void SetGameThreadId(const DWORD GameThreadId) { mGameThreadId = GameThreadId; }
+	void Start(const DWORD GameThreadId);
 
 	static bool IsInGameThread();
+
+	void Tick(float deltaSeconds);
 
 protected:
 

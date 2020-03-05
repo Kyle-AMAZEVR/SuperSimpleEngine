@@ -10,7 +10,8 @@ void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 	mEngineInstance = pEngine;
     mWindowHandle = handle;
 	mThreadHandle = CreateThread(nullptr, 0, &SSRenderingThread::Run, this, 0, &mRenderingThreadId);
-	InitializeCriticalSection(&mCriticalSection);	
+	InitializeCriticalSection(&mCriticalSection);
+	mEventName = "RenderingThreadDoneEvent";
 	mRenderingDoneEventHandle = CreateEvent(nullptr, false, false, mEventName);
 }
 

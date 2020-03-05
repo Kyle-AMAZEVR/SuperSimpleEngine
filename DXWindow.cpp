@@ -94,6 +94,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     renderingThread.RequestExit(); 
     renderingThread.Join();
 
+	if(DX12Engine != nullptr)
+	{
+		delete DX12Engine;
+	}
+
     return (int) msg.wParam;
 }
 
