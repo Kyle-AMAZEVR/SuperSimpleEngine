@@ -20,6 +20,8 @@ public:
 
 	HANDLE GetRenderingDoneEventHandle() { return mRenderingDoneEventHandle; }
 
+	void WaitForRenderingThread(const DWORD WaitTime = INFINITE);
+
 protected:
 	HANDLE mThreadHandle = nullptr;
 	static DWORD mRenderingThreadId;

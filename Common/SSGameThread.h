@@ -10,6 +10,8 @@ public:
 
 	void Tick(float deltaSeconds);
 
+	HANDLE GetGameThreadEventHandle() { return mGameThreadDoneEventHandle; }
+
 protected:
 
 	HANDLE mThreadHandle = nullptr;

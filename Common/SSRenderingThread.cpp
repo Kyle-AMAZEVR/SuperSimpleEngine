@@ -15,6 +15,12 @@ void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 	mRenderingDoneEventHandle = CreateEvent(nullptr, false, false, mEventName);
 }
 
+void SSRenderingThread::WaitForRenderingThread(const DWORD WaitTime)
+{
+	WaitForSingleObject(mRenderingDoneEventHandle, WaitTime);
+}
+
+
 DWORD SSRenderingThread::Run()
 {
 	// init engine

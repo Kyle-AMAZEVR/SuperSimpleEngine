@@ -70,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	SSDX11Engine* DX11Engine = SSDX11Engine::GetPtr();
 	SSDX12Engine* DX12Engine = new SSDX12Engine();
 
-	gameThread.SetGameThreadId(GetCurrentThreadId());
+	gameThread.Start(GetCurrentThreadId());
     renderingThread.Start(WindowHandle, DX12Engine);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
@@ -89,7 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
 
 		Timer.Tick();
-
+		gameThread.Tick(Timer.GetDeltaTime());
     }
     renderingThread.RequestExit(); 
     renderingThread.Join();
@@ -205,8 +205,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				auto dpiY = GetDeviceCaps(hdc, LOGPIXELSY);
 				SSFontManager::Get().Initialize(dpiX, dpiY);
 			}
-			HANDLE handle = renderingThread.GetRenderingDoneEventHandle();
-			WaitForSingleObject(handle, INFINITE);
+
+			renderingThread.WaitForRenderingThread();
 
             // TODO: Add any drawing code that uses hdc here...            
             EndPaint(hWnd, &ps);
