@@ -24,3 +24,24 @@ protected:
 	DirectX::XMFLOAT3 mEyePosition;
 	DirectX::XMFLOAT3 mUp;	
 };
+
+template<class T>
+class TestTemplateClass
+{
+public:
+	static T& Get()
+	{
+		if (mInstance == nullptr)
+		{
+			mInstance = new T();
+		}
+		return *mInstance;
+	}
+private:
+	static T* mInstance;
+};
+
+template<class T>
+T* TestTemplateClass<T>::mInstance = nullptr;
+
+COMMON_API_EXTERN template class COMMON_API TestTemplateClass<float>;

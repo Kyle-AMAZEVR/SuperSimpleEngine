@@ -3,6 +3,7 @@
 #include "SSFreeCamera.h"
 #include "CameraManager.h"
 
+
 SSCameraManager::SSCameraManager()
 {
     mCurrentCamera = new SSFreeCamera();

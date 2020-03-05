@@ -9,6 +9,7 @@
 #include "SSMeshGeometry.h"
 #include "SSDX12ConstantBuffer.h"
 #include "SSDX12VertexBuffer.h"
+#include "SSDX12Texture2D.h"
 #include <array>
 #include <vector>
 #include "SSDX12IndexBuffer.h"
