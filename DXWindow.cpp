@@ -20,7 +20,7 @@
 #include "Engine/SSEngine.h"
 #include "Common/SSRenderingThread.h"
 #include "Common/SSTimer.h"
-#include "Engine/CameraManager.h"
+#include "Common/SSCameraManager.h"
 #include "Engine/SSInputManager.h"
 #include "Engine/SSFontManager.h"
 #include "Windowsx.h"

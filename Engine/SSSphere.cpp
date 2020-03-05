@@ -8,7 +8,7 @@
 #include "SSMaterial.h"
 #include "SSFreqUsedNames.h"
 #include "SSName.h"
-#include "CameraManager.h"
+#include "SSCameraManager.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSSamplerManager.h"
 #include "SSTextureManager.h"

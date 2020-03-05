@@ -1,7 +1,27 @@
 
-#include "Core.h"
+#include "SSCommon.h"
 #include "SSFreeCamera.h"
-#include "CameraManager.h"
+#include "SSCameraManager.h"
+
+SSCameraManager& SSCameraManager::Get()
+{
+	if(mInstance == nullptr)
+	{
+		mInstance = new SSCameraManager();
+	}
+	return *mInstance;
+}
+
+SSCameraManager* SSCameraManager::GetPtr()
+{
+	if (mInstance == nullptr)
+	{
+		mInstance = new SSCameraManager();
+	}
+	return mInstance;
+}
+
+SSCameraManager* SSCameraManager::mInstance = nullptr;
 
 
 SSCameraManager::SSCameraManager()

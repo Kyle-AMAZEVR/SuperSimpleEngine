@@ -2,13 +2,17 @@
 #pragma once
 
 #include "SSCameraBase.h"
-#include "Singleton.h"
 
-class ENGINE_API SSCameraManager : public Singleton<SSCameraManager>
+using namespace DirectX;
+
+class COMMON_API SSCameraManager
 {
 public:
 	SSCameraManager();
     ~SSCameraManager();
+
+	static SSCameraManager& Get();
+	static SSCameraManager* GetPtr();
 
 	XMMATRIX GetCurrentCameraView() const;
 	XMMATRIX GetCurrentCameraProj() const;
@@ -32,4 +36,5 @@ public:
 
 protected:
     class SSCameraBase* mCurrentCamera = nullptr;
+	static SSCameraManager* mInstance;
 };

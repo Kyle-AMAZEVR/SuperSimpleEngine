@@ -1,7 +1,7 @@
 #include "Core.h"
 #include "SSEngine.h"
 #include "SSViewport.h"
-#include "CameraManager.h"
+#include "SSCameraManager.h"
 
 void SSViewport::Clear(ID3D11DeviceContext* deviceContext)
 {

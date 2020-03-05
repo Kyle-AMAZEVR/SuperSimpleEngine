@@ -6,7 +6,7 @@
 #include "SSMathHelper.h"
 #include "SSFreqUsedNames.h"
 #include "SSName.h"
-#include "CameraManager.h"
+#include "SSCameraManager.h"
 #include "SSVertexBuffer.h"
 #include "SSIndexBuffer.h"
 

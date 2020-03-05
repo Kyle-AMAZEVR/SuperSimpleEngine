@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSInputManager.h"
-#include "CameraManager.h"
+#include "SSCameraManager.h"
 #include "SSEngine.h"
 
 void SSInputManager::OnKeyDown(ULONGLONG key)

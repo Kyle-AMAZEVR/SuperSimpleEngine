@@ -14,7 +14,7 @@
 #include "SSTextureManager.h"
 #include "SSTexture2D.h"
 #include "SSFreqUsedNames.h"
-#include "CameraManager.h"
+#include "SSCameraManager.h"
 #include "SSIndexBuffer.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSMathHelper.h"

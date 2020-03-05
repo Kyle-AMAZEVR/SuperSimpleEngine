@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSEngine.h"
 #include "FreqUsedConstantBufferTypes.h"
-#include "CameraManager.h"
+#include "SSCameraManager.h"
 #include "SSVertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSTexture2D.h"
