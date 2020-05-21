@@ -11,6 +11,6 @@ public:
 protected:
 	void InternalCreate();
 	static bool bIsInitialized;
-	static class SSVertexBuffer* mScreenVB;
+	static class SSDX11VertexBuffer* mScreenVB;
 	static class SSIndexBuffer* mScreenIB;
 };

@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSCube.h"
 #include "DXVertexTypes.h"
-#include "SSVertexBuffer.h"
+#include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include <vector>
 
@@ -102,7 +102,7 @@ void SSCube::InternalCreate()
 
 	
 
-	mCubeVB = new SSVertexBuffer();
+	mCubeVB = new SSDX11VertexBuffer();
 	mCubeVB->SetVertexBufferData(vertexArray);
 
 	mCubeIB = new SSIndexBuffer();
@@ -110,5 +110,5 @@ void SSCube::InternalCreate()
 }
 // 
 SSIndexBuffer* SSCube::mCubeIB = nullptr;
-SSVertexBuffer* SSCube::mCubeVB = nullptr;
+SSDX11VertexBuffer* SSCube::mCubeVB = nullptr;
 bool SSCube::bIsInitialized = false;

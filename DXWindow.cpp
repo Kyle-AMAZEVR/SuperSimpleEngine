@@ -70,6 +70,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	SSDX11Engine* DX11Engine = SSDX11Engine::GetPtr();
 	SSDX12Engine* DX12Engine = new SSDX12Engine();
 
+
+
 	gameThread.Start(GetCurrentThreadId());
     renderingThread.Start(WindowHandle, DX12Engine);
 
@@ -206,7 +208,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SSFontManager::Get().Initialize(dpiX, dpiY);
 			}
 
-			renderingThread.WaitForRenderingThread();
+			//renderingThread.WaitForRenderingThread();
 
             // TODO: Add any drawing code that uses hdc here...            
             EndPaint(hWnd, &ps);

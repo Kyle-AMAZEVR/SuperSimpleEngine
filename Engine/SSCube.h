@@ -9,12 +9,12 @@ public:
 	SSCube();
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
-	class SSVertexBuffer* GetVB() { return mCubeVB; }
+	class SSDX11VertexBuffer* GetVB() { return mCubeVB; }
 	class SSIndexBuffer* GetIB() { return mCubeIB; }
 
 protected:
 	void InternalCreate();
 	static bool bIsInitialized;
-	static class SSVertexBuffer* mCubeVB;
+	static class SSDX11VertexBuffer* mCubeVB;
 	static class SSIndexBuffer* mCubeIB;
 };

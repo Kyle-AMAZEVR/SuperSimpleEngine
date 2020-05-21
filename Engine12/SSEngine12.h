@@ -34,7 +34,7 @@ public:
 	virtual void Initialize(HWND windowHandle) override;
 	virtual void DrawScene() override;
 	virtual void OnWindowResize(int newWidth, int newHeight) override;
-	virtual void Shutdown() override {}
+	virtual void Shutdown() override;
 
 	static UINT CalcConstantBufferByteSize(UINT ByteSize);
 
@@ -107,7 +107,6 @@ protected:
 
 	std::unique_ptr<class SSUploadBuffer<ModelViewProjConstant>> mMVPUploadBuffer;
 	std::unique_ptr<class SSMeshGeometry> mMeshGeom = nullptr;
-
 	std::unique_ptr<class SSDX12TypedConstantBuffer<ModelViewProjConstant>> mTestCBuffer;
 	std::unique_ptr<class SSDX12TypedVertexBuffer<Vertex>> mTestVertexBuffer;
 	std::unique_ptr<class SSDX12IndexBuffer> mTestIndexBuffer;

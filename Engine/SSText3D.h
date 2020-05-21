@@ -17,6 +17,6 @@ protected:
 
 	std::string mTextContent;
 
-	std::shared_ptr<class SSVertexBuffer> mTextVB = nullptr;
+	std::shared_ptr<class SSDX11VertexBuffer> mTextVB = nullptr;
 	std::shared_ptr<class SSIndexBuffer> mTextIB = nullptr;
 };

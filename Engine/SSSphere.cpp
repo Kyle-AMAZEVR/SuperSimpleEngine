@@ -3,7 +3,7 @@
 #include "SSSphere.h"
 #include <cmath>
 #include "DXVertexTypes.h"
-#include "SSVertexBuffer.h"
+#include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSMaterial.h"
 #include "SSFreqUsedNames.h"
@@ -188,7 +188,7 @@ void SSSphere::InternalCreate()
 			indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 		}
 
-		mDebugTBNVB = std::make_shared<SSVertexBuffer>();
+		mDebugTBNVB = std::make_shared<SSDX11VertexBuffer>();
 		mDebugTBNVB->SetVertexBufferData(tbnVertexArray);
 
 		mDebugIB = std::make_shared<SSIndexBuffer>();
@@ -196,7 +196,7 @@ void SSSphere::InternalCreate()
 	}
 
 
-	mSphereVB = new SSVertexBuffer();
+	mSphereVB = new SSDX11VertexBuffer();
 	mSphereVB->SetVertexBufferData(vertexArray);	
 }
 
@@ -413,7 +413,7 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 }
 
 bool SSSphere::bIsInitialized = false;
-SSVertexBuffer* SSSphere::mSphereVB = nullptr;
+SSDX11VertexBuffer* SSSphere::mSphereVB = nullptr;
 
 SSPBRSphere::SSPBRSphere(ID3D11DeviceContext* deviceContext, SSName diffuseTexName, SSName normalTexName, SSName metalTexName, SSName roughTexName)
 	: SSSphere(25, 25, 10.f)

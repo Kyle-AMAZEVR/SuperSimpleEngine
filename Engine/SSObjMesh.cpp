@@ -7,7 +7,7 @@
 #include <algorithm> 
 #include <cctype>
 #include <locale>
-#include "SSVertexBuffer.h"
+#include "SSDX11VertexBuffer.h"
 #include "SSISerializable.h"
 #include "SSObjMeshMaterial.h"
 #include "SSMaterial.h"
@@ -242,7 +242,7 @@ void SSObjMesh::CreateDebugTBNVertexIndexBuffer()
 		indexArray.push_back(static_cast<UINT>(debugVertexArray.size() - 1));
 	}
 
-	mTBNDebugVB = std::make_shared<SSVertexBuffer>();
+	mTBNDebugVB = std::make_shared<SSDX11VertexBuffer>();
 	mTBNDebugVB->SetVertexBufferData(debugVertexArray);
 
 	mTBNDebugIB = std::make_shared<SSIndexBuffer>();
@@ -254,7 +254,7 @@ void SSObjMesh::CreateVertexIndexBuffer()
 	check(mVB == nullptr);
 	check(mIB == nullptr);
 	// @create vertex buffer and index buffer;
-	mVB = std::make_shared<SSVertexBuffer>();
+	mVB = std::make_shared<SSDX11VertexBuffer>();
 	mVB->SetVertexBufferData(mRealVertexList);	
 
 	mIB = std::make_shared<SSIndexBuffer>();

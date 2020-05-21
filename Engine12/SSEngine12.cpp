@@ -580,6 +580,25 @@ ComPtr<ID3D12Resource> SSDX12Engine::CreateDefaultBuffer(ID3D12GraphicsCommandLi
 	return DefaultBuffer;
 }
 
+void SSDX12Engine::Shutdown()
+{
+	if(mTestVertexBuffer)
+	{
+		mTestVertexBuffer.reset();
+	}
+
+	if(mTestIndexBuffer)
+	{
+		mTestIndexBuffer.reset();
+	}
+
+	if(mTestCBuffer)
+	{
+		mTestCBuffer.reset();
+	}
+}
+
+
 
 std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> SSDX12Engine::GetStaticSamplers()
 {

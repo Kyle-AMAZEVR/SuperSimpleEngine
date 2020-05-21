@@ -3,7 +3,7 @@
 #include "SSScreenBlit.h"
 #include "DXVertexTypes.h"
 #include <vector>
-#include "SSVertexBuffer.h"
+#include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 
 
@@ -46,7 +46,7 @@ void SSScreenBlit::InternalCreate()
 		0,2,3,
 	};
 
-	mScreenVB = new SSVertexBuffer();
+	mScreenVB = new SSDX11VertexBuffer();
 	mScreenIB = new SSIndexBuffer();
 
 	mScreenVB->SetVertexBufferData(vertexArray);
@@ -67,5 +67,5 @@ void SSScreenBlit::Draw(ID3D11DeviceContext* deviceContext)
 }
 
 SSIndexBuffer* SSScreenBlit::mScreenIB = nullptr;
-SSVertexBuffer* SSScreenBlit::mScreenVB = nullptr;
+SSDX11VertexBuffer* SSScreenBlit::mScreenVB = nullptr;
 bool SSScreenBlit::bIsInitialized = false;

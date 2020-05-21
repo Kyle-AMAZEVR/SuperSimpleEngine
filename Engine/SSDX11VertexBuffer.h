@@ -6,10 +6,10 @@
 #include "SSBufferBase.h"
 #include "SSEngine.h"
 
-class SSVertexBuffer : public SSBufferBase
+class SSDX11VertexBuffer : public SSBufferBase
 {
 public:
-    SSVertexBuffer(){}
+    SSDX11VertexBuffer(){}
     
     template<class T>
     void SetVertexBufferData(const std::vector<T>& vertexData);
@@ -24,7 +24,7 @@ protected:
 };
 
 template<class T>
-void SSVertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
+void SSDX11VertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
 {
     if(mpBuffer == nullptr)
     {
@@ -33,7 +33,7 @@ void SSVertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
 }
 
 template<class T>
-void SSVertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData)
+void SSDX11VertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData)
 {
     mBufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;

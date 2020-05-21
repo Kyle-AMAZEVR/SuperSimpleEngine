@@ -1,15 +1,16 @@
 #pragma once
 #include "SSDX12Resource.h"
+#include "SSRenderThreadObject.h"
 
-class SSDX12VertexBuffer : public SSDX12Resource
+class SSDX12VertexBuffer : public SSRenderThreadObject
 {
 public:
 	SSDX12VertexBuffer() = default;
 	SSDX12VertexBuffer(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, const void* pVertexData, const UINT byteSize, const UINT byteStride);
 
 	// @
-	virtual ComPtr<ID3D12Resource> GetResource() const override { return mResource; }
-	virtual ID3D12Resource* GetResourcePtr() const override { return mResource.Get(); }	
+	virtual ComPtr<ID3D12Resource> GetResource() const  { return mResource; }
+	virtual ID3D12Resource* GetResourcePtr() const  { return mResource.Get(); }	
 	// @
 
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView() const;

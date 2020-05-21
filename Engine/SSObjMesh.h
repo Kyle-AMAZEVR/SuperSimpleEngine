@@ -44,10 +44,10 @@ protected:
 	XMFLOAT3 mMaxPosition;
 	XMFLOAT3 mCenterPosition;
 
-	std::shared_ptr<class SSVertexBuffer> mVB;
+	std::shared_ptr<class SSDX11VertexBuffer> mVB;
 	std::shared_ptr<class SSIndexBuffer> mIB;
 
-	std::shared_ptr<class SSVertexBuffer> mTBNDebugVB;
+	std::shared_ptr<class SSDX11VertexBuffer> mTBNDebugVB;
 	std::shared_ptr<class SSIndexBuffer> mTBNDebugIB;
 
 	std::vector<XMFLOAT4> mTempVertexList;

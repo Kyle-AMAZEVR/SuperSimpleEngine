@@ -1,7 +1,5 @@
-
-#include "Core.h"
+#include "SSCommon.h"
 #include "SSRenderThreadObject.h"
-#include "SSEngine.h"
 #include "SSRenderingThread.h"
 
 SSRenderThreadObject::SSRenderThreadObject()

@@ -7,7 +7,7 @@
 #include "SSFreqUsedNames.h"
 #include "SSName.h"
 #include "SSCameraManager.h"
-#include "SSVertexBuffer.h"
+#include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 
 SSText3D::SSText3D(std::string text)
@@ -33,7 +33,7 @@ void SSText3D::InternalCreate()
 		indices.push_back(static_cast<UINT>(vertices.size() - 1));
 	}
 
-	mTextVB = std::make_shared<SSVertexBuffer>();
+	mTextVB = std::make_shared<SSDX11VertexBuffer>();
 	mTextIB = std::make_shared<SSIndexBuffer>();
 
 	mTextVB->SetVertexBufferData(vertices);

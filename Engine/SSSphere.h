@@ -28,9 +28,9 @@ protected:
 	void GenerateTangents();
 
 	static bool bIsInitialized;
-	static class SSVertexBuffer* mSphereVB;
+	static class SSDX11VertexBuffer* mSphereVB;
 
-	std::shared_ptr<SSVertexBuffer> mDebugTBNVB;
+	std::shared_ptr<SSDX11VertexBuffer> mDebugTBNVB;
 	std::shared_ptr<class SSIndexBuffer> mDebugIB;
 
 	float mRoughness = 0.1f;

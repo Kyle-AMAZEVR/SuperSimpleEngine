@@ -3,7 +3,7 @@
 #include "SSEngine.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSCameraManager.h"
-#include "SSVertexBuffer.h"
+#include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSTexture2D.h"
 #include "SSCube.h"
@@ -111,7 +111,7 @@ void SSDX11Engine::Shutdown()
 
 void SSDX11Engine::TestCreateResources()
 {   
-    mTestVertexBuffer = std::make_shared<SSVertexBuffer>();
+    mTestVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
     mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
 
 	auto* deviceContext = GetImmediateDeviceContext();

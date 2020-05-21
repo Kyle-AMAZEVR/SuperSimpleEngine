@@ -36,3 +36,6 @@ Engine/Release/*
 
 *.stamp
 *.stamp.depend
+*.TMP
+*.depend
+*.depend

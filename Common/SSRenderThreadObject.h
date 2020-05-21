@@ -1,7 +1,7 @@
 
 #pragma once
 
-class ENGINE_API SSRenderThreadObject
+class COMMON_API SSRenderThreadObject
 {
 public:
 	SSRenderThreadObject();
