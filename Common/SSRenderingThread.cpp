@@ -25,8 +25,7 @@ void SSRenderingThread::WaitForRenderingThread(const DWORD WaitTime)
 DWORD SSRenderingThread::Run()
 {
 	// init engine
-	mEngineInstance->Initialize(mWindowHandle);
-	//SSEngine12::Get().Initialize(mWindowHandle);
+	mEngineInstance->Initialize(mWindowHandle);	
 
 	bIsRunning = true;
 
@@ -51,7 +50,7 @@ DWORD SSRenderingThread::Run()
 		//
 		renderingThreadTimer.Tick();
 
-		mEngineInstance->DrawScene();		
+		mEngineInstance->DrawScene();
 
 		SetEvent(mRenderingDoneEventHandle);
 

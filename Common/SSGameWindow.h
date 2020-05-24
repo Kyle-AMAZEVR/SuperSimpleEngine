@@ -10,31 +10,31 @@ public:
 	SSGameWindow() {}
 	SSGameWindow(HINSTANCE hInstance, int nCmdShow);
 
-	void OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnKeyDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnKeyDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnMouseLDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnMouseLDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnMouseLUp(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnMouseLUp(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnMouseMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnMouseMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnEnterSizeMoveStart(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnEnterSizeMoveStart(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnEnterSizeMoveEnd(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnEnterSizeMoveEnd(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	HINSTANCE GetInstanceHandle() { return InstanceHandle; }
 	HWND GetWindowHandle() { return WindowHandle; }
-
+	
 	int Run();
 protected:
 

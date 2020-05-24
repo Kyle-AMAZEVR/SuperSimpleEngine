@@ -5,8 +5,6 @@ class COMMON_API SSGameThread
 {
 public:
 
-	void CreateGameWindow();
-
 	void Start(DWORD gameThreadId);
 
 	static bool IsInGameThread();
@@ -16,6 +14,8 @@ public:
 	HANDLE GetGameThreadEventHandle() { return mGameThreadDoneEventHandle; }
 
 	void WaitForGameThread(const DWORD WaitTime = INFINITE);
+
+	static class SSGameWindow* GetGameWindow();
 
 protected:
 
@@ -28,6 +28,4 @@ protected:
 	HANDLE mThreadHandle = nullptr;
 
 	HANDLE mGameThreadDoneEventHandle = nullptr;
-
-	
 };

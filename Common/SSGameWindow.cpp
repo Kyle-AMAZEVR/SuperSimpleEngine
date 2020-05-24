@@ -77,13 +77,11 @@ SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
 }
 
 void SSGameWindow::OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	DefWindowProc(hWnd, message, wParam, lParam);
+{	
 }
 
 void SSGameWindow::OnMouseMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	
+{	
 }
 
 void SSGameWindow::OnEnterSizeMoveStart(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -97,11 +95,7 @@ void SSGameWindow::OnEnterSizeMoveEnd(HWND hWnd, UINT message, WPARAM wParam, LP
 }
 
 void SSGameWindow::OnMouseLDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	auto X = static_cast<float>(LOWORD(lParam));
-	auto Y = static_cast<float>(HIWORD(lParam));
-
-	
+{	
 }
 
 void SSGameWindow::OnMouseLUp(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -110,24 +104,15 @@ void SSGameWindow::OnMouseLUp(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 }
 
 void SSGameWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hWnd, &ps);
-
-	
-
-	EndPaint(hWnd, &ps);
+{	
 }
 
 void SSGameWindow::OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	
+{	
 }
 
 void SSGameWindow::OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	
-
 	PostQuitMessage(0);
 }
 

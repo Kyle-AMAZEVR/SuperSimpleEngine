@@ -24,7 +24,9 @@ void SSGameThread::Start(DWORD gameThreadId)
 void SSGameThread::Tick(float DeltaSeconds)
 {
 	// do game thread work
-		
+
+
+	
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);
 }
