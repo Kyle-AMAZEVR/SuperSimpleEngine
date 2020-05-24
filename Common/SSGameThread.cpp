@@ -1,6 +1,7 @@
 
 #include "SSCommon.h"
 #include "SSGameThread.h"
+#include "Windows.h"
 
 bool SSGameThread::IsInGameThread()
 {
@@ -14,18 +15,23 @@ bool SSGameThread::IsInGameThread()
 	}
 }
 
-void SSGameThread::Start(const DWORD GameThreadId)
-{
-	mGameThreadId = GameThreadId;
-	//mGameThreadDoneEventHandle = CreateEvent(nullptr, false, false, "GameThreadEventHandle");
+void SSGameThread::Start(DWORD gameThreadId)
+{	
+	mGameThreadId = gameThreadId;
+	mGameThreadDoneEventHandle = CreateEvent(nullptr, false, false, "GameThreadEventHandle");
 }
 
 void SSGameThread::Tick(float DeltaSeconds)
 {
 	// do game thread work
-	
+		
 	// set event
-	
+	SetEvent(mGameThreadDoneEventHandle);
+}
+
+void SSGameThread::WaitForGameThread(const DWORD WaitTime)
+{
+	WaitForSingleObject(mGameThreadDoneEventHandle, WaitTime);
 }
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-
+using namespace std;
 
 class COMMON_API SSEngineBase
 {
@@ -11,8 +11,13 @@ public:
 	virtual void OnWindowResize(int newWidth, int newHeight) = 0;
 	virtual void DrawScene() = 0;
 
+
+
 protected:
 	virtual bool CreateDevice() = 0;
+
+	//unique_ptr<class SSGameThread> mGameThread;
+	//unique_ptr<class SSRenderingThread> mRenderingThread;
 
 	int mBufferWidth = 1024;
 	int mBufferHeight = 768;

@@ -10,9 +10,6 @@
 
 // C RunTime Header Files
 #include <stdlib.h>
-#include <malloc.h>
-#include <memory.h>
-#include <tchar.h>
 
 #include "d3d11.h"
 #include "DXWindow.h"
@@ -20,7 +17,6 @@
 #include "Engine/SSEngine.h"
 #include "Common/SSRenderingThread.h"
 #include "Common/SSTimer.h"
-#include "Common/SSCameraManager.h"
 #include "Engine/SSInputManager.h"
 #include "Engine/SSFontManager.h"
 #include "Windowsx.h"
@@ -72,8 +68,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
 
-	gameThread.Start(GetCurrentThreadId());
-    renderingThread.Start(WindowHandle, DX12Engine);
+	gameThread.Run(GetCurrentThreadId());
+    renderingThread.Start(WindowHandle, DX11Engine);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
 

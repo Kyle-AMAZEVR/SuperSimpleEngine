@@ -4,6 +4,7 @@
 #include "Windows.h"
 #include "SSTimer.h"
 #include "SSEngineBase.h"
+#include "SSGameThread.h"
 
 void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 {

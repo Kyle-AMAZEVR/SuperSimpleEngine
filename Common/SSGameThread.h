@@ -1,10 +1,13 @@
 #pragma once
 
-
+// game thread is the same as main thread
 class COMMON_API SSGameThread
 {
 public:
-	void Start(const DWORD GameThreadId);
+
+	void CreateGameWindow();
+
+	void Start(DWORD gameThreadId);
 
 	static bool IsInGameThread();
 
@@ -12,11 +15,19 @@ public:
 
 	HANDLE GetGameThreadEventHandle() { return mGameThreadDoneEventHandle; }
 
+	void WaitForGameThread(const DWORD WaitTime = INFINITE);
+
 protected:
+
+	DWORD Run();
+
+	static DWORD Run(LPVOID param);
+
+	static DWORD mGameThreadId;
 
 	HANDLE mThreadHandle = nullptr;
 
 	HANDLE mGameThreadDoneEventHandle = nullptr;
 
-	static DWORD mGameThreadId;
+	
 };
