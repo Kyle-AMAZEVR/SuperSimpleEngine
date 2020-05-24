@@ -121,7 +121,7 @@ void SSDX11Engine::TestCreateResources()
 	mDiffuseTexture = std::make_shared<SSTexture2D>();
 	mMetalicTexture = std::make_shared<SSTexture2D>();
 
-	mText3D = std::make_shared<SSText3D>("S");
+	
 
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
@@ -596,7 +596,7 @@ void SSDX11Engine::DrawScene(ID3D11DeviceContext* DeviceContext)
 	SSRasterizeStateManager::Get().SetToDefault(DeviceContext);
 
 	SSRasterizeStateManager::Get().SetCullModeNone(DeviceContext);
-	mText3D->Draw(DeviceContext, mTBNDebugMaterial.get());
+	//mText3D->Draw(DeviceContext, mTBNDebugMaterial.get());
 	SSRasterizeStateManager::Get().SetToDefault(DeviceContext);
 
 	mTestSphere->Draw(DeviceContext, mTestMaterial.get());
@@ -725,7 +725,7 @@ void SSDX11Engine::DrawScene()
 	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 	SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
-	mText3D->Draw(deviceContext, mTBNDebugMaterial.get());
+	//mText3D->Draw(deviceContext, mTBNDebugMaterial.get());
 	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
 	mTestSphere->Draw(deviceContext, mTestMaterial.get());
