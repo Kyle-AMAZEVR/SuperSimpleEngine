@@ -22,7 +22,7 @@ add_subdirectory("Engine")
 add_subdirectory("Engine12")
 
 
-add_executable(SuperSimpleEngine resource.h targetver.h DXWindow.h DXWindow.cpp DXWindow.rc)
+add_executable(SuperSimpleEngine resource.h targetver.h DXApp.h DXApp.cpp DXWindow.rc)
 
 add_dependencies(SuperSimpleEngine SSDX11)
 add_dependencies(SuperSimpleEngine SSDX12)

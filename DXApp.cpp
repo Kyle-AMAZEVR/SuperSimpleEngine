@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 #include "d3d11.h"
-#include "DXWindow.h"
+#include "DXApp.h"
 #include "Engine/Core.h"
 #include "Engine/SSEngine.h"
 #include "Common/SSRenderingThread.h"
@@ -51,6 +51,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+
+
 
 #if REFACTORING
 	SSGameWindow* GameWindow = new SSGameWindow(hInstance, nCmdShow);

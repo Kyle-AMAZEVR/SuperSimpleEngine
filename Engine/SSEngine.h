@@ -18,7 +18,6 @@ public:
 	static SSDX11Engine* GetPtr();
 
 	SSDX11Engine() = default;	
-
     virtual void Initialize(HWND windowHandle) override;
 	virtual void Shutdown() override;
     virtual void OnWindowResize(int newWidth, int newHeight) override;

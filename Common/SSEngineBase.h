@@ -17,8 +17,7 @@ public:
 	virtual void Shutdown() = 0;
 	virtual void OnWindowResize(int newWidth, int newHeight) = 0;
 	virtual void DrawScene() = 0;
-
-	
+	virtual void EngineStart();
 
 	static SSGameThread* GetGameThread()  { return mGameThread; }
 	static SSRenderingThread* GetRenderingThread()  { return mRenderingThread; }

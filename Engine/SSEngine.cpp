@@ -26,7 +26,7 @@
 #include "SSGBufferDumpPostProcess.h"
 #include "SSLightPostProcess.h"
 #include "SSSphere.h"
-#include "SSText3D.h"
+#include "SSGameWindow.h"
 
 bool SSDX11Engine::bInitialized = false;
 
@@ -51,6 +51,7 @@ SSDX11Engine* SSDX11Engine::GetPtr()
 
 	return mInstance;
 }
+
 
 void SSDX11Engine::Initialize(HWND windowHandle)
 {
@@ -106,7 +107,22 @@ void SSDX11Engine::Shutdown()
 
 	mSwapChain.Reset();
 	mDevice.Reset();
-	mDeviceContext.Reset();	
+	mDeviceContext.Reset();
+
+	if(mGameThread)
+	{
+		delete mGameThread;
+		mGameThread = nullptr;
+	}
+
+	if(mRenderingThread)
+	{
+		mRenderingThread->RequestExit();
+		mRenderingThread->Join();
+
+		delete mRenderingThread;
+		mRenderingThread = nullptr;
+	}
 }
 
 void SSDX11Engine::TestCreateResources()
