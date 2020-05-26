@@ -1,5 +1,7 @@
 #include "SSCommon.h"
 #include "SSGameWindow.h"
+#include "SSGameThread.h"
+#include "SSTimer.h"
 
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
@@ -54,6 +56,8 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
 	: InstanceHandle(_hInstance)
 {
+	check(mInstance == nullptr);
+
 	MsgHandlerMap[WM_PAINT] = &SSGameWindow::OnPaint;
 	MsgHandlerMap[WM_SIZE] = &SSGameWindow::OnSize;
 	MsgHandlerMap[WM_CREATE] = &SSGameWindow::OnCreate;
@@ -70,6 +74,8 @@ SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
 
 	Title = szTitle;
 	ClassName = szWindowClass;
+
+	mInstance = this;
 
 	auto Result = RegisterWindowClass(_hInstance);
 
@@ -130,8 +136,8 @@ LRESULT CALLBACK SSGameWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, L
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	else
-	{
-		//iter(*this, hWnd, message, wParam, lParam);
+	{	
+		iter(mInstance, hWnd, message, wParam, lParam);
 	}
 
 	return 0;
@@ -143,6 +149,8 @@ int SSGameWindow::Run()
 
 	MSG msg{};
 
+	SSGameTimer Timer;
+
 	// Main message loop:
 	while (GetMessage(&msg, nullptr, 0, 0))
 	{
@@ -151,6 +159,8 @@ int SSGameWindow::Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
+		Timer.Tick();
 	}
 
 	return (int)msg.wParam;
@@ -193,4 +203,5 @@ WORD SSGameWindow::RegisterWindowClass(HINSTANCE hInstance)
 	return RegisterClassExW(&wcex);
 }
 
+SSGameWindow* SSGameWindow::mInstance = nullptr;
 std::map<unsigned int, SSGameWindow::MsgHandlerType> SSGameWindow::MsgHandlerMap;

@@ -3,7 +3,7 @@
 // game thread is the same as main thread
 class COMMON_API SSGameThread
 {
-public:
+public:	
 
 	void Start(DWORD gameThreadId);
 
@@ -28,4 +28,5 @@ protected:
 	HANDLE mThreadHandle = nullptr;
 
 	HANDLE mGameThreadDoneEventHandle = nullptr;
+	
 };

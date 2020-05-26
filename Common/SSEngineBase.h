@@ -5,6 +5,10 @@
 
 using namespace std;
 
+class SSGameThread;
+class SSRenderingThread;
+
+
 class COMMON_API SSEngineBase
 {
 public:
@@ -14,11 +18,16 @@ public:
 	virtual void OnWindowResize(int newWidth, int newHeight) = 0;
 	virtual void DrawScene() = 0;
 
+	
+
+	static SSGameThread* GetGameThread()  { return mGameThread; }
+	static SSRenderingThread* GetRenderingThread()  { return mRenderingThread; }
+
 protected:
 	virtual bool CreateDevice() = 0;
 
-	unique_ptr<class SSGameThread> mGameThread;
-	unique_ptr<class SSRenderingThread> mRenderingThread;	
+	static SSGameThread* mGameThread;
+	static SSRenderingThread* mRenderingThread;
 
 	int mBufferWidth = 1024;
 	int mBufferHeight = 768;

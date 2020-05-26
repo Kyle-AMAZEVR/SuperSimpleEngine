@@ -7,8 +7,10 @@
 class SSGameWindow
 {
 public:
-	SSGameWindow() {}
 	SSGameWindow(HINSTANCE hInstance, int nCmdShow);
+
+	// get static instance
+	static SSGameWindow* GetPtr() { return mInstance; }
 
 	virtual void OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -36,16 +38,17 @@ public:
 	HWND GetWindowHandle() { return WindowHandle; }
 	
 	int Run();
-protected:
 
+protected:
 	BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
 	WORD RegisterWindowClass(HINSTANCE hInstance);
 
-
 protected:
-	using MsgHandlerType = std::function<void(SSGameWindow&, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)>;
-
+	using MsgHandlerType = std::function<void(SSGameWindow*, HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)>;
+	
 	static std::map<unsigned int, MsgHandlerType> MsgHandlerMap;
+
+	static SSGameWindow* mInstance;
 
 	std::wstring Title;
 	std::wstring ClassName;

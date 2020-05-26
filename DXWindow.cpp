@@ -16,12 +16,13 @@
 #include "Engine/Core.h"
 #include "Engine/SSEngine.h"
 #include "Common/SSRenderingThread.h"
-#include "Common/SSTimer.h"
+
 #include "Engine/SSInputManager.h"
-#include "Engine/SSFontManager.h"
+#include "Common/SSGameWindow.h"
 #include "Windowsx.h"
 #include "SSEngine12.h"
 #include "SSGameThread.h"
+#include "SSTimer.h"
 
 
 #define MAX_LOADSTRING 100
@@ -51,6 +52,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // TODO: Place code here.
 
+#if REFACTORING
+	SSGameWindow* GameWindow = new SSGameWindow(hInstance, nCmdShow);
+
+	GameWindow->Run();
+
+	SSEngineBase* GameEngine = new SSDX11Engine();
+
+	return 0;
+#else
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_DXENGINE, szWindowClass, MAX_LOADSTRING);
@@ -94,8 +104,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	{
 		delete DX12Engine;
 	}
-
+	
     return (int) msg.wParam;
+#endif
+
 }
 
 
