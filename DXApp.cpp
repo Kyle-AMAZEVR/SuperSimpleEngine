@@ -24,6 +24,7 @@
 #include "SSEngine12.h"
 #include "SSGameThread.h"
 #include "SSEngineBase.h"
+#include "SSTimer.h"
 
 
 #define MAX_LOADSTRING 100
@@ -55,8 +56,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
 
-#if 1
 	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);
+
 	check(SSGameWindow::GetPtr() != nullptr);
 
 	GEngine = SSDX11Engine::GetPtr();
@@ -64,49 +65,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GEngine->Run();
 
 	return 0;
-#else
-    // Initialize global strings
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_DXENGINE, szWindowClass, MAX_LOADSTRING);
-    MyRegisterClass(hInstance);
-
-    // Perform application initialization: 
-    if (!InitInstance (hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
-
-    // start rendering thread
-	SSDX11Engine* DX11Engine = SSDX11Engine::GetPtr();	
-
-	gameThread.Start(GetCurrentThreadId());
-    renderingThread.Start(WindowHandle, DX11Engine);
-
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DXENGINE));
-
-    MSG msg;
-
-	SSGameTimer Timer;
-
-    // Main message loop:
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-
-		Timer.Tick();
-		gameThread.Tick(Timer.GetDeltaTime());
-    }
-    renderingThread.RequestExit(); 
-    renderingThread.Join();
-
-	
-    return (int) msg.wParam;
-#endif
-
 }
 
 

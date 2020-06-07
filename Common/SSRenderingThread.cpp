@@ -34,6 +34,8 @@ DWORD SSRenderingThread::Run()
 
 	while (1)
 	{
+		mEngineInstance->GetGameThread()->WaitForGameThread(33);
+
 		// consume command queue
 		{
 			EnterCriticalSection(&mCriticalSection);

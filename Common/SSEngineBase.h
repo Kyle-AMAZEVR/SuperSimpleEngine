@@ -43,4 +43,4 @@ protected:
 	bool bRequestExit = false;
 };
 
-static SSEngineBase* GEngine = nullptr;
+extern "C" COMMON_API SSEngineBase* GEngine;

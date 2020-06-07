@@ -11,13 +11,17 @@ SSAppWindow::SSAppWindow(HINSTANCE hInstance, int nCmdShow)
 void SSAppWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	auto width = static_cast<int>(LOWORD(lParam));
-	auto height = static_cast<int>(HIWORD(lParam));	
+	auto height = static_cast<int>(HIWORD(lParam));
 
-	if (SSDX11Engine::Get().GetRenderingThread()->IsRunning())
+	if(GEngine != nullptr)
 	{
-		SSDX11Engine::Get().GetRenderingThread()->ExecuteInRenderingThread([width, height]()
+		if (GEngine->GetRenderingThread()->IsRunning())
 		{
-			SSDX11Engine::Get().OnWindowResize(width, height);
-		});
+			GEngine->GetRenderingThread()->ExecuteInRenderingThread([width, height]()
+			{
+				GEngine->OnWindowResize(width, height);
+			});
+		}
 	}
+	
 }
