@@ -2,6 +2,7 @@
 #include "SSCommon.h"
 #include "SSGameThread.h"
 #include "Windows.h"
+#include "SSGameWindow.h"
 
 bool SSGameThread::IsInGameThread()
 {
@@ -25,8 +26,11 @@ void SSGameThread::Tick(float DeltaSeconds)
 {
 	// do game thread work
 
+	// handle window message
+	SSGameWindow::GetPtr()->HandleMessage();
 
-	
+	// 
+
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);
 }

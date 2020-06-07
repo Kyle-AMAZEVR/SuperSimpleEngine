@@ -50,7 +50,9 @@ DWORD SSRenderingThread::Run()
 		//
 		renderingThreadTimer.Tick();
 
-		mEngineInstance->DrawScene();
+		// Tick Rendering Thread
+
+		mEngineInstance->TickRenderThread(renderingThreadTimer.GetDeltaTime());
 
 		SetEvent(mRenderingDoneEventHandle);
 

@@ -19,10 +19,11 @@
 
 #include "Engine/SSInputManager.h"
 #include "Common/SSGameWindow.h"
+#include "SSAppWindow.h"
 #include "Windowsx.h"
 #include "SSEngine12.h"
 #include "SSGameThread.h"
-#include "SSTimer.h"
+#include "SSEngineBase.h"
 
 
 #define MAX_LOADSTRING 100
@@ -52,14 +53,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // TODO: Place code here.
 
+	SSEngineBase::MainThreadId = GetCurrentThreadId();
 
+#if 1
+	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);
+	check(SSGameWindow::GetPtr() != nullptr);
 
-#if REFACTORING
-	SSGameWindow* GameWindow = new SSGameWindow(hInstance, nCmdShow);
-
-	GameWindow->Run();
-
-	SSEngineBase* GameEngine = new SSDX11Engine();
+	GEngine = SSDX11Engine::GetPtr();
+	
+	GEngine->Run();
 
 	return 0;
 #else
@@ -75,8 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     // start rendering thread
-	SSDX11Engine* DX11Engine = SSDX11Engine::GetPtr();
-	SSDX12Engine* DX12Engine = new SSDX12Engine();
+	SSDX11Engine* DX11Engine = SSDX11Engine::GetPtr();	
 
 	gameThread.Start(GetCurrentThreadId());
     renderingThread.Start(WindowHandle, DX11Engine);
@@ -102,10 +103,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     renderingThread.RequestExit(); 
     renderingThread.Join();
 
-	if(DX12Engine != nullptr)
-	{
-		delete DX12Engine;
-	}
 	
     return (int) msg.wParam;
 #endif

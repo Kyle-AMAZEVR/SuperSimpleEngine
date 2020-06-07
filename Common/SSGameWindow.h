@@ -4,10 +4,12 @@
 #include <functional>
 #include <map>
 
-class SSGameWindow
+class COMMON_API SSGameWindow
 {
 public:
 	SSGameWindow(HINSTANCE hInstance, int nCmdShow);
+
+	void HandleMessage();
 
 	// get static instance
 	static SSGameWindow* GetPtr() { return mInstance; }
@@ -49,6 +51,8 @@ protected:
 	static std::map<unsigned int, MsgHandlerType> MsgHandlerMap;
 
 	static SSGameWindow* mInstance;
+
+	HACCEL mAccelTable;
 
 	std::wstring Title;
 	std::wstring ClassName;

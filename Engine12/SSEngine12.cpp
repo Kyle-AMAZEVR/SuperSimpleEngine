@@ -598,6 +598,16 @@ void SSDX12Engine::Shutdown()
 	}
 }
 
+void SSDX12Engine::TickGameThread(float deltaTime)
+{
+	
+}
+
+void SSDX12Engine::TickRenderThread(float deltaTime)
+{
+	
+}
+
 
 
 std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> SSDX12Engine::GetStaticSamplers()

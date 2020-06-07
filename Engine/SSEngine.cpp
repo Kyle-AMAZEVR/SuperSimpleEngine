@@ -657,6 +657,28 @@ void SSDX11Engine::DrawScene(ID3D11DeviceContext* DeviceContext)
 	HR(mSwapChain->Present(0, 0));
 }
 
+void SSDX11Engine::Run()
+{
+	EngineStart();
+
+	while(!bRequestExit)
+	{
+		SSGameWindow::GetPtr()->HandleMessage();
+		TickGameThread(0.033f);
+	}
+
+	mRenderingThread->RequestExit();
+	mRenderingThread->Join();
+}
+
+void SSDX11Engine::TickGameThread(float deltaTime)
+{
+	
+}
+void SSDX11Engine::TickRenderThread(float deltaTime)
+{
+	DrawScene();
+}
 
 
 void SSDX11Engine::DrawScene()

@@ -19,8 +19,15 @@ public:
 	virtual void DrawScene() = 0;
 	virtual void EngineStart();
 
+	virtual void Run() = 0;
+
+	virtual void TickGameThread(float deltaTime) = 0;
+	virtual void TickRenderThread(float deltaTime) = 0;
+
 	static SSGameThread* GetGameThread()  { return mGameThread; }
 	static SSRenderingThread* GetRenderingThread()  { return mRenderingThread; }
+
+	static DWORD MainThreadId;
 
 protected:
 	virtual bool CreateDevice() = 0;
@@ -32,4 +39,8 @@ protected:
 	int mBufferHeight = 768;
 	HWND mWindowHandle;
 	UINT m4xMSAAQuality = 0;
+
+	bool bRequestExit = false;
 };
+
+static SSEngineBase* GEngine = nullptr;

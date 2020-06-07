@@ -15,8 +15,6 @@ public:
 
 	void WaitForGameThread(const DWORD WaitTime = INFINITE);
 
-	static class SSGameWindow* GetGameWindow();
-
 protected:
 
 	DWORD Run();
@@ -28,5 +26,6 @@ protected:
 	HANDLE mThreadHandle = nullptr;
 
 	HANDLE mGameThreadDoneEventHandle = nullptr;
-	
+
+	bool bRequestExist = false;
 };

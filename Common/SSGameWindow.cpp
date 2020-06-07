@@ -1,6 +1,5 @@
 #include "SSCommon.h"
 #include "SSGameWindow.h"
-#include "SSGameThread.h"
 #include "SSTimer.h"
 
 //{{NO_DEPENDENCIES}}
@@ -111,6 +110,7 @@ void SSGameWindow::OnMouseLUp(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 
 void SSGameWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {	
+	
 }
 
 void SSGameWindow::OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -118,7 +118,7 @@ void SSGameWindow::OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 }
 
 void SSGameWindow::OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
+{	
 	PostQuitMessage(0);
 }
 
@@ -145,7 +145,7 @@ LRESULT CALLBACK SSGameWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, L
 
 int SSGameWindow::Run()
 {
-	HACCEL hAccelTable = LoadAccelerators(InstanceHandle, MAKEINTRESOURCE(IDC_DXENGINE));
+	mAccelTable = LoadAccelerators(InstanceHandle, MAKEINTRESOURCE(IDC_DXENGINE));
 
 	MSG msg{};
 
@@ -154,16 +154,32 @@ int SSGameWindow::Run()
 	// Main message loop:
 	while (GetMessage(&msg, nullptr, 0, 0))
 	{
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+		if (!TranslateAccelerator(msg.hwnd, mAccelTable, &msg))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 
+		// gameThread Tick
+		
 		Timer.Tick();
 	}
 
 	return (int)msg.wParam;
+}
+
+void SSGameWindow::HandleMessage()
+{
+	MSG msg{};
+
+	if(GetMessage(&msg, nullptr, 0, 0))
+	{
+		if (!TranslateAccelerator(msg.hwnd, mAccelTable, &msg))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}		
+	}
 }
 
 BOOL SSGameWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)

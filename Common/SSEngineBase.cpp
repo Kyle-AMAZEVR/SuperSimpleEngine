@@ -18,3 +18,4 @@ void SSEngineBase::EngineStart()
 
 SSGameThread* SSEngineBase::mGameThread = nullptr;
 SSRenderingThread* SSEngineBase::mRenderingThread = nullptr;
+DWORD SSEngineBase::MainThreadId = 0;

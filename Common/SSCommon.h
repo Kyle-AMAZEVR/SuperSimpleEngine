@@ -13,7 +13,7 @@
 #define TOSTRING(x) STRINGFY(x)
 #define AT __FILE__ ":" TOSTRING(__LINE__)
 
-void PrintError(const char* loc, const char* msg);
+void COMMON_API PrintError(const char* loc, const char* msg);
 
 #define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
 
