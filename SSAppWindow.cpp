@@ -8,6 +8,14 @@ SSAppWindow::SSAppWindow(HINSTANCE hInstance, int nCmdShow)
 	
 }
 
+void SSAppWindow::OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (GEngine)
+	{
+		GEngine->RequestExist();
+	}
+}
+
 void SSAppWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	auto width = static_cast<int>(LOWORD(lParam));

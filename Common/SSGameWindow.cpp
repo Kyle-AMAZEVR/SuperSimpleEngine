@@ -165,6 +165,8 @@ int SSGameWindow::Run()
 		Timer.Tick();
 	}
 
+
+
 	return (int)msg.wParam;
 }
 

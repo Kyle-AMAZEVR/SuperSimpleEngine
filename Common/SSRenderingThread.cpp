@@ -59,8 +59,7 @@ DWORD SSRenderingThread::Run()
 		SetEvent(mRenderingDoneEventHandle);
 
 		if (bRequestExit)
-		{
-			mEngineInstance->Shutdown();
+		{	
 			return 0;
 		}
 	}	

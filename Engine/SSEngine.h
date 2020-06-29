@@ -35,7 +35,6 @@ public:
 	void TickGameThread(float deltaTime) override;
 	void TickRenderThread(float deltaTime) override;
 
-	void DrawScene(ID3D11DeviceContext* DeviceContext);
     virtual void DrawScene() override;
 
 protected:

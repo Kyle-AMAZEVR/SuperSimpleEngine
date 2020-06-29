@@ -533,129 +533,7 @@ void SSDX11Engine::ChangeToNextDumpMode()
 	}
 }
 
-void SSDX11Engine::DrawScene(ID3D11DeviceContext* DeviceContext)
-{
-	check(DeviceContext != nullptr);
 
-	if (bInitialized == false)
-	{
-		return;
-	}	
-
-	// @equirect to cube
-	// @start
-	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
-	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
-
-	static bool bEquidirectToCubeDrawn = false;
-	static bool bConvolutionDrawn = false;
-	static bool bPrefilterDrawn = false;
-	static bool bLUTCreated = false;
-
-	if (bEquidirectToCubeDrawn == false)
-	{
-		if (TryLoadEnvCubemap(L"./Prebaked/EnvCubemap.dds") == false)
-		{
-			CreateEnvCubemap();
-		}
-		bEquidirectToCubeDrawn = true;
-	}
-
-	if (bConvolutionDrawn == false)
-	{
-		if (TryLoadEnvCubemapConvolution(L"./Prebaked/EnvConvolution.dds") == false)
-		{
-			CreateEnvCubemapConvolution();
-		}
-		bConvolutionDrawn = true;
-	}
-	if (bPrefilterDrawn == false)
-	{
-		if (TryLoadEnvCubemapPrefilter(L"./Prebaked/EnvPrefilter.dds") == false)
-		{
-			CreateEnvCubemapPrefilter();
-		}
-		bPrefilterDrawn = true;
-	}
-
-	if (bLUTCreated == false)
-	{
-		if (TryLoad2DLUTTexture() == false)
-		{
-			Create2DLUTTexture();
-		}
-		bLUTCreated = true;
-	}
-
-	// @end
-
-
-	// @draw cubemap to gbuffer
-	// @start
-	mGBuffer->Clear(DeviceContext);
-	mGBuffer->SetCurrentRenderTarget(DeviceContext);
-	SSCameraManager::Get().UpdateCurrentCamera();
-
-	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
-
-	XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
-
-	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
-	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemapPrefilter.get());
-
-	SSDepthStencilStateManager::Get().SetDepthCompLessEqual(DeviceContext);
-	SSRasterizeStateManager::Get().SetCullModeNone(DeviceContext);
-
-	testDrawCmd.Do(DeviceContext);
-
-	SSDepthStencilStateManager::Get().SetToDefault(DeviceContext);
-	SSRasterizeStateManager::Get().SetToDefault(DeviceContext);
-
-	SSRasterizeStateManager::Get().SetCullModeNone(DeviceContext);
-	//mText3D->Draw(DeviceContext, mTBNDebugMaterial.get());
-	SSRasterizeStateManager::Get().SetToDefault(DeviceContext);
-
-	mTestSphere->Draw(DeviceContext, mTestMaterial.get());
-
-	mRustedIron->Draw(DeviceContext, mTestMaterial.get());
-
-	mTile->Draw(DeviceContext, mTestMaterial.get());
-
-	mMetalGrid->Draw(DeviceContext, mTestMaterial.get());
-
-	mSponzaMesh->Draw(DeviceContext, mTestMaterial.get());
-
-	mFXAAPostProcess->Draw(DeviceContext, mDeferredLightPostProcess->GetOutput(0));
-
-	mGBufferDumpProcess->Draw(DeviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
-
-	mDeferredLightPostProcess->Draw(
-		DeviceContext,
-		mGBuffer->GetPositionOutput(),
-		mGBuffer->GetColorOutput(),
-		mGBuffer->GetNormalOutput(),
-		m2DLUTTexture.get(),
-		mEnvCubemapConvolution.get(),
-		mEnvCubemapPrefilter.get());
-
-	mViewport->Clear(DeviceContext);
-	mViewport->SetCurrentRenderTarget(DeviceContext);
-
-	SSDrawCommand blitDrawCmd{ mTestVertexShader.get(), mTestPixelShader.get(), mScreenBlit };
-
-	if (bGbufferDump)
-	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
-	}
-	else
-	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
-	}
-
-	blitDrawCmd.Do(DeviceContext);
-
-	HR(mSwapChain->Present(0, 0));
-}
 
 void SSDX11Engine::Run()
 {
@@ -667,8 +545,7 @@ void SSDX11Engine::Run()
 		TickGameThread(0.033f);
 	}
 
-	mRenderingThread->RequestExit();
-	mRenderingThread->Join();
+	Shutdown();
 }
 
 void SSDX11Engine::TickGameThread(float deltaTime)
