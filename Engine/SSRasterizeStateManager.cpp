@@ -19,6 +19,7 @@ void SSRasterizeStateManager::Initialize()
 	mDefaultDesc.MultisampleEnable = false;
 	mDefaultDesc.AntialiasedLineEnable = false;
 
+	
 	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mDefaultDesc, &mDefaultState));
 	
 	mCullModeNoneDesc = mDefaultDesc;

@@ -12,7 +12,7 @@ void SSAppWindow::OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 {
 	if (GEngine)
 	{
-		GEngine->RequestExist();
+		GEngine->RequestExit();
 	}
 }
 

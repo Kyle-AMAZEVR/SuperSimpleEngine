@@ -29,7 +29,7 @@ public:
 
 	static DWORD MainThreadId;
 
-	void RequestExist() { bRequestExit = true; }
+	void RequestExit() { bRequestExit = true; }
 
 protected:
 	virtual bool CreateDevice() = 0;
