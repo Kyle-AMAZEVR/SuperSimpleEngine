@@ -49,6 +49,8 @@ void SSDX11Engine::Initialize(HWND windowHandle)
 	mRenderer = new SSDX11Renderer();
 	mRenderer->Initialize(windowHandle);
 
+	mRenderingThread->SetRenderer(mRenderer);
+	
 	mGameThread = new SSGameThread(GetCurrentThreadId());
 	
     mWindowHandle = windowHandle;

@@ -502,6 +502,11 @@ void SSDX11Renderer::DrawScene()
 		return;
 	}
 
+	if(mPaused)
+	{
+		return;
+	}
+
 	check(mDeviceContext != nullptr);
 
 	// @equirect to cube

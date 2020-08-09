@@ -7,7 +7,6 @@
 class ENGINE_API SSDX11Renderer : public SSRenderer
 {
 public:
-
 	SSDX11Renderer();	
 
 	virtual void Initialize(HWND windowHandle) override;

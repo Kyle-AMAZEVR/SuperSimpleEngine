@@ -21,6 +21,9 @@ public:
 
 	void SetRenderer(class SSRenderer* renderer);
 
+	void PauseRendering();
+	void ResumeRendering();
+
 protected:
 	HANDLE mThreadHandle = nullptr;
 	static DWORD mRenderingThreadId;

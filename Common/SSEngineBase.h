@@ -17,6 +17,7 @@ public:
 	virtual void Shutdown() = 0;
 	virtual void OnWindowResize(int newWidth, int newHeight) = 0;	
 	virtual void EngineStart();
+	
 
 	virtual void Run() = 0;
 

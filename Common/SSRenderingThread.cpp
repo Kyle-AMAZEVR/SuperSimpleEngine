@@ -115,4 +115,22 @@ void SSRenderingThread::ExecuteInRenderingThread(std::function<void()>&& lambdaF
     }    
 }
 
+void SSRenderingThread::PauseRendering()
+{
+	if(mRenderer)
+	{
+		mRenderer->PauseRendering();
+	}
+}
+
+void SSRenderingThread::ResumeRendering()
+{
+	if(mRenderer)
+	{
+		mRenderer->ResumeRendering();
+	}
+}
+
+
+
 DWORD SSRenderingThread::mRenderingThreadId = 0;

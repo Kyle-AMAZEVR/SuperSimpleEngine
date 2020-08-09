@@ -18,6 +18,8 @@ public:
 	virtual void Shutdown() = 0;
 	virtual void OnWindowResize(int newWidth, int newHeight) = 0;
 	virtual void DrawScene() = 0;
+	virtual void PauseRendering() { mPaused = true; }
+	virtual void ResumeRendering() { mPaused = false; }
 
 protected:
 	virtual bool CreateDevice() = 0;
@@ -27,4 +29,5 @@ protected:
 	int mBufferHeight = 1080;
 	HWND mWindowHandle;
 	UINT m4xMSAAQuality = 0;
+	bool mPaused = false;
 };
