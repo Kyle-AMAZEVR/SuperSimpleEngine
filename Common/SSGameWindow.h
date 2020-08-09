@@ -18,6 +18,8 @@ public:
 
 	virtual void OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+	virtual void OnSizing(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 	virtual void OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	virtual void OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -30,9 +32,9 @@ public:
 
 	virtual void OnMouseMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	virtual void OnEnterSizeMoveStart(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnEnterSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	virtual void OnEnterSizeMoveEnd(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -62,5 +64,8 @@ protected:
 
 	HINSTANCE InstanceHandle;
 	HWND WindowHandle;
+
+	int windowWidth = 1920;
+	int windowHeight = 1080;
 	
 };

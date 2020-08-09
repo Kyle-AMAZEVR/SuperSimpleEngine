@@ -65,9 +65,9 @@ SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
 	MsgHandlerMap[WM_LBUTTONDOWN] = &SSGameWindow::OnMouseLDown;
 	MsgHandlerMap[WM_LBUTTONUP] = &SSGameWindow::OnMouseLUp;
 	MsgHandlerMap[WM_MOUSEMOVE] = &SSGameWindow::OnMouseMove;
-	MsgHandlerMap[WM_ENTERSIZEMOVE] = &SSGameWindow::OnEnterSizeMoveStart;
-	MsgHandlerMap[WM_EXITSIZEMOVE] = &SSGameWindow::OnEnterSizeMoveEnd;
-
+	MsgHandlerMap[WM_ENTERSIZEMOVE] = &SSGameWindow::OnEnterSizeMove;
+	MsgHandlerMap[WM_EXITSIZEMOVE] = &SSGameWindow::OnExitSizeMove;
+	
 	LoadStringW(_hInstance, IDS_APP_TITLE, szTitle, 256);
 	LoadStringW(_hInstance, IDC_DXENGINE, szWindowClass, 256);
 
@@ -98,14 +98,20 @@ void SSGameWindow::OnMouseMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 {	
 }
 
-void SSGameWindow::OnEnterSizeMoveStart(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+void SSGameWindow::OnEnterSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-
+	OutputDebugStringA("OnEnterSizeMove\n");
 }
 
-void SSGameWindow::OnEnterSizeMoveEnd(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+void SSGameWindow::OnSizing(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	OutputDebugStringA("OnEnterSizing\n");
+}
 
+
+void SSGameWindow::OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	OutputDebugStringA("OnExitSizeMove\n");
 }
 
 void SSGameWindow::OnMouseLDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
