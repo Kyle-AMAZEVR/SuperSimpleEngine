@@ -18,18 +18,19 @@ void SSAppWindow::OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 void SSAppWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	
 	auto width = static_cast<int>(LOWORD(lParam));
 	auto height = static_cast<int>(HIWORD(lParam));
 
-	if(GEngine != nullptr)
-	{
+	if (GEngine != nullptr)
+	{		
 		if (GEngine->GetRenderingThread()->IsRunning())
-		{
+		{	
 			GEngine->GetRenderingThread()->ExecuteInRenderingThread([width, height]()
 			{
 				GEngine->OnWindowResize(width, height);
 			});
 		}
 	}
-	
+
 }

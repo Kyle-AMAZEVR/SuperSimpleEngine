@@ -1,32 +1,8 @@
 
 #include "Core.h"
 #include "SSEngine.h"
-#include "FreqUsedConstantBufferTypes.h"
-#include "SSCameraManager.h"
-#include "SSDX11VertexBuffer.h"
-#include "SSIndexBuffer.h"
 #include "SSTexture2D.h"
-#include "SSCube.h"
-#include "SSSamplerManager.h"
-#include "SSDrawCommand.h"
-#include "SSGBuffer.h"
-#include "SSScreenBlit.h"
-#include "SSRenderTarget2D.h"
-#include "SSTextureCube.h"
-#include "SSDepthStencilStateManager.h"
-#include "SSRasterizeStateManager.h"
-#include "SSCubemapRenderTarget.h"
-#include "SSMathHelper.h"
-#include "SSFreqUsedNames.h"
-#include "SSFileHelper.h"
 #include "SSObjMesh.h"
-#include "SSShaderManager.h"
-#include "SSMaterial.h"
-#include "SSFXAAPostProcess.h"
-#include "SSGBufferDumpPostProcess.h"
-#include "SSLightPostProcess.h"
-#include "SSSphere.h"
-#include "SSGameWindow.h"
 #include "SSDX11Renderer.h"
 
 bool SSDX11Engine::bInitialized = false;
@@ -72,6 +48,8 @@ void SSDX11Engine::Initialize(HWND windowHandle)
 {
 	mRenderer = new SSDX11Renderer();
 	mRenderer->Initialize(windowHandle);
+
+	mGameThread = new SSGameThread(GetCurrentThreadId());
 	
     mWindowHandle = windowHandle;
 
@@ -85,9 +63,18 @@ void SSDX11Engine::ToggleGBufferDumpMode()
 
 void SSDX11Engine::Shutdown()
 {
+	if (mRenderingThread)
+	{
+		// wait for rendering thread		
+		mRenderingThread->RequestExit();
+		mRenderingThread->Join();
+
+		delete mRenderingThread;
+		mRenderingThread = nullptr;
+	}
+	
 	if(mRenderer)
 	{
-		mRenderer->Shutdown();
 		mRenderer = nullptr;
 	}
 
@@ -97,14 +84,7 @@ void SSDX11Engine::Shutdown()
 		mGameThread = nullptr;
 	}
 
-	if(mRenderingThread)
-	{
-		mRenderingThread->RequestExit();
-		mRenderingThread->Join();
-
-		delete mRenderingThread;
-		mRenderingThread = nullptr;
-	}
+	
 }
 
 bool SSDX11Engine::CreateDevice()
@@ -182,8 +162,7 @@ void SSDX11Engine::Run()
 
 	while(!bRequestExit)
 	{
-		SSGameWindow::GetPtr()->HandleMessage();
-		TickGameThread(0.033f);
+		mGameThread->Tick(0.033);
 	}
 
 	Shutdown();
@@ -197,6 +176,7 @@ void SSDX11Engine::TickRenderThread(float deltaTime)
 {
 	if (mRenderer)
 	{
+		mGameThread->WaitForGameThread(10);
 		mRenderer->DrawScene();
 	}
 }

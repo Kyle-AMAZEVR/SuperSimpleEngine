@@ -17,6 +17,11 @@ void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 	mRenderingDoneEventHandle = CreateEvent(nullptr, false, false, mEventName);
 }
 
+void SSRenderingThread::SetRenderer(class SSRenderer* renderer)
+{
+	mRenderer = renderer;
+}
+
 void SSRenderingThread::WaitForRenderingThread(const DWORD WaitTime)
 {
 	WaitForSingleObject(mRenderingDoneEventHandle, WaitTime);
@@ -35,7 +40,7 @@ DWORD SSRenderingThread::Run()
 
 	while (1)
 	{
-		mEngineInstance->GetGameThread()->WaitForGameThread(33);
+		mEngineInstance->GetGameThread()->WaitForGameThread(10);
 
 		// consume command queue
 		{
@@ -60,7 +65,13 @@ DWORD SSRenderingThread::Run()
 		SetEvent(mRenderingDoneEventHandle);
 
 		if (bRequestExit)
-		{	
+		{
+			if(mRenderer)
+			{
+				mRenderer->Shutdown();
+				delete mRenderer;
+				mRenderer = nullptr;
+			}
 			return 0;
 		}
 	}	

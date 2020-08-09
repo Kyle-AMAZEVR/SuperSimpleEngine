@@ -7,8 +7,7 @@
 void SSEngineBase::EngineStart()
 {
 	// start game thread
-	mGameThread = new SSGameThread();
-	mGameThread->Start(GetCurrentThreadId());
+	mGameThread = new SSGameThread(GetCurrentThreadId());	
 
 	// start rendering thread
 	mRenderingThread = new SSRenderingThread();

@@ -36,7 +36,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 HWND WindowHandle;
 SSRenderingThread renderingThread;
-SSGameThread gameThread;
+
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);

@@ -139,4 +139,5 @@ private:
 	void CreateEnvCubemapConvolution();
 	void CreateEnvCubemapPrefilter();
 	void Create2DLUTTexture();
+	void Resize(int width, int height);
 };

@@ -19,6 +19,8 @@ public:
 
 	void WaitForRenderingThread(const DWORD WaitTime = INFINITE);
 
+	void SetRenderer(class SSRenderer* renderer);
+
 protected:
 	HANDLE mThreadHandle = nullptr;
 	static DWORD mRenderingThreadId;

@@ -23,8 +23,8 @@ protected:
 	virtual bool CreateDevice() = 0;
 	virtual bool CreateSwapChain() = 0;
 
-	int mBufferWidth = 1024;
-	int mBufferHeight = 768;
+	int mBufferWidth = 1920;
+	int mBufferHeight = 1080;
 	HWND mWindowHandle;
 	UINT m4xMSAAQuality = 0;
 };

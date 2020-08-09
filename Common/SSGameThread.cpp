@@ -4,6 +4,12 @@
 #include "Windows.h"
 #include "SSGameWindow.h"
 
+SSGameThread::SSGameThread(DWORD gameThreadId)
+{
+	Start(gameThreadId);
+}
+
+
 bool SSGameThread::IsInGameThread()
 {
 	if (mGameThreadId== GetCurrentThreadId())

@@ -4,18 +4,18 @@
 class COMMON_API SSGameThread
 {
 public:	
-
-	void Start(DWORD gameThreadId);
+	SSGameThread(DWORD gameThreadId);
 
 	static bool IsInGameThread();
 
 	void Tick(float deltaSeconds);
 
-	HANDLE GetGameThreadEventHandle() { return mGameThreadDoneEventHandle; }
+	HANDLE GetGameThreadEventHandle() { return mGameThreadDoneEventHandle; }	
 
 	void WaitForGameThread(const DWORD WaitTime = INFINITE);
 
 protected:
+	void Start(DWORD gameThreadId);
 
 	DWORD Run();
 

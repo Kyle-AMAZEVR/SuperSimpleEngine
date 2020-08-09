@@ -82,7 +82,16 @@ SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
 }
 
 void SSGameWindow::OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{	
+{
+	PAINTSTRUCT ps;
+	HDC hdc;
+	hdc = BeginPaint(hWnd, &ps);
+
+
+	//renderingThread.WaitForRenderingThread();
+
+	// TODO: Add any drawing code that uses hdc here...            
+	EndPaint(hWnd, &ps);
 }
 
 void SSGameWindow::OnMouseMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -110,7 +119,15 @@ void SSGameWindow::OnMouseLUp(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 
 void SSGameWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {	
-	
+	PAINTSTRUCT ps;
+	HDC hdc;
+	hdc = BeginPaint(hWnd, &ps);
+
+
+	//renderingThread.WaitForRenderingThread();
+
+	// TODO: Add any drawing code that uses hdc here...            
+	EndPaint(hWnd, &ps);
 }
 
 void SSGameWindow::OnCreate(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

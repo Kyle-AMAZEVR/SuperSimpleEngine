@@ -69,7 +69,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 
 	bInitialized = true;
 
-	OnWindowResize(mBufferWidth, mBufferHeight);
+	Resize(mBufferWidth, mBufferHeight);
 }
 
 
@@ -214,23 +214,31 @@ bool SSDX11Renderer::CreateDevice()
 void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 {
 	if (bInitialized)
-	{
+	{	
 		check(mDeviceContext);
 		check(mDevice);
 		check(mSwapChain);
 
 		check(newWidth > 0 && newHeight > 0);
 
-		mBufferWidth = newWidth;
-		mBufferHeight = newHeight;
-
-		mViewport->Resize(newWidth, newHeight);
-		mGBuffer->Resize(newWidth, newHeight);
-
-		mFXAAPostProcess->OnResize(newWidth, newHeight);
-		mGBufferDumpProcess->OnResize(newWidth, newHeight);
-		mDeferredLightPostProcess->OnResize(newWidth, newHeight);
+		if (mBufferWidth != newWidth || mBufferHeight != newHeight)
+		{
+			Resize(newWidth, newHeight);
+		}
 	}
+}
+
+void SSDX11Renderer::Resize(int newWidth,int newHeight)
+{
+	mBufferWidth = newWidth;
+	mBufferHeight = newHeight;
+
+	mViewport->Resize(newWidth, newHeight);
+	mGBuffer->Resize(newWidth, newHeight);
+
+	mFXAAPostProcess->OnResize(newWidth, newHeight);
+	mGBufferDumpProcess->OnResize(newWidth, newHeight);
+	mDeferredLightPostProcess->OnResize(newWidth, newHeight);
 }
 
 
@@ -254,7 +262,7 @@ bool SSDX11Renderer::CreateSwapChain()
 
 
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount = 1;
+	sd.BufferCount = 2;
 	sd.OutputWindow = mWindowHandle;
 	sd.Windowed = true;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
