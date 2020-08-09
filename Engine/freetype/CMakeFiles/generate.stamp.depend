@@ -1,14 +1,12 @@
 # CMake generation dependency list for this directory.
-E:/Program Files/CMake/share/cmake-3.14/Modules/CPack.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/CPackComponent.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/CheckIncludeFile.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/FindBZip2.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/FindPNG.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/FindPackageHandleStandardArgs.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/FindPackageMessage.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/FindPkgConfig.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/FindZLIB.cmake
-E:/Program Files/CMake/share/cmake-3.14/Modules/SelectLibraryConfigurations.cmake
-E:/Program Files/CMake/share/cmake-3.14/Templates/CPackConfig.cmake.in
-E:/github/DXEngine/lib/freetype/CMakeLists.txt
-E:/github/DXEngine/lib/freetype/builds/cmake/FindHarfBuzz.cmake
+C:/GitHub/SuperSimpleEngine/lib/freetype/CMakeLists.txt
+C:/Program Files/CMake/share/cmake-3.18/Modules/CPack.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/CPackComponent.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/CheckIncludeFile.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/FindBZip2.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/FindPNG.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/FindZLIB.cmake
+C:/Program Files/CMake/share/cmake-3.18/Modules/SelectLibraryConfigurations.cmake
+C:/Program Files/CMake/share/cmake-3.18/Templates/CPackConfig.cmake.in

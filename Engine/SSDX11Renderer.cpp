@@ -38,9 +38,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 {
 	mWindowHandle = windowHandle;
 	CreateDevice();
-	CreateSwapChain();
-
-	bInitialized = true;
+	CreateSwapChain();	
 
 	SSShaderManager::Get().Initialize();
 
@@ -60,18 +58,18 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	if (SSFileHelper::DirectoryExists(L"./Prebaked") == false)
 	{
 		SSFileHelper::MakeDirectory(L"./Prebaked");
-	}
-
-	OnWindowResize(mBufferWidth, mBufferHeight);
+	}	
 
 	SSSamplerManager::Get().Initialize();
 	SSDepthStencilStateManager::Get().Initialize();
 	SSRasterizeStateManager::Get().Initialize();
 
-
 	TestCompileShader();
 	TestCreateResources();
 
+	bInitialized = true;
+
+	OnWindowResize(mBufferWidth, mBufferHeight);
 }
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SSCommon.h"
+#include "Core.h"
 #include "SSRenderer.h"
 
 
@@ -8,9 +8,7 @@ class ENGINE_API SSDX11Renderer : public SSRenderer
 {
 public:
 
-	SSDX11Renderer();
-
-	
+	SSDX11Renderer();	
 
 	virtual void Initialize(HWND windowHandle) override;
 	virtual void Shutdown() override;

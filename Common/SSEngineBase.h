@@ -15,8 +15,7 @@ public:
 	SSEngineBase() = default;
 	virtual void Initialize(HWND windowHandle) = 0;
 	virtual void Shutdown() = 0;
-	virtual void OnWindowResize(int newWidth, int newHeight) = 0;
-	virtual void DrawScene() = 0;
+	virtual void OnWindowResize(int newWidth, int newHeight) = 0;	
 	virtual void EngineStart();
 
 	virtual void Run() = 0;

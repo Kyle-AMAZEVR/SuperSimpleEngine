@@ -5,6 +5,7 @@
 #include "SSTimer.h"
 #include "SSEngineBase.h"
 #include "SSGameThread.h"
+#include "SSDX11Renderer.h"
 
 void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 {

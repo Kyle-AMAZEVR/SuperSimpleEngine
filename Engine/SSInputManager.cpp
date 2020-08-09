@@ -25,9 +25,6 @@ void SSInputManager::OnKeyDown(ULONGLONG key)
 		SSDX11Engine::Get().ToggleGBufferDumpMode();
 		break;
 	
-	case VK_F2:
-		SSDX11Engine::Get().ChangeToNextDumpMode();
-		break;
 	}
 }
 

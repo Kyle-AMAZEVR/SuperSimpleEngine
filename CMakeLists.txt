@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(DXEngine)
+project(SuperSimpleEngine)
 
 add_compile_options(/wd4251)
 
@@ -22,7 +22,7 @@ add_subdirectory("Engine")
 add_subdirectory("Engine12")
 
 
-add_executable(SuperSimpleEngine resource.h targetver.h DXApp.h DXApp.cpp DXWindow.rc)
+add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp DXApp.cpp DXWindow.rc)
 
 add_dependencies(SuperSimpleEngine SSDX11)
 add_dependencies(SuperSimpleEngine SSDX12)

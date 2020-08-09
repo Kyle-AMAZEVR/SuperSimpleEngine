@@ -36,4 +36,6 @@ protected:
 	LPCSTR mEventName;
 
 	class SSEngineBase* mEngineInstance = nullptr;
+
+	class SSRenderer* mRenderer = nullptr;
 };

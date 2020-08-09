@@ -32,7 +32,7 @@ class SSDX12_API SSDX12Engine : public SSEngineBase
 	
 public:
 	virtual void Initialize(HWND windowHandle) override;
-	virtual void DrawScene() override;
+	virtual void DrawScene();
 	virtual void OnWindowResize(int newWidth, int newHeight) override;
 	virtual void Shutdown() override;
 
