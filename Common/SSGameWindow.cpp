@@ -1,6 +1,7 @@
 #include "SSCommon.h"
 #include "SSGameWindow.h"
 #include "SSTimer.h"
+#include "SSInputManager.h"
 
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
@@ -147,7 +148,7 @@ void SSGameWindow::OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 
 void SSGameWindow::OnKeyDown(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	
+	SSInputManager::Get().OnKeyDown(wParam);
 }
 
 LRESULT CALLBACK SSGameWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

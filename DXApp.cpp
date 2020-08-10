@@ -16,8 +16,7 @@
 #include "Engine/Core.h"
 #include "Engine/SSEngine.h"
 #include "Common/SSRenderingThread.h"
-
-#include "Engine/SSInputManager.h"
+#include "Common/SSInputManager.h"
 #include "Common/SSGameWindow.h"
 #include "SSAppWindow.h"
 #include "Windowsx.h"

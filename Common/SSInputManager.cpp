@@ -4,6 +4,29 @@
 #include "SSCameraManager.h"
 #include "SSEngine.h"
 
+
+SSInputManager& SSInputManager::Get()
+{
+	if (mInstance == nullptr)
+	{
+		mInstance = new SSInputManager();
+	}
+	return *mInstance;
+}
+
+
+SSInputManager* SSInputManager::mInstance = nullptr;
+
+
+SSInputManager* SSInputManager::GetPtr()
+{
+	if (mInstance == nullptr)
+	{
+		mInstance = new SSInputManager();
+	}
+	return mInstance;
+}
+
 void SSInputManager::OnKeyDown(ULONGLONG key)
 {
 	switch (key)
@@ -20,11 +43,6 @@ void SSInputManager::OnKeyDown(ULONGLONG key)
 	case VK_RIGHT:
 		SSCameraManager::Get().RotateYaw(0.01f);
 		break;
-
-	case VK_F1:
-		SSDX11Engine::Get().ToggleGBufferDumpMode();
-		break;
-	
 	}
 }
 

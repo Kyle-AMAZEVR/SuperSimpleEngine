@@ -1,11 +1,14 @@
 #pragma once
 #include "Singleton.h"
 
-class ENGINE_API SSInputManager : public Singleton<SSInputManager>
+class COMMON_API SSInputManager
 {
 public:
 	void OnKeyDown(ULONGLONG keyCode);
 	void OnKeyUp(ULONGLONG keyCode);
+
+	static SSInputManager& Get();
+	static SSInputManager* GetPtr();
 
 	void OnMouseMove(int x, int y);
 	
@@ -22,4 +25,6 @@ private:
 	int mLastMousePosY = 0;
 
 	bool mMouseLBtnDown = false;
+
+	static SSInputManager* mInstance;
 };
