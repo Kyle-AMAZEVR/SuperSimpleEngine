@@ -164,7 +164,7 @@ void SSDX11Engine::Run()
 
 	while(!bRequestExit)
 	{
-		mGameThread->Tick(0.033);
+		mGameThread->Tick(0.033f);
 	}
 
 	Shutdown();

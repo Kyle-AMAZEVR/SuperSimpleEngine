@@ -43,7 +43,7 @@ bool SSDX12TextureCube::LoadFromDDSFile(ID3D12Device* device, ID3D12GraphicsComm
 		&textureDesc,
 		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&mTextureResource)));
 
-	const UINT num2DSubResources = metaData.arraySize * static_cast<UINT>(metaData.mipLevels);
+	const UINT num2DSubResources = static_cast<UINT>(metaData.arraySize) * static_cast<UINT>(metaData.mipLevels);
 	const UINT64 uploadBufferSize = GetRequiredIntermediateSize(mTextureResource.Get(), 0, num2DSubResources);
 
 	// create upload buffer resource

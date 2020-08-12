@@ -32,8 +32,6 @@ using namespace DirectX;
 #define TOSTRING(x) STRINGFY(x)
 #define AT __FILE__ ":" TOSTRING(__LINE__)
 
-void PrintError(const char* loc, const char* msg);
-
 void PrintDXError(ID3DBlob* errorMsg);
 
 #define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
