@@ -21,13 +21,10 @@ include_directories("../lib/DirectXMath/Include")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
 
-foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuSSCommon.h")	
-endforeach(src_file ${SOURCES})
-
-set_source_files_properties("SSCommon.cpp" PROPERTIES COMPILE_FLAGS "/YcSSCommon.h")
 
 add_library(Common SHARED ${SOURCES} ${HEADERS})
+
+target_precompile_headers(Common PRIVATE "SSCommon.h")
 
 target_link_libraries(Common d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype) 
 

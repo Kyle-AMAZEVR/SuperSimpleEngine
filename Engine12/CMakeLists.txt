@@ -23,17 +23,13 @@ include_directories("../Common")
 
 add_subdirectory("../Common/" "../Common")
 
-foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuSSDX12.h")	
-endforeach(src_file ${SOURCES})
-
-set_source_files_properties("SSDX12.cpp" PROPERTIES COMPILE_FLAGS "/YcSSDX12.h")
-
 add_library(SSDX12 SHARED ${SOURCES} ${HEADERS})
 
 add_dependencies(SSDX12 Common)
 
 target_link_libraries(SSDX12 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
+
+target_precompile_headers(SSDX12 PRIVATE "SSDX12.h")
 
 target_compile_definitions(SSDX12 PRIVATE SSDX12_EXPORTS)
 target_compile_definitions(SSDX12 INTERFACE SSDX12_IMPORTS)

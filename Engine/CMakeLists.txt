@@ -27,17 +27,14 @@ add_subdirectory("../lib/DirectXTex" "./DirectXTex")
 add_subdirectory("../lib/freetype" "./freetype")
 
 
-foreach(src_file ${SOURCES})
-	set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/YuCore.h")	
-endforeach(src_file ${SOURCES})
-
-set_source_files_properties("Core.cpp" PROPERTIES COMPILE_FLAGS "/YcCore.h")
 
 add_library(SSDX11 SHARED ${SOURCES} ${HEADERS})
 
 add_dependencies(SSDX11 Common)
 
 target_link_libraries(SSDX11 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
+
+target_precompile_headers(SSDX11 PRIVATE "Core.h")
 
 target_compile_definitions(SSDX11 PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(SSDX11 INTERFACE ENGINE_IMPORTS)
