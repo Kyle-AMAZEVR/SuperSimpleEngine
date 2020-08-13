@@ -44,8 +44,6 @@ protected:
 	class SSDX11Renderer* mRenderer = nullptr;
 
 private:
-    virtual bool CreateDevice() override;
-    bool CreateSwapChain();
 
     HWND mWindowHandle;
     UINT m4xMSAAQuality;
