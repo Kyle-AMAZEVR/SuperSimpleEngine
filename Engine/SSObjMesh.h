@@ -1,5 +1,5 @@
 #pragma once
-#include "SSSceneObject.h"
+#include "SSGameObject.h"
 #include <vector>
 #include <unordered_map>
 #include <map>
@@ -10,7 +10,7 @@
 
 bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNormalTexcoordTangent& b);
 
-class ENGINE_API SSObjMesh : public SSSceneObject
+class ENGINE_API SSObjMesh : public SSGameObject
 {
 public:
 	bool ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath);

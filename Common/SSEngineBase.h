@@ -32,8 +32,7 @@ public:
 	void RequestExit() { bRequestExit = true; }
 
 protected:
-	virtual bool CreateDevice() = 0;
-
+	
 	static SSGameThread* mGameThread;
 	static SSRenderingThread* mRenderingThread;
 

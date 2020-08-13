@@ -19,6 +19,9 @@ SSCube::SSCube()
 
 void SSCube::Draw(ID3D11DeviceContext* deviceContext)
 {
+#if DEBUG
+	check(SSRenderingThread::IsInRenderingThread());
+#endif
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
