@@ -1,8 +1,8 @@
 #pragma once
-#include "SSGameObject.h"
+#include "SSSceneObject.h"
 
 
-class ENGINE_API SSScreenBlit : public SSGameObject
+class ENGINE_API SSScreenBlit : public SSSceneObject
 {
 public:
 	SSScreenBlit();

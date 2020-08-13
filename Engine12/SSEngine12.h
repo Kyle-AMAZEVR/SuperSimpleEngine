@@ -49,7 +49,7 @@ protected:
 	void WaitForGPU();
 	void PopulateCommandList();
 
-	bool CreateDevice();
+	virtual bool CreateDevice() override;
 	void CreateDescriptorHeaps();
 	void CreateRootSignature();
 	void CreateConstantBuffers();

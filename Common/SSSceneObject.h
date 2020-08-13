@@ -1,19 +1,18 @@
 #pragma once
 
-#include "SSRenderThreadObject.h"
+using namespace DirectX;
 
-class ENGINE_API SSGameObject
+class SSSceneObject
 {
 public:
-	SSGameObject();
-	virtual ~SSGameObject();
+	SSSceneObject();
+	virtual ~SSSceneObject();
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
-	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material){}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
 	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
 
-	virtual void GameThreadTick(float delta);
-	virtual void RenderThreadTick(float delta);
+	virtual void Tick(float delta) {}
 
 	virtual XMMATRIX GetModelTransform();
 
@@ -32,17 +31,12 @@ public:
 	virtual void SetScaleZ(float z);
 
 protected:
-	friend class SSGameObjectManager;
+	friend class SSSceneObjectManager;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mScale;
-
-	XMMATRIX mCachedModelTransform;
-	bool bTransformDirty = false;
-
-	void CacheTransform();
 
 	float mYaw = 0;
 	float mPitch = 0;
 	float mRoll = 0;
-	UINT mObjectId = 0;
+	UINT mObjectId = 0; 
 };

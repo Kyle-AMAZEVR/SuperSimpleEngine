@@ -204,7 +204,6 @@ bool SSDX11Renderer::CreateDevice()
 {
 	//
 	D3D_FEATURE_LEVEL featureLevel;
-	
 	HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mDeviceContext.ReleaseAndGetAddressOf()));
 
 	HR(mDevice->CreateDeferredContext(0, mDeferredContext.ReleaseAndGetAddressOf()));
