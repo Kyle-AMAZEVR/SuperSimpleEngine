@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "SSSceneObject.h"
+#include "SSGameObject.h"
 #include "SSName.h"
 #include <vector>
 
-class ENGINE_API SSSphere : public SSSceneObject
+class ENGINE_API SSSphere : public SSGameObject
 {
 public:
 	SSSphere(UINT sector, UINT stack, float radius);

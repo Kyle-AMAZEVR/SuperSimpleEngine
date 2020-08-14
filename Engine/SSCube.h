@@ -1,9 +1,9 @@
 #pragma once
 
-#include "SSSceneObject.h"
+#include "SSGameObject.h"
 
 // Supser Simple
-class ENGINE_API SSCube : public SSSceneObject
+class ENGINE_API SSCube : public SSGameObject
 {
 public:
 	SSCube();

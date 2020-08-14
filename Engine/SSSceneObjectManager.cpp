@@ -1,9 +1,9 @@
 
 #include "Core.h"
-#include "SSSceneObject.h"
+#include "SSGameObject.h"
 #include "SSSceneObjectManager.h"
 
-void SSSceneObjectManager::AddSceneObject(SSSceneObject* object)
+void SSSceneObjectManager::AddSceneObject(SSGameObject* object)
 {
 	check(object != nullptr);
 	check(object->GetId() != 0);

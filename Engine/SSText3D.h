@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SSSceneObject.h"
+#include "SSGameObject.h"
 
-class ENGINE_API SSText3D : public SSSceneObject
+class ENGINE_API SSText3D : public SSGameObject
 {
 public:
 

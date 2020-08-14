@@ -1,8 +1,8 @@
 #include "Core.h"
-#include "SSSceneObject.h"
+#include "SSGameObject.h"
 #include "SSSceneObjectManager.h"
 
-SSSceneObject::SSSceneObject()
+SSGameObject::SSGameObject()
 {
 	mObjectId = SSSceneObjectManager::Get().IssueObjectId();
 	SSSceneObjectManager::Get().AddSceneObject(this);
@@ -11,51 +11,51 @@ SSSceneObject::SSSceneObject()
 	mScale = XMFLOAT3(1, 1, 1);
 }
 
-SSSceneObject::~SSSceneObject()
+SSGameObject::~SSGameObject()
 {
 	SSSceneObjectManager::Get().RemoveSceneObject(mObjectId);
 }
 
-XMMATRIX SSSceneObject::GetModelTransform()
+XMMATRIX SSGameObject::GetModelTransform()
 {
 	return XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z) *  XMMatrixRotationY(mYaw) * XMMatrixScaling(mScale.x, mScale.y, mScale.z) ;
 }
 
-void SSSceneObject::SetPositionX(float x)
+void SSGameObject::SetPositionX(float x)
 {
 	mPosition.x = x;
 }
 
-void SSSceneObject::SetPositionY(float y)
+void SSGameObject::SetPositionY(float y)
 {
 	mPosition.y = y;
 }
 
-void SSSceneObject::SetPositionZ(float z)
+void SSGameObject::SetPositionZ(float z)
 {
 	mPosition.z = z;
 }
 
-void SSSceneObject::SetScaleX(float x)
+void SSGameObject::SetScaleX(float x)
 {
 	mScale.x = x  ;
 }
 
-void SSSceneObject::SetScaleY(float y)
+void SSGameObject::SetScaleY(float y)
 {
 	mScale.y = y;
 }
 
-void SSSceneObject::SetScaleZ(float z)
+void SSGameObject::SetScaleZ(float z)
 {
 	mScale.z = z;
 }
 
-void SSSceneObject::SetPosition(float x, float y, float z)
+void SSGameObject::SetPosition(float x, float y, float z)
 {
 	mPosition.x = x; mPosition.y = y; mPosition.z = z;
 }
-void SSSceneObject::SetScale(float x, float y, float z)
+void SSGameObject::SetScale(float x, float y, float z)
 {
 	mScale.x = x; mScale.y = y; mScale.z = z;
 }

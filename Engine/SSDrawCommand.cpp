@@ -3,7 +3,7 @@
 #include "Core.h"
 #include "SSEngine.h"
 #include "SSDrawCommand.h"
-#include "SSSceneObject.h"
+#include "SSGameObject.h"
 #include "SSSamplerManager.h"
 #include "SSMaterial.h"
 
@@ -19,7 +19,7 @@ void SSChangeRenderTargetCmd::Do(ID3D11DeviceContext* deviceContext)
 }
 
 
-SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object)
+SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
 {
 	mVertexShaderConstantBufferMap = mpVS->GetConstantBufferMap();

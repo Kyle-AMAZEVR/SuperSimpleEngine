@@ -8,7 +8,7 @@
 
 class SSVertexShader;
 class SSPixelShader;
-class SSSceneObject;
+class SSGameObject;
 class SSTexture2DBase;
 class IRenderTarget;
 
@@ -43,9 +43,9 @@ protected:
 class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 {
 public:	
-	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSSceneObject> object);
+	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object);
 
-	SSDrawCommand(SSMaterial* material, std::shared_ptr<SSSceneObject> object);
+	SSDrawCommand(SSMaterial* material, std::shared_ptr<SSGameObject> object);
 
 	template<class T>
 	void StoreVSConstantBufferData(SSName name, const T& value);
@@ -84,7 +84,7 @@ protected:
 	//
 	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	std::shared_ptr<SSSceneObject> mObject;
+	std::shared_ptr<SSGameObject> mObject;
 
 	std::function<void()> mPreDrawJob = nullptr;
 	std::function<void()> mPostDrawJob = nullptr;

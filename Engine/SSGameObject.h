@@ -2,11 +2,11 @@
 
 #include "SSRenderThreadObject.h"
 
-class ENGINE_API SSSceneObject : public SSRenderThreadObject
+class ENGINE_API SSGameObject : public SSRenderThreadObject
 {
 public:
-	SSSceneObject();
-	virtual ~SSSceneObject();
+	SSGameObject();
+	virtual ~SSGameObject();
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material){}
