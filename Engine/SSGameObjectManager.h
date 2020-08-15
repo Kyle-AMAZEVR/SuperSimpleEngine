@@ -3,7 +3,7 @@
 #include "Singleton.h"
 #include <map>
 
-class ENGINE_API SSSceneObjectManager : Singleton<SSSceneObjectManager>
+class ENGINE_API SSGameObjectManager : Singleton<SSGameObjectManager>
 {
 public:
 	void AddSceneObject(class SSGameObject* object);

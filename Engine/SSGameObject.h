@@ -31,7 +31,7 @@ public:
 	virtual void SetScaleZ(float z);
 
 protected:
-	friend class SSSceneObjectManager;
+	friend class SSGameObjectManager;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mScale;
 

@@ -1,11 +1,11 @@
 #include "Core.h"
 #include "SSGameObject.h"
-#include "SSSceneObjectManager.h"
+#include "SSGameObjectManager.h"
 
 SSGameObject::SSGameObject()
 {
-	mObjectId = SSSceneObjectManager::Get().IssueObjectId();
-	SSSceneObjectManager::Get().AddSceneObject(this);
+	mObjectId = SSGameObjectManager::Get().IssueObjectId();
+	SSGameObjectManager::Get().AddSceneObject(this);
 
 	mPosition = XMFLOAT3(0, 0, 0);
 	mScale = XMFLOAT3(1, 1, 1);
@@ -13,7 +13,7 @@ SSGameObject::SSGameObject()
 
 SSGameObject::~SSGameObject()
 {
-	SSSceneObjectManager::Get().RemoveSceneObject(mObjectId);
+	SSGameObjectManager::Get().RemoveSceneObject(mObjectId);
 }
 
 XMMATRIX SSGameObject::GetModelTransform()
