@@ -2,6 +2,8 @@
 #include "SSCommon.h"
 #include "SSGameObject.h"
 
+using namespace DirectX;
+
 SSGameObject::SSGameObject()
 {
 	mPosition = XMFLOAT3(0, 0, 0);

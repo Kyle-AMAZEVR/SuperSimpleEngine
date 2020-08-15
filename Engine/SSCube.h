@@ -6,8 +6,8 @@
 class ENGINE_API SSCube : public SSGameObject
 {
 public:
-	SSCube();
-
+	SSCube();	
+	
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 	class SSDX11VertexBuffer* GetVB() { return mCubeVB; }
 	class SSIndexBuffer* GetIB() { return mCubeIB; }

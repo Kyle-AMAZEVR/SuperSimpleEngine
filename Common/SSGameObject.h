@@ -1,23 +1,21 @@
 #pragma once
 
-using namespace DirectX;
 
-/**
- * \brief 
- */
-class SSGameObject
+class COMMON_API SSGameObject
 {
 public:
 	SSGameObject();
 	virtual ~SSGameObject();
 
+	
+	virtual void Destroy(){}
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
 	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
 
 	virtual void Tick(float delta) {}
 
-	virtual XMMATRIX GetModelTransform();
+	virtual DirectX::XMMATRIX GetModelTransform();
 
 	UINT GetId() const { return mObjectId; }
 

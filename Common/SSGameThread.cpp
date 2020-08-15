@@ -1,6 +1,8 @@
 
 #include "SSCommon.h"
 #include "SSGameThread.h"
+
+#include "SSGameObjectManager.h"
 #include "Windows.h"
 #include "SSGameWindow.h"
 
@@ -35,7 +37,7 @@ void SSGameThread::Tick(float DeltaSeconds)
 	// handle window message
 	SSGameWindow::GetPtr()->HandleMessage();
 
-	// 
+	SSGameObjectManager::GetPtr()->Tick(DeltaSeconds);
 
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);
