@@ -4,17 +4,25 @@
 #include "DXVertexTypes.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
+#include "SSDX11Renderer.h"
 #include <vector>
 
 SSCube::SSCube()
-{
-	if (bIsInitialized == false)
-	{
-		InternalCreate();
-		bIsInitialized = true;
-	}
+{	
+}
 
-	mYaw = 0;
+void SSCube::PrepareRendering()
+{
+	check(SSRenderingThread::IsInRenderingThread());
+	InternalCreate();	
+	mRenderingReady = true;
+}
+
+
+void SSCube::Draw(SSDX11Renderer* renderer)
+{
+	check(renderer != nullptr);
+	Draw(renderer->GetImmediateDeviceContext());
 }
 
 void SSCube::Draw(ID3D11DeviceContext* deviceContext)

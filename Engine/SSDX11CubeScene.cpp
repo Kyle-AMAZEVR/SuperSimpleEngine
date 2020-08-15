@@ -6,4 +6,5 @@
 void SSDX11CubeScene::InitializeScene()
 {
 	mCube = new SSCube();
+	this->AddGameObject(mCube);
 }
