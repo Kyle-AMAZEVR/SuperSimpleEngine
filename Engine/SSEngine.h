@@ -43,6 +43,8 @@ protected:
 
 	class SSDX11Renderer* mRenderer = nullptr;
 
+	class SSGameScene* mCurrentScene = nullptr;
+
 private:
 
     HWND mWindowHandle;

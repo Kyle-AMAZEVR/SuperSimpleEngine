@@ -4,6 +4,7 @@
 #include "SSTexture2D.h"
 #include "SSObjMesh.h"
 #include "SSDX11Renderer.h"
+#include "SSDX11CubeScene.h"
 
 bool SSDX11Engine::bInitialized = false;
 
@@ -51,9 +52,9 @@ void SSDX11Engine::Initialize(HWND windowHandle)
 
 	mRenderingThread->SetRenderer(mRenderer);
 	
-	mGameThread = new SSGameThread(GetCurrentThreadId());
+	mGameThread = new SSGameThread(GetCurrentThreadId());	
 	
-    mWindowHandle = windowHandle;
+    mWindowHandle = windowHandle;	
 
 	bInitialized = true;
 }

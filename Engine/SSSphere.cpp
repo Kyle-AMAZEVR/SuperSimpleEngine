@@ -25,6 +25,27 @@ SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	}
 }
 
+void SSSphere::OnAddedScene()
+{
+	if (bIsInitialized == false)
+	{
+		InternalCreate();
+		bIsInitialized = true;
+	}	
+}
+
+void SSSphere::PrepareRendering()
+{	
+	mSphereVB = new SSDX11VertexBuffer();
+	mSphereVB->SetVertexBufferData(mVertexArray);
+}
+
+
+void SSSphere::Draw(SSDX11Renderer* renderer)
+{
+	
+}
+
 
 void SSSphere::InternalCreate()
 {
@@ -121,23 +142,23 @@ void SSSphere::InternalCreate()
 
 	GenerateTangents();
 
-	std::vector< VT_PositionNormalTexcoordTangent > vertexArray;
+	
 	std::vector<UINT> indexArray;
 	
 	for (UINT i = 0; i < mTempVertexList.size(); i += 3)
 	{
 		// face1
-		vertexArray.push_back(VT_PositionNormalTexcoordTangent
+		mVertexArray.push_back(VT_PositionNormalTexcoordTangent
 		(
 			mTempVertexList[i], mTempNormalList[i], mTempTexCoordList[i], mTempTangentList[i]
 		));
 
-		vertexArray.push_back(VT_PositionNormalTexcoordTangent
+		mVertexArray.push_back(VT_PositionNormalTexcoordTangent
 		(
 			mTempVertexList[i + 1], mTempNormalList[i + 1], mTempTexCoordList[i + 1], mTempTangentList[i + 1]
 		));
 
-		vertexArray.push_back(VT_PositionNormalTexcoordTangent
+		mVertexArray.push_back(VT_PositionNormalTexcoordTangent
 		(
 			mTempVertexList[i + 2], mTempNormalList[i + 2], mTempTexCoordList[i + 2], mTempTangentList[i + 2]
 		));		
@@ -197,8 +218,9 @@ void SSSphere::InternalCreate()
 
 
 	mSphereVB = new SSDX11VertexBuffer();
-	mSphereVB->SetVertexBufferData(vertexArray);	
+	mSphereVB->SetVertexBufferData(mVertexArray);
 }
+
 
 
 void SSSphere::GenerateTangents()
@@ -413,7 +435,10 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 }
 
 bool SSSphere::bIsInitialized = false;
+std::vector< VT_PositionNormalTexcoordTangent > SSSphere::mVertexArray;
+
 SSDX11VertexBuffer* SSSphere::mSphereVB = nullptr;
+
 
 SSPBRSphere::SSPBRSphere(ID3D11DeviceContext* deviceContext, SSName diffuseTexName, SSName normalTexName, SSName metalTexName, SSName roughTexName)
 	: SSSphere(25, 25, 10.f)
