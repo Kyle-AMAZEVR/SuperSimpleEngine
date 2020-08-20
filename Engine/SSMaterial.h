@@ -13,7 +13,6 @@ class ENGINE_API SSMaterial : public SSRenderThreadObject
 {
 public:
 	SSMaterial(SSVertexShader* vs, SSPixelShader* ps);
-	//SSMaterial(SSVertexShader* vs, SSPixelShader* ps);
 
 	virtual void SetCurrent();
 	virtual void ReleaseCurrent();
@@ -63,7 +62,7 @@ void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSN
 
 		check(deviceContext != nullptr);
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetDX11BufferPointerRef());
 	}
 }
 
@@ -77,7 +76,7 @@ void SSMaterial::SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceConte
 
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetDX11BufferPointerRef());
 	}
 	else
 	{
@@ -95,6 +94,6 @@ void SSMaterial::SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSN
 
 		UINT bufferIndex = mPixelShaderConstantBufferMap[name]->GetBufferIndex();
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, mPixelShaderConstantBufferMap[name]->GetBufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, mPixelShaderConstantBufferMap[name]->GetDX11BufferPointerRef());
 	}
 }

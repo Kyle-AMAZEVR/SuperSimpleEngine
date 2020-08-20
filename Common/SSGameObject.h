@@ -18,7 +18,7 @@ public:
 	virtual void Draw(class SSDX12Renderer* renderer){}
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
-	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
+	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}	
 
 	virtual void Tick(float delta) {}
 
@@ -33,13 +33,12 @@ public:
 	virtual void SetPositionY(float y);
 	virtual void SetPositionZ(float z);
 
-
 	virtual void SetScaleX(float x);
 	virtual void SetScaleY(float y);
 	virtual void SetScaleZ(float z);
 
 	bool IsRenderingReady() const { return mRenderingReady; }
-	virtual void PrepareRendering(){}
+	virtual void PrepareRendering(){}	
 
 protected:
 	friend class SSGameObjectManager;

@@ -30,7 +30,7 @@ ID3D11Buffer* SSShader::GetConstantBuffer(std::string bufferName)
 {
     if(mConstantBufferMap.count(bufferName) > 0)
     {
-        return mConstantBufferMap[bufferName]->GetBufferPointer();
+        return mConstantBufferMap[bufferName]->GetDX11BufferPointer();
     }
 
     return nullptr;

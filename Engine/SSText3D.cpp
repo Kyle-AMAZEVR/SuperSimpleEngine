@@ -48,8 +48,8 @@ void SSText3D::Draw(ID3D11DeviceContext* deviceContext, SSMaterial* material)
 	auto stride = mTextVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, mTextVB->GetBufferPointerRef(), &stride, &offset);
-	deviceContext->IASetIndexBuffer(mTextIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetVertexBuffers(0, 1, mTextVB->GetDX11BufferPointerRef(), &stride, &offset);
+	deviceContext->IASetIndexBuffer(mTextIB->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 	material->SetCurrent();
 

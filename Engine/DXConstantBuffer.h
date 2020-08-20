@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "SSBufferBase.h"
+#include "DX11/SSDX11Buffer.h"
 #include <vector>
 #include <string>
 
@@ -58,7 +58,7 @@ struct VariableInConstantBufferInfo
     std::string Name;
 };
 
-class SSGenericConstantBuffer : public SSBufferBase
+class SSGenericConstantBuffer : public SSDX11Buffer
 {
 public:
     SSGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);

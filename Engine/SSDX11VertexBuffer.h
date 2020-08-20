@@ -3,10 +3,10 @@
 #pragma once
 
 #include <vector>
-#include "SSBufferBase.h"
+#include "DX11/SSDX11Buffer.h"
 #include "SSEngine.h"
 
-class SSDX11VertexBuffer : public SSBufferBase
+class SSDX11VertexBuffer : public SSDX11Buffer
 {
 public:
     SSDX11VertexBuffer(){}

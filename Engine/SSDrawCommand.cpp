@@ -18,7 +18,6 @@ void SSChangeRenderTargetCmd::Do(ID3D11DeviceContext* deviceContext)
 	mRenderTarget->SetCurrentRenderTarget(deviceContext);	
 }
 
-
 SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
 {
@@ -41,7 +40,7 @@ void SSDrawCommand::DoWithMaterial()
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
 	}
 
 	// @ set pixel shader constant buffer
@@ -51,7 +50,7 @@ void SSDrawCommand::DoWithMaterial()
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
 	}
 
 	// @ set pixel shader texture 
@@ -80,13 +79,7 @@ void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 {
 	check(mpVS != nullptr);
 	check(mpPS != nullptr);
-	check(deviceContext != nullptr);
-
-	//
-	if(mPreDrawJob != nullptr)
-	{
-		mPreDrawJob();
-	}	
+	check(deviceContext != nullptr);	
 
 	// @ set input layout
 	deviceContext->IASetInputLayout(mpVS->GetInputLayout());
@@ -105,7 +98,7 @@ void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
 	}
 
 	// @ set pixel shader constant buffer
@@ -115,7 +108,7 @@ void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetBufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
 	}
 
 	// @ set pixel shader texture 
@@ -135,7 +128,7 @@ void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 	{
 		ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
 		mpPS->SetSampler(samplerName, sampler);
-	}
+	}	
 
 	// @ draw
 	mObject->Draw(deviceContext);
@@ -144,24 +137,7 @@ void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 	{
 		mpPS->SetTextureAsNull(kvp.first);
 	}
-
-	if(mPostDrawJob != nullptr)
-	{
-		mPostDrawJob();
-	}
 }
-
-void SSDrawCommand::SetPostDrawJob(std::function<void()> job)
-{
-	mPostDrawJob = std::move(job);
-}
-
-void SSDrawCommand::SetPreDrawJob(std::function<void()> job)
-{
-	mPreDrawJob = std::move(job);
-}
-
-
 
 
 void SSDrawCommand::SetPSTexture(std::string name, SSTexture2DBase* texture)

@@ -21,6 +21,11 @@ public:
 	virtual void PauseRendering() { mPaused = true; }
 	virtual void ResumeRendering() { mPaused = false; }
 
+	
+	
+	
+	
+
 protected:
 	virtual bool CreateDevice() = 0;
 	virtual bool CreateSwapChain() = 0;

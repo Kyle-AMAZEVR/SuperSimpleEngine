@@ -7,6 +7,8 @@ public:
 	virtual void Tick(float deltaSeconds);
 
 	virtual void InitializeScene();
+
+	virtual void DestroyScene();
 	
 	virtual void AddGameObject(class SSGameObject* gameObject);
 

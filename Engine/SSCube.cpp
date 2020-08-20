@@ -27,14 +27,13 @@ void SSCube::Draw(SSDX11Renderer* renderer)
 
 void SSCube::Draw(ID3D11DeviceContext* deviceContext)
 {
-
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	
 	auto stride = mCubeVB->GetStride();
 	UINT offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, mCubeVB->GetBufferPointerRef(), &stride, &offset);
-	deviceContext->IASetIndexBuffer(mCubeIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetVertexBuffers(0, 1, mCubeVB->GetDX11BufferPointerRef(), &stride, &offset);
+	deviceContext->IASetIndexBuffer(mCubeIB->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 	deviceContext->DrawIndexed(mCubeIB->GetIndexCount(), 0, 0);
 }

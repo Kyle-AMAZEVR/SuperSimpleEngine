@@ -42,7 +42,7 @@ protected:
 
 class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 {
-public:	
+public:
 	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object);
 
 	SSDrawCommand(SSMaterial* material, std::shared_ptr<SSGameObject> object);
@@ -65,13 +65,13 @@ public:
 
 	virtual void Do(ID3D11DeviceContext* deviceContext) override;
 
-	void SetPreDrawJob(std::function<void()> job);
-	void SetPostDrawJob(std::function<void()> job);
-
 protected:
 	class SSVertexShader* mpVS = nullptr;
 	class SSPixelShader* mpPS = nullptr;	
 	class SSMaterial* mMaterial = nullptr;
+
+	class SSVertexBuffer* mpVertexBuffer = nullptr;
+	class SSIndexBuffer* mpIndexBuffer = nullptr;	
 
 	//
 	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;

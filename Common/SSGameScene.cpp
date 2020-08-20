@@ -12,6 +12,12 @@ void SSGameScene::InitializeScene()
 	
 }
 
+void SSGameScene::DestroyScene()
+{
+	
+}
+
+
 void SSGameScene::AddGameObject(class SSGameObject* gameObject)
 {
 	if(gameObject)
@@ -33,7 +39,7 @@ void SSGameScene::DrawScene(float deltaSec)
 				kvp.second->PrepareRendering();
 			}
 
-			
+			//kvp.second->Draw();
 		}
 	}
 }
