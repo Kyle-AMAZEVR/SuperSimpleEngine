@@ -30,9 +30,9 @@ add_subdirectory("../lib/freetype" "./freetype")
 
 add_library(SSDX11 SHARED ${SOURCES} ${HEADERS})
 
-add_dependencies(SSDX11 Common)
+add_dependencies(SSDX11 GameModule)
 
-target_link_libraries(SSDX11 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype Common) 
+target_link_libraries(SSDX11 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule) 
 
 target_precompile_headers(SSDX11 PRIVATE "Core.h")
 

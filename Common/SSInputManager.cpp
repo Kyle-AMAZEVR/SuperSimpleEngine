@@ -1,8 +1,8 @@
 
-#include "Core.h"
+
 #include "SSInputManager.h"
 #include "SSCameraManager.h"
-#include "SSEngine.h"
+
 
 
 SSInputManager& SSInputManager::Get()

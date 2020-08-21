@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "DX11/SSDX11Buffer.h"
+#include "SSDX11Buffer.h"
 #include <vector>
 #include <string>
 

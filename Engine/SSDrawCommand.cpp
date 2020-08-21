@@ -25,56 +25,6 @@ SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_
 	mPixelShaderConstantBufferMap = mpPS->GetConstantBufferMap();
 }
 
-void SSDrawCommand::DoWithMaterial()
-{
-	check(mMaterial != nullptr);
-
-	ID3D11DeviceContext* deviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
-
-	mMaterial->SetCurrent();
-
-	// @ set vertex shader constant buffer
-	for (auto& kvp : mVertexShaderConstantBufferMap)
-	{
-		kvp.second->SubmitDataToDevice(deviceContext);
-
-		UINT bufferIndex = kvp.second->GetBufferIndex();
-
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
-	}
-
-	// @ set pixel shader constant buffer
-	for (auto& kvp : mPixelShaderConstantBufferMap)
-	{
-		kvp.second->SubmitDataToDevice(deviceContext);
-
-		UINT bufferIndex = kvp.second->GetBufferIndex();
-
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
-	}
-
-	// @ set pixel shader texture 
-	for (auto& kvp : mVertexShaderTextureMap)
-	{
-		mMaterial->SetVSTexture(deviceContext, kvp.first, kvp.second);
-	}
-	
-	// @set verte shader texture
-	for (auto& kvp : mPixelShaderTextureMap)
-	{
-		mMaterial->SetPSTexture(deviceContext, kvp.first, kvp.second);
-	}
-	
-	// @ draw
-	mObject->Draw(deviceContext, mMaterial);
-
-	for (auto& kvp : mPixelShaderTextureMap)
-	{
-		mpPS->SetTextureAsNull(kvp.first);
-	}
-	
-}
-
 void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 {
 	check(mpVS != nullptr);

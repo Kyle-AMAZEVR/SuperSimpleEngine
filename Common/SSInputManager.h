@@ -1,5 +1,4 @@
 #pragma once
-#include "Singleton.h"
 
 class COMMON_API SSInputManager
 {

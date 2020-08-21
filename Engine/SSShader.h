@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core.h"
 #include "SSRenderThreadObject.h"
 #include "DXConstantBuffer.h"
 #include "SSName.h"

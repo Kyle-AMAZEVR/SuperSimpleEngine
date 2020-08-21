@@ -163,6 +163,22 @@ void SSDX11Renderer::TestCreateResources()
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
 }
 
+void SSDX11Renderer::AppendRenderCommand(SSDrawCmdBase* cmd)
+{
+	mRenderCommandList.push_back(cmd);
+}
+
+void SSDX11Renderer::FlushRenderCommands()
+{
+	for(SSDrawCmdBase* cmd : mRenderCommandList)
+	{
+		cmd->Do(mDeviceContext.Get());
+	}
+
+	mRenderCommandList.clear();
+}
+
+
 void SSDX11Renderer::TestCompileShader()
 {
 	mTestVertexShader = SSShaderManager::Get().GetVertexShader("Screen.vs");

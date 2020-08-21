@@ -2,7 +2,7 @@
 #pragma once
 
 #include <vector>
-#include "DX11/SSDX11Buffer.h"
+#include "SSDX11Buffer.h"
 
 class SSIndexBuffer : public SSDX11Buffer
 {

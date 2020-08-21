@@ -22,14 +22,14 @@ include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
 
 
-add_library(Common SHARED ${SOURCES} ${HEADERS})
+add_library(GameModule SHARED ${SOURCES} ${HEADERS})
 
-target_precompile_headers(Common PRIVATE "SSCommon.h")
+target_precompile_headers(GameModule PRIVATE "SSCommon.h")
 
-target_link_libraries(Common d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype) 
+target_link_libraries(GameModule d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype) 
 
-target_compile_definitions(Common PRIVATE COMMON_EXPORTS)
-target_compile_definitions(Common INTERFACE COMMON_IMPORTS)
+target_compile_definitions(GameModule PRIVATE COMMON_EXPORTS)
+target_compile_definitions(GameModule INTERFACE COMMON_IMPORTS)
 
 
 

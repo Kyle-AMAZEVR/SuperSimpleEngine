@@ -19,8 +19,13 @@ public:
 	inline ID3D11DeviceContext* GetDeferredDeviceContext() const { return mDeferredContext.Get(); }
 	inline IDXGISwapChain* GetSwapChain() const { return mSwapChain.Get(); }
 
+	void AppendRenderCommand(class SSDrawCmdBase* cmd);
+	void FlushRenderCommands();
+
 protected:
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
+
+	std::vector<class SSDrawCmdBase*> mRenderCommandList;
 
 	void TestCompileShader();
 	void TestCreateResources();

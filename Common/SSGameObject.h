@@ -18,8 +18,10 @@ public:
 	virtual void Draw(class SSDX12Renderer* renderer){}
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
-	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}	
+	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
 
+	
+	
 	virtual void Tick(float delta) {}
 
 	virtual DirectX::XMMATRIX GetModelTransform();
@@ -50,6 +52,8 @@ protected:
 	float mRoll = 0;
 	UINT mObjectId = 0;
 
+	std::shared_ptr<class SSMaterial> mMaterial;
+	
 	//
 	bool mRenderingReady = false;	
 };

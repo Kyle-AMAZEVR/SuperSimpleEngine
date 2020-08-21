@@ -20,11 +20,7 @@ public:
 	virtual void DrawScene() = 0;
 	virtual void PauseRendering() { mPaused = true; }
 	virtual void ResumeRendering() { mPaused = false; }
-
-	
-	
-	
-	
+		
 
 protected:
 	virtual bool CreateDevice() = 0;

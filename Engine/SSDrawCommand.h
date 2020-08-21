@@ -61,8 +61,6 @@ public:
 
 	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }
 
-	virtual void DoWithMaterial();
-
 	virtual void Do(ID3D11DeviceContext* deviceContext) override;
 
 protected:
