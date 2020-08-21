@@ -1,7 +1,7 @@
 #pragma once
 
 
-class COMMON_API SSGameTimer
+class GAMEMODULE_API SSGameTimer
 {
 public:
 	SSGameTimer();

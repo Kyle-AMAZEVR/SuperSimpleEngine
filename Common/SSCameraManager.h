@@ -5,7 +5,7 @@
 
 using namespace DirectX;
 
-class COMMON_API SSCameraManager
+class GAMEMODULE_API SSCameraManager
 {
 public:
 	SSCameraManager();

@@ -1,7 +1,7 @@
 
 #pragma once
 
-class COMMON_API SSRenderThreadObject
+class GAMEMODULE_API SSRenderThreadObject
 {
 public:
 	SSRenderThreadObject();

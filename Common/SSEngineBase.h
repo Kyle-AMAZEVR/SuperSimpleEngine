@@ -9,7 +9,7 @@ class SSGameThread;
 class SSRenderingThread;
 
 
-class COMMON_API SSEngineBase
+class GAMEMODULE_API SSEngineBase
 {
 public:
 	SSEngineBase() = default;
@@ -45,4 +45,4 @@ protected:
 	bool bRequestExit = false;
 };
 
-extern "C" COMMON_API SSEngineBase* GEngine;
+extern "C" GAMEMODULE_API SSEngineBase* GEngine;

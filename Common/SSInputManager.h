@@ -1,6 +1,6 @@
 #pragma once
 
-class COMMON_API SSInputManager
+class GAMEMODULE_API SSInputManager
 {
 public:
 	void OnKeyDown(ULONGLONG keyCode);

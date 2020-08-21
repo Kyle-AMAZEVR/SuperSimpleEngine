@@ -2,7 +2,7 @@
 
 
 
-class COMMON_API SSDXTranslator
+class GAMEMODULE_API SSDXTranslator
 {
 public:
 	static DXGI_FORMAT GetVertexShaderInputType(D3D11_SIGNATURE_PARAMETER_DESC desc);

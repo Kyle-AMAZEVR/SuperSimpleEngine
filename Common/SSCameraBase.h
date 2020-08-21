@@ -2,7 +2,7 @@
 #include <DirectXMath.h>
 
 
-class COMMON_API SSCameraBase
+class GAMEMODULE_API SSCameraBase
 {
 public:
 	SSCameraBase()

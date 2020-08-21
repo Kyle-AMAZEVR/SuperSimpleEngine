@@ -1,7 +1,7 @@
 #pragma once
 
 
-class COMMON_API SSGameScene
+class GAMEMODULE_API SSGameScene
 {
 public:
 	virtual void Tick(float deltaSeconds);

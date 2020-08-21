@@ -4,7 +4,7 @@
 #include "SSCameraBase.h"
 #include "DirectXMath.h"
 
-class COMMON_API SSFreeCamera : public SSCameraBase
+class GAMEMODULE_API SSFreeCamera : public SSCameraBase
 {
 public:
 	SSFreeCamera();
@@ -44,4 +44,4 @@ private:
 template<class T>
 T* TestTemplateClass<T>::mInstance = nullptr;
 
-COMMON_API_EXTERN template class COMMON_API TestTemplateClass<float>;
+GAMEMODULE_API_EXTERN template class GAMEMODULE_API TestTemplateClass<float>;

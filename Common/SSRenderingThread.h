@@ -3,7 +3,7 @@
 #include <deque>
 
 
-class COMMON_API SSRenderingThread 
+class GAMEMODULE_API SSRenderingThread
 {
 public:	
     void Start(HWND handle, class SSEngineBase* pEngine);

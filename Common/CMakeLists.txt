@@ -28,8 +28,8 @@ target_precompile_headers(GameModule PRIVATE "SSCommon.h")
 
 target_link_libraries(GameModule d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype) 
 
-target_compile_definitions(GameModule PRIVATE COMMON_EXPORTS)
-target_compile_definitions(GameModule INTERFACE COMMON_IMPORTS)
+target_compile_definitions(GameModule PRIVATE GAMEMODULE_EXPORTS)
+target_compile_definitions(GameModule INTERFACE GAMEMODULE_IMPORTS)
 
 
 

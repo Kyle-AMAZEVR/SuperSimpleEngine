@@ -6,7 +6,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class COMMON_API SSBufferBase : public SSRenderThreadObject
+class GAMEMODULE_API SSBufferBase : public SSRenderThreadObject
 {
 public:
     virtual UINT GetBufferIndex() { return mBufferIndex; }

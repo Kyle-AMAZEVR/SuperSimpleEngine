@@ -3,7 +3,7 @@
 
 using namespace DirectX;
 
-class COMMON_API SSMathHelper
+class GAMEMODULE_API SSMathHelper
 {
 
 public :

@@ -2,7 +2,7 @@
 
 #include <map>
 
-class COMMON_API SSGameObjectManager
+class GAMEMODULE_API SSGameObjectManager
 {
 public:
 	void AddGameObject(class SSGameObject* object);

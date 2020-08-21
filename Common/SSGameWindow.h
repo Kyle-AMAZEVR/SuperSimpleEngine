@@ -4,7 +4,7 @@
 #include <functional>
 #include <map>
 
-class COMMON_API SSGameWindow
+class GAMEMODULE_API SSGameWindow
 {
 public:
 	SSGameWindow(HINSTANCE hInstance, int nCmdShow);

@@ -1,7 +1,7 @@
 #pragma once
 
 
-class COMMON_API SSGameObject
+class GAMEMODULE_API SSGameObject
 {
 public:
 	SSGameObject();

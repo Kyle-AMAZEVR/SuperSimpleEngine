@@ -1,7 +1,7 @@
 #pragma once
 
 // game thread is the same as main thread
-class COMMON_API SSGameThread
+class GAMEMODULE_API SSGameThread
 {
 public:	
 	SSGameThread(DWORD gameThreadId);

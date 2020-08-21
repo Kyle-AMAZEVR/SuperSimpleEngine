@@ -4,7 +4,7 @@
 
 #include "SSCommon.h"
 
-class COMMON_API SSVertexElementDeclaration
+class GAMEMODULE_API SSVertexElementDeclaration
 {
 public:
     // POSTION, COLOR

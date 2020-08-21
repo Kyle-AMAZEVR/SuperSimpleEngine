@@ -1,19 +1,19 @@
 
-#   ifdef COMMON_EXPORTS
-#       define COMMON_API __declspec(dllexport)
-#		define COMMON_API_EXTERN 
-#   elif defined(COMMON_IMPORTS)
-#       define COMMON_API __declspec(dllimport)
-#		define COMMON_API_EXTERN extern
+#   ifdef GAMEMODULE_EXPORTS
+#       define GAMEMODULE_API __declspec(dllexport)
+#		define GAMEMODULE_API_EXTERN 
+#   elif defined(GAMEMODULE_IMPORTS)
+#       define GAMEMODULE_API __declspec(dllimport)
+#		define GAMEMODULE_API_EXTERN extern
 #   else
-#       define COMMON_API
+#       define GAMEMODULE_API
 #   endif
 
 #define STRINGFY(x) #x
 #define TOSTRING(x) STRINGFY(x)
 #define AT __FILE__ ":" TOSTRING(__LINE__)
 
-void COMMON_API PrintError(const char* loc, const char* msg);
+void GAMEMODULE_API PrintError(const char* loc, const char* msg);
 
 #define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
 

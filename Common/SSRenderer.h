@@ -10,7 +10,7 @@ using Microsoft::WRL::ComPtr;
 
 
 
-class COMMON_API SSRenderer
+class GAMEMODULE_API SSRenderer
 {
 public:
 	SSRenderer();
