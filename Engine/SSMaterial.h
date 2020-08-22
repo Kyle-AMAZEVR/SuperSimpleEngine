@@ -2,6 +2,7 @@
 
 #include "SSRenderThreadObject.h"
 #include "SSName.h"
+#include "SSVertexTypes.h"
 
 using namespace std;
 

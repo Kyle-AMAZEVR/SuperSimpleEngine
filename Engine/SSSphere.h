@@ -4,6 +4,7 @@
 #include "SSGameObject.h"
 #include "SSName.h"
 #include <vector>
+#include "SSVertexTypes.h"
 
 class ENGINE_API SSSphere : public SSGameObject
 {

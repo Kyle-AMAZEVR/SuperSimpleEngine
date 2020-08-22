@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <map>
 #include "SSName.h"
-#include "DXVertexTypes.h"
+#include "SSVertexTypes.h"
 #include "SSObjMeshSection.h"
 #include "SSObjMeshMaterial.h"
 

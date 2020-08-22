@@ -6,14 +6,11 @@
 #include <unordered_map>
 #include <vector>
 #include "Singleton.h"
-#include "SSISerializable.h"
 
-class ENGINE_API SSName
+class GAMEMODULE_API SSName
 {
 public:
 	SSName(){}
-
-	//SSName(SSName&& rhs) = default;
 
 	SSName(const std::string& name);
 
@@ -65,8 +62,6 @@ public:
 
 	std::string ToString() const;
 
-	friend SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name);
-	friend SerializeReader& operator>> (SerializeReader& Archive, SSName& name);
 
 	// bucket index is less than bucket size
 	// 
@@ -79,7 +74,7 @@ protected:
 };
 
 
-class ENGINE_API SSNameBucket : public Singleton<SSNameBucket>
+class GAMEMODULE_API SSNameBucket : public Singleton<SSNameBucket>
 {
 public:
 	SSNameBucket();

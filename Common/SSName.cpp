@@ -1,7 +1,8 @@
 
-#include "Core.h"
+#include "SSCommon.h"
 #include "SSName.h"
 #include "SSFreeCamera.h"
+
 
 SSName::SSName(const SSName& other)
 {
@@ -27,7 +28,7 @@ std::string SSName::ToString() const
 	return SSNameBucket::Get().GetName(this);
 }
 
-
+/*
 SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name)
 {
 	std::string strName = name.ToString();
@@ -41,7 +42,7 @@ SerializeReader& operator>> (SerializeReader& Archive, SSName& name)
 	Archive >> strName;
 	name = std::move(SSName(strName));
 	return Archive;
-}
+}*/
 
 //
 

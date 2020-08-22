@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSScreenBlit.h"
-#include "DXVertexTypes.h"
+#include "SSVertexTypes.h"
 #include <vector>
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"

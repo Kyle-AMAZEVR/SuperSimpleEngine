@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
-#include "DXVertexTypes.h"
+#include "SSVertexTypes.h"
 
 
 using namespace DirectX;

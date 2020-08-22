@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSISerializable.h"
-#include "DXVertexTypes.h"
+#include "SSVertexTypes.h"
 
 #pragma region SerializeReader
 SerializeReader::SerializeReader(const std::string& FilePath)

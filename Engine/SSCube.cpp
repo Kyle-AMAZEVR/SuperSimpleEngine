@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSCube.h"
-#include "DXVertexTypes.h"
+#include "SSVertexTypes.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSDX11Renderer.h"

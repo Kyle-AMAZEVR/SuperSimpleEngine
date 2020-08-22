@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSSphere.h"
 #include <cmath>
-#include "DXVertexTypes.h"
+#include "SSVertexTypes.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSMaterial.h"
