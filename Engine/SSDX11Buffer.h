@@ -5,7 +5,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class GAMEMODULE_API SSDX11Buffer : public SSBufferBase
+class ENGINE_API SSDX11Buffer : public SSBufferBase
 {
 public:
     void Destroy() override;
