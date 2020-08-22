@@ -19,12 +19,10 @@ include_directories("../lib/DirectXMath/Include")
 
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
-include_directories("../Common")
-
-add_subdirectory("../Common/" "../Common")
+include_directories("../GameModule")
 
 add_library(SSDX12 SHARED ${SOURCES} ${HEADERS})
-
+add_subdirectory("../GameModule/" "../GameModule")
 add_dependencies(SSDX12 GameModule)
 
 target_link_libraries(SSDX12 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule) 

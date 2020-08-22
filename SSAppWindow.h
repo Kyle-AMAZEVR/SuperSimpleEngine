@@ -2,7 +2,7 @@
 
 
 #include "Engine/Core.h"
-#include "Common/SSGameWindow.h"
+#include "GameModule/SSGameWindow.h"
 
 class SSAppWindow : public SSGameWindow
 {
