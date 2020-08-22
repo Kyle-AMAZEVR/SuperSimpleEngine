@@ -3,7 +3,6 @@
 #include <fstream>
 #include <vector>
 #include <map>
-#include "SSVertexTypes.h"
 
 
 using namespace DirectX;
@@ -21,7 +20,7 @@ struct IsBulkSerializable<class SSObjMeshSection>
 };
 
 #pragma region SerializeReader
-class SerializeReader
+class GAMEMODULE_API SerializeReader
 {
 public:
 	SerializeReader(const std::string& FilePath);
@@ -54,11 +53,14 @@ SerializeReader& operator >> (SerializeReader& Archive, float& Value);
 SerializeReader& operator >> (SerializeReader& Archive, unsigned int& Value);
 SerializeReader& operator >> (SerializeReader& Archive, int& Value);
 SerializeReader& operator >> (SerializeReader& Archive, bool& Value);
+#ifdef THIS_IS_ENGINE_MODULE
+#include "SSVertexTypes.h"
 SerializeReader& operator >> (SerializeReader& Archive, VT_PositionNormalTexcoordTangent& Value);
 SerializeReader& operator >> (SerializeReader& Archive, class SSObjMeshMaterial& Value);
+#endif
 #pragma endregion
 
-class SerializeWriter
+class GAMEMODULE_API SerializeWriter
 {
 public:
 	SerializeWriter(const std::string& FilePath);
@@ -85,7 +87,7 @@ public:
 	std::ofstream Stream;
 };
 
-SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
+//GAMEMODULE_API SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
 
 template<class T, bool bBulkSerialize>
 class VectorSerializer
@@ -214,8 +216,11 @@ std::ofstream& operator<<(std::ofstream& Archive, const std::string& S);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT2& Vec2);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT4& Vec4);
 std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT3& Vec3);
+
+#ifdef THIS_IS_ENGINE_MODULE
 std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoord& p);
 std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoordTangent& p);
+#endif
 
 
 

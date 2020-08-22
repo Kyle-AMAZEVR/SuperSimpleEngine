@@ -20,6 +20,7 @@ include_directories("../lib/DirectXMath/Include")
 #include_directories("lib/DirectXTK/Inc")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
+include_directories("../Shared")
 
 
 add_library(GameModule SHARED ${SOURCES} ${HEADERS})

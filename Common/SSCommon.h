@@ -1,5 +1,6 @@
 
 #   ifdef GAMEMODULE_EXPORTS
+#		define THIS_IS_GAMEMODULE
 #       define GAMEMODULE_API __declspec(dllexport)
 #		define GAMEMODULE_API_EXTERN 
 #   elif defined(GAMEMODULE_IMPORTS)

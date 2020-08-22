@@ -1,10 +1,15 @@
 
+#ifdef THIS_IS_GAMEMODULE
+#include "SSCommon.h"
+#endif
+#ifdef THIS_IS_ENGINE_MODULE
 #include "Core.h"
+#endif
 #include "SSISerializable.h"
-#include "SSVertexTypes.h"
 #include "SSName.h"
 
 #pragma region SerializeReader
+#ifdef THIS_IS_GAMEMODULE
 SerializeReader::SerializeReader(const std::string& FilePath)
 {
 	Stream.open(FilePath.c_str(), std::ios::binary);
@@ -16,7 +21,7 @@ bool SerializeReader::IsGood() const
 {
 	return Stream.good();
 }
-
+#endif
 
 SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT4& Vec4)
 {
@@ -57,11 +62,13 @@ SerializeReader& operator >> (SerializeReader& Archive, size_t& Value)
 	return Archive;
 }
 
+#ifdef THIS_IS_ENGINE_MODULE
 SerializeReader& operator >> (SerializeReader& Archive, VT_PositionNormalTexcoordTangent& Value)
 {
 	Archive >> Value.VertexAttribute1 >> Value.VertexAttribute2 >> Value.VertexAttribute3 >> Value.VertexAttribute4;
 	return Archive;
 }
+#endif
 
 SerializeReader& operator >> (SerializeReader& Archive, float& Value)
 {
@@ -90,7 +97,7 @@ SerializeReader& operator >> (SerializeReader& Archive, bool& Value)
 
 
 #pragma endregion
-
+#ifdef THIS_IS_GAMEMODULE
 SerializeWriter::SerializeWriter(const std::string& FilePath)
 {
 	Stream.open(FilePath.c_str(), std::ios::binary | std::ios::out);
@@ -103,6 +110,8 @@ bool SerializeWriter::IsGood() const
 {
 	return Stream.good();
 }
+
+#endif
 
 
 SerializeWriter& operator << (SerializeWriter& Archive, const float Value)
@@ -189,6 +198,7 @@ std::ofstream& operator<<(std::ofstream& Archive, const std::string& S)
 }
 
 
+#ifdef THIS_IS_ENGINE_MODULE
 std::ofstream& operator<< (std::ofstream& Archive, const VT_PositionNormalTexcoordTangent& p)
 {
 	Archive << p.VertexAttribute1 << p.VertexAttribute2 << p.VertexAttribute3 << p.VertexAttribute4;
@@ -200,7 +210,7 @@ std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoor
 	Archive << p.VertexAttribute1 << p.VertexAttribute2 << p.VertexAttribute3;
 	return Archive;
 }
-
+#endif
 std::ifstream& operator>>(std::ifstream& Archive, XMFLOAT4& Vec4)
 {
 	Archive >> Vec4.x >> Vec4.y >> Vec4.z >> Vec4.w;
