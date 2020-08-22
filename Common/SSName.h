@@ -62,6 +62,10 @@ public:
 
 	std::string ToString() const;
 
+	friend class SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name);
+
+	friend class SerializeReader& operator>> (SerializeReader& Archive, SSName& name);
+
 
 	// bucket index is less than bucket size
 	// 

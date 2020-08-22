@@ -28,22 +28,6 @@ std::string SSName::ToString() const
 	return SSNameBucket::Get().GetName(this);
 }
 
-/*
-SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name)
-{
-	std::string strName = name.ToString();
-	Archive << strName;
-	return Archive;
-}
-
-SerializeReader& operator>> (SerializeReader& Archive, SSName& name)
-{
-	std::string strName;
-	Archive >> strName;
-	name = std::move(SSName(strName));
-	return Archive;
-}*/
-
 //
 
 SSNameBucket::SSNameBucket()

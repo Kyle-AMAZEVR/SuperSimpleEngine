@@ -2,6 +2,7 @@
 #include "Core.h"
 #include "SSISerializable.h"
 #include "SSVertexTypes.h"
+#include "SSName.h"
 
 #pragma region SerializeReader
 SerializeReader::SerializeReader(const std::string& FilePath)
@@ -232,3 +233,19 @@ std::ifstream& operator >> (std::ifstream& Archive, std::string& S)
 	return Archive;
 }
 
+
+
+SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name)
+{
+	std::string strName = name.ToString();
+	Archive << strName;
+	return Archive;
+}
+
+SerializeReader& operator>> (SerializeReader& Archive, SSName& name)
+{
+	std::string strName;
+	Archive >> strName;
+	name = std::move(SSName(strName));
+	return Archive;
+}
