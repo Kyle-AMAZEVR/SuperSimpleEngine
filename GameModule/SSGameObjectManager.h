@@ -11,11 +11,13 @@ public:
 
 	static SSGameObjectManager& Get();
 	static SSGameObjectManager* GetPtr();
+
+	const std::map<UINT, SSGameObject*>& GetGameObjectMap() { return mGameObjectMap; }
 	
 protected:	
 	friend class SSGameObject;
 	UINT IssueObjectId() { return mNextObjectId++; }	
 	UINT mNextObjectId = 1;
-	std::map<UINT, SSGameObject*> mSceneObjectMap;
+	std::map<UINT, SSGameObject*> mGameObjectMap;
 	static SSGameObjectManager* mInstance;
 };

@@ -28,12 +28,12 @@ void SSGameObjectManager::AddGameObject(SSGameObject* object)
 {
 	check(object != nullptr);
 	check(object->GetId() != 0);
-	mSceneObjectMap[object->GetId()] = object;
+	mGameObjectMap[object->GetId()] = object;
 }
 
 void SSGameObjectManager::Tick(float delta)
 {
-	for (auto& item : mSceneObjectMap)
+	for (auto& item : mGameObjectMap)
 	{
 		item.second->Tick(delta);
 	}
@@ -41,6 +41,6 @@ void SSGameObjectManager::Tick(float delta)
 
 void SSGameObjectManager::RemoveGameObject(UINT id)
 {
-	check(mSceneObjectMap.find(id) != mSceneObjectMap.end());
-	mSceneObjectMap.erase(id);
+	check(mGameObjectMap.find(id) != mGameObjectMap.end());
+	mGameObjectMap.erase(id);
 }

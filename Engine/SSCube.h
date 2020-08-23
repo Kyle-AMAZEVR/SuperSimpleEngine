@@ -10,7 +10,7 @@ public:
 
 	virtual void Draw(SSDX11Renderer* renderer) override;	
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
-	class SSDX11VertexBuffer* GetVB() { return mCubeVB; }	
+	class SSDX11VertexBuffer* GetVB() { return mCubeVB; }
 	class SSIndexBuffer* GetIB() { return mCubeIB; }
 
 	void PrepareRendering() override;

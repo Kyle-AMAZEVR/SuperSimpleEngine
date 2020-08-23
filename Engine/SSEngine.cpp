@@ -5,6 +5,7 @@
 #include "SSObjMesh.h"
 #include "SSDX11Renderer.h"
 #include "SSDX11CubeScene.h"
+#include "SSGameObjectManager.h"
 
 bool SSDX11Engine::bInitialized = false;
 
@@ -124,6 +125,9 @@ void SSDX11Engine::TickRenderThread(float deltaTime)
 	if (mRenderer)
 	{
 		mGameThread->WaitForGameThread(10);
+
+		
+		
 		mRenderer->DrawScene();
 	}
 }
