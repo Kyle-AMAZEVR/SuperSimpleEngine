@@ -23,6 +23,9 @@ public:
 	void FlushRenderCommands();
 
 protected:
+	void DarwCubeScene();
+	void DrawSponzaScene();
+	
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
 
 	std::vector<class SSDrawCmdBase*> mRenderCommandList;
@@ -66,8 +69,8 @@ private:
 	std::shared_ptr<class SSDX11VertexBuffer> mTestVertexBuffer;
 	std::shared_ptr<class SSIndexBuffer> mTestIndexBuffer;
 
-	std::shared_ptr<class SSVertexShader> mTestVertexShader;
-	std::shared_ptr<class SSPixelShader> mTestPixelShader;
+	std::shared_ptr<class SSVertexShader> mScreenBlitVertexShader;
+	std::shared_ptr<class SSPixelShader> mScreenBlitPixelShader;
 
 	std::shared_ptr<class SSVertexShader> mDeferredVertexShader;
 	std::shared_ptr<class SSPixelShader> mDeferredPixelShader;

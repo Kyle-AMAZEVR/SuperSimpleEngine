@@ -6,6 +6,7 @@
 #include "SSDX11Renderer.h"
 #include "SSDX11CubeScene.h"
 #include "SSGameObjectManager.h"
+#include "SSRenderingObjectManager.h"
 
 bool SSDX11Engine::bInitialized = false;
 
@@ -57,6 +58,9 @@ void SSDX11Engine::Initialize(HWND windowHandle)
 	
     mWindowHandle = windowHandle;	
 
+	mCurrentScene = new SSDX11CubeScene();
+	mCurrentScene->InitializeScene();
+	
 	bInitialized = true;
 }
 
@@ -126,9 +130,9 @@ void SSDX11Engine::TickRenderThread(float deltaTime)
 	{
 		mGameThread->WaitForGameThread(10);
 
+		SSRenderingObjectManager::Get().Tick(deltaTime);
 		
-		
-		mRenderer->DrawScene();
+		mRenderer->DrawScene();		
 	}
 }
 

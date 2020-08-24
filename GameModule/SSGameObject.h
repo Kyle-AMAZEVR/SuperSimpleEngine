@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SSMeshRenderData.h"
 
 class GAMEMODULE_API SSGameObject
 {
@@ -14,13 +15,11 @@ public:
 	virtual void RenderThreadFirstTick(float deltaSeconds) {}
 	
 	virtual void Destroy(){}
-	virtual void Draw(class SSDX11Renderer* renderer){}
-	virtual void Draw(class SSDX12Renderer* renderer){}
-	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
+	virtual void Draw(ID3D11DeviceContext* deviceContext) {}	
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
 	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
-
-	
+		
+	virtual const SSMeshRenderData& GetRenderData();
 	
 	virtual void Tick(float delta) {}
 
@@ -40,12 +39,25 @@ public:
 	virtual void SetScaleZ(float z);
 
 	bool IsRenderingReady() const { return mRenderingReady; }
-	virtual void PrepareRendering(){}	
+	virtual void PrepareRendering(){}
+
+	bool IsVisible() const { return mVisible; }
 
 protected:
+
+	virtual void CreateRenderingData() {}
+
+	static SSMeshRenderData mSharedRenderData;
+	
+	SSMeshRenderData mPerInstanceRenderData;
+	
+	bool mHasPerInstanceRenderData = false;
+	
 	friend class SSGameObjectManager;
 	DirectX::XMFLOAT3 mPosition;
-	DirectX::XMFLOAT3 mScale;	
+	DirectX::XMFLOAT3 mScale;
+
+	bool mVisible = true;
 
 	float mYaw = 0;
 	float mPitch = 0;

@@ -311,6 +311,11 @@ bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNorm
 	}
 }
 
+SSObjMesh::SSObjMesh()	
+{
+	mVisible = false;
+}
+
 void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
 {
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

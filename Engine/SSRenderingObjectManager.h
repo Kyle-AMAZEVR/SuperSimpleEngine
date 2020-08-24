@@ -3,11 +3,12 @@
 #include <map>
 #include "Singleton.h"
 
-class SSRenderingObjectManager : Singleton<SSRenderingObjectManager>
+class SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
 {
 public:
 	void Tick(float deltaSeconds);
-
-private:
+	const std::map<UINT, class SSRenderingObject*>& GetRenderingObjectMap() { return mRenderingObjectMap; }
 	
+private:
+	std::map<UINT, class SSRenderingObject*> mRenderingObjectMap;
 };

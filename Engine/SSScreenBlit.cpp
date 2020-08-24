@@ -9,6 +9,8 @@
 
 SSScreenBlit::SSScreenBlit()
 {
+	mVisible = false;
+	
 	if (bIsInitialized == false)
 	{
 		InternalCreate();

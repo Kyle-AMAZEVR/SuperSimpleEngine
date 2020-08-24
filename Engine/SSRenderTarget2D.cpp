@@ -108,7 +108,7 @@ void SSRenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 {
 	check(deviceContext);
 
-	float Color[4]{ 1.0f, 1.0f, 0.0f, 1.0f };
+	float Color[4]{ 1.0f, 0.0f, 0.0f, 1.0f };
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{

@@ -13,6 +13,7 @@ bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNorm
 class ENGINE_API SSObjMesh : public SSGameObject
 {
 public:
+	SSObjMesh();
 	bool ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath);
 	void ImportMtlFile(const std::string& FilePath);
 	bool LoadCookedFile(const std::string& filePath);

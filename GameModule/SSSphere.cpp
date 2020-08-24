@@ -18,6 +18,8 @@
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	: mSectorCount(sector), mStackCount(stack), mRadius(radius)
 {
+	mHasPerInstanceRenderData = false;
+	
 	if (bIsInitialized == false)
 	{
 		InternalCreate();
@@ -32,21 +34,6 @@ void SSSphere::OnAddedScene()
 		InternalCreate();
 		bIsInitialized = true;
 	}	
-}
-
-void SSSphere::PrepareRendering()
-{
-	if (mSphereVB == nullptr)
-	{
-		mSphereVB = new SSDX11VertexBuffer();
-		mSphereVB->SetVertexBufferData(mVertexArray);
-	}
-}
-
-
-void SSSphere::Draw(SSDX11Renderer* renderer)
-{
-	
 }
 
 
@@ -211,17 +198,11 @@ void SSSphere::InternalCreate()
 
 			indexArray.push_back(static_cast<UINT>(tbnVertexArray.size() - 1));
 		}
-
-		mDebugTBNVB = std::make_shared<SSDX11VertexBuffer>();
-		mDebugTBNVB->SetVertexBufferData(tbnVertexArray);
-
-		mDebugIB = std::make_shared<SSIndexBuffer>();
-		mDebugIB->SetIndexBufferData(indexArray);
 	}
 
-
-	mSphereVB = new SSDX11VertexBuffer();
-	mSphereVB->SetVertexBufferData(mVertexArray);
+	mSharedRenderData.bHasIndexData = false;
+	mSharedRenderData.PNTT_VertexData = std::move(mVertexArray);
+	mSharedRenderData.VertexType = EVertexType::VT_PNTT;	
 }
 
 
@@ -361,6 +342,7 @@ void SSSphere::GenerateTangents()
 	
 }
 
+/*
 void SSSphere::Draw(ID3D11DeviceContext* deviceContext)
 {
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -436,23 +418,23 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);	
 }
+*/
 
 bool SSSphere::bIsInitialized = false;
 std::vector< VT_PositionNormalTexcoordTangent > SSSphere::mVertexArray;
 
-SSDX11VertexBuffer* SSSphere::mSphereVB = nullptr;
 
 
 SSPBRSphere::SSPBRSphere(ID3D11DeviceContext* deviceContext, SSName diffuseTexName, SSName normalTexName, SSName metalTexName, SSName roughTexName)
 	: SSSphere(25, 25, 10.f)
 {
-	mMetalTex = SSTextureManager::Get().LoadTexture2D(deviceContext, metalTexName);
-	mNormalTex = SSTextureManager::Get().LoadTexture2D(deviceContext, normalTexName);
-
-	mDiffuseTex = SSTextureManager::Get().LoadTexture2D(deviceContext, diffuseTexName);
-	mRoughTex = SSTextureManager::Get().LoadTexture2D(deviceContext, roughTexName);
+	mDiffuseTexName = diffuseTexName;
+	mNormalTexName = normalTexName;
+	mMetalTexName = metalTexName;
+	mRoughTexName = roughTexName;
 }
 
+/*
 void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material)
 {
 	check(material != nullptr);
@@ -503,3 +485,4 @@ void SSPBRSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mat
 
 	deviceContext->Draw(mSphereVB->GetVertexCount(), 0);
 }
+*/

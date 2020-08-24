@@ -3,45 +3,18 @@
 #include "SSCube.h"
 #include "SSVertexTypes.h"
 #include "SSDX11VertexBuffer.h"
-#include "SSIndexBuffer.h"
-#include "SSDX11Renderer.h"
+
 #include <vector>
 
 SSCube::SSCube()
-{	
-}
-
-void SSCube::PrepareRendering()
 {
-	check(SSRenderingThread::IsInRenderingThread());
-	InternalCreate();	
-	mRenderingReady = true;
+	CreateRenderingData();
 }
 
-
-void SSCube::Draw(SSDX11Renderer* renderer)
-{
-	check(renderer != nullptr);
-	Draw(renderer->GetImmediateDeviceContext());
-}
-
-void SSCube::Draw(ID3D11DeviceContext* deviceContext)
-{
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	
-	auto stride = mCubeVB->GetStride();
-	UINT offset = 0;
-
-	deviceContext->IASetVertexBuffers(0, 1, mCubeVB->GetDX11BufferPointerRef(), &stride, &offset);
-	deviceContext->IASetIndexBuffer(mCubeIB->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
-
-	deviceContext->DrawIndexed(mCubeIB->GetIndexCount(), 0, 0);
-}
-
-void SSCube::InternalCreate()
+void SSCube::CreateRenderingData()
 {
 	std::vector<VT_PositionNormalTexcoord> vertexArray =
-	{	
+	{
 		// front
 		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(0,0,-1), XMFLOAT2(0,0)},
 		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,-1),  XMFLOAT2(0,1)},
@@ -56,11 +29,11 @@ void SSCube::InternalCreate()
 
 		// top
 		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4( 1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4( 1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,1)},
+		{ XMFLOAT4(1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,0)},
+		{ XMFLOAT4(1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,1)},
 		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,1)},
 
-		
+
 		// bottom
 		{ XMFLOAT4(-1.0f,-1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(0,0)},
 		{ XMFLOAT4(1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(1,0)},
@@ -106,16 +79,10 @@ void SSCube::InternalCreate()
 		20,21,22,
 		20,22,23,
 	};
-
 	
-
-	mCubeVB = new SSDX11VertexBuffer();
-	mCubeVB->SetVertexBufferData(vertexArray);
-
-	mCubeIB = new SSIndexBuffer();
-	mCubeIB->SetIndexBufferData(indexArray);	
+	mSharedRenderData.IndexData = indexArray;
+	mSharedRenderData.VertexType = EVertexType::VT_PNT;
+	mSharedRenderData.bHasIndexData = true;
+	mSharedRenderData.PNT_VertexData = std::move(vertexArray);
 }
-// 
-SSIndexBuffer* SSCube::mCubeIB = nullptr;
-SSDX11VertexBuffer* SSCube::mCubeVB = nullptr;
-bool SSCube::bIsInitialized = false;
+

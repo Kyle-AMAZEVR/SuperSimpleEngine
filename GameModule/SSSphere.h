@@ -6,18 +6,17 @@
 #include <vector>
 #include "SSVertexTypes.h"
 
-class ENGINE_API SSSphere : public SSGameObject
+class GAMEMODULE_API SSSphere : public SSGameObject
 {
 public:
 	SSSphere(UINT sector, UINT stack, float radius);
 
 	virtual void OnAddedScene() override;
-	virtual void PrepareRendering() override;
 	
-	virtual void Draw(SSDX11Renderer* renderer) override;
+	/*virtual void Draw(SSDX11Renderer* renderer) override;
 	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
-	virtual void DebugDraw(ID3D11DeviceContext* deviceConttext, class SSMaterial* material);
+	virtual void DebugDraw(ID3D11DeviceContext* deviceConttext, class SSMaterial* material);*/
 
 	void SetMetalicValue(float metal) { mMetalic = metal; }
 	void SetRoughnessValue(float rough) { mRoughness = rough; }
@@ -28,24 +27,20 @@ protected:
 	UINT mStackCount = 5;
 	float mRadius = 5.0f;
 
-
 	void InternalCreate();
 	void GenerateTangents();
 
-	static bool bIsInitialized;
-	static class SSDX11VertexBuffer* mSphereVB;
-
-	std::shared_ptr<SSDX11VertexBuffer> mDebugTBNVB;
-	std::shared_ptr<class SSIndexBuffer> mDebugIB;
+	static bool bIsInitialized;		
 
 	float mRoughness = 0.1f;
 	float mMetalic = 0.9f;
 
-
+	// temp 
 	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;
 	std::vector<XMFLOAT2> mTempTexCoordList;
 	std::vector<XMFLOAT4> mTempTangentList;
+	
 	static std::vector< VT_PositionNormalTexcoordTangent > mVertexArray;
 
 	bool bCreateDebugTBN = false;
@@ -57,13 +52,8 @@ class ENGINE_API SSPBRSphere : public SSSphere
 public:
 	SSPBRSphere(ID3D11DeviceContext* deviceContext, SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);
 
-	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
+	// virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
 protected:
-
-	std::shared_ptr<class SSTexture2D> mDiffuseTex;
-	std::shared_ptr<class SSTexture2D> mNormalTex;
-	std::shared_ptr<class SSTexture2D> mMetalTex;
-	std::shared_ptr<class SSTexture2D> mRoughTex;
 
 	SSName mDiffuseTexName;
 	SSName mNormalTexName;
