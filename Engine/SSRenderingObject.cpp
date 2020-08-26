@@ -5,6 +5,9 @@
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSShaderManager.h"
+#include "SSFreqUsedNames.h"
+#include "SSCameraManager.h"
+#include "SSMaterial.h"
 
 SSRenderingObject::SSRenderingObject(SSGameObject* pGameObject)
 	: mpGameObject(pGameObject)
@@ -26,7 +29,13 @@ SSRenderingObject::SSRenderingObject(SSGameObject* pGameObject)
 	{
 		mIndexBuffer = new SSIndexBuffer();
 		mIndexBuffer->SetIndexBufferData(mRenderData.IndexData);
-	}	
+	}
+
+	shared_ptr<SSVertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);
+	
+	shared_ptr<SSPixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
+
+	mMaterial = new SSMaterial(vs.get(), ps.get());	
 }
 
 
@@ -45,42 +54,56 @@ SSRenderingObject::~SSRenderingObject()
 		delete mIndexBuffer;
 		mIndexBuffer = nullptr;
 	}
+
+	if(mMaterial != nullptr)
+	{
+		delete mMaterial;
+		mMaterial = nullptr;
+	}
 }
 
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 {
-	// 
-	deviceContext->IASetPrimitiveTopology(mRenderData.PrimitiveType);	
 
-	// setup vertex shader
-	if(shared_ptr<SSVertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName))
-	{
-		// @ set input layout
-		deviceContext->IASetInputLayout(vs->GetInputLayout());
-		deviceContext->VSSetShader(vs->GetShader(), nullptr, 1);
-	}
-
-	// set pixel shader
-	if(auto ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName))
-	{
-		deviceContext->PSSetShader(ps->GetShader(), nullptr, 1);
-	}
-	
 	auto stride = mVertexBuffer->GetStride();
 	UINT offset = 0;
-
 	// set vertex buffer
 	deviceContext->IASetVertexBuffers(0, 1, mVertexBuffer->GetDX11BufferPointerRef(), &stride, &offset);
 
+	if (mRenderData.bHasIndexData)
+	{
+		// set indexbuffer
+		deviceContext->IASetIndexBuffer(mIndexBuffer->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	}
+
+	// 
+	mMaterial->SetCurrent();
+	
+	// 
+	deviceContext->IASetPrimitiveTopology(mRenderData.PrimitiveType);
+	
+	// setup vertex shader	
+	// set model, view, proj matrix
+	mMaterial->SetVSConstantBufferData(deviceContext, ModelName, mpGameObject->GetModelTransform());
+	mMaterial->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
+	mMaterial->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
+
+	for(auto& [k,v] : mRenderData.VSConstantBufferMap)
+	{
+		
+	}
+
+
 	// if have index buffer
 	if(mRenderData.bHasIndexData)
-	{
-		// set indexbuffer and call draw indexed
-		deviceContext->IASetIndexBuffer(mIndexBuffer->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	{		
 		deviceContext->DrawIndexed(mIndexBuffer->GetIndexCount(), 0, 0);
 	}
 	else
 	{
 		deviceContext->Draw(mVertexBuffer->GetVertexCount(), 0);
 	}
+
+
+	
 }

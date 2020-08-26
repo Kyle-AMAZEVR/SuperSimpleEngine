@@ -85,12 +85,9 @@ void SSVertexShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, s
 {	
 	if (mConstantBufferMap.count(bufferName) > 0)
 	{
-		mConstantBufferMap[bufferName]->SetBufferData<T>(data);
+		mConstantBufferMap[bufferName]->SetBufferData<T>(deviceContext, data);
 		UINT bufferIndex = mConstantBufferMap[bufferName]->GetBufferIndex();
-		deviceContext->VSSetConstantBuffers(
-			bufferIndex, 
-			1, 
-			&mConstantBufferMap[bufferName]->GetBufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, &mConstantBufferMap[bufferName]->GetBufferPointerRef());
 	}
 }
 
@@ -119,7 +116,7 @@ void SSPixelShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, st
 {
 	if (mConstantBufferMap.count(bufferName) > 0)
 	{
-		mConstantBufferMap[bufferName]->SetBufferData<T>(data);
+		mConstantBufferMap[bufferName]->SetBufferData<T>(deviceContext, data);
 		UINT bufferIndex = mConstantBufferMap[bufferName]->GetBufferIndex();
 		deviceContext->PSSetConstantBuffers(
 			bufferIndex,

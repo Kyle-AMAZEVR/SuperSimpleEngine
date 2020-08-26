@@ -15,4 +15,6 @@ protected:
 
 	class SSDX11VertexBuffer* mVertexBuffer = nullptr;
 	class SSIndexBuffer* mIndexBuffer = nullptr;
+
+	class SSMaterial* mMaterial = nullptr;
 };
