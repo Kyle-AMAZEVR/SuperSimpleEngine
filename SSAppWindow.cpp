@@ -22,24 +22,13 @@ void SSAppWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	auto height = static_cast<int>(HIWORD(lParam));	
 	
 	windowWidth = width;
-	windowHeight = height;
-
-	if (GEngine != nullptr)
-	{
-		if (GEngine->GetRenderingThread()->IsRunning())
-		{
-			GEngine->GetRenderingThread()->ExecuteInRenderingThread([this]()
-			{				
-				GEngine->OnWindowResize(windowWidth, windowHeight);				
-			});
-		}
-	}
+	windowHeight = height;	
 }
 
 void SSAppWindow::OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
+{	
 	if (GEngine != nullptr)
-	{
+	{		
 		if (GEngine->GetRenderingThread()->IsRunning())
 		{
 			GEngine->GetRenderingThread()->ExecuteInRenderingThread([this]()
@@ -53,21 +42,10 @@ void SSAppWindow::OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 }
 
 void SSAppWindow::OnEnterSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	if(GEngine!=nullptr)
-	{
-		if(GEngine->GetRenderingThread()->IsRunning())
-		{
-			GEngine->GetRenderingThread()->PauseRendering();
-			mPauseRendering = true;
-		}
-	}
+{	
 }
 
 void SSAppWindow::OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	if(mPauseRendering == false)
-	{
-		SSGameWindow::OnPaint(hWnd, message, wParam, lParam);
-	}
+{	
+	SSGameWindow::OnPaint(hWnd, message, wParam, lParam);	
 }
