@@ -82,7 +82,10 @@ void SSCube::CreateRenderingData()
 	
 	mSharedRenderData.IndexData = indexArray;
 	mSharedRenderData.VertexType = EVertexType::VT_PNT;
+	mSharedRenderData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mSharedRenderData.bHasIndexData = true;
 	mSharedRenderData.PNT_VertexData = std::move(vertexArray);
+	mSharedRenderData.VertexShaderName = "BasicShader.vs";
+	mSharedRenderData.PixelShaderName = "BasicShader.ps";
 }
 

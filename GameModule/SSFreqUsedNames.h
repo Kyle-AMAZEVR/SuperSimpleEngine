@@ -1,0 +1,26 @@
+#pragma once
+
+
+#include "SSName.h"
+
+GAMEMODULE_API_EXTERN SSName ModelName;
+
+GAMEMODULE_API_EXTERN SSName ProjName;
+
+GAMEMODULE_API_EXTERN SSName ViewName;
+
+GAMEMODULE_API_EXTERN SSName SamplerName;
+
+GAMEMODULE_API_EXTERN SSName MVPName;
+
+GAMEMODULE_API_EXTERN SSName BasicShaderName;
+
+GAMEMODULE_API_EXTERN SSName DeferredShaderName;
+
+GAMEMODULE_API_EXTERN SSName EquirectToCubemapShaderName;
+
+GAMEMODULE_API_EXTERN SSName RoughnessName;
+
+GAMEMODULE_API_EXTERN SSName DeferredVertexShaderName;
+
+GAMEMODULE_API_EXTERN SSName DeferredPixelShaderName;

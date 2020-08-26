@@ -2,10 +2,10 @@
 #   ifdef GAMEMODULE_EXPORTS
 #		define THIS_IS_GAMEMODULE
 #       define GAMEMODULE_API __declspec(dllexport)
-#		define GAMEMODULE_API_EXTERN 
+#		define GAMEMODULE_API_EXTERN extern __declspec(dllexport)
 #   elif defined(GAMEMODULE_IMPORTS)
 #       define GAMEMODULE_API __declspec(dllimport)
-#		define GAMEMODULE_API_EXTERN extern
+#		define GAMEMODULE_API_EXTERN extern __declspec(dllimport)
 #   else
 #       define GAMEMODULE_API
 #   endif

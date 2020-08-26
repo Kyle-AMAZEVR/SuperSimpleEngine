@@ -43,5 +43,3 @@ private:
 
 template<class T>
 T* TestTemplateClass<T>::mInstance = nullptr;
-
-GAMEMODULE_API_EXTERN template class GAMEMODULE_API TestTemplateClass<float>;

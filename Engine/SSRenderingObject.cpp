@@ -4,6 +4,7 @@
 #include "SSRenderingObject.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
+#include "SSShaderManager.h"
 
 SSRenderingObject::SSRenderingObject(SSGameObject* pGameObject)
 	: mpGameObject(pGameObject)
@@ -47,8 +48,24 @@ SSRenderingObject::~SSRenderingObject()
 }
 
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
-{	
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+{
+	// 
+	deviceContext->IASetPrimitiveTopology(mRenderData.PrimitiveType);	
+
+	// setup vertex shader
+	if(shared_ptr<SSVertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName))
+	{
+		// @ set input layout
+		deviceContext->IASetInputLayout(vs->GetInputLayout());
+		deviceContext->VSSetShader(vs->GetShader(), nullptr, 1);
+	}
+
+	// set pixel shader
+	if(auto ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName))
+	{
+		deviceContext->PSSetShader(ps->GetShader(), nullptr, 1);
+	}
+	
 	auto stride = mVertexBuffer->GetStride();
 	UINT offset = 0;
 
