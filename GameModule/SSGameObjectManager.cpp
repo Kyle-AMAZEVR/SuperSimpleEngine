@@ -33,9 +33,9 @@ void SSGameObjectManager::AddGameObject(SSGameObject* object)
 
 void SSGameObjectManager::Tick(float delta)
 {
-	for (auto& item : mGameObjectMap)
+	for (auto [k,object] : mGameObjectMap)
 	{
-		item.second->Tick(delta);
+		object->Tick(delta);
 	}
 }
 

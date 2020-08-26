@@ -99,8 +99,6 @@ void SSDX11Renderer::TestCreateResources()
 	mDiffuseTexture = std::make_shared<SSTexture2D>();
 	mMetalicTexture = std::make_shared<SSTexture2D>();
 
-
-
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
@@ -248,6 +246,8 @@ void SSDX11Renderer::DarwCubeScene()
 	mGBuffer->Clear(deviceContext);
 	mGBuffer->SetCurrentRenderTarget(deviceContext);	
 
+	
+	
 	// draw
 	auto& objects = SSRenderingObjectManager::Get().GetRenderingObjectMap();
 	for (auto [k, v] : objects)
@@ -733,8 +733,7 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 
 void SSDX11Renderer::DrawScene()
-{
-	//DrawSponzaScene();
+{	
 	DarwCubeScene();
 }
 

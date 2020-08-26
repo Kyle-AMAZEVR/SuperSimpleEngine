@@ -38,6 +38,8 @@ void SSGameThread::Tick(float DeltaSeconds)
 	// handle window message
 	SSGameWindow::GetPtr()->HandleMessage();
 
+	float tickTime = mGameThreadTimer.GetDeltaTime();
+	
 	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
 
 	// set event

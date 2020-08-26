@@ -40,7 +40,7 @@ DWORD SSRenderingThread::Run()
 
 	while (1)
 	{
-		mEngineInstance->GetGameThread()->WaitForGameThread(1);
+		mEngineInstance->GetGameThread()->WaitForGameThread(3);
 		
 		// consume command queue
 		{

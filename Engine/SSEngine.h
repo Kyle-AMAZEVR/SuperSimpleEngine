@@ -29,8 +29,7 @@ public:
 	void ToggleGBufferDumpMode();	
 
 	ID3D11Device* GetDevice() const;
-	ID3D11DeviceContext* GetImmediateDeviceContext() const;
-	inline ID3D11DeviceContext* GetDeferredDeviceContext() const { return mDeferredContext.Get(); }
+	ID3D11DeviceContext* GetImmediateDeviceContext() const;	
 	inline IDXGISwapChain* GetSwapChain() const;
 
 	void Run() override;
@@ -52,17 +51,5 @@ private:
 
     static bool bInitialized;
 
-	bool bGbufferDump = false;
-
-private:
-	ComPtr<ID3D11Device> mDevice = nullptr;
-	ComPtr<ID3D11DeviceContext> mDeviceContext = nullptr;
-	ComPtr<ID3D11DeviceContext> mDeferredContext = nullptr;
-	ComPtr<IDXGISwapChain> mSwapChain = nullptr;
-
-    ID3D11Debug* mDebug = nullptr;
-	ID3D11SamplerState* mDefaultSamplerState = nullptr;
-
-	
-
+	bool bGbufferDump = false;	
 };
