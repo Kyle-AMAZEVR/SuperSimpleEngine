@@ -26,11 +26,13 @@ void SSGBufferDumpPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTextur
 
 	SSAlignedCBuffer<int, int, int, int,int> mDumpSettings;
 
+	mDumpMode = EDumpMode::EDiffuseDump;
+
 	mDumpSettings.value1 = (mDumpMode == EDumpMode::EPositionDump);
 	mDumpSettings.value2 = (mDumpMode == EDumpMode::ENormalDump);
 	mDumpSettings.value3 = (mDumpMode == EDumpMode::EMetalicDump);
 	mDumpSettings.value4 = (mDumpMode == EDumpMode::EDiffuseDump);
-	mDumpSettings.value5 = (mDumpMode == EDumpMode::ERoughnessDump);
+	mDumpSettings.value5 = (mDumpMode == EDumpMode::ERoughnessDump);	
 
 	SSDrawCommand gbufferDumpDrawCmd{ mVertexShader.get(), mPixelShader.get(), mScreenBlit };
 	gbufferDumpDrawCmd.SetPSTexture("PositionTex", input0);

@@ -4,6 +4,7 @@
 #include "SSDX11Buffer.h"
 #include <vector>
 #include <string>
+#include "SSConstantBufferProxy.h"
 
 template<class TBufferType>
 class SSTypedConstantBuffer : public SSBufferBase
@@ -67,6 +68,8 @@ public:
     template<class T>
     void SetBufferData(ID3D11DeviceContext* deviceContext, const T& value);
 
+    void StoreBufferProxyData(const SSConstantBufferProxy& data);
+
 	template<class T>
 	void StoreBufferData(const T& value);
 
@@ -99,3 +102,4 @@ void SSGenericConstantBuffer::StoreBufferData(const T& value)
 	
 	memcpy_s(mBufferData, mBufferSize, &value, mBufferSize);
 }
+

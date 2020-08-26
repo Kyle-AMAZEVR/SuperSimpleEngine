@@ -128,7 +128,7 @@ void SSDX11Engine::TickRenderThread(float deltaTime)
 {
 	if (mRenderer)
 	{
-		mGameThread->WaitForGameThread(10);
+		mGameThread->WaitForGameThread(1);
 
 		SSRenderingObjectManager::Get().Tick(deltaTime);
 		

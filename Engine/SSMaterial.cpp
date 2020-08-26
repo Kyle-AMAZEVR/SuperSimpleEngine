@@ -56,5 +56,34 @@ void SSMaterial::ReleaseCurrent()
 	{
 		mpPS->SetTextureAsNull(kvp.first);
 	}
+}
 
+void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& data)
+{
+	if (mVertexShaderConstantBufferMap.count(name) > 0)
+	{
+		mVertexShaderConstantBufferMap[name]->StoreBufferProxyData(data);
+		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
+
+		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
+
+		check(deviceContext != nullptr);
+
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetDX11BufferPointerRef());
+	}
+}
+
+void SSMaterial::SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& data)
+{
+	if (mPixelShaderConstantBufferMap.count(name) > 0)
+	{
+		mPixelShaderConstantBufferMap[name]->StoreBufferProxyData(data);
+		mPixelShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
+
+		UINT bufferIndex = mPixelShaderConstantBufferMap[name]->GetBufferIndex();
+
+		check(deviceContext != nullptr);
+
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, mPixelShaderConstantBufferMap[name]->GetDX11BufferPointerRef());
+	}
 }

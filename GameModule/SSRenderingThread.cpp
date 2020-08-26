@@ -40,8 +40,8 @@ DWORD SSRenderingThread::Run()
 
 	while (1)
 	{
-		mEngineInstance->GetGameThread()->WaitForGameThread(10);
-
+		mEngineInstance->GetGameThread()->WaitForGameThread(1);
+		
 		// consume command queue
 		{
 			EnterCriticalSection(&mCriticalSection);

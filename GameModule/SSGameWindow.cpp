@@ -198,14 +198,15 @@ void SSGameWindow::HandleMessage()
 {
 	MSG msg{};
 
-	if(GetMessage(&msg, nullptr, 0, 0))
-	{
+	if(PeekMessage(&msg, nullptr, 0,0, PM_REMOVE))
+	{	
 		if (!TranslateAccelerator(msg.hwnd, mAccelTable, &msg))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-		}		
+		}
 	}
+	
 }
 
 BOOL SSGameWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)

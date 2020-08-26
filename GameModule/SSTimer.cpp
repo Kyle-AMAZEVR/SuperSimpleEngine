@@ -6,25 +6,21 @@
 SSGameTimer::SSGameTimer()
 	: SecondsPerCount(0.0)
 {
-	__int64 CounterPerSec;
-	QueryPerformanceFrequency((LARGE_INTEGER*)&CounterPerSec);
-	SecondsPerCount = 1.0 / static_cast<double>(CounterPerSec);
+	LARGE_INTEGER li;
+	QueryPerformanceFrequency(&li);
+	PCFreq = double(li.QuadPart);
+
+	QueryPerformanceCounter(&li);
+	PrevTime = li.QuadPart;
 }
 
 void SSGameTimer::Tick()
 {
-	__int64 TempTime;
-	QueryPerformanceCounter((LARGE_INTEGER*)&TempTime);
-	CurrTime = TempTime;
+	LARGE_INTEGER Now;
+	QueryPerformanceCounter(&Now);	
 
-	DeltaTime = (CurrTime - PrevTime) * SecondsPerCount;
-
-	PrevTime = CurrTime;
-
-	if (DeltaTime < 0)
-	{
-		DeltaTime = 0.0;
-	}
+	DeltaTime = double(Now.QuadPart - PrevTime) / PCFreq;
+	PrevTime = Now.QuadPart;
 }
 
 float SSGameTimer::GetDeltaTime() const

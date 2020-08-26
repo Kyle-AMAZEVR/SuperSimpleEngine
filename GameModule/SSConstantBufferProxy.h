@@ -17,6 +17,8 @@ public:
 	void SetBufferData(const T& value);
 
 	BYTE* GetData() const { return mpBufferData; }
+
+	UINT GetBufferSize() const { return mBufferSize; }
 	
 protected:
 

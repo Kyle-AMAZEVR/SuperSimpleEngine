@@ -8,6 +8,9 @@
 #include "SSFreqUsedNames.h"
 #include "SSCameraManager.h"
 #include "SSMaterial.h"
+#include "SSTextureManager.h"
+#include "SSTexture2D.h"
+#include "SSSamplerManager.h"
 
 SSRenderingObject::SSRenderingObject(SSGameObject* pGameObject)
 	: mpGameObject(pGameObject)
@@ -64,6 +67,9 @@ SSRenderingObject::~SSRenderingObject()
 
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 {
+	
+	// 
+	mMaterial->SetCurrent();
 
 	auto stride = mVertexBuffer->GetStride();
 	UINT offset = 0;
@@ -75,10 +81,7 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 		// set indexbuffer
 		deviceContext->IASetIndexBuffer(mIndexBuffer->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 	}
-
-	// 
-	mMaterial->SetCurrent();
-	
+		
 	// 
 	deviceContext->IASetPrimitiveTopology(mRenderData.PrimitiveType);
 	
@@ -88,12 +91,37 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	mMaterial->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	mMaterial->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
+	// set vertex shader constants
 	for(auto& [k,v] : mRenderData.VSConstantBufferMap)
 	{
-		
+		mMaterial->SetVSConstantBufferProxyData(deviceContext, k, v);
+	}
+
+	// set pixel shader constants	
+	for(auto& [k,v] : mRenderData.PSConstantBufferMap)
+	{
+		mMaterial->SetPSConstantBufferProxyData(deviceContext, k, v);
+	}
+
+	// @ set pixel shader texture
+	for (auto& [name, texture] : mRenderData.PSTextureMap)
+	{
+		shared_ptr<SSTexture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
+		mMaterial->SetPSTexture(deviceContext, name, resource.get());
+	}
+
+	// @ set vertex shader texture 
+	for (auto& [name, texture] : mRenderData.VSTextureMap)
+	{
+		shared_ptr<SSTexture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
+		mMaterial->SetVSTexture(deviceContext, name, resource.get());
 	}
 
 
+	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
+
+	mMaterial->SetPSSampler("DefaultTexSampler", sampler);
+	
 	// if have index buffer
 	if(mRenderData.bHasIndexData)
 	{		
@@ -105,5 +133,5 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	}
 
 
-	
+	mMaterial->ReleaseCurrent();
 }

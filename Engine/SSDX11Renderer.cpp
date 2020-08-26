@@ -241,12 +241,12 @@ void SSDX11Renderer::DarwCubeScene()
 	auto* deviceContext = GetImmediateDeviceContext();
 	check(deviceContext);
 
+	SSCameraManager::Get().UpdateCurrentCamera();
 
 	// @draw cubemap to gbuffer
 	// @start
 	mGBuffer->Clear(deviceContext);
-	mGBuffer->SetCurrentRenderTarget(deviceContext);
-
+	mGBuffer->SetCurrentRenderTarget(deviceContext);	
 
 	// draw
 	auto& objects = SSRenderingObjectManager::Get().GetRenderingObjectMap();
@@ -254,27 +254,17 @@ void SSDX11Renderer::DarwCubeScene()
 	{
 		v->Draw(deviceContext);
 	}
-
-
-	mDeferredLightPostProcess->Draw(
-		deviceContext,
-		mGBuffer->GetPositionOutput(),
-		mGBuffer->GetColorOutput(),
-		mGBuffer->GetNormalOutput(),
-		m2DLUTTexture.get(),
-		mEnvCubemapConvolution.get(),
-		mEnvCubemapPrefilter.get());
-
-	mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
+	
+	mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 
 	mViewport->Clear(deviceContext);
 	mViewport->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader.get(), mScreenBlitPixelShader.get(), mScreenBlit };
 
-	if (bGbufferDump)
+	if (true)
 	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
+		blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	}
 	else
 	{
@@ -349,7 +339,7 @@ void SSDX11Renderer::DrawSponzaScene()
 
 	auto* deviceContext = GetImmediateDeviceContext();
 	check(deviceContext);
-
+	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
 	// @draw cubemap to gbuffer
 	// @start
@@ -372,7 +362,7 @@ void SSDX11Renderer::DrawSponzaScene()
 	SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
 	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 	SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
-
+	
 	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
 	mSponzaMesh->Draw(deviceContext, mTestMaterial.get());
@@ -744,7 +734,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {
-	DrawSponzaScene();
+	//DrawSponzaScene();
+	DarwCubeScene();
 }
 
 

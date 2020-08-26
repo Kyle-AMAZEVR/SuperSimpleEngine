@@ -63,6 +63,15 @@ SSGenericConstantBuffer::~SSGenericConstantBuffer()
     }
 }
 
+void SSGenericConstantBuffer::StoreBufferProxyData(const SSConstantBufferProxy& data)
+{   
+    check(mpBuffer != nullptr);
+    
+    check(data.GetBufferSize() == mBufferSize);
+
+    memcpy_s(mBufferData, mBufferSize, data.GetData(), mBufferSize);
+}
+
 void SSGenericConstantBuffer::SubmitDataToDevice(ID3D11DeviceContext* deviceContext)
 { 	
 	check(deviceContext);

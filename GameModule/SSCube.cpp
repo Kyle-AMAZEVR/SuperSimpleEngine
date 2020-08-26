@@ -9,48 +9,54 @@
 SSCube::SSCube()
 {
 	CreateRenderingData();
+	SetScale(10.f,10.f,10.f);
+}
+
+void SSCube::Tick(float delta)
+{
+	mYaw += 1.f * delta;
 }
 
 void SSCube::CreateRenderingData()
 {
-	std::vector<VT_PositionNormalTexcoord> vertexArray =
+	std::vector<VT_PositionNormalTexcoordTangent> vertexArray =
 	{
 		// front
-		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(0,0,-1), XMFLOAT2(0,0)},
-		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,-1),  XMFLOAT2(0,1)},
-		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,-1),   XMFLOAT2(1,1)  },
-		{ XMFLOAT4(+1.0f, -1.0f, -1.0f,1),  XMFLOAT3(0,0,-1),   XMFLOAT2(1,0)  },
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f,1), XMFLOAT3(0,0,-1), XMFLOAT2(0,0), XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,-1),  XMFLOAT2(0,1),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(+1.0f, +1.0f, -1.0f,1), XMFLOAT3(0,0,-1),   XMFLOAT2(1,1) ,XMFLOAT4(0,0,0,1) },
+		{ XMFLOAT4(+1.0f, -1.0f, -1.0f,1),  XMFLOAT3(0,0,-1),   XMFLOAT2(1,0) ,XMFLOAT4(0,0,0,1) },
 
 		// back
-		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(0,0)  },
-		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(0,1)  },
-		{ XMFLOAT4(+1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(1,1)  },
-		{ XMFLOAT4(+1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(1,0)  },
+		{ XMFLOAT4(-1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(0,0) ,XMFLOAT4(0,0,0,1) },
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(0,1) ,XMFLOAT4(0,0,0,1) },
+		{ XMFLOAT4(+1.0f, +1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(1,1) ,XMFLOAT4(0,0,0,1) },
+		{ XMFLOAT4(+1.0f, -1.0f, +1.0f,1),  XMFLOAT3(0,0,+1),   XMFLOAT2(1,0) ,XMFLOAT4(0,0,0,1) },
 
 		// top
-		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4(1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(1.0f, +1.0f, +1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(1,1),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(0,1,0), XMFLOAT2(0,1),XMFLOAT4(0,0,0,1)},
 
 
 		// bottom
-		{ XMFLOAT4(-1.0f,-1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4(1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(-1.0f,-1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(0,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(1.0f, -1.0f, +1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(1,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(1,1),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(0,-1,0), XMFLOAT2(0,1),XMFLOAT4(0,0,0,1)},
 
 		// left
-		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(-1.0f, -1.0f, +1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, +1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(0,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(-1.0f, +1.0f, -1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(1,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(-1.0f, -1.0f, -1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(1,1),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(-1.0f, -1.0f, +1.0f, 1), XMFLOAT3(-1,0,0), XMFLOAT2(0,1),XMFLOAT4(0,0,0,1)},
 
 		// right
-		{ XMFLOAT4(+1.0f, +1.0f, -1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(0,0)},
-		{ XMFLOAT4(+1.0f, +1.0f, +1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(1,0)},
-		{ XMFLOAT4(+1.0f, -1.0f, +1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(1,1)},
-		{ XMFLOAT4(+1.0f, -1.0f, -1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(0,1)},
+		{ XMFLOAT4(+1.0f, +1.0f, -1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(0,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(+1.0f, +1.0f, +1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(1,0),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(+1.0f, -1.0f, +1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(1,1),XMFLOAT4(0,0,0,1)},
+		{ XMFLOAT4(+1.0f, -1.0f, -1.0f, 1), XMFLOAT3(1,0,0), XMFLOAT2(0,1),XMFLOAT4(0,0,0,1)},
 	};
 
 	std::vector<UINT> indexArray
@@ -81,11 +87,15 @@ void SSCube::CreateRenderingData()
 	};
 	
 	mSharedRenderData.IndexData = indexArray;
-	mSharedRenderData.VertexType = EVertexType::VT_PNT;
+	mSharedRenderData.VertexType = EVertexType::VT_PNTT;
 	mSharedRenderData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mSharedRenderData.bHasIndexData = true;
-	mSharedRenderData.PNT_VertexData = std::move(vertexArray);
-	mSharedRenderData.VertexShaderName = "BasicShader.vs";
-	mSharedRenderData.PixelShaderName = "BasicShader.ps";
+	mSharedRenderData.PNTT_VertexData = std::move(vertexArray);
+	mSharedRenderData.VertexShaderName = "GBuffer.vs";
+	mSharedRenderData.PixelShaderName = "GBuffer.ps";
+	mSharedRenderData.PSTextureMap[SSName("DiffuseTex")] = "./Resource/Tex/rustediron/rustediron2_basecolor.dds";
+	mSharedRenderData.PSTextureMap[SSName("NormalTex")] = "./Resource/Tex/rustediron/rustediron2_normal.dds";
+	mSharedRenderData.PSTextureMap[SSName("MetalicTex")] = "./Resource/Tex/rustediron/rustediron2_metallic.dds";
+	mSharedRenderData.PSTextureMap[SSName("RoughnessTex")] = "./Resource/Tex/rustediron/rustediron2_roughness.dds";	
 }
 

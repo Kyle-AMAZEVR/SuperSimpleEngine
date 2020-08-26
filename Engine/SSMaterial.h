@@ -10,6 +10,8 @@ class SSVertexShader;
 class SSPixelShader;
 class SSTexture2DBase;
 
+#include "SSConstantBufferProxy.h"
+
 class ENGINE_API SSMaterial : public SSRenderThreadObject
 {
 public:
@@ -22,6 +24,10 @@ public:
 	void SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 	template<class T>
 	void SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
+
+	void SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& buffer);
+	void SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& buffer);
+	
 
 	template<class T>
 	void SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value);

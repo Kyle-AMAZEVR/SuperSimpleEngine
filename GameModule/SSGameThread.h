@@ -1,4 +1,5 @@
 #pragma once
+#include "SSTimer.h"
 
 // game thread is the same as main thread
 class GAMEMODULE_API SSGameThread
@@ -28,4 +29,7 @@ protected:
 	HANDLE mGameThreadDoneEventHandle = nullptr;
 
 	bool bRequestExist = false;
+
+
+	SSGameTimer mGameThreadTimer;	
 };

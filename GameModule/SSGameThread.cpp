@@ -32,12 +32,13 @@ void SSGameThread::Start(DWORD gameThreadId)
 
 void SSGameThread::Tick(float DeltaSeconds)
 {
+	mGameThreadTimer.Tick();
 	// do game thread work
 
 	// handle window message
 	SSGameWindow::GetPtr()->HandleMessage();
 
-	SSGameObjectManager::GetPtr()->Tick(DeltaSeconds);
+	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
 
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);
@@ -45,7 +46,7 @@ void SSGameThread::Tick(float DeltaSeconds)
 
 void SSGameThread::WaitForGameThread(const DWORD WaitTime)
 {
-	WaitForSingleObject(mGameThreadDoneEventHandle, WaitTime);
+	WaitForSingleObject(mGameThreadDoneEventHandle, WaitTime);	
 }
 
 
