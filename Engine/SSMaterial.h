@@ -14,8 +14,8 @@ class SSTexture2DBase;
 
 class ENGINE_API SSMaterial : public SSRenderThreadObject
 {
-public:
-	SSMaterial(SSVertexShader* vs, SSPixelShader* ps);
+public:	
+	SSMaterial(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps);
 
 	virtual void SetCurrent();
 	virtual void ReleaseCurrent();
@@ -40,9 +40,10 @@ public:
 	void SetPrimitiveType(D3D_PRIMITIVE_TOPOLOGY ePrimitiveType) { mPrimitiveType = ePrimitiveType; }
 	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }	
 
-protected:
-	class SSVertexShader* mpVS;
-	class SSPixelShader* mpPS;
+protected:	
+
+	std::shared_ptr<class SSVertexShader> mVS;
+	std::shared_ptr<class SSPixelShader> mPS;
 
 	//
 	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;

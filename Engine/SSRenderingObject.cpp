@@ -38,7 +38,7 @@ SSRenderingObject::SSRenderingObject(SSGameObject* pGameObject)
 	shared_ptr<SSVertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);	
 	shared_ptr<SSPixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
 
-	mMaterial = new SSMaterial(vs.get(), ps.get());
+	mMaterial = new SSMaterial(vs, ps);
 }
 
 

@@ -393,7 +393,7 @@ void SSDX11Renderer::TestCompileShader()
 	mDeferredVertexShader = SSShaderManager::Get().GetVertexShader("GBuffer.vs");
 	mDeferredPixelShader = SSShaderManager::Get().GetPixelShader("GBuffer.ps");
 
-	mTestMaterial = std::make_shared<SSMaterial>(mDeferredVertexShader.get(), mDeferredPixelShader.get());
+	mTestMaterial = std::make_shared<SSMaterial>(mDeferredVertexShader, mDeferredPixelShader);
 
 	mCubemapVertexShader = SSShaderManager::Get().GetVertexShader("CubemapShader.vs");
 	mCubemapPixelShader = SSShaderManager::Get().GetPixelShader("CubemapShader.ps");
@@ -416,8 +416,8 @@ void SSDX11Renderer::TestCompileShader()
 	mTBNDebugVertexShader = SSShaderManager::Get().GetVertexShader("TBNDebug.vs");
 	mTBNDebugPixelShader = SSShaderManager::Get().GetPixelShader("TBNDebug.ps");
 
-	mTBNDebugMaterial = std::make_shared<SSMaterial>(mTBNDebugVertexShader.get(), mTBNDebugPixelShader.get());
-	mDeferredLightMaterial = std::make_shared<SSMaterial>(mDeferredLightVertexShader.get(), mDeferredLightPixelShader.get());
+	mTBNDebugMaterial = std::make_shared<SSMaterial>(mTBNDebugVertexShader, mTBNDebugPixelShader);
+	mDeferredLightMaterial = std::make_shared<SSMaterial>(mDeferredLightVertexShader, mDeferredLightPixelShader);
 
 	//mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 }
