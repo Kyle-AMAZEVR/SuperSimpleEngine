@@ -111,14 +111,8 @@ private:
 	std::shared_ptr<class SSTextureCube> mEnvCubemapPrefilter;
 	std::shared_ptr<class SSTexture2D> m2DLUTTexture;
 	// @
-
-
-	std::shared_ptr<class SSTexture2D> mNormalTexture;
-	std::shared_ptr<class SSTexture2D> mRoughnessTexture;
-	std::shared_ptr<class SSTexture2D> mMetalicTexture;
-	std::shared_ptr<class SSTexture2D> mDiffuseTexture;
+	
 	std::shared_ptr<class SSTexture2D> mHDREnvmap;
-
 
 	std::shared_ptr<class SSGBuffer> mGBuffer;
 

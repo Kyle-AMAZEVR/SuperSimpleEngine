@@ -92,12 +92,7 @@ void SSDX11Renderer::Shutdown()
 void SSDX11Renderer::TestCreateResources()
 {
 	auto* deviceContext = GetImmediateDeviceContext();
-
-	mNormalTexture = std::make_shared<SSTexture2D>();
-	mRoughnessTexture = std::make_shared<SSTexture2D>();
-	mDiffuseTexture = std::make_shared<SSTexture2D>();
-	mMetalicTexture = std::make_shared<SSTexture2D>();
-
+	
 	mTestCube = std::make_shared<SSCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
@@ -141,21 +136,15 @@ void SSDX11Renderer::TestCreateResources()
 
 	mTestCube->SetScale(1, 1, 1);
 
-	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))
-		//if(false)
+	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))		
 	{
 		mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
 	}
 	else
 	{
-
 		mSponzaMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
-	}
-
-	mNormalTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_normal.dds");
-	mRoughnessTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_roughness.dds");
-	mDiffuseTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_basecolor.dds");
-	mMetalicTexture->LoadFromDDSFile(GetImmediateDeviceContext(), L"./Resource/Tex/rustediron/rustediron2_metallic.dds");
+	}	
+	
 
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
 }
@@ -260,7 +249,7 @@ void SSDX11Renderer::DrawCubeScene()
 
 	if (true)
 	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
+		blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetNormalOutput());
 	}
 	else
 	{
