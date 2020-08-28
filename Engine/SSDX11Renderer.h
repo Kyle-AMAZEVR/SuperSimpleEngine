@@ -23,7 +23,7 @@ public:
 	void FlushRenderCommands();
 
 protected:
-	void DarwCubeScene();
+	void DrawCubeScene();
 	void DrawSponzaScene();
 	
 	std::shared_ptr<class SSViewport> mViewport = nullptr;

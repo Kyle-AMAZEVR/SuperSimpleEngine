@@ -177,7 +177,7 @@ void SSDX11Renderer::FlushRenderCommands()
 	mRenderCommandList.clear();
 }
 
-void SSDX11Renderer::DarwCubeScene()
+void SSDX11Renderer::DrawCubeScene()
 {
 	if (bInitialized == false)
 	{
@@ -734,7 +734,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {	
-	DarwCubeScene();
+	DrawCubeScene();
+	//DrawSponzaScene();
 }
 
 

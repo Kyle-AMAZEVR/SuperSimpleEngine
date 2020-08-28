@@ -34,15 +34,17 @@ class ENGINE_API SSDepthStateChangeCmd: public SSDrawCmdBase
 {
 public:
 	SSDepthStateChangeCmd();
-
 protected:
-
+	
 };
 
 
 class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 {
 public:
+
+	
+	
 	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object);
 
 	SSDrawCommand(SSMaterial* material, std::shared_ptr<SSGameObject> object);
@@ -66,10 +68,7 @@ public:
 protected:
 	class SSVertexShader* mpVS = nullptr;
 	class SSPixelShader* mpPS = nullptr;	
-	class SSMaterial* mMaterial = nullptr;
-
-	class SSVertexBuffer* mpVertexBuffer = nullptr;
-	class SSIndexBuffer* mpIndexBuffer = nullptr;	
+	class SSMaterial* mMaterial = nullptr;	
 
 	//
 	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;
@@ -83,10 +82,6 @@ protected:
 	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	std::shared_ptr<SSGameObject> mObject;
-
-	std::function<void()> mPreDrawJob = nullptr;
-	std::function<void()> mPostDrawJob = nullptr;
-
 };
 
 template<class T>

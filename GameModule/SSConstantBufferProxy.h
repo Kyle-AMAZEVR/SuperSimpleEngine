@@ -4,12 +4,16 @@
 class GAMEMODULE_API SSConstantBufferProxy
 {
 public:
+	SSConstantBufferProxy(){}
+	
 	template<class T>
 	SSConstantBufferProxy(const T& value);
 
 	SSConstantBufferProxy(const SSConstantBufferProxy& rhs);
 
 	SSConstantBufferProxy(SSConstantBufferProxy&& rhs);
+
+	SSConstantBufferProxy& operator=(SSConstantBufferProxy&& rhs);
 
 	~SSConstantBufferProxy();
 		
@@ -30,9 +34,10 @@ protected:
 
 template<class T>
 void SSConstantBufferProxy::SetBufferData(const T& value)
-{
-	if(mpBuffData == null || mBufferSize != sizeof(T))
+{	
+	if(mBufferSize != sizeof(T))
 	{
+		FreeBufferData();
 		mBufferSize = sizeof(T);
 		mpBufferData = new BYTE[mBufferSize];
 	}

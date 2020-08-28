@@ -43,3 +43,23 @@ SSConstantBufferProxy::SSConstantBufferProxy(SSConstantBufferProxy&& rhs)
 
 	rhs.FreeBufferData();	
 }
+
+SSConstantBufferProxy& SSConstantBufferProxy::operator=(SSConstantBufferProxy&& rhs)
+{
+	if (mBufferSize != rhs.mBufferSize)
+	{
+		FreeBufferData();
+	}
+
+	mBufferSize = rhs.mBufferSize;
+	mpBufferData = new BYTE[mBufferSize];
+
+	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
+
+	rhs.FreeBufferData();
+	
+	return *this;
+}
+
+
+

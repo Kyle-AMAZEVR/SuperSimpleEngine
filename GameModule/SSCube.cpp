@@ -3,8 +3,8 @@
 #include "SSCube.h"
 #include "SSVertexTypes.h"
 #include "SSDX11VertexBuffer.h"
+#include "FreqUsedConstantBufferTypes.h"
 
-#include <vector>
 
 SSCube::SSCube()
 {
@@ -96,6 +96,18 @@ void SSCube::CreateRenderingData()
 	mSharedRenderData.PSTextureMap[SSName("DiffuseTex")] = "./Resource/Tex/rustediron/rustediron2_basecolor.dds";
 	mSharedRenderData.PSTextureMap[SSName("NormalTex")] = "./Resource/Tex/rustediron/rustediron2_normal.dds";
 	mSharedRenderData.PSTextureMap[SSName("MetalicTex")] = "./Resource/Tex/rustediron/rustediron2_metallic.dds";
-	mSharedRenderData.PSTextureMap[SSName("RoughnessTex")] = "./Resource/Tex/rustediron/rustediron2_roughness.dds";	
+	mSharedRenderData.PSTextureMap[SSName("RoughnessTex")] = "./Resource/Tex/rustediron/rustediron2_roughness.dds";
+		
+
+	SSAlignedCBuffer<int, int, int, int, int> settings;
+	settings.value1 = 1; //metalic
+	settings.value2 = 0; //mask
+	settings.value3 = 1; //normal
+	settings.value4 = 0; // roghness
+	settings.value5 = 1; // diffuse
+
+	SSConstantBufferProxy proxy{ settings };	
+	
+	mSharedRenderData.PSConstantBufferMap["TextureExist"] = std::move(proxy);
 }
 
