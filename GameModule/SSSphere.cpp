@@ -23,11 +23,6 @@ SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	CreateRenderData();	
 }
 
-void SSSphere::OnAddedScene()
-{	
-}
-
-
 void SSSphere::CreateVertexData()
 {
 	for (UINT i = 0; i < mStackCount; ++i)

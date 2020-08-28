@@ -249,7 +249,7 @@ void SSDX11Renderer::DrawCubeScene()
 
 	if (true)
 	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetNormalOutput());
+		blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	}
 	else
 	{
