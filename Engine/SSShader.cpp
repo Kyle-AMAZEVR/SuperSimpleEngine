@@ -300,4 +300,11 @@ void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
 	dxDeviceContext->PSSetSamplers(slotIndex, 1, &sampler);
 }
 
+void SSPixelShader::SetSampler(ID3D11DeviceContext* dxDeviceContext, std::string name, ID3D11SamplerState* sampler)
+{
+	UINT slotIndex = mSamplerMap[name];	
+
+	dxDeviceContext->PSSetSamplers(slotIndex, 1, &sampler);
+}
+
 #pragma endregion
