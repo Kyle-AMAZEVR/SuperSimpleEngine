@@ -12,6 +12,7 @@ protected:
 	SSGameObject* mpGameObject = nullptr;
 
 	SSMeshRenderData mRenderData;
+	SSMeshVertexData mVertexData;
 
 	class SSDX11VertexBuffer* mVertexBuffer = nullptr;
 	class SSIndexBuffer* mIndexBuffer = nullptr;

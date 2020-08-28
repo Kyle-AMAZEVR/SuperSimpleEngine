@@ -20,6 +20,8 @@ public:
 	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
 		
 	virtual const SSMeshRenderData& GetRenderData();
+	virtual const SSMeshVertexData& GetVertexData();
+	
 	
 	virtual void Tick(float delta) {}
 
@@ -45,13 +47,11 @@ public:
 
 protected:
 
-	virtual void CreateRenderingData() {}
+	virtual void CreateRenderData() {}
+	virtual void CreateVertexData(){}
 
-	static SSMeshRenderData mSharedRenderData;
-	
-	SSMeshRenderData mPerInstanceRenderData;
-	
-	bool mHasPerInstanceRenderData = false;
+	SSMeshVertexData mVertexData;
+	SSMeshRenderData mRenderData;	
 	
 	friend class SSGameObjectManager;
 	DirectX::XMFLOAT3 mPosition;

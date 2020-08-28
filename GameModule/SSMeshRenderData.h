@@ -12,20 +12,26 @@ enum class EVertexType : unsigned char
 	VT_PT, //
 };
 
-struct SSMeshRenderData
+// 
+struct SSMeshVertexData
 {
-public:	
+public:
 	std::vector<VT_PositionNormalTexcoord> PNT_VertexData;
 	std::vector<VT_PositionNormalTexcoordTangent> PNTT_VertexData;
 	std::vector<unsigned int> IndexData;
-
-	SSName VertexShaderName;
-	SSName PixelShaderName;
-
 	// vertex type
 	EVertexType VertexType = EVertexType::VT_PNT;
 	D3D_PRIMITIVE_TOPOLOGY PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	bool bHasIndexData = false;
+};
+
+// per instance 
+struct SSMeshRenderData
+{
+public:
+	//
+	SSName VertexShaderName;
+	SSName PixelShaderName;	
 
 	//
 	std::map<SSName, SSConstantBufferProxy> VSConstantBufferMap;

@@ -27,10 +27,9 @@ protected:
 	UINT mStackCount = 5;
 	float mRadius = 5.0f;
 
-	void InternalCreate();
+	void CreateVertexData() override;
+	void CreateRenderData() override;
 	void GenerateTangents();
-
-	static bool bIsInitialized;		
 
 	float mRoughness = 0.1f;
 	float mMetalic = 0.9f;

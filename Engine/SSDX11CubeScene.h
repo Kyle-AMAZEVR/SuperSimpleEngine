@@ -11,5 +11,6 @@ public:
 	void DrawScene(float deltaSec) override;
 protected:
 	class SSCube* mCube = nullptr;
+	class SSSphere* mSphere = nullptr;
 };
 

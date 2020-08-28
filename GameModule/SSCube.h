@@ -9,5 +9,7 @@ public:
 	SSCube();	
 	void Tick(float delta) override;
 protected:	
-	void CreateRenderingData() override;		
+	void CreateRenderData() override;
+	void CreateVertexData() override;
+
 };

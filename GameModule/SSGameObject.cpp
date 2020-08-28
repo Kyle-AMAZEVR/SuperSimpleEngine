@@ -22,23 +22,19 @@ SSGameObject::~SSGameObject()
 	mObjectId = 0;
 }
 
-SSMeshRenderData SSGameObject::mSharedRenderData;
+const SSMeshVertexData& SSGameObject::GetVertexData()
+{
+	return mVertexData;
+}
 
 const SSMeshRenderData& SSGameObject::GetRenderData()
 {
-	if(mHasPerInstanceRenderData)
-	{
-		return mPerInstanceRenderData;
-	}
-	else
-	{
-		return mSharedRenderData;
-	}
+	return mRenderData;
 }
 
 XMMATRIX SSGameObject::GetModelTransform()
 {
-	return XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z) *  XMMatrixRotationY(mYaw) * XMMatrixScaling(mScale.x, mScale.y, mScale.z);
+	return XMMatrixScaling(mScale.x, mScale.y, mScale.z) * XMMatrixRotationY(mYaw) * XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
 }
 
 void SSGameObject::SetPositionX(float x)

@@ -65,9 +65,7 @@ private:
 	std::shared_ptr<class SSSphere> mTestSphere2;
 
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;
-	// 
-	std::shared_ptr<class SSDX11VertexBuffer> mTestVertexBuffer;
-	std::shared_ptr<class SSIndexBuffer> mTestIndexBuffer;
+	// 	
 
 	std::shared_ptr<class SSVertexShader> mScreenBlitVertexShader;
 	std::shared_ptr<class SSPixelShader> mScreenBlitPixelShader;

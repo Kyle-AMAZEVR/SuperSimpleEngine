@@ -6,9 +6,8 @@
 
 class SSSharedBufferManager : Singleton<SSSharedBufferManager>
 {
-
 public:
-	
+	void Initialize();
 
 protected:
 	std::map<SSName, class SSDX11VertexBuffer*> mVertexBufferMap;

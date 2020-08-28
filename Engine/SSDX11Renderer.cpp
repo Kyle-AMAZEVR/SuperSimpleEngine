@@ -66,6 +66,8 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	SSDepthStencilStateManager::Get().Initialize();
 	SSRasterizeStateManager::Get().Initialize();
 
+
+	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	TestCompileShader();
 	TestCreateResources();
 
@@ -89,9 +91,6 @@ void SSDX11Renderer::Shutdown()
 
 void SSDX11Renderer::TestCreateResources()
 {
-	mTestVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
-	mTestIndexBuffer = std::make_shared<SSIndexBuffer>();
-
 	auto* deviceContext = GetImmediateDeviceContext();
 
 	mNormalTexture = std::make_shared<SSTexture2D>();
@@ -141,7 +140,6 @@ void SSDX11Renderer::TestCreateResources()
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 
 	mTestCube->SetScale(1, 1, 1);
-	mScreenBlit = std::make_shared<class SSScreenBlit>();
 
 	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))
 		//if(false)
@@ -245,8 +243,6 @@ void SSDX11Renderer::DrawCubeScene()
 	// @start
 	mGBuffer->Clear(deviceContext);
 	mGBuffer->SetCurrentRenderTarget(deviceContext);	
-
-	
 	
 	// draw
 	auto& objects = SSRenderingObjectManager::Get().GetRenderingObjectMap();

@@ -8,8 +8,11 @@
 
 SSCube::SSCube()
 {
-	CreateRenderingData();
-	SetScale(10.f,10.f,10.f);
+	CreateVertexData();
+	CreateRenderData();
+	SetScale(5.f,5.f,5.f);
+	SetPositionZ(1);
+	
 }
 
 void SSCube::Tick(float delta)
@@ -17,8 +20,29 @@ void SSCube::Tick(float delta)
 	mYaw += 1.f * delta;
 }
 
-void SSCube::CreateRenderingData()
-{
+void SSCube::CreateRenderData()
+{		
+	mRenderData.VertexShaderName = "GBuffer.vs";
+	mRenderData.PixelShaderName = "GBuffer.ps";
+	mRenderData.PSTextureMap[SSName("DiffuseTex")] = "./Resource/Tex/rustediron/rustediron2_basecolor.dds";
+	mRenderData.PSTextureMap[SSName("NormalTex")] = "./Resource/Tex/rustediron/rustediron2_normal.dds";
+	mRenderData.PSTextureMap[SSName("MetalicTex")] = "./Resource/Tex/rustediron/rustediron2_metallic.dds";
+	mRenderData.PSTextureMap[SSName("RoughnessTex")] = "./Resource/Tex/rustediron/rustediron2_roughness.dds";		
+
+	SSAlignedCBuffer<int, int, int, int, int> settings;
+	settings.value1 = 1; //metalic
+	settings.value2 = 0; //mask
+	settings.value3 = 1; //normal
+	settings.value4 = 0; // roghness
+	settings.value5 = 1; // diffuse
+
+	SSConstantBufferProxy proxy{ settings };	
+	
+	mRenderData.PSConstantBufferMap[SSName("TextureExist")] = std::move(proxy);
+}
+
+void SSCube::CreateVertexData()
+{	
 	std::vector<VT_PositionNormalTexcoordTangent> vertexArray =
 	{
 		// front
@@ -85,29 +109,11 @@ void SSCube::CreateRenderingData()
 		20,21,22,
 		20,22,23,
 	};
-	
-	mSharedRenderData.IndexData = indexArray;
-	mSharedRenderData.VertexType = EVertexType::VT_PNTT;
-	mSharedRenderData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mSharedRenderData.bHasIndexData = true;
-	mSharedRenderData.PNTT_VertexData = std::move(vertexArray);
-	mSharedRenderData.VertexShaderName = "GBuffer.vs";
-	mSharedRenderData.PixelShaderName = "GBuffer.ps";
-	mSharedRenderData.PSTextureMap[SSName("DiffuseTex")] = "./Resource/Tex/rustediron/rustediron2_basecolor.dds";
-	mSharedRenderData.PSTextureMap[SSName("NormalTex")] = "./Resource/Tex/rustediron/rustediron2_normal.dds";
-	mSharedRenderData.PSTextureMap[SSName("MetalicTex")] = "./Resource/Tex/rustediron/rustediron2_metallic.dds";
-	mSharedRenderData.PSTextureMap[SSName("RoughnessTex")] = "./Resource/Tex/rustediron/rustediron2_roughness.dds";
-		
 
-	SSAlignedCBuffer<int, int, int, int, int> settings;
-	settings.value1 = 1; //metalic
-	settings.value2 = 0; //mask
-	settings.value3 = 1; //normal
-	settings.value4 = 0; // roghness
-	settings.value5 = 1; // diffuse
-
-	SSConstantBufferProxy proxy{ settings };	
-	
-	mSharedRenderData.PSConstantBufferMap["TextureExist"] = std::move(proxy);
+	mVertexData.IndexData = indexArray;
+	mVertexData.VertexType = EVertexType::VT_PNTT;
+	mVertexData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	mVertexData.bHasIndexData = true;
+	mVertexData.PNTT_VertexData = std::move(vertexArray);
 }
 

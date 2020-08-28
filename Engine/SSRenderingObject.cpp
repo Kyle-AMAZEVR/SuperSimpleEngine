@@ -16,29 +16,29 @@ SSRenderingObject::SSRenderingObject(SSGameObject* pGameObject)
 	: mpGameObject(pGameObject)
 {
 	mRenderData = pGameObject->GetRenderData();
+	mVertexData = pGameObject->GetVertexData();
 	
 	mVertexBuffer = new SSDX11VertexBuffer();
 
-	if(mRenderData.VertexType == EVertexType::VT_PNTT)
+	if(mVertexData.VertexType == EVertexType::VT_PNTT)
 	{
-		mVertexBuffer->SetVertexBufferData(mRenderData.PNTT_VertexData);
+		mVertexBuffer->SetVertexBufferData(mVertexData.PNTT_VertexData);
 	}
-	else if(mRenderData.VertexType == EVertexType::VT_PNT)
+	else if(mVertexData.VertexType == EVertexType::VT_PNT)
 	{
-		mVertexBuffer->SetVertexBufferData(mRenderData.PNT_VertexData);
+		mVertexBuffer->SetVertexBufferData(mVertexData.PNT_VertexData);
 	}		
 
-	if(mRenderData.bHasIndexData)
+	if(mVertexData.bHasIndexData)
 	{
 		mIndexBuffer = new SSIndexBuffer();
-		mIndexBuffer->SetIndexBufferData(mRenderData.IndexData);
+		mIndexBuffer->SetIndexBufferData(mVertexData.IndexData);
 	}
 
-	shared_ptr<SSVertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);
-	
+	shared_ptr<SSVertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);	
 	shared_ptr<SSPixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
 
-	mMaterial = new SSMaterial(vs.get(), ps.get());	
+	mMaterial = new SSMaterial(vs.get(), ps.get());
 }
 
 
@@ -66,8 +66,7 @@ SSRenderingObject::~SSRenderingObject()
 }
 
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
-{
-	
+{	
 	// 
 	mMaterial->SetCurrent();
 
@@ -76,18 +75,18 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	// set vertex buffer
 	deviceContext->IASetVertexBuffers(0, 1, mVertexBuffer->GetDX11BufferPointerRef(), &stride, &offset);
 
-	if (mRenderData.bHasIndexData)
+	if (mVertexData.bHasIndexData)
 	{
 		// set indexbuffer
 		deviceContext->IASetIndexBuffer(mIndexBuffer->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 	}
 		
 	// 
-	deviceContext->IASetPrimitiveTopology(mRenderData.PrimitiveType);
+	deviceContext->IASetPrimitiveTopology(mVertexData.PrimitiveType);
 	
 	// setup vertex shader	
 	// set model, view, proj matrix
-	mMaterial->SetVSConstantBufferData(deviceContext, ModelName, mpGameObject->GetModelTransform());
+	mMaterial->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(mpGameObject->GetModelTransform()));
 	mMaterial->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	mMaterial->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 
@@ -123,7 +122,7 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	mMaterial->SetPSSampler("DefaultTexSampler", sampler);
 	
 	// if have index buffer
-	if(mRenderData.bHasIndexData)
+	if(mVertexData.bHasIndexData)
 	{		
 		deviceContext->DrawIndexed(mIndexBuffer->GetIndexCount(), 0, 0);
 	}

@@ -13,31 +13,22 @@
 #include "SSSamplerManager.h"
 #include "SSTextureManager.h"
 #include "SSMathHelper.h"
+#include "SSScreenBlit.h"
 #include "SSTexture2D.h"
 
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	: mSectorCount(sector), mStackCount(stack), mRadius(radius)
-{
-	mHasPerInstanceRenderData = false;
-	
-	if (bIsInitialized == false)
-	{
-		InternalCreate();
-		bIsInitialized = true;
-	}
+{	
+	CreateVertexData();
+	CreateRenderData();	
 }
 
 void SSSphere::OnAddedScene()
-{
-	if (bIsInitialized == false)
-	{
-		InternalCreate();
-		bIsInitialized = true;
-	}	
+{	
 }
 
 
-void SSSphere::InternalCreate()
+void SSSphere::CreateVertexData()
 {
 	for (UINT i = 0; i < mStackCount; ++i)
 	{
@@ -200,11 +191,33 @@ void SSSphere::InternalCreate()
 		}
 	}
 
-	mSharedRenderData.bHasIndexData = false;
-	mSharedRenderData.PNTT_VertexData = std::move(mVertexArray);
-	mSharedRenderData.VertexType = EVertexType::VT_PNTT;	
+	mVertexData.bHasIndexData = false;
+	mVertexData.PNTT_VertexData = std::move(mVertexArray);
+	mVertexData.VertexType = EVertexType::VT_PNTT;
+	
 }
 
+void SSSphere::CreateRenderData()
+{
+	SSAlignedCBuffer<int, int, int, int, int> settings;	
+	
+	mRenderData.VertexShaderName = "GBuffer.vs";
+	mRenderData.PixelShaderName = "GBuffer.ps";
+	mRenderData.PSTextureMap[SSName("DiffuseTex")] = "./Resource/Tex/rustediron/rustediron2_basecolor.dds";
+	mRenderData.PSTextureMap[SSName("NormalTex")] = "./Resource/Tex/rustediron/rustediron2_normal.dds";
+	mRenderData.PSTextureMap[SSName("MetalicTex")] = "./Resource/Tex/rustediron/rustediron2_metallic.dds";
+	mRenderData.PSTextureMap[SSName("RoughnessTex")] = "./Resource/Tex/rustediron/rustediron2_roughness.dds";
+		
+	settings.value1 = 1; //metalic
+	settings.value2 = 0; //mask
+	settings.value3 = 1; //normal
+	settings.value4 = 1; // roghness
+	settings.value5 = 1; // diffuse
+
+	SSConstantBufferProxy proxy{ settings };
+
+	mRenderData.PSConstantBufferMap[SSName("TextureExist")] = std::move(proxy);
+}
 
 
 void SSSphere::GenerateTangents()
@@ -420,7 +433,7 @@ void SSSphere::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* materi
 }
 */
 
-bool SSSphere::bIsInitialized = false;
+
 std::vector< VT_PositionNormalTexcoordTangent > SSSphere::mVertexArray;
 
 
