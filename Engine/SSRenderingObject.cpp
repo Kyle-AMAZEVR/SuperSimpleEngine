@@ -12,11 +12,11 @@
 #include "SSTexture2D.h"
 #include "SSSamplerManager.h"
 
-SSRenderingObject::SSRenderingObject(SSGameObject* pGameObject)
-	: mpGameObject(pGameObject)
+SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
+	: mpObject(pObject)
 {
-	mRenderData = pGameObject->GetRenderData();
-	mVertexData = pGameObject->GetVertexData();
+	mRenderData = pObject->GetRenderData();
+	mVertexData = pObject->GetVertexData();
 	
 	mVertexBuffer = new SSDX11VertexBuffer();
 
@@ -86,7 +86,7 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	
 	// setup vertex shader	
 	// set model, view, proj matrix
-	mMaterial->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(mpGameObject->GetModelTransform()));
+	mMaterial->SetVSConstantBufferData(deviceContext, ModelName, XMMatrixTranspose(mpObject->GetModelTransform()));
 	mMaterial->SetVSConstantBufferData(deviceContext, ViewName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView()));
 	mMaterial->SetVSConstantBufferData(deviceContext, ProjName, XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj()));
 

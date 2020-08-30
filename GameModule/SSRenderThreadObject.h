@@ -1,7 +1,9 @@
 
 #pragma once
 
-class GAMEMODULE_API SSRenderThreadObject
+#include "SSObjectBase.h"
+
+class GAMEMODULE_API SSRenderThreadObject : public SSObjectBase
 {
 public:
 	SSRenderThreadObject();

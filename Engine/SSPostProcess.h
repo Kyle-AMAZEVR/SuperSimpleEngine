@@ -5,7 +5,7 @@
 
 class SSTexture2DBase;
 
-class ENGINE_API SSPostProcess : public SSRenderThreadObject
+class ENGINE_API SSPostProcess
 {
 public:	
 	SSPostProcess(UINT width , UINT height, UINT rtCount=1, bool bDepthExist =false, bool bFixed =false, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
@@ -17,7 +17,7 @@ public:
 	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3, SSTexture2DBase* input4) {}
 	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3, SSTexture2DBase* input4, SSTexture2DBase* input5 ) {}
 
-	virtual void Destroy() override;
+	virtual void Destroy();
 
 	SSRenderTargetTexture2D* GetOutput(UINT nIndex);
 

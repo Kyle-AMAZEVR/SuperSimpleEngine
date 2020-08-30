@@ -13,7 +13,7 @@ class SSTexture2DBase;
 class IRenderTarget;
 
 
-class ENGINE_API SSDrawCmdBase : public SSRenderThreadObject
+class ENGINE_API SSDrawCmdBase
 {
 public :	
 	virtual void Do(ID3D11DeviceContext* deviceContext) = 0;

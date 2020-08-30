@@ -31,7 +31,7 @@ struct SSMeshRenderData
 public:
 	//
 	SSName VertexShaderName;
-	SSName PixelShaderName;	
+	SSName PixelShaderName;
 
 	//
 	std::map<SSName, SSConstantBufferProxy> VSConstantBufferMap;
@@ -41,9 +41,17 @@ public:
 	std::map<SSName, SSName> PSTextureMap;
 };
 
-struct SSMeshElementData
+struct SSMeshElementRenderData
 {
-public:
-	unsigned int nStartIndex = 0;
-	unsigned int nEndIndex = 0;	
+	SSName VertexShaderName;
+	SSName PixelShaderName;
+	//
+	std::map<SSName, SSConstantBufferProxy> VSConstantBufferMap;
+	std::map<SSName, SSConstantBufferProxy> PSConstantBufferMap;
+
+	std::map<SSName, SSName> VSTextureMap;
+	std::map<SSName, SSName> PSTextureMap;
+
+	unsigned int StartIndex = 0;
+	unsigned int EndIndex = 0;
 };

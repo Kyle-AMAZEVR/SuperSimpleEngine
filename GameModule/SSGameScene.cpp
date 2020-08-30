@@ -30,17 +30,6 @@ void SSGameScene::AddGameObject(class SSGameObject* gameObject)
 
 void SSGameScene::DrawScene(float deltaSec)
 {
-	for(auto& kvp : mSceneObjectMap)
-	{
-		if(kvp.second != nullptr)
-		{
-			if(false == kvp.second->IsRenderingReady())
-			{
-				kvp.second->PrepareRendering();
-			}
-
-			//kvp.second->Draw();
-		}
-	}
+	
 }
 

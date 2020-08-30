@@ -5,11 +5,12 @@
 class SSRenderingObject
 {
 public:
-	SSRenderingObject(class SSGameObject* pGameObject);
+	SSRenderingObject(class SSObjectBase* pObject);
+	
 	virtual ~SSRenderingObject();
 	virtual void Draw(ID3D11DeviceContext* deviceContext);
 protected:
-	SSGameObject* mpGameObject = nullptr;
+	SSObjectBase* mpObject = nullptr;
 
 	SSMeshRenderData mRenderData;
 	SSMeshVertexData mVertexData;
