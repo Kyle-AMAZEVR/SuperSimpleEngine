@@ -24,7 +24,10 @@ SSConstantBufferProxy::SSConstantBufferProxy(const SSConstantBufferProxy& rhs)
 	}
 	
 	mBufferSize = rhs.mBufferSize;
-	mpBufferData = new BYTE[mBufferSize];
+	if (mpBufferData == nullptr)
+	{
+		mpBufferData = new BYTE[mBufferSize];
+	}
 	
 	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
 }
@@ -37,7 +40,10 @@ SSConstantBufferProxy::SSConstantBufferProxy(SSConstantBufferProxy&& rhs)
 	}
 	
 	mBufferSize = rhs.mBufferSize;
-	mpBufferData = new BYTE[mBufferSize];
+	if (mpBufferData == nullptr)
+	{
+		mpBufferData = new BYTE[mBufferSize];
+	}
 	
 	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
 
@@ -52,12 +58,34 @@ SSConstantBufferProxy& SSConstantBufferProxy::operator=(SSConstantBufferProxy&& 
 	}
 
 	mBufferSize = rhs.mBufferSize;
-	mpBufferData = new BYTE[mBufferSize];
+	if (mpBufferData == nullptr)
+	{
+		mpBufferData = new BYTE[mBufferSize];
+	}
 
 	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
 
 	rhs.FreeBufferData();
 	
+	return *this;
+}
+
+SSConstantBufferProxy& SSConstantBufferProxy::operator=(const SSConstantBufferProxy& rhs)
+{
+	if (mBufferSize != rhs.mBufferSize)
+	{
+		FreeBufferData();
+	}
+
+	mBufferSize = rhs.mBufferSize;
+	
+	if (mpBufferData == nullptr)
+	{
+		mpBufferData = new BYTE[mBufferSize];
+	}
+
+	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
+
 	return *this;
 }
 

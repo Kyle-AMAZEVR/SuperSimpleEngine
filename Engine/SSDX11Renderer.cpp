@@ -29,6 +29,7 @@
 #include "SSGameWindow.h"
 #include "SSRenderingObjectManager.h"
 #include "SSRenderingObject.h"
+#include "SSRenderTargetCube.h"
 
 SSDX11Renderer::SSDX11Renderer()	
 {
@@ -94,9 +95,11 @@ void SSDX11Renderer::TestCreateResources()
 	auto* deviceContext = GetImmediateDeviceContext();
 	
 	mTestCube = std::make_shared<SSCube>();
+	mRenderTargetCube = std::make_shared<SSRenderTargetCube>();	
+	
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
-	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);
+	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);	
 	/*mTestSphere2 = std::make_shared<SSSphere>(25, 25, 10.0f);
 	mTestSphere2->SetPosition(0, 20, 20);
 	mTestSphere2->SetMetalicValue(0.f);
@@ -134,7 +137,7 @@ void SSDX11Renderer::TestCreateResources()
 
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 
-	mTestCube->SetScale(1, 1, 1);
+	mTestCube->SetScale(1, 1, 1);	
 
 	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))		
 	{
@@ -419,7 +422,7 @@ void SSDX11Renderer::TestCompileShader()
 	mTBNDebugMaterial = std::make_shared<SSMaterial>(mTBNDebugVertexShader, mTBNDebugPixelShader);
 	mDeferredLightMaterial = std::make_shared<SSMaterial>(mDeferredLightVertexShader, mDeferredLightPixelShader);
 
-	//mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+	mRenderTargetCube = std::make_shared<SSRenderTargetCube>("Prefilter.vs", "Prefilter.ps");
 }
 
 bool SSDX11Renderer::CreateDevice()
@@ -530,7 +533,11 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 	{
-		SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
+		mConvolutionRenderTarget->Clear(deviceContext);
+		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
+		
+		
+		/*SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
 
 		mConvolutionRenderTarget->Clear(deviceContext);
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
@@ -570,7 +577,7 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 
 		mEnvCubemapConvolution = mConvolutionRenderTarget;
 
-		mConvolutionRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvConvolution.dds");
+		mConvolutionRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvConvolution.dds");*/
 	}
 }
 
@@ -579,8 +586,13 @@ void SSDX11Renderer::CreateEnvCubemapPrefilter()
 	auto* deviceContext = GetImmediateDeviceContext();
 
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
+
+	
+	
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 	{
+		
+		
 		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader.get(), mPrefilterPixelShader.get(), mTestCube };
 
 		mPrefilterRenderTarget->Clear(deviceContext);

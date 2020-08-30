@@ -15,6 +15,8 @@ public:
 
 	SSConstantBufferProxy& operator=(SSConstantBufferProxy&& rhs);
 
+	SSConstantBufferProxy& operator=(const SSConstantBufferProxy& rhs);
+
 	~SSConstantBufferProxy();
 		
 	template<class T>

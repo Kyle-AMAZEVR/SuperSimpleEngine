@@ -1,12 +1,109 @@
 
 #include "SSCommon.h"
 #include "SSRenderTargetCube.h"
+#include "SSDX11VertexBuffer.h"
+#include "SSIndexBuffer.h"
+#include "SSMaterial.h"
+#include "SSFreqUsedNames.h"
+#include "SSCameraManager.h"
+#include "SSShaderManager.h"
+#include "SSTextureManager.h"
+#include "SSTexture2D.h"
+#include "SSSamplerManager.h"
 
 using namespace DirectX;
 
-SSRenderTargetCube::SSRenderTargetCube()
+SSRenderTargetCube::SSRenderTargetCube(SSName vs, SSName ps)
 {
 	CreateVertexData();
+
+	mRenderData.VertexShaderName = vs;
+	mRenderData.PixelShaderName = ps;
+	
+	mVertexBuffer = new SSDX11VertexBuffer();
+
+	if (mVertexData.VertexType == EVertexType::VT_PNTT)
+	{
+		mVertexBuffer->SetVertexBufferData(mVertexData.PNTT_VertexData);
+	}
+	else if (mVertexData.VertexType == EVertexType::VT_PNT)
+	{
+		mVertexBuffer->SetVertexBufferData(mVertexData.PNT_VertexData);
+	}
+
+	if (mVertexData.bHasIndexData)
+	{
+		mIndexBuffer = new SSIndexBuffer();
+		mIndexBuffer->SetIndexBufferData(mVertexData.IndexData);
+	}
+
+	shared_ptr<SSVertexShader> vertexShader = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);
+	shared_ptr<SSPixelShader> pixelShader = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
+
+	mMaterial = new SSMaterial(vertexShader, pixelShader);
+}
+
+
+void SSRenderTargetCube::Draw(ID3D11DeviceContext* deviceContext)
+{
+	auto stride = mVertexBuffer->GetStride();
+	UINT offset = 0;
+	// set vertex buffer
+	deviceContext->IASetVertexBuffers(0, 1, mVertexBuffer->GetDX11BufferPointerRef(), &stride, &offset);
+
+	if (mVertexData.bHasIndexData)
+	{
+		// set indexbuffer
+		deviceContext->IASetIndexBuffer(mIndexBuffer->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	}
+
+	// 
+	deviceContext->IASetPrimitiveTopology(mVertexData.PrimitiveType);
+
+	
+	// set vertex shader constants
+	for (auto& [k, v] : mRenderData.VSConstantBufferMap)
+	{
+		mMaterial->SetVSConstantBufferProxyData(deviceContext, k, v);
+	}
+
+	// set pixel shader constants	
+	for (auto& [k, v] : mRenderData.PSConstantBufferMap)
+	{
+		mMaterial->SetPSConstantBufferProxyData(deviceContext, k, v);
+	}
+
+	// @ set pixel shader texture
+	for (auto& [name, texture] : mRenderData.PSTextureMap)
+	{
+		shared_ptr<SSTexture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
+		mMaterial->SetPSTexture(deviceContext, name, resource.get());
+	}
+
+	// @ set vertex shader texture 
+	for (auto& [name, texture] : mRenderData.VSTextureMap)
+	{
+		shared_ptr<SSTexture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
+		mMaterial->SetVSTexture(deviceContext, name, resource.get());
+	}
+
+
+	ID3D11SamplerState* sampler = SSSamplerManager::Get().GetDefaultSamplerState();
+
+	mMaterial->SetPSSampler("DefaultTexSampler", sampler);
+
+	// if have index buffer
+	if (mVertexData.bHasIndexData)
+	{
+		deviceContext->DrawIndexed(mIndexBuffer->GetIndexCount(), 0, 0);
+	}
+	else
+	{
+		deviceContext->Draw(mVertexBuffer->GetVertexCount(), 0);
+	}
+
+
+	mMaterial->ReleaseCurrent();
 }
 
 void SSRenderTargetCube::CreateVertexData()

@@ -58,6 +58,7 @@ private:
 	std::shared_ptr<class SSMaterial> mDeferredLightMaterial;
 
 	std::shared_ptr<class SSCube> mTestCube;
+	std::shared_ptr<class SSRenderTargetCube> mRenderTargetCube;	
 
 	std::vector<std::shared_ptr<class SSSPhere>> mSphereList;
 

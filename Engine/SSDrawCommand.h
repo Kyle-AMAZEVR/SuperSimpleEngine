@@ -41,9 +41,7 @@ protected:
 
 class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 {
-public:
-
-	
+public:	
 	
 	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object);
 

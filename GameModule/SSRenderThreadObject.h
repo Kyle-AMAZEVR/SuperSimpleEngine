@@ -9,5 +9,6 @@ public:
 	SSRenderThreadObject();
 	virtual ~SSRenderThreadObject();
 	virtual void Destroy(){}
+	
 };
 

@@ -10,7 +10,6 @@ public:
 	virtual void Destroy() {}	
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
 	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
-	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 
 	virtual const SSMeshRenderData& GetRenderData();
 	virtual const SSMeshVertexData& GetVertexData();
@@ -35,6 +34,17 @@ public:
 
 	bool IsVisible() const { return mVisible; }
 
+	void SetVertexShader(SSName vs);
+	void SetPixelShader(SSName ps);
+
+	void SetPSTexture(SSName name, SSName textureName);
+	void SetVSTexture(SSName name , SSName textureName);
+
+	void SetVSConstantBufferData(SSName name, class SSConstantBufferProxy&& buffer);
+	void SetPSConstantBufferData(SSName name, class SSConstantBufferProxy&& buffer);
+
+	bool NeedToPullRenderingData() const { return bNeedToPullRenderingData; }
+
 protected:
 	virtual void CreateRenderData() {}
 	virtual void CreateVertexData() {}
@@ -45,6 +55,8 @@ protected:
 	friend class SSGameObjectManager;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mScale;
+
+	bool bNeedToPullRenderingData = false;
 
 	bool mVisible = true;
 	
