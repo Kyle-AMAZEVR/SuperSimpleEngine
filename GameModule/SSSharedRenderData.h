@@ -19,7 +19,7 @@ protected:
 	void CreateCubeVertexData();
 	void CreateSphereVertexData();
 
-	std::vector<DirectX::XMFLOAT4> SSSharedRenderData::GenerateTangents(const std::vector<DirectX::XMFLOAT4>& tempVertexList,
+	std::vector<DirectX::XMFLOAT4> GenerateTangents(const std::vector<DirectX::XMFLOAT4>& tempVertexList,
 		const std::vector<DirectX::XMFLOAT3>& tempNormalList,
 		const std::vector<DirectX::XMFLOAT2>& tempTexCoordList);
 	

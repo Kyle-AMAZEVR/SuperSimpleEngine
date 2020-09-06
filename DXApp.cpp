@@ -15,15 +15,13 @@
 #include "DXApp.h"
 #include "Engine/Core.h"
 #include "Engine/SSEngine.h"
-#include "GameModule/SSRenderingThread.h"
-#include "GameModule/SSInputManager.h"
 #include "GameModule/SSGameWindow.h"
 #include "SSAppWindow.h"
-#include "Windowsx.h"
 #include "SSEngine12.h"
 #include "SSGameThread.h"
 #include "SSEngineBase.h"
-#include "SSTimer.h"
+#include "SSSharedRenderData.h"
+
 
 
 #define MAX_LOADSTRING 100
@@ -51,6 +49,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // TODO: Place code here.
 
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
+    	
+    SSSharedRenderData::Get().Initialize();
 
 	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);
 
