@@ -18,7 +18,8 @@ void SSChangeRenderTargetCmd::Do(ID3D11DeviceContext* deviceContext)
 	mRenderTarget->SetCurrentRenderTarget(deviceContext);	
 }
 
-SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object)
+
+SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
 {
 	mVertexShaderConstantBufferMap = mpVS->GetConstantBufferMap();

@@ -41,11 +41,8 @@ protected:
 
 class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 {
-public:	
-	
-	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSGameObject> object);
-
-	SSDrawCommand(SSMaterial* material, std::shared_ptr<SSGameObject> object);
+public:
+	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object);	
 
 	template<class T>
 	void StoreVSConstantBufferData(SSName name, const T& value);
@@ -78,8 +75,8 @@ protected:
 
 	//
 	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-	std::shared_ptr<SSGameObject> mObject;
+	
+	std::shared_ptr<SSObjectBase> mObject;
 };
 
 template<class T>
