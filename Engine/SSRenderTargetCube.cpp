@@ -20,7 +20,7 @@ SSRenderTargetCube::SSRenderTargetCube(SSName vs, SSName ps)
 	mRenderData.VertexShaderName = vs;
 	mRenderData.PixelShaderName = ps;
 	
-	mVertexBuffer = new SSDX11VertexBuffer();
+	mVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
 
 	if (mVertexData.VertexType == EVertexType::VT_PNTT)
 	{
@@ -33,7 +33,7 @@ SSRenderTargetCube::SSRenderTargetCube(SSName vs, SSName ps)
 
 	if (mVertexData.bHasIndexData)
 	{
-		mIndexBuffer = new SSIndexBuffer();
+		mIndexBuffer = std::make_shared<SSIndexBuffer>();
 		mIndexBuffer->SetIndexBufferData(mVertexData.IndexData);
 	}
 

@@ -6,10 +6,17 @@
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSSharedBufferCache.h"
+#include "SSSharedRenderData.h"
 
 SSScreenBlit::SSScreenBlit()
 {
 	mVisible = false;
+
+	mVertexData.PT_VertexData = SSSharedRenderData::Get().GetScreenBlitVertexData();
+	mVertexData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	mVertexData.bHasIndexData = true;
+	mVertexData.VertexType = EVertexType::VT_PT;
+	mVertexData.IndexData = SSSharedRenderData::Get().GetScreenBlitIndexData();
 
 	mScreenVB = SSSharedBufferCache::Get().GetScreenBlitVertexBuffer();
 	mScreenIB = SSSharedBufferCache::Get().GetScreenIndexBuffer();

@@ -16,6 +16,7 @@ enum class EVertexType : unsigned char
 struct SSMeshVertexData
 {
 public:
+	std::vector<VT_PositionTexcoord> PT_VertexData;
 	std::vector<VT_PositionNormalTexcoord> PNT_VertexData;
 	std::vector<VT_PositionNormalTexcoordTangent> PNTT_VertexData;
 	std::vector<unsigned int> IndexData;

@@ -97,7 +97,7 @@ void SSDX11Renderer::TestCreateResources()
 	auto* deviceContext = GetImmediateDeviceContext();
 	
 	mTestCube = std::make_shared<SSCube>();
-	mRenderTargetCube = std::make_shared<SSRenderTargetCube>();	
+	//mRenderTargetCube = std::make_shared<SSRenderTargetCube>();
 	
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
@@ -424,7 +424,7 @@ void SSDX11Renderer::TestCompileShader()
 	mTBNDebugMaterial = std::make_shared<SSMaterial>(mTBNDebugVertexShader, mTBNDebugPixelShader);
 	mDeferredLightMaterial = std::make_shared<SSMaterial>(mDeferredLightVertexShader, mDeferredLightPixelShader);
 
-	mRenderTargetCube = std::make_shared<SSRenderTargetCube>("Prefilter.vs", "Prefilter.ps");
+	//mRenderTargetCube = std::make_shared<SSRenderTargetCube>("Prefilter.vs", "Prefilter.ps");
 }
 
 bool SSDX11Renderer::CreateDevice()
@@ -539,7 +539,7 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
 		
 		
-		/*SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
+		SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
 
 		mConvolutionRenderTarget->Clear(deviceContext);
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
@@ -579,7 +579,7 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 
 		mEnvCubemapConvolution = mConvolutionRenderTarget;
 
-		mConvolutionRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvConvolution.dds");*/
+		mConvolutionRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvConvolution.dds");
 	}
 }
 

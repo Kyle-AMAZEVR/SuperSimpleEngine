@@ -27,7 +27,7 @@ protected:
 	SSMeshRenderData mRenderData;
 	SSMeshVertexData mVertexData;
 
-	class SSDX11VertexBuffer* mVertexBuffer = nullptr;
-	class SSIndexBuffer* mIndexBuffer = nullptr;
+	std::shared_ptr<class SSDX11VertexBuffer> mVertexBuffer = nullptr;
+	std::shared_ptr<class SSIndexBuffer> mIndexBuffer = nullptr;
 	class SSMaterial* mMaterial = nullptr;
 };

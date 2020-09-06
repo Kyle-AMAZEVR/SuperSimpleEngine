@@ -18,7 +18,7 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	mRenderData = pObject->GetRenderData();
 	mVertexData = pObject->GetVertexData();
 	
-	mVertexBuffer = new SSDX11VertexBuffer();
+	mVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
 
 	if(mVertexData.VertexType == EVertexType::VT_PNTT)
 	{
@@ -27,11 +27,15 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	else if(mVertexData.VertexType == EVertexType::VT_PNT)
 	{
 		mVertexBuffer->SetVertexBufferData(mVertexData.PNT_VertexData);
-	}		
+	}
+	else if(mVertexData.VertexType == EVertexType::VT_PT)
+	{
+		mVertexBuffer->SetVertexBufferData(mVertexData.PT_VertexData);
+	}
 
 	if(mVertexData.bHasIndexData)
 	{
-		mIndexBuffer = new SSIndexBuffer();
+		mIndexBuffer = std::make_shared<SSIndexBuffer>();
 		mIndexBuffer->SetIndexBufferData(mVertexData.IndexData);
 	}
 
@@ -47,14 +51,14 @@ SSRenderingObject::~SSRenderingObject()
 	if(mVertexBuffer)
 	{		
 		mVertexBuffer->Destroy();
-		delete mVertexBuffer;
+		mVertexBuffer.reset();
 		mVertexBuffer = nullptr;
 	}
 
 	if(mIndexBuffer)
 	{
 		mIndexBuffer->Destroy();
-		delete mIndexBuffer;
+		mIndexBuffer.reset();
 		mIndexBuffer = nullptr;
 	}
 

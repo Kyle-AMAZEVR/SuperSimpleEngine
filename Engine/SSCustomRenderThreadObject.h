@@ -1,27 +1,15 @@
 #pragma once
 
-#include "SSRenderThreadObject.h"
-#include "SSName.h"
 
-class SSCustomRenderThreadObject : public SSRenderThreadObject
+#include "SSRenderThreadObject.h"
+#include <memory>
+
+class SSRenderTargetCube : public SSRenderThreadObject
 {
 public:
-	SSCustomRenderThreadObject();
-
-	//
-	virtual void CreateVertexData();
-	virtual void CreateRenderData();
-
-	void SetVertexShader(SSName name);
-	void SetPixelShader(SSName name);
-
-protected:
-	std::shared_ptr<class SSVertexShader> mVS;
-	std::shared_ptr<class SSPixelShader> mPS;	
-};
-
-
-class SSRenderTargetCube : public SSCustomRenderThreadObject
-{
+	SSRenderTargetCube();
 	
+protected:
+	std::shared_ptr<class SSDX11VertexBuffer> mVB;
+	std::shared_ptr<class SSIndexBuffer> mIB;
 };

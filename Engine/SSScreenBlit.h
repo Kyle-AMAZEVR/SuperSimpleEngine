@@ -10,7 +10,7 @@ public:
 	virtual void Draw(ID3D11DeviceContext* deviceContext);
 	virtual void Destroy() override;
 
-	protected:		
+protected:		
 	std::shared_ptr<class SSDX11VertexBuffer> mScreenVB;
 	std::shared_ptr<class SSIndexBuffer> mScreenIB;
 };
