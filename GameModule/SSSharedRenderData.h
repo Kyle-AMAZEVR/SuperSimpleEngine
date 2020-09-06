@@ -14,7 +14,7 @@ public:
 	std::vector<VT_PositionNormalTexcoordTangent> GetCubeVertexData();
 	std::vector<VT_PositionNormalTexcoordTangent> GetSphereVertexData();
 	std::vector<UINT> GetCubeIndexData() { return mCubeIndexData; }
-	std::vector<UINT> GetScreenBlitVertexData() { return mScreenBlitVertexData; }
+	std::vector<VT_PositionTexcoord> GetScreenBlitVertexData() { return mScreenBlitVertexData; }
 	std::vector<UINT> GetScreenBlitIndexData() {return mScreenBlitIndexData;}
 	
 protected:

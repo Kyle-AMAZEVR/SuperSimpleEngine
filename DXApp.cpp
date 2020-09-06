@@ -49,8 +49,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // TODO: Place code here.
 
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
-    	
-    SSSharedRenderData::Get().Initialize();
 
 	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);
 

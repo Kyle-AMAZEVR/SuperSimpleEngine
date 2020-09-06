@@ -7,6 +7,7 @@
 #include "SSDX11CubeScene.h"
 #include "SSGameObjectManager.h"
 #include "SSRenderingObjectManager.h"
+#include "SSSharedRenderData.h"
 
 bool SSDX11Engine::bInitialized = false;
 
@@ -53,8 +54,6 @@ void SSDX11Engine::Initialize(HWND windowHandle)
 	mRenderer->Initialize(windowHandle);
 
 	mRenderingThread->SetRenderer(mRenderer);
-	
-	mGameThread = new SSGameThread(GetCurrentThreadId());	
 	
     mWindowHandle = windowHandle;	
 
@@ -110,6 +109,8 @@ void SSDX11Engine::OnWindowResize(int newWidth, int newHeight)
 
 void SSDX11Engine::Run()
 {
+	SSSharedRenderData::Get().Initialize();
+	
 	EngineStart();
 
 	while(!bRequestExit)
