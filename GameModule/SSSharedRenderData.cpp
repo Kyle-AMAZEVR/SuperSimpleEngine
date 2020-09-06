@@ -10,6 +10,7 @@ void SSSharedRenderData::Initialize()
 {
 	CreateCubeVertexData();
 	CreateSphereVertexData();
+	CreateScreenBlitVertexData();
 }
 
 std::vector<VT_PositionNormalTexcoordTangent> SSSharedRenderData::GetCubeVertexData()
@@ -221,15 +222,32 @@ void SSSharedRenderData::CreateSphereVertexData()
 			tempVertexList[i + 2], tempNormalList[i + 2], tempTexCoordList[i + 2], tempTangentList[i + 2]
 		));
 	}
-
-
-	
 }
 
+void SSSharedRenderData::CreateScreenBlitVertexData()
+{
+	std::vector<VT_PositionTexcoord> vertexArray
+	{
+		{XMFLOAT4(-1,1,0,1), XMFLOAT2(0,0)},
+		{XMFLOAT4(1,1,0,1), XMFLOAT2(1,0)},
+		{XMFLOAT4(1,-1,0,1), XMFLOAT2(1,1)},
+		{XMFLOAT4(-1,-1,0,1), XMFLOAT2(0,1)},
+	};
+
+	mScreenBlitVertexData = std::move(vertexArray);
+
+	std::vector<UINT> indexArray
+	{
+		0,1,2,
+		0,2,3,
+	};
+
+	mScreenBlitIndexData = std::move(indexArray);
+}
 
 std::vector<XMFLOAT4> SSSharedRenderData::GenerateTangents(const std::vector<XMFLOAT4>& tempVertexList, 
-										  const std::vector<XMFLOAT3>& tempNormalList,
-										  const std::vector<XMFLOAT2>& tempTexCoordList)
+                                                           const std::vector<XMFLOAT3>& tempNormalList,
+                                                           const std::vector<XMFLOAT2>& tempTexCoordList)
 {
 	std::vector<XMFLOAT4> mTempTangentList;
 	
