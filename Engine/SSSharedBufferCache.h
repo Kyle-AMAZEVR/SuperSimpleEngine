@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class SSSharedBufferCache : Singleton<SSSharedBufferCache>
+class SSSharedBufferCache : public Singleton<SSSharedBufferCache>
 {
 public:
 	void Initialize();

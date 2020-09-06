@@ -30,6 +30,7 @@
 #include "SSRenderingObjectManager.h"
 #include "SSRenderingObject.h"
 #include "SSRenderTargetCube.h"
+#include "SSSharedBufferCache.h"
 
 SSDX11Renderer::SSDX11Renderer()	
 {
@@ -44,6 +45,10 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	CreateSwapChain();	
 
 	SSShaderManager::Get().Initialize();
+	SSSamplerManager::Get().Initialize();
+	SSDepthStencilStateManager::Get().Initialize();
+	SSRasterizeStateManager::Get().Initialize();
+	SSSharedBufferCache::Get().Initialize();
 
 	mViewport = std::make_shared<SSViewport>();
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
@@ -63,9 +68,6 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 		SSFileHelper::MakeDirectory(L"./Prebaked");
 	}	
 
-	SSSamplerManager::Get().Initialize();
-	SSDepthStencilStateManager::Get().Initialize();
-	SSRasterizeStateManager::Get().Initialize();
 
 
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
