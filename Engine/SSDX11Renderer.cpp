@@ -29,7 +29,6 @@
 #include "SSGameWindow.h"
 #include "SSRenderingObjectManager.h"
 #include "SSRenderingObject.h"
-#include "SSRenderTargetCube.h"
 #include "SSSharedBufferCache.h"
 
 SSDX11Renderer::SSDX11Renderer()	
@@ -231,8 +230,6 @@ void SSDX11Renderer::DrawCubeScene()
 	auto* deviceContext = GetImmediateDeviceContext();
 	check(deviceContext);
 
-	SSCameraManager::Get().UpdateCurrentCamera();
-
 	// @draw cubemap to gbuffer
 	// @start
 	mGBuffer->Clear(deviceContext);
@@ -250,7 +247,7 @@ void SSDX11Renderer::DrawCubeScene()
 	mViewport->Clear(deviceContext);
 	mViewport->SetCurrentRenderTarget(deviceContext);
 
-	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader.get(), mScreenBlitPixelShader.get(), mScreenBlit };
+	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 
 	if (true)
 	{
@@ -337,7 +334,7 @@ void SSDX11Renderer::DrawSponzaScene()
 	mGBuffer->SetCurrentRenderTarget(deviceContext);
 	SSCameraManager::Get().UpdateCurrentCamera();
 
-	SSDrawCommand testDrawCmd{ mCubemapVertexShader.get(), mCubemapPixelShader.get(), mTestSphere };
+	SSDrawCommand testDrawCmd{ mCubemapVertexShader, mCubemapPixelShader, mTestSphere };
 
 	XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
 
@@ -373,7 +370,7 @@ void SSDX11Renderer::DrawSponzaScene()
 	mViewport->Clear(deviceContext);
 	mViewport->SetCurrentRenderTarget(deviceContext);
 
-	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader.get(), mScreenBlitPixelShader.get(), mScreenBlit };
+	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 
 	if (bGbufferDump)
 	{
@@ -522,7 +519,7 @@ void SSDX11Renderer::Create2DLUTTexture()
 	m2DLUTRenderTarget->Clear(deviceContext);
 	m2DLUTRenderTarget->SetCurrentRenderTarget(deviceContext);
 
-	SSDrawCommand blitDrawCmd{ m2DLUTVertexShader.get(), m2DLUTPixelShader.get(), mScreenBlit };
+	SSDrawCommand blitDrawCmd{ m2DLUTVertexShader, m2DLUTPixelShader, mScreenBlit };
 	blitDrawCmd.Do(deviceContext);
 
 	m2DLUTRenderTarget->SaveRTTexture(0, L"./Prebaked/2DLUT.dds");
@@ -539,7 +536,7 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
 		
 		
-		SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader.get(), mCubemapConvolutionPixelShader.get(), mTestCube };
+		SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader, mCubemapConvolutionPixelShader, mTestCube };
 
 		mConvolutionRenderTarget->Clear(deviceContext);
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
@@ -595,7 +592,7 @@ void SSDX11Renderer::CreateEnvCubemapPrefilter()
 	{
 		
 		
-		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader.get(), mPrefilterPixelShader.get(), mTestCube };
+		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader, mPrefilterPixelShader, mTestCube };
 
 		mPrefilterRenderTarget->Clear(deviceContext);
 
@@ -685,7 +682,7 @@ void SSDX11Renderer::CreateEnvCubemap()
 	mHDREnvmap = SSTexture2D::CreateFromHDRFile(deviceContext, "./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
 
 	{
-		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader.get(), mEquirectToCubemapPixelShader.get(), mTestCube };
+		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader, mEquirectToCubemapPixelShader, mTestCube };
 
 		mEquirectToCubemapRenderTarget->Clear(deviceContext);
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);

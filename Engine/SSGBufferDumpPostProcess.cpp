@@ -34,7 +34,7 @@ void SSGBufferDumpPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTextur
 	mDumpSettings.value4 = (mDumpMode == EDumpMode::EDiffuseDump);
 	mDumpSettings.value5 = (mDumpMode == EDumpMode::ERoughnessDump);	
 
-	SSDrawCommand gbufferDumpDrawCmd{ mVertexShader.get(), mPixelShader.get(), mScreenBlit };
+	SSDrawCommand gbufferDumpDrawCmd{ mVertexShader, mPixelShader, mScreenBlit };
 	gbufferDumpDrawCmd.SetPSTexture("PositionTex", input0);
 	gbufferDumpDrawCmd.SetPSTexture("DiffuseTex", input1);
 	gbufferDumpDrawCmd.SetPSTexture("NormalTex", input2);

@@ -46,7 +46,7 @@ void SSLightPostProcess::Draw(
 	mRenderTarget->Clear(deviceContext);
 	mRenderTarget->SetCurrentRenderTarget(deviceContext);
 		
-	SSDrawCommand drawCmd{mVertexShader.get(), mPixelShader.get(), mScreenBlit };
+	SSDrawCommand drawCmd{mVertexShader, mPixelShader, mScreenBlit };
 
 	SSAlignedCBuffer<XMMATRIX, XMMATRIX> cbuffer;
 	cbuffer.value1 = XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView());

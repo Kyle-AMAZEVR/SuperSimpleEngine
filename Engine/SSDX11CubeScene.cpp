@@ -6,13 +6,14 @@
 
 void SSDX11CubeScene::InitializeScene()
 {
-	mCube = new SSCube();
+	mCube = std::make_shared<SSCube>();
 	mCube->SetPositionX(10);
 }
 
 
 void SSDX11CubeScene::DestroyScene()
 {
+
 }
 
 void SSDX11CubeScene::DrawScene(float deltaSec)

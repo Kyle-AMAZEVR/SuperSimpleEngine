@@ -10,7 +10,7 @@ public:
 	void DestroyScene() override;
 	void DrawScene(float deltaSec) override;
 protected:
-	class SSCube* mCube = nullptr;
-	class SSSphere* mSphere = nullptr;
+	class std::shared_ptr<class SSCube> mCube = nullptr;
+	class std::shared_ptr<class SSSphere> mSphere = nullptr;
 };
 

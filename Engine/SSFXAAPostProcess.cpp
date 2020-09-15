@@ -23,7 +23,7 @@ void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase
 	mRenderTarget->Clear(deviceContext);
 	mRenderTarget->SetCurrentRenderTarget(deviceContext);
 
-	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader.get(), mFXAAPixelShader.get(), mScreenBlit };
+	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader, mFXAAPixelShader, mScreenBlit };
 	fxaaDrawCmd.SetPSTexture("ScreenTex", input0);
 	
 	SSAlignedCBuffer<XMFLOAT2> invScreenSize;

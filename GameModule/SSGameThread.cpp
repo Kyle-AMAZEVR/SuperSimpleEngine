@@ -1,10 +1,10 @@
 
 #include "SSCommon.h"
 #include "SSGameThread.h"
-
 #include "SSGameObjectManager.h"
 #include "Windows.h"
 #include "SSGameWindow.h"
+#include "SSCameraManager.h"
 
 SSGameThread::SSGameThread(DWORD gameThreadId)
 {
@@ -41,6 +41,8 @@ void SSGameThread::Tick(float DeltaSeconds)
 	float tickTime = mGameThreadTimer.GetDeltaTime();
 	
 	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
+
+	SSCameraManager::Get().UpdateCurrentCamera();
 
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);

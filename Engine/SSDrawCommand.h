@@ -42,7 +42,8 @@ protected:
 class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
 {
 public:
-	SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object);	
+	//SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object);
+	SSDrawCommand(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps, std::shared_ptr<SSObjectBase> object);
 
 	template<class T>
 	void StoreVSConstantBufferData(SSName name, const T& value);
@@ -52,7 +53,7 @@ public:
 
 	void SetPSTexture(std::string name, SSTexture2DBase* texture);
 
-	void SetVSTexture(std::string name, SSTexture2DBase* texture);	
+	void SetVSTexture(std::string name, SSTexture2DBase* texture);
 
 	void SetPrimitiveType(D3D_PRIMITIVE_TOPOLOGY ePrimitiveType) { mPrimitiveType = ePrimitiveType; }
 
@@ -61,8 +62,8 @@ public:
 	virtual void Do(ID3D11DeviceContext* deviceContext) override;
 
 protected:
-	class SSVertexShader* mpVS = nullptr;
-	class SSPixelShader* mpPS = nullptr;	
+	std::shared_ptr<class SSVertexShader> mpVS = nullptr;
+	std::shared_ptr<class SSPixelShader> mpPS = nullptr;
 	class SSMaterial* mMaterial = nullptr;	
 
 	//

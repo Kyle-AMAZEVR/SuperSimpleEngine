@@ -80,6 +80,7 @@ void SSObjMesh::DebugDraw(ID3D11DeviceContext* deviceContext, SSMaterial* materi
 	auto stride = mTBNDebugVB->GetStride();
 	UINT offset = 0;
 
+
 	deviceContext->IASetVertexBuffers(0, 1, mTBNDebugVB->GetDX11BufferPointerRef(), &stride, &offset);
 	deviceContext->IASetIndexBuffer(mTBNDebugIB->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 

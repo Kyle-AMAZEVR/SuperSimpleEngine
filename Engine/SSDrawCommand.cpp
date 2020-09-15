@@ -19,12 +19,14 @@ void SSChangeRenderTargetCmd::Do(ID3D11DeviceContext* deviceContext)
 }
 
 
-SSDrawCommand::SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object)
+SSDrawCommand::SSDrawCommand(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps, std::shared_ptr<SSObjectBase> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
 {
 	mVertexShaderConstantBufferMap = mpVS->GetConstantBufferMap();
 	mPixelShaderConstantBufferMap = mpPS->GetConstantBufferMap();
 }
+
+
 
 void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 {
