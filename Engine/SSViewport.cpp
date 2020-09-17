@@ -5,7 +5,7 @@
 
 void SSViewport::Clear(ID3D11DeviceContext* deviceContext)
 {
-	float Color[4]{ 1.0f, 0.0f, 0.0f, 1.0f };
+	float Color[4]{ 0.0f, 1.0f, 0.0f, 1.0f };
 
 	check(deviceContext);
 

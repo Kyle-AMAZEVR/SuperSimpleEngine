@@ -32,8 +32,11 @@ void SSShaderManager::Initialize()
 		}
 		else if (filename.find(".ps") != std::string::npos)
 		{
+		    std::vector<D3D_SHADER_MACRO> macros;
+
+
 			std::shared_ptr<SSPixelShader> ps = std::make_shared<SSPixelShader>();
-			if (ps->CompileFromFile(filepath) == true)
+			if (ps->CompileFromFile(filepath, macros) == true)
 			{
 				mPixelShaderMap[filename] = ps;
 			}
@@ -43,6 +46,7 @@ void SSShaderManager::Initialize()
 			}
 		}
 	}
+
 }
 
 

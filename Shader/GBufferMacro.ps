@@ -94,7 +94,7 @@ PixelOutputType PSMain(PixelInputType pin)
     output.NormalColor.xyz = pin.InNormal.xyz;
 #endif
 
-#if METALIC_EXIST
+#if METALLIC_EXIST
     output.NormalColor.a = MetalicTex.Sample(DefaultTexSampler, pin.InTexCoord).x;
 #else
     output.NormalColor.a = Metalic;

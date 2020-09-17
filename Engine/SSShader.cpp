@@ -259,6 +259,27 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 
 bool SSPixelShader::CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines)
 {
+    ID3D10Blob* errorMsg = nullptr;
+
+    check(std::filesystem::exists(filepath));
+
+    D3DCompileFromFile(filepath.c_str(), defines.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, "PSMain", "ps_5_0", 0, 0, &mShaderBuffer, &errorMsg);
+
+    if(errorMsg != nullptr)
+    {
+        PrintCompileError(errorMsg);
+        return false;
+    }
+
+    auto* dxDevice = SSDX11Engine::Get().GetDevice();
+    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
+
+    // @constant buffer reflection
+    ID3D11ShaderReflection* pixelShaderReflection = nullptr;
+    HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pixelShaderReflection));
+
+    ReflectCompiledShader(pixelShaderReflection);
+
     return true;
 }
 
