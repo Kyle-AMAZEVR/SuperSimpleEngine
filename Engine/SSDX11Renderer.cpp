@@ -30,6 +30,7 @@
 #include "SSRenderingObjectManager.h"
 #include "SSRenderingObject.h"
 #include "SSSharedBufferCache.h"
+#include "SSCustomRenderThreadObject.h"
 
 SSDX11Renderer::SSDX11Renderer()	
 {
@@ -96,7 +97,7 @@ void SSDX11Renderer::TestCreateResources()
 	auto* deviceContext = GetImmediateDeviceContext();
 	
 	mTestCube = std::make_shared<SSCube>();
-	//mRenderTargetCube = std::make_shared<SSRenderTargetCube>();
+	mRenderTargetCube = std::make_shared<SSRenderTargetCube>();
 	
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
@@ -138,7 +139,8 @@ void SSDX11Renderer::TestCreateResources()
 
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 
-	mTestCube->SetScale(1, 1, 1);	
+	mTestCube->SetScale(1, 1, 1);
+	mRenderTargetCube->SetScale(1,1,1);
 
 	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))		
 	{
@@ -332,7 +334,6 @@ void SSDX11Renderer::DrawSponzaScene()
 	// @start
 	mGBuffer->Clear(deviceContext);
 	mGBuffer->SetCurrentRenderTarget(deviceContext);
-	SSCameraManager::Get().UpdateCurrentCamera();
 
 	SSDrawCommand testDrawCmd{ mCubemapVertexShader, mCubemapPixelShader, mTestSphere };
 
@@ -534,9 +535,9 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 	{
 		mConvolutionRenderTarget->Clear(deviceContext);
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
-		
-		
-		SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader, mCubemapConvolutionPixelShader, mTestCube };
+
+		// SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader, mCubemapConvolutionPixelShader, mTestCube };
+        SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader, mCubemapConvolutionPixelShader, mRenderTargetCube };
 
 		mConvolutionRenderTarget->Clear(deviceContext);
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
@@ -590,9 +591,8 @@ void SSDX11Renderer::CreateEnvCubemapPrefilter()
 	
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 	{
-		
-		
-		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader, mPrefilterPixelShader, mTestCube };
+		// SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader, mPrefilterPixelShader, mTestCube };
+		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader, mPrefilterPixelShader, mRenderTargetCube };
 
 		mPrefilterRenderTarget->Clear(deviceContext);
 
@@ -682,7 +682,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 	mHDREnvmap = SSTexture2D::CreateFromHDRFile(deviceContext, "./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
 
 	{
-		SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader, mEquirectToCubemapPixelShader, mTestCube };
+		// SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader, mEquirectToCubemapPixelShader, mTestCube };
+        SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader, mEquirectToCubemapPixelShader, mRenderTargetCube };
 
 		mEquirectToCubemapRenderTarget->Clear(deviceContext);
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
@@ -730,8 +731,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {	
-	DrawCubeScene();
-	//DrawSponzaScene();
+	//DrawCubeScene();
+	DrawSponzaScene();
 }
 
 
