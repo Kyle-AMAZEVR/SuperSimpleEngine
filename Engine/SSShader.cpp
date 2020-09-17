@@ -148,6 +148,40 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
     
 }
 
+bool SSVertexShader::CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines)
+{
+    ID3DBlob* errorMsg = nullptr;
+
+    check(std::filesystem::exists(filepath));
+
+    D3DCompileFromFile(filepath.c_str(), defines.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, "VSMain", "vs_5_0", 0, 0, &mShaderBuffer, &errorMsg);
+
+    if(errorMsg != nullptr)
+    {
+        PrintCompileError(errorMsg);
+
+        ReleaseCOM(errorMsg);
+
+        return false;
+    }
+
+    auto* dxDevice = SSDX11Engine::Get().GetDevice();
+
+    HR(dxDevice->CreateVertexShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mVertexShader));
+
+
+    ID3D11ShaderReflection* vertexShaderReflection = nullptr;
+    HR(D3DReflect(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) &vertexShaderReflection));
+
+    // @constant buffer reflection
+    ReflectCompiledShader(vertexShaderReflection);
+
+    // @input layout creation
+    CreateInputLayout(vertexShaderReflection);
+
+    return true;
+}
+
  bool SSVertexShader::CompileFromFile(std::wstring filepath)
  {
     ID3DBlob* errorMsg = nullptr;
@@ -222,6 +256,11 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 	 }
 	 ReleaseCOM(mPixelShader);
  }
+
+bool SSPixelShader::CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines)
+{
+    return true;
+}
 
 bool SSPixelShader::CompileFromFile(std::wstring filepath)
 {    

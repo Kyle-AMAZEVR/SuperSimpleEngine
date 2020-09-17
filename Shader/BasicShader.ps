@@ -31,8 +31,12 @@ PixelOutputType PSMain(PixelInputType input)
 
     output.position = input.position;
 
+#if 0
     // Sample the color from the texture and store it for output to the render target.
     output.color =  sampleTexture.SampleLevel(DefaultTexSampler , input.tex, 0);
+#else
+    output.color = float4(1,1,1,1);
+#endif
 	
     // Store the normal for output to the render target.
     output.normal = float4(input.normal, 1.0f);

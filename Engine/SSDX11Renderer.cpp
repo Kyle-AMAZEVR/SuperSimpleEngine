@@ -95,10 +95,8 @@ void SSDX11Renderer::Shutdown()
 void SSDX11Renderer::TestCreateResources()
 {
 	auto* deviceContext = GetImmediateDeviceContext();
-	
-	mTestCube = std::make_shared<SSCube>();
+
 	mRenderTargetCube = std::make_shared<SSRenderTargetCube>();
-	
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
 	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);	
@@ -139,7 +137,7 @@ void SSDX11Renderer::TestCreateResources()
 
 	mSponzaMesh = std::make_shared<SSObjMesh>();
 
-	mTestCube->SetScale(1, 1, 1);
+
 	mRenderTargetCube->SetScale(1,1,1);
 
 	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))		
@@ -536,7 +534,6 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 		mConvolutionRenderTarget->Clear(deviceContext);
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_X);
 
-		// SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader, mCubemapConvolutionPixelShader, mTestCube };
         SSDrawCommand convolutionDrawCmd{ mCubemapConvolutionVertexShader, mCubemapConvolutionPixelShader, mRenderTargetCube };
 
 		mConvolutionRenderTarget->Clear(deviceContext);
@@ -586,12 +583,9 @@ void SSDX11Renderer::CreateEnvCubemapPrefilter()
 	auto* deviceContext = GetImmediateDeviceContext();
 
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
-
-	
 	
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 	{
-		// SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader, mPrefilterPixelShader, mTestCube };
 		SSDrawCommand prefilterDrawCmd{ mPrefilterVertexShader, mPrefilterPixelShader, mRenderTargetCube };
 
 		mPrefilterRenderTarget->Clear(deviceContext);
@@ -680,9 +674,7 @@ void SSDX11Renderer::CreateEnvCubemap()
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 
 	mHDREnvmap = SSTexture2D::CreateFromHDRFile(deviceContext, "./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
-
 	{
-		// SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader, mEquirectToCubemapPixelShader, mTestCube };
         SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader, mEquirectToCubemapPixelShader, mRenderTargetCube };
 
 		mEquirectToCubemapRenderTarget->Clear(deviceContext);
@@ -731,8 +723,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {	
-	//DrawCubeScene();
-	DrawSponzaScene();
+	DrawCubeScene();
+	//DrawSponzaScene();
 }
 
 

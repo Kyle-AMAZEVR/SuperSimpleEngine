@@ -32,10 +32,11 @@ public:
 
 	ID3DBlob* GetCompiledShader() { return mShaderBuffer.Get(); }
 
+    virtual bool CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines){return true;}
 protected:
 	
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
-    virtual bool CompileFromFile(std::wstring filepath) { return true; }	
+    virtual bool CompileFromFile(std::wstring filepath) { return true; }
     void PrintCompileError(ID3DBlob* errorMsg);
     
 	ComPtr<ID3DBlob> mShaderBuffer = nullptr;
@@ -78,6 +79,8 @@ protected:
     void CreateInputLayout(ID3D11ShaderReflection* shaderReflection);
     ID3D11VertexShader* mVertexShader = nullptr;
     ID3D11InputLayout* mInputLayout = nullptr;
+
+    bool CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines);
 };
 
 template<class T>
@@ -98,6 +101,7 @@ public:
     SSPixelShader() = default;
 	virtual void Destroy() override;
     virtual bool CompileFromFile(std::wstring filepath) override;
+    virtual bool CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines) override;
     ID3D11PixelShader* GetShader() { return mPixelShader; }
 
 	template<class T>
