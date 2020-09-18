@@ -737,8 +737,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {	
-	DrawCubeScene();
-	//DrawSponzaScene();
+	//DrawCubeScene();
+	DrawSponzaScene();
 }
 
 
