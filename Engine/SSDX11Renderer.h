@@ -25,6 +25,7 @@ public:
 protected:
 	void DrawCubeScene();
 	void DrawSponzaScene();
+	void DrawSkybox();
 	
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
 
@@ -60,8 +61,6 @@ private:
 	std::shared_ptr<class SSRenderTargetCube> mRenderTargetCube;
 	std::vector<std::shared_ptr<class SSSPhere>> mSphereList;
 
-	std::shared_ptr<class SSSphere> mTestSphere;
-	std::shared_ptr<class SSSphere> mTestSphere2;
 	std::shared_ptr<class SSCubeMapRenderingSphere> mCubemapSphere;
 
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;

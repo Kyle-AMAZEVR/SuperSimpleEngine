@@ -99,7 +99,6 @@ void SSDX11Renderer::TestCreateResources()
 	mRenderTargetCube = std::make_shared<SSRenderTargetCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
-	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);
 	mCubemapSphere = std::make_shared<SSCubeMapRenderingSphere>();
 	/*mTestSphere2 = std::make_shared<SSSphere>(25, 25, 10.0f);
 	mTestSphere2->SetPosition(0, 20, 20);
@@ -200,32 +199,6 @@ void SSDX11Renderer::DrawCubeScene()
 		bEquidirectToCubeDrawn = true;
 	}
 
-	if (bConvolutionDrawn == false)
-	{
-		if (TryLoadEnvCubemapConvolution(L"./Prebaked/EnvConvolution.dds") == false)
-		{
-			CreateEnvCubemapConvolution();
-		}
-		bConvolutionDrawn = true;
-	}
-	if (bPrefilterDrawn == false)
-	{
-		if (TryLoadEnvCubemapPrefilter(L"./Prebaked/EnvPrefilter.dds") == false)
-		{
-			CreateEnvCubemapPrefilter();
-		}
-		bPrefilterDrawn = true;
-	}
-
-	if (bLUTCreated == false)
-	{
-		if (TryLoad2DLUTTexture() == false)
-		{
-			Create2DLUTTexture();
-		}
-		bLUTCreated = true;
-	}
-
 	check(mDeviceContext != nullptr);
 
 	auto* deviceContext = GetImmediateDeviceContext();
@@ -236,28 +209,16 @@ void SSDX11Renderer::DrawCubeScene()
 	mGBuffer->Clear(deviceContext);
 	mGBuffer->SetCurrentRenderTarget(deviceContext);
 
-    SSDrawCommand testDrawCmd{ mCubemapVertexShader, mCubemapPixelShader, mCubemapSphere };
+	// cubemap draw
+	DrawSkybox();
 
-    XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
-
-    testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
-    testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemap.get());
-
-    SSDepthStencilStateManager::Get().SetDepthCompLessEqual(deviceContext);
-    SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
-
-    testDrawCmd.Do(deviceContext);
-
-    SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
-    SSRasterizeStateManager::Get().SetToDefault(deviceContext);
-	
-	// draw
+	// draw game objects
 	auto& objects = SSRenderingObjectManager::Get().GetRenderingObjectMap();
 	for (auto [k, v] : objects)
 	{
 		v->Draw(deviceContext);
 	}
-	
+
 	mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 
 	mViewport->Clear(deviceContext);
@@ -278,6 +239,8 @@ void SSDX11Renderer::DrawCubeScene()
 
 	HR(mSwapChain->Present(0, 0));
 }
+
+
 
 void SSDX11Renderer::DrawSponzaScene()
 {
@@ -349,21 +312,7 @@ void SSDX11Renderer::DrawSponzaScene()
 	mGBuffer->Clear(deviceContext);
 	mGBuffer->SetCurrentRenderTarget(deviceContext);
 
-	SSDrawCommand testDrawCmd{ mCubemapVertexShader, mCubemapPixelShader, mTestSphere };
-
-	XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
-
-	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
-	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemap.get());
-
-	SSDepthStencilStateManager::Get().SetDepthCompLessEqual(deviceContext);
-	SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
-
-	testDrawCmd.Do(deviceContext);
-
-	SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
-	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
-
+	DrawSkybox();
 
 	mSponzaMesh->Draw(deviceContext, mTestMaterial.get());
 
@@ -737,8 +686,28 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {	
-	//DrawCubeScene();
-	DrawSponzaScene();
+	DrawCubeScene();
+	//DrawSponzaScene();
+}
+
+void SSDX11Renderer::DrawSkybox()
+{
+    SSDrawCommand skyboxCmd{mCubemapVertexShader, mCubemapPixelShader, mCubemapSphere };
+
+    XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
+
+    skyboxCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
+    skyboxCmd.SetPSTexture("gCubeMap", mEnvCubemap.get());
+
+    auto* deviceContext = GetImmediateDeviceContext();
+
+    SSDepthStencilStateManager::Get().SetDepthCompLessEqual(deviceContext);
+    SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
+
+    skyboxCmd.Do(deviceContext);
+
+    SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
+    SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 }
 
 

@@ -30,6 +30,8 @@ protected:
 
 	bool bRequestExist = false;
 
+	int mFrameCount = 0;
+	double mFrameSeconds=0;
 
 	SSGameTimer mGameThreadTimer;	
 };

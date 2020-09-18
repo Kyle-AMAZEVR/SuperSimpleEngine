@@ -32,18 +32,30 @@ void SSGameThread::Start(DWORD gameThreadId)
 
 void SSGameThread::Tick(float DeltaSeconds)
 {
-	mGameThreadTimer.Tick();
 	// do game thread work
 
 	// handle window message
 	SSGameWindow::GetPtr()->HandleMessage();
 
 	float tickTime = mGameThreadTimer.GetDeltaTime();
-	
+	// frametime in milliseconds
+	DWORD frameMilliseconds = (DWORD) (tickTime * 1000);
+	// gamethread 120fps
+	float frameCap = (1.0f / 120.f) * 1000;
+
+	if(frameMilliseconds < frameCap)
+    {
+	    DWORD sleeptime = (DWORD) (frameCap - frameMilliseconds);
+        Sleep(sleeptime);
+    }
+
+    mGameThreadTimer.Tick();
+
 	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
 
 	SSCameraManager::Get().UpdateCurrentCamera();
 
+	Sleep(10);
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);
 }
