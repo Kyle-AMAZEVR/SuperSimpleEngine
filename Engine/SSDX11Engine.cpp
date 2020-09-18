@@ -1,6 +1,6 @@
 
 #include "Core.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 #include "SSTexture2D.h"
 #include "SSObjMesh.h"
 #include "SSDX11Renderer.h"

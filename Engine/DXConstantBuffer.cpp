@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "DXConstantBuffer.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 #include "SSShader.h"
 
 // trigger compile

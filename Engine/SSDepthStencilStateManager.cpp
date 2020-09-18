@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSDepthStencilStateManager.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 
 
 void SSDepthStencilStateManager::Initialize()

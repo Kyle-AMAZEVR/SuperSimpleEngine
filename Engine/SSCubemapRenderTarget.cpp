@@ -3,7 +3,7 @@
 #include "Core.h"
 #include "SSCubemapRenderTarget.h"
 #include "SSRenderTarget2D.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 #include "SSMathHelper.h"
 #include "DirectXTex.h"
 

@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSRasterizeStateManager.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 
 void SSRasterizeStateManager::Initialize()
 {

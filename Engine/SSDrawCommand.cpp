@@ -1,7 +1,7 @@
 
 
 #include "Core.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 #include "SSDrawCommand.h"
 #include "SSGameObject.h"
 #include "SSSamplerManager.h"

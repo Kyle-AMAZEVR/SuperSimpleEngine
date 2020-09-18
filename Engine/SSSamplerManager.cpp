@@ -1,6 +1,6 @@
 #include "Core.h"
 #include "SSSamplerManager.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 
 void SSSamplerManager::Initialize()
 {

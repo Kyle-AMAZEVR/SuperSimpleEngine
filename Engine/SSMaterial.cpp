@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSMaterial.h"
 #include "SSShader.h"
-#include "SSEngine.h"
+#include "SSDX11Engine.h"
 
 SSMaterial::SSMaterial(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps)
 	: mVS(vs), mPS(ps)
