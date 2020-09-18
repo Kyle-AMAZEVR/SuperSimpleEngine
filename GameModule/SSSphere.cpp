@@ -350,6 +350,10 @@ void SSSphere::GenerateTangents()
 	
 }
 
+void SSSphere::Tick(float delta)
+{
+    mYaw += 1.f * delta;
+}
 
 std::vector< VT_PositionNormalTexcoordTangent > SSSphere::mVertexArray;
 

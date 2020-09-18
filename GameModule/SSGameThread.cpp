@@ -51,11 +51,10 @@ void SSGameThread::Tick(float DeltaSeconds)
 
     mGameThreadTimer.Tick();
 
-	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
-
 	SSCameraManager::Get().UpdateCurrentCamera();
 
-	Sleep(10);
+	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
+
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);
 }

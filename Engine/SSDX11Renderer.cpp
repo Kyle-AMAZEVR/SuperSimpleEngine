@@ -697,6 +697,7 @@ void SSDX11Renderer::DrawSkybox()
     XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
 
     skyboxCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
+
     skyboxCmd.SetPSTexture("gCubeMap", mEnvCubemap.get());
 
     auto* deviceContext = GetImmediateDeviceContext();

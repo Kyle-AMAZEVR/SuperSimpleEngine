@@ -2,6 +2,7 @@
 #include "SSCommon.h"
 #include "SSFreeCamera.h"
 #include "SSCameraManager.h"
+#include "SSMathHelper.h"
 
 SSCameraManager& SSCameraManager::Get()
 {
@@ -84,6 +85,7 @@ XMMATRIX SSCameraManager::GetCurrentCameraViewProj() const
 XMMATRIX SSCameraManager::GetCurrentCameraMVP() const
 {
 	XMMATRIX translation = GetCurrentCameraTranslation();
+	//XMMATRIX translation = SSMathHelper::IdentityMatrix4X4;
 	XMMATRIX modelView = translation * GetCurrentCameraView();
 	XMMATRIX mvp = modelView * GetCurrentCameraProj();
 

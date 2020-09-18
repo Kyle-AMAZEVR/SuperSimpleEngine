@@ -17,7 +17,7 @@ SSCube::SSCube()
 
 void SSCube::Tick(float delta)
 {
-	mYaw += 1.f * delta;
+	mYaw += 3.f * delta;
 }
 
 void SSCube::CreateRenderData()

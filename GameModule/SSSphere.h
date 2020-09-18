@@ -13,6 +13,7 @@ public:
 	void SetMetalicValue(float metal) { mMetalic = metal; }
 	void SetRoughnessValue(float rough) { mRoughness = rough; }
 
+    virtual void Tick(float delta) override;
 protected:
 	UINT mSectorCount = 5;
 	UINT mStackCount = 5;

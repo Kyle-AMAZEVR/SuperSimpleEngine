@@ -18,10 +18,12 @@ struct VertexOut
 };
  
 
- cbuffer MVP
+cbuffer MVP
 {
     float4x4 WorldViewProj;
 };
+
+
  
 
 VertexOut VSMain(VertexIn vin)
