@@ -62,6 +62,7 @@ private:
 
 	std::shared_ptr<class SSSphere> mTestSphere;
 	std::shared_ptr<class SSSphere> mTestSphere2;
+	std::shared_ptr<class SSCubeMapRenderingSphere> mCubemapSphere;
 
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;
 	// 	
