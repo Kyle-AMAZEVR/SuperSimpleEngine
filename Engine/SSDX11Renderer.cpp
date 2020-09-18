@@ -236,7 +236,7 @@ void SSDX11Renderer::DrawCubeScene()
 	mGBuffer->Clear(deviceContext);
 	mGBuffer->SetCurrentRenderTarget(deviceContext);
 
-    SSDrawCommand testDrawCmd{ mCubemapVertexShader, mCubemapPixelShader, mTestSphere };
+    SSDrawCommand testDrawCmd{ mCubemapVertexShader, mCubemapPixelShader, mCubemapSphere };
 
     XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
 
