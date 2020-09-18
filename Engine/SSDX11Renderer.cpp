@@ -99,7 +99,8 @@ void SSDX11Renderer::TestCreateResources()
 	mRenderTargetCube = std::make_shared<SSRenderTargetCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
-	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);	
+	mTestSphere = std::make_shared<SSSphere>(25, 25, 10.0f);
+	mCubemapSphere = std::make_shared<SSCubeMapRenderingSphere>();
 	/*mTestSphere2 = std::make_shared<SSSphere>(25, 25, 10.0f);
 	mTestSphere2->SetPosition(0, 20, 20);
 	mTestSphere2->SetMetalicValue(0.f);
@@ -233,7 +234,22 @@ void SSDX11Renderer::DrawCubeScene()
 	// @draw cubemap to gbuffer
 	// @start
 	mGBuffer->Clear(deviceContext);
-	mGBuffer->SetCurrentRenderTarget(deviceContext);	
+	mGBuffer->SetCurrentRenderTarget(deviceContext);
+
+    SSDrawCommand testDrawCmd{ mCubemapVertexShader, mCubemapPixelShader, mTestSphere };
+
+    XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
+
+    testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
+    testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemap.get());
+
+    SSDepthStencilStateManager::Get().SetDepthCompLessEqual(deviceContext);
+    SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
+
+    testDrawCmd.Do(deviceContext);
+
+    SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
+    SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 	
 	// draw
 	auto& objects = SSRenderingObjectManager::Get().GetRenderingObjectMap();
@@ -338,7 +354,7 @@ void SSDX11Renderer::DrawSponzaScene()
 	XMMATRIX mvp = SSCameraManager::Get().GetCurrentCameraMVP();
 
 	testDrawCmd.StoreVSConstantBufferData(MVPName, XMMatrixTranspose(mvp));
-	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemapPrefilter.get());
+	testDrawCmd.SetPSTexture("gCubeMap", mEnvCubemap.get());
 
 	SSDepthStencilStateManager::Get().SetDepthCompLessEqual(deviceContext);
 	SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
@@ -347,9 +363,7 @@ void SSDX11Renderer::DrawSponzaScene()
 
 	SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
 	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
-	SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
-	
-	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
+
 
 	mSponzaMesh->Draw(deviceContext, mTestMaterial.get());
 
