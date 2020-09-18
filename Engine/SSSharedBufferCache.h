@@ -28,6 +28,6 @@ protected:
 	std::shared_ptr<SSDX11VertexBuffer> mScreenBlitVertexBuffer;
 	std::shared_ptr<SSIndexBuffer> mScreenBlitIndexBuffer;
 
-	
+	std::shared_ptr<SSDX11VertexBuffer> mSphereVertexBuffer;
 	
 };

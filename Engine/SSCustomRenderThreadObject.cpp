@@ -25,3 +25,17 @@ void SSRenderTargetCube::Draw(ID3D11DeviceContext *deviceContext)
 }
 
 
+
+void SSCubeMapRenderingSphere::Draw(ID3D11DeviceContext* deviceContext)
+{
+    deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    auto stride = mVB->GetStride();
+    UINT offset = 0;
+    deviceContext->IASetVertexBuffers(0,1,mVB->GetDX11BufferPointerRef(), &stride, &offset);
+    deviceContext->Draw(mVB->GetVertexCount(), 0);
+}
+
+SSCubeMapRenderingSphere::SSCubeMapRenderingSphere()
+{
+    mVB = SSSharedBufferCache::Get().GetSphereVertexBuffer();
+}

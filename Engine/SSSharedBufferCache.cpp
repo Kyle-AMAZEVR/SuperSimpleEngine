@@ -27,7 +27,7 @@ shared_ptr<SSIndexBuffer> SSSharedBufferCache::GetCubeIndexBuffer()
 
 shared_ptr<SSDX11VertexBuffer> SSSharedBufferCache::GetSphereVertexBuffer()
 {
-	return nullptr;
+	return mSphereVertexBuffer;
 }
 
 shared_ptr<SSDX11VertexBuffer> SSSharedBufferCache::GetScreenBlitVertexBuffer()
@@ -52,7 +52,8 @@ void SSSharedBufferCache::InitializeCube()
 
 void SSSharedBufferCache::InitializeSphere()
 {
-	
+	mSphereVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
+	mSphereVertexBuffer->SetVertexBufferData(SSSharedRenderData::Get().GetSphereVertexData());
 }
 
 
