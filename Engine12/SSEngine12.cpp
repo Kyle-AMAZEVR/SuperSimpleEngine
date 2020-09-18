@@ -598,10 +598,7 @@ void SSDX12Engine::Shutdown()
 	}
 }
 
-void SSDX12Engine::TickGameThread(float deltaTime)
-{
-	
-}
+
 
 void SSDX12Engine::TickRenderThread(float deltaTime)
 {

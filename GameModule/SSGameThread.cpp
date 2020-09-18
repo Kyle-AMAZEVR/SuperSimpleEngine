@@ -30,7 +30,7 @@ void SSGameThread::Start(DWORD gameThreadId)
 	mGameThreadDoneEventHandle = CreateEvent(nullptr, false, false, "GameThreadEventHandle");
 }
 
-void SSGameThread::Tick(float DeltaSeconds)
+void SSGameThread::Tick()
 {
 	// do game thread work
 

@@ -33,8 +33,7 @@ public:
 	inline IDXGISwapChain* GetSwapChain() const;
 
 	void Run() override;
-	void TickGameThread(float deltaTime) override;
-	void TickRenderThread(float deltaTime) override;    
+	void TickRenderThread(float deltaTime) override;
 
 protected:
 

@@ -115,16 +115,12 @@ void SSDX11Engine::Run()
 
 	while(!bRequestExit)
 	{
-		mGameThread->Tick(0.033f);
+		mGameThread->Tick();
 	}
 
 	Shutdown();
 }
 
-void SSDX11Engine::TickGameThread(float deltaTime)
-{
-	
-}
 void SSDX11Engine::TickRenderThread(float deltaTime)
 {
 	if (mRenderer)

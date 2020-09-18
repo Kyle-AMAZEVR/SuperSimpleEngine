@@ -21,7 +21,7 @@ public:
 
 	virtual void Run() = 0;
 
-	virtual void TickGameThread(float deltaTime) = 0;
+
 	virtual void TickRenderThread(float deltaTime) = 0;
 
 	static SSGameThread* GetGameThread()  { return mGameThread; }

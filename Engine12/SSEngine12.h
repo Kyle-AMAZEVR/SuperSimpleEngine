@@ -38,7 +38,6 @@ public:
 
 	static UINT CalcConstantBufferByteSize(UINT ByteSize);
 
-	void TickGameThread(float deltaTime) override;
 	void TickRenderThread(float deltaTime) override;
 
 protected:	

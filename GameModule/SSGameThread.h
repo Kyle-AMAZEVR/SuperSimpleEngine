@@ -9,7 +9,7 @@ public:
 
 	static bool IsInGameThread();
 
-	void Tick(float deltaSeconds);
+	void Tick();
 
 	HANDLE GetGameThreadEventHandle() { return mGameThreadDoneEventHandle; }	
 
