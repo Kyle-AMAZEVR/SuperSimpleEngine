@@ -21,18 +21,18 @@ include_directories("../lib/DirectXMath/Include")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
 include_directories("../GameModule")
+include_directories("../lib/simdjson")
 
 #add_subdirectory("lib/DirectXTK")
 add_subdirectory("../lib/DirectXTex" "./DirectXTex")
 add_subdirectory("../lib/freetype" "./freetype")
-
-
+add_subdirectory("../lib/simdjson" "./simdjson")
 
 add_library(SSDX11 SHARED ${SOURCES} ${HEADERS})
 
 add_dependencies(SSDX11 GameModule)
 
-target_link_libraries(SSDX11 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule) 
+target_link_libraries(SSDX11 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule simdjson)
 
 target_precompile_headers(SSDX11 PRIVATE "Core.h")
 
