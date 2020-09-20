@@ -5,9 +5,68 @@
 #include "SSShader.h"
 
 #include <filesystem>
+#include "simdjson.h"
 
 void SSShaderManager::Initialize()
 {
+    simdjson::dom::parser parser;
+    simdjson::dom::element shaderdefines = parser.load("./Shader/ShaderPermutation.json");
+
+	for(auto shader : shaderdefines["shaders"])
+    {
+        std::string_view shaderName = shader["name"].get_string().take_value();
+        std::string_view filepath = shader["filepath"].get_string().take_value();
+
+        std::vector<std::pair<std::string_view , std::string_view>> macroDefines;
+
+        for(auto define : shader["defines"])
+        {
+            for(auto [k,v] : define.get_object())
+            {
+                std::string_view definename = k.data();
+
+                std::string_view definition = v.get_string().take_value();
+
+                std::pair<std::string_view ,std::string_view> pair{definename, definition};
+
+                macroDefines.push_back(pair);
+            }
+        }
+
+        if(filepath.find(".vs") != std::string_view::npos)
+        {
+            std::shared_ptr<SSVertexShader> vs = std::make_shared<SSVertexShader>();
+            std::string cstrfilepath = filepath.data();
+            std::wstring wfilepath;
+            wfilepath.assign(cstrfilepath.begin(), cstrfilepath.end());
+
+            if (vs->CompileFromFile(wfilepath, macroDefines) == true)
+            {
+                mVertexShaderMap[shaderName.data()] = vs;
+            }
+            else
+            {
+                check(false);
+            }
+        }
+        else if(filepath.find(".ps") != std::string_view::npos)
+        {
+            std::shared_ptr<SSPixelShader> ps = std::make_shared<SSPixelShader>();
+            std::string cstrfilepath = filepath.data();
+            std::wstring wfilepath;
+            wfilepath.assign(cstrfilepath.begin(), cstrfilepath.end());
+
+            if (ps->CompileFromFile(wfilepath, macroDefines) == true)
+            {
+                mPixelShaderMap[shaderName.data()] = ps;
+            }
+            else
+            {
+                check(false);
+            }
+        }
+    }
+
 	for (auto& f : std::filesystem::directory_iterator("./Shader"))
 	{
 		std::string filename;
@@ -32,11 +91,8 @@ void SSShaderManager::Initialize()
 		}
 		else if (filename.find(".ps") != std::string::npos)
 		{
-		    std::vector<D3D_SHADER_MACRO> macros;
-
-
 			std::shared_ptr<SSPixelShader> ps = std::make_shared<SSPixelShader>();
-			if (ps->CompileFromFile(filepath, macros) == true)
+			if (ps->CompileFromFile(filepath) == true)
 			{
 				mPixelShaderMap[filename] = ps;
 			}

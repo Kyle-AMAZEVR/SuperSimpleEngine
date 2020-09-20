@@ -148,13 +148,13 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
     
 }
 
-bool SSVertexShader::CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines)
+bool SSVertexShader::CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines)
 {
     ID3DBlob* errorMsg = nullptr;
 
     check(std::filesystem::exists(filepath));
 
-    D3DCompileFromFile(filepath.c_str(), defines.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, "VSMain", "vs_5_0", 0, 0, &mShaderBuffer, &errorMsg);
+    D3DCompileFromFile(filepath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VSMain", "vs_5_0", 0, 0, &mShaderBuffer, &errorMsg);
 
     if(errorMsg != nullptr)
     {
@@ -257,13 +257,34 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 	 ReleaseCOM(mPixelShader);
  }
 
-bool SSPixelShader::CompileFromFile(std::wstring filepath, std::vector<D3D_SHADER_MACRO> defines)
+bool SSPixelShader::CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines)
 {
     ID3D10Blob* errorMsg = nullptr;
 
     check(std::filesystem::exists(filepath));
 
-    D3DCompileFromFile(filepath.c_str(), defines.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, "PSMain", "ps_5_0", 0, 0, &mShaderBuffer, &errorMsg);
+    std::vector<D3D_SHADER_MACRO> macros;
+
+    std::vector<std::pair<std::string,std::string>> tempDefines;
+
+    for(auto& [name, define] : defines)
+    {
+        std::string macroName{name};
+        std::string macroDefine{define};
+
+        tempDefines.push_back({macroName, macroDefine});
+    }
+
+    for(auto& [name, define] : tempDefines)
+    {
+        D3D_SHADER_MACRO macro{name.data(), define.data()};
+        macros.push_back(macro);
+    }
+
+    // null terminate , otherwise crashes
+    macros.push_back({nullptr,nullptr});
+
+    D3DCompileFromFile(filepath.c_str(), macros.data(), nullptr, "PSMain", "ps_5_0", 0, 0, &mShaderBuffer, &errorMsg);
 
     if(errorMsg != nullptr)
     {

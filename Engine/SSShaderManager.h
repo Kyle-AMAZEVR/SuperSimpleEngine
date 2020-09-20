@@ -15,6 +15,9 @@ public:
 protected:
 	std::map<SSName, std::shared_ptr<SSVertexShader>> mVertexShaderMap;
 	std::map<SSName, std::shared_ptr<SSPixelShader>> mPixelShaderMap;
+
+	std::map<std::string_view, std::shared_ptr<SSVertexShader>> mVertexShaderMap2;
+    std::map<std::string_view, std::shared_ptr<SSPixelShader>> mPixelShaderMap2;
 };
 
 
