@@ -2,7 +2,7 @@
 	"shaders" :
 	[		
 		{
-			"name" : "GBufferDefault",
+			"name" : "GBufferDefault.ps",
 			"filepath" : "./Shader/GBufferMacro.ps",
 			"defines" : 
 			[
@@ -12,6 +12,18 @@
 				{"NORMAL_EXIST" : "1"},
 				{"METALLIC_EXIST" : "1"}
 			 ]
-		}					
+		},
+		{
+			"name" : "GBufferNoMask.ps",
+			"filepath" : "./Shader/GBufferMacro.ps",
+			"defines" :
+			[
+				{"MASK_EXIST" : "0"},
+				{"DIFFUSE_EXIST" : "1"},
+				{"ROUGH_EXIST" : "1"},
+				{"NORMAL_EXIST" : "1"},
+				{"METALLIC_EXIST" : "1"}
+			]
+		}
 	]	
 }

@@ -21,7 +21,6 @@ protected:
 
 	void CreateVertexData() override;
 	void CreateRenderData() override;
-	void GenerateTangents();
 
 	float mRoughness = 0.1f;
 	float mMetalic = 0.9f;
@@ -38,16 +37,16 @@ protected:
 };
 
 
-class ENGINE_API SSPBRSphere : public SSSphere
+class GAMEMODULE_API SSPBRSphere : public SSSphere
 {
 public:
-	SSPBRSphere(ID3D11DeviceContext* deviceContext, SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);	
-protected:
+    SSPBRSphere();
+	SSPBRSphere(SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);
+	virtual void CreateRenderData() override;
 
+protected:
 	SSName mDiffuseTexName;
 	SSName mNormalTexName;
 	SSName mMetalTexName;
 	SSName mRoughTexName;
-
-
 };

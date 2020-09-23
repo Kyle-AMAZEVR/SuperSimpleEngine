@@ -95,9 +95,9 @@ void SSSharedRenderData::CreateCubeVertexData()
 
 void SSSharedRenderData::CreateSphereVertexData()
 {
-	const UINT stackCount = 10;
+	const UINT stackCount = 25;
 	const float radius = 10;
-	const UINT sectorCount = 10;
+	const UINT sectorCount = 25;
 
 
 	// temp 

@@ -12,6 +12,9 @@ void SSDX11CubeScene::InitializeScene()
 	mSphere = std::make_shared<SSSphere>(20,20,10);
 	mSphere->SetPositionX(10);
 	mSphere->SetPositionY( 10);
+
+	mPBRSphere = std::make_shared<SSPBRSphere>();
+	mPBRSphere->SetPositionY(-10);
 }
 
 void SSDX11CubeScene::DestroyScene()

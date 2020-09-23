@@ -199,6 +199,41 @@ void SSDX11Renderer::DrawCubeScene()
 		bEquidirectToCubeDrawn = true;
 	}
 
+    if (bEquidirectToCubeDrawn == false)
+    {
+        if (TryLoadEnvCubemap(L"./Prebaked/EnvCubemap.dds") == false)
+        {
+            CreateEnvCubemap();
+        }
+        bEquidirectToCubeDrawn = true;
+    }
+
+    if (bConvolutionDrawn == false)
+    {
+        if (TryLoadEnvCubemapConvolution(L"./Prebaked/EnvConvolution.dds") == false)
+        {
+            CreateEnvCubemapConvolution();
+        }
+        bConvolutionDrawn = true;
+    }
+    if (bPrefilterDrawn == false)
+    {
+        if (TryLoadEnvCubemapPrefilter(L"./Prebaked/EnvPrefilter.dds") == false)
+        {
+            CreateEnvCubemapPrefilter();
+        }
+        bPrefilterDrawn = true;
+    }
+
+    if (bLUTCreated == false)
+    {
+        if (TryLoad2DLUTTexture() == false)
+        {
+            Create2DLUTTexture();
+        }
+        bLUTCreated = true;
+    }
+
 	check(mDeviceContext != nullptr);
 
 	auto* deviceContext = GetImmediateDeviceContext();
@@ -219,14 +254,23 @@ void SSDX11Renderer::DrawCubeScene()
 		v->Draw(deviceContext);
 	}
 
-	mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
+    mDeferredLightPostProcess->Draw(
+            deviceContext,
+            mGBuffer->GetPositionOutput(),
+            mGBuffer->GetColorOutput(),
+            mGBuffer->GetNormalOutput(),
+            m2DLUTTexture.get(),
+            mEnvCubemapConvolution.get(),
+            mEnvCubemapPrefilter.get());
 
-	mViewport->Clear(deviceContext);
-	mViewport->SetCurrentRenderTarget(deviceContext);
+    mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
+
+    mViewport->Clear(deviceContext);
+    mViewport->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 
-	if (true)
+	if (false)
 	{
 		blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
 	}
@@ -316,8 +360,6 @@ void SSDX11Renderer::DrawSponzaScene()
 
 	mSponzaMesh->Draw(deviceContext, mTestMaterial.get());
 
-	mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
-
 	mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 
 	mDeferredLightPostProcess->Draw(
@@ -328,6 +370,8 @@ void SSDX11Renderer::DrawSponzaScene()
 		m2DLUTTexture.get(),
 		mEnvCubemapConvolution.get(),
 		mEnvCubemapPrefilter.get());
+
+    mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
 
 	mViewport->Clear(deviceContext);
 	mViewport->SetCurrentRenderTarget(deviceContext);
