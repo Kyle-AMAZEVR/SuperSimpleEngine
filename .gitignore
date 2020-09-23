@@ -22,7 +22,8 @@ x64
 Debug
 *.sln
 CMakeCache.txt
-*.cmake
+cmake_install.cmake
+.cmake/*
 
 lib/DirectXTK/CMakeFiles/*
 lib/DirectXTex/CMakeFiles/*
@@ -31,6 +32,8 @@ lib/DirectXTex/CMakeFiles/*
 Release/*
 Engine/CMakeFiles/*
 Engine/DirectXTex/CMakeFiles/*
+Engine/freetype/CMakeFiles/*
+Engine/simdjson/src/CMakeFiles/*
 Engine/Release/*
 
 
