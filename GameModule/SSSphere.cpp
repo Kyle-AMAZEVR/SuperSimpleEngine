@@ -63,10 +63,10 @@ std::vector< VT_PositionNormalTexcoordTangent > SSSphere::mVertexArray;
 SSPBRSphere::SSPBRSphere()
 : SSSphere(25,25,10)
 {
-    mNormalTexName = "./Resource/Tex/rustediron/rustediron2_normal.dds";
-    mDiffuseTexName = "./Resource/Tex/rustediron/rustediron2_basecolor.dds";
-    mMetalTexName = "./Resource/Tex/rustediron/rustediron2_metallic.dds";
-    mRoughTexName = "./Resource/Tex/rustediron/rustediron2_roughness.dds";
+    mNormalTexName = "./Resource/Tex/metalgrid/metalgrid4_normal-dx.dds";
+    mDiffuseTexName = "./Resource/Tex/metalgrid/metalgrid4_basecolor.dds";
+    mMetalTexName = "./Resource/Tex/metalgrid/metalgrid4_metallic.dds";
+    mRoughTexName = "./Resource/Tex/metalgrid/metalgrid4_roughness.dds";
     CreateVertexData();
     CreateRenderData();
 }

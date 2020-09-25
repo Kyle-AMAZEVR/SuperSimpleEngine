@@ -25,18 +25,6 @@ struct PixelOutputType
     float4 NormalColor : SV_Target2;
 };
 
-
-
-cbuffer TextureExist
-{
-    int MetalicExist;
-    int MaskMapExist;
-    int NormalMapExist;
-    int RoughnessExist;
-    int DiffuseMapExist;
-};
-
-
 cbuffer MetalicRoughness
 {
     float Metalic = 0.9;

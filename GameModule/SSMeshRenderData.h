@@ -24,6 +24,7 @@ public:
 	EVertexType VertexType = EVertexType::VT_PNT;
 	D3D_PRIMITIVE_TOPOLOGY PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	bool bHasIndexData = false;
+	bool bHasInstancedData = false;
 };
 
 // per instance 

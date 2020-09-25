@@ -127,13 +127,28 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	
 	// if have index buffer
 	if(mVertexData.bHasIndexData)
-	{		
-		deviceContext->DrawIndexed(mIndexBuffer->GetIndexCount(), 0, 0);
+	{
+	    if(mVertexData.bHasInstancedData)
+        {
+	        //deviceContext->DrawIndexedInstanced();
+        }
+	    else
+        {
+            deviceContext->DrawIndexed(mIndexBuffer->GetIndexCount(), 0, 0);
+        }
 	}
 	else
 	{
-		deviceContext->Draw(mVertexBuffer->GetVertexCount(), 0);
+	    if(mVertexData.bHasInstancedData)
+        {
+	        //deviceContext->DrawInstanced()
+        }
+	    else
+        {
+            deviceContext->Draw(mVertexBuffer->GetVertexCount(), 0);
+        }
 	}
+
 
 
 	mMaterial->ReleaseCurrent();

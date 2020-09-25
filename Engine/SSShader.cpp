@@ -145,7 +145,8 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 	}
 
 	HR(dxDevice->CreateInputLayout(inputDescriptions, inputParamCount, mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), &mInputLayout));
-    
+
+	delete [] inputDescriptions;
 }
 
 bool SSVertexShader::CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines)
