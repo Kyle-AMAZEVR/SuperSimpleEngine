@@ -3,9 +3,9 @@
 	[
 		{
 			"name" : "GBufferInstanced.vs",
-			"filepath" : "./Shader/GBuffer.vs",
+			"filepath" : "./Shader/GBufferInstanced.vs",
 			"defines" : [],
-			"instanced" : ["abc", "def","blah"]
+			"instanced" : ["OffsetPosition"]
 		},
 		{
 			"name" : "GBufferDefault.ps",

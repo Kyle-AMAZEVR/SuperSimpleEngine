@@ -32,6 +32,43 @@ void SSDX11VertexBuffer::SetVertexBufferData(const std::vector<T>& vertexData)
     }
 }
 
+class SSDX11InstancedVertexBuffer : public SSDX11Buffer
+{
+public:
+    SSDX11InstancedVertexBuffer(){}
+    template<class T>
+    void SetInstanceVertexBufferData(const std::vector<T>& instanceData);
+protected:
+    UINT mStride = 0;
+    UINT mInstanceCount = 0;
+};
+
+template<class T>
+void SSDX11InstancedVertexBuffer::SetInstanceVertexBufferData(const std::vector<T> &instanceData)
+{
+    if(mpBuffer==nullptr)
+    {
+        mBufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
+        mBufferDescription.MiscFlags = 0;
+        mBufferDescription.StructureByteStride = 0;
+        mBufferDescription.ByteWidth = static_cast<UINT>(sizeof(T) * instanceData.size());
+
+        D3D11_SUBRESOURCE_DATA vertexSubresourceData;
+
+        vertexSubresourceData.pSysMem = &instanceData[0];
+        vertexSubresourceData.SysMemPitch = 0;
+        vertexSubresourceData.SysMemSlicePitch = 0;
+
+        HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
+
+        mStride = sizeof(T);
+        mInstanceCount = static_cast<UINT>(instanceData.size());
+    }
+}
+
+
 template<class T>
 void SSDX11VertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertexData)
 {

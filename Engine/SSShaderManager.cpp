@@ -20,19 +20,23 @@ void SSShaderManager::Initialize()
 
         SSCompileContext context;
         // macro defines
-        for(auto define : shader["defines"])
+        if(!shader["defines"].error())
         {
-            for(auto [k,v] : define.get_object())
+            for(auto define : shader["defines"])
             {
-                std::string_view definename = k.data();
+                for(auto [k,v] : define.get_object())
+                {
+                    std::string_view definename = k.data();
 
-                std::string_view definition = v.get_string().take_value();
+                    std::string_view definition = v.get_string().take_value();
 
-                std::pair<std::string_view ,std::string_view> pair{definename, definition};
+                    std::pair<std::string_view ,std::string_view> pair{definename, definition};
 
-                context.MacroDefines.push_back(pair);
+                    context.MacroDefines.push_back(pair);
+                }
             }
         }
+
         // instanced vertex attribute
         if(!shader["instanced"].error())
         {

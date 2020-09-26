@@ -21,6 +21,7 @@ struct VertexInputType
     float3 VertexNormal  : NORMAL;
     float2 TexCoord : TEXCOORD0;
     float4 Tangent : TANGENT;
+    float3 OffsetPosition : POSITION1;
 };
 
 

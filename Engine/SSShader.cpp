@@ -99,7 +99,7 @@ void SSVertexShader::Destroy()
 	ReleaseCOM(mVertexShader);
 }
 
-void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
+void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection, const SSCompileContext& context)
 {
     auto* dxDevice = SSDX11Engine::Get().GetDevice();
     
@@ -123,6 +123,8 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 	D3D11_INPUT_ELEMENT_DESC* inputDescriptions = new D3D11_INPUT_ELEMENT_DESC[inputParamCount];
 	UINT byteOffset = 0;
 
+	map<std::string, int> semanticIndexMap;
+
 	for (UINT i = 0; i < shaderDescription.InputParameters; ++i)
 	{
 		auto* dxDevice = SSDX11Engine::Get().GetDevice();
@@ -135,11 +137,34 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 		auto format = SSDXTranslator::GetVertexShaderInputType(inputDesc);
 		inputDescriptions[i].SemanticName = inputDesc.SemanticName;
 		inputDescriptions[i].Format = format;
-		inputDescriptions[i].InputSlotClass = D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA;
-		inputDescriptions[i].SemanticIndex = 0;
-		inputDescriptions[i].InstanceDataStepRate = 0;
+
+		if(semanticIndexMap.count(inputDesc.SemanticName) > 0)
+        {
+		    semanticIndexMap[inputDesc.SemanticName]++;
+        }
+		else
+        {
+		    semanticIndexMap[inputDesc.SemanticName] = 0;
+        }
+
+		// instanced
+		string_view vertexAttributeName = inputDesc.SemanticName;
+		bool bInstanced = std::find(context.InstancedAttributes.begin(), context.InstancedAttributes.end(), vertexAttributeName) != context.InstancedAttributes.end();
+		if(bInstanced)
+        {
+		    inputDescriptions[i].InputSlotClass = D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_INSTANCE_DATA;
+		    inputDescriptions[i].InstanceDataStepRate = 1;
+            inputDescriptions[i].AlignedByteOffset = 0;
+        }
+		else
+        {
+            inputDescriptions[i].InputSlotClass = D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA;
+            inputDescriptions[i].InstanceDataStepRate = 0;
+            inputDescriptions[i].AlignedByteOffset = i == 0 ? 0 : D3D11_APPEND_ALIGNED_ELEMENT;
+        }
+
+		inputDescriptions[i].SemanticIndex = semanticIndexMap[inputDesc.SemanticName];
 		inputDescriptions[i].InputSlot = 0;
-		inputDescriptions[i].AlignedByteOffset = byteOffset;
 
 		byteOffset += SSDXTranslator::GetDXGIFormatByteSize(format);
 	}
@@ -149,7 +174,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 	delete [] inputDescriptions;
 }
 
-bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileContext& context)
+bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileContext& compileContext)
 {
     ID3DBlob* errorMsg = nullptr;
 
@@ -178,7 +203,7 @@ bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileConte
     ReflectCompiledShader(vertexShaderReflection);
 
     // @input layout creation
-    CreateInputLayout(vertexShaderReflection);
+    CreateInputLayout(vertexShaderReflection, compileContext);
 
     return true;
 }
@@ -210,9 +235,11 @@ bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileConte
 	
 	// @constant buffer reflection
 	ReflectCompiledShader(vertexShaderReflection);
-    
+
+	SSCompileContext dummy;
+
 	// @input layout creation
-	CreateInputLayout(vertexShaderReflection);	
+	CreateInputLayout(vertexShaderReflection, dummy);
 
     return true;
  }

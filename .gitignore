@@ -49,3 +49,5 @@ GameModule/CMakeFiles/*
 *.exp
 *.marks
 Makefile
+CMakeDirectoryInformation.cmake
+generate.stamp.depend

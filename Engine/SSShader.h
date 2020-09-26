@@ -87,7 +87,7 @@ public:
 	
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 protected:	
-    void CreateInputLayout(ID3D11ShaderReflection* shaderReflection);
+    void CreateInputLayout(ID3D11ShaderReflection* shaderReflection, const SSCompileContext& context);
     ID3D11VertexShader* mVertexShader = nullptr;
     ID3D11InputLayout* mInputLayout = nullptr;
 
