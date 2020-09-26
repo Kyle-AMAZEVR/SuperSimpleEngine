@@ -9,6 +9,7 @@
 
 void SSShaderManager::Initialize()
 {
+    // load shaderpermutation.json
     simdjson::dom::parser parser;
     simdjson::dom::element shaderdefines = parser.load("./Shader/ShaderPermutation.json");
 
@@ -17,8 +18,8 @@ void SSShaderManager::Initialize()
         std::string_view shaderName = shader["name"].get_string().take_value();
         std::string_view filepath = shader["filepath"].get_string().take_value();
 
-        std::vector<std::pair<std::string_view , std::string_view>> macroDefines;
-
+        SSCompileContext context;
+        // macro defines
         for(auto define : shader["defines"])
         {
             for(auto [k,v] : define.get_object())
@@ -29,7 +30,15 @@ void SSShaderManager::Initialize()
 
                 std::pair<std::string_view ,std::string_view> pair{definename, definition};
 
-                macroDefines.push_back(pair);
+                context.MacroDefines.push_back(pair);
+            }
+        }
+        // instanced vertex attribute
+        if(!shader["instanced"].error())
+        {
+            for (auto instanced : shader["instanced"])
+            {
+                context.InstancedAttributes.push_back(instanced.get_string().take_value());
             }
         }
 
@@ -40,7 +49,7 @@ void SSShaderManager::Initialize()
             std::wstring wfilepath;
             wfilepath.assign(cstrfilepath.begin(), cstrfilepath.end());
 
-            if (vs->CompileFromFile(wfilepath, macroDefines) == true)
+            if (vs->CompileFromFile(wfilepath, context) == true)
             {
                 mVertexShaderMap[shaderName.data()] = vs;
             }
@@ -56,7 +65,7 @@ void SSShaderManager::Initialize()
             std::wstring wfilepath;
             wfilepath.assign(cstrfilepath.begin(), cstrfilepath.end());
 
-            if (ps->CompileFromFile(wfilepath, macroDefines) == true)
+            if (ps->CompileFromFile(wfilepath, context) == true)
             {
                 mPixelShaderMap[shaderName.data()] = ps;
             }

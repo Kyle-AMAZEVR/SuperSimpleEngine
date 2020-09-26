@@ -60,7 +60,11 @@ public:
 
 	operator std::string() const { return ToString(); }
 
+	operator std::string_view() const { return ToStringView();}
+
 	std::string ToString() const;
+
+	std::string_view ToStringView() const;
 
 	friend class SerializeWriter& operator<< (SerializeWriter& Archive, const SSName& name);
 
@@ -83,7 +87,7 @@ class GAMEMODULE_API SSNameBucket : public Singleton<SSNameBucket>
 public:
 	SSNameBucket();
 	size_t AddName(size_t hashValue, const std::string& name);
-	std::string GetName(const SSName* name) const;
+	const std::string& GetName(const SSName* name) const;
 	
 	void DebugDumpNames();
 protected:

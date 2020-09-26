@@ -35,6 +35,9 @@ Engine/DirectXTex/CMakeFiles/*
 Engine/freetype/CMakeFiles/*
 Engine/simdjson/src/CMakeFiles/*
 Engine/Release/*
+Engine12/CMakeFiles/*
+*/progress.marks
+GameModule/CMakeFiles/*
 
 
 *.stamp
@@ -42,3 +45,7 @@ Engine/Release/*
 *.TMP
 *.depend
 *.depend
+*.cbp
+*.exp
+*.marks
+Makefile

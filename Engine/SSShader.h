@@ -7,7 +7,15 @@
 #include "wrl/client.h"
 #include <map>
 
+using namespace std;
 using Microsoft::WRL::ComPtr;
+
+class ENGINE_API SSCompileContext
+{
+public:
+    vector<pair<string_view, string_view>> MacroDefines;
+    vector<string_view> InstancedAttributes;
+};
 
 class ENGINE_API SSShader : public SSRenderThreadObject
 {
@@ -34,7 +42,7 @@ public:
 
     virtual bool CompileFromFile(std::wstring filepath) { return true; }
 
-    virtual bool CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines) {return true;}
+    virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) {return true;}
 protected:
 	
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
@@ -66,7 +74,7 @@ public:
     SSVertexShader() = default;
 	virtual void Destroy() override;
     virtual bool CompileFromFile(std::wstring filepath) override;
-    virtual bool CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines) override;
+    virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
     ID3D11VertexShader* GetShader() { return mVertexShader; } 
     ID3D11InputLayout* GetInputLayout() { return mInputLayout; }
 
@@ -104,7 +112,7 @@ public:
     SSPixelShader() = default;
 	virtual void Destroy() override;
     virtual bool CompileFromFile(std::wstring filepath) override;
-    virtual bool CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines) override;
+    virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
     ID3D11PixelShader* GetShader() { return mPixelShader; }
 
 	template<class T>

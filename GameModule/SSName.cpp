@@ -28,6 +28,11 @@ std::string SSName::ToString() const
 	return SSNameBucket::Get().GetName(this);
 }
 
+std::string_view SSName::ToStringView() const
+{
+    return SSNameBucket::Get().GetName(this);
+}
+
 //
 
 SSNameBucket::SSNameBucket()
@@ -64,7 +69,7 @@ size_t SSNameBucket::AddName(size_t hashValue, const std::string& name)
 	}	
 }
 
-std::string SSNameBucket::GetName(const SSName* name) const
+const std::string& SSNameBucket::GetName(const SSName* name) const
 {
 	auto& Ptr = TestTemplateClass<double>::Get();
 

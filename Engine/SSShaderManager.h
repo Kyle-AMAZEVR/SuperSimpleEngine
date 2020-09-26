@@ -4,6 +4,8 @@
 #include "SSManagerBase.h"
 #include "SSName.h"
 
+
+
 class ENGINE_API SSShaderManager : public Singleton<SSShaderManager>, public SSManagerBase
 {
 public:

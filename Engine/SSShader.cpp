@@ -149,7 +149,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection)
 	delete [] inputDescriptions;
 }
 
-bool SSVertexShader::CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines)
+bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileContext& context)
 {
     ID3DBlob* errorMsg = nullptr;
 
@@ -258,7 +258,7 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 	 ReleaseCOM(mPixelShader);
  }
 
-bool SSPixelShader::CompileFromFile(std::wstring filepath, std::vector<std::pair<std::string_view, std::string_view>> defines)
+bool SSPixelShader::CompileFromFile(std::wstring filepath, const SSCompileContext& context)
 {
     ID3D10Blob* errorMsg = nullptr;
 
@@ -266,17 +266,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath, std::vector<std::pair
 
     std::vector<D3D_SHADER_MACRO> macros;
 
-    std::vector<std::pair<std::string,std::string>> tempDefines;
-
-    for(auto& [name, define] : defines)
-    {
-        std::string macroName{name};
-        std::string macroDefine{define};
-
-        tempDefines.push_back({macroName, macroDefine});
-    }
-
-    for(auto& [name, define] : tempDefines)
+    for(auto& [name, define] : context.MacroDefines)
     {
         D3D_SHADER_MACRO macro{name.data(), define.data()};
         macros.push_back(macro);

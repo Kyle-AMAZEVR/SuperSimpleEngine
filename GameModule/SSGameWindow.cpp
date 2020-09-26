@@ -68,9 +68,11 @@ SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
 	MsgHandlerMap[WM_MOUSEMOVE] = &SSGameWindow::OnMouseMove;
 	MsgHandlerMap[WM_ENTERSIZEMOVE] = &SSGameWindow::OnEnterSizeMove;
 	MsgHandlerMap[WM_EXITSIZEMOVE] = &SSGameWindow::OnExitSizeMove;
-	
+
 	LoadStringW(_hInstance, IDS_APP_TITLE, szTitle, 256);
 	LoadStringW(_hInstance, IDC_DXENGINE, szWindowClass, 256);
+
+	wsprintfW(szTitle, L"SuperSimple");
 
 	Title = szTitle;
 	ClassName = szWindowClass;

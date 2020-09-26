@@ -1,6 +1,12 @@
 {
 	"shaders" :
-	[		
+	[
+		{
+			"name" : "GBufferInstanced.vs",
+			"filepath" : "./Shader/GBuffer.vs",
+			"defines" : [],
+			"instanced" : ["abc", "def","blah"]
+		},
 		{
 			"name" : "GBufferDefault.ps",
 			"filepath" : "./Shader/GBufferMacro.ps",
