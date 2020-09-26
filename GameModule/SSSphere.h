@@ -36,12 +36,13 @@ protected:
 	bool bCreateDebugTBN = false;
 };
 
-class GAMEMODULE_API SSInstancedSphere : public SSGameObject
+class GAMEMODULE_API SSInstancedSphere : public SSSphere
 {
 public:
     SSInstancedSphere(UINT instanceCount, UINT sector, UINT stack, float radius);
 
 protected:
+    virtual void CreateInstanceData() override;
     UINT mInstanceCount = 1; // at least one
 };
 

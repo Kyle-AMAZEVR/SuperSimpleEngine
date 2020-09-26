@@ -34,6 +34,8 @@ enum class EInstanceDataType : unsigned char
 	IDT_FLOAT4,
 };
 
+using namespace DirectX;
+
 struct SSInstanceData
 {
 public:

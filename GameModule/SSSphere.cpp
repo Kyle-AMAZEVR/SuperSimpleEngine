@@ -67,7 +67,7 @@ SSPBRSphere::SSPBRSphere()
     mDiffuseTexName = "./Resource/Tex/metalgrid/metalgrid4_basecolor.dds";
     mMetalTexName = "./Resource/Tex/metalgrid/metalgrid4_metallic.dds";
     mRoughTexName = "./Resource/Tex/metalgrid/metalgrid4_roughness.dds";
-    CreateVertexData();
+
     CreateRenderData();
 }
 
@@ -79,7 +79,6 @@ SSPBRSphere::SSPBRSphere(SSName diffuseTexName, SSName normalTexName, SSName met
 	mMetalTexName = metalTexName;
 	mRoughTexName = roughTexName;
 
-	CreateVertexData();
 	CreateRenderData();
 }
 
@@ -95,3 +94,13 @@ void SSPBRSphere::CreateRenderData()
 }
 
 
+SSInstancedSphere::SSInstancedSphere(UINT instanceCount, UINT sector, UINT stack, float radius)
+: SSSphere(sector,stack, radius)
+{
+    CreateInstanceData();
+}
+
+void SSInstancedSphere::CreateInstanceData()
+{
+       
+}

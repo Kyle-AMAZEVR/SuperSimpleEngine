@@ -13,6 +13,7 @@ public:
 
 	virtual const SSMeshRenderData& GetRenderData();
 	virtual const SSMeshVertexData& GetVertexData();
+	virtual const SSInstanceData& GetInstancedData();
 	virtual std::vector<SSMeshElementRenderData> GetMeshElementRenderData();
 
 	virtual void Tick(float delta) {}
@@ -48,9 +49,11 @@ public:
 protected:
 	virtual void CreateRenderData() {}
 	virtual void CreateVertexData() {}
+	virtual void CreateInstanceData() {}
 
 	SSMeshVertexData mVertexData;
 	SSMeshRenderData mRenderData;
+	SSInstanceData mInstanceData;
 
 	friend class SSGameObjectManager;
 	DirectX::XMFLOAT3 mPosition;
