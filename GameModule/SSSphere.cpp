@@ -102,5 +102,5 @@ SSInstancedSphere::SSInstancedSphere(UINT instanceCount, UINT sector, UINT stack
 
 void SSInstancedSphere::CreateInstanceData()
 {
-       
+
 }

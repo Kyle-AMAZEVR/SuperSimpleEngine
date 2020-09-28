@@ -20,19 +20,39 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	
 	mVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
 
-	if(mVertexData.VertexType == EVertexType::VT_PNTT)
-	{
-		mVertexBuffer->SetVertexBufferData(mVertexData.PNTT_VertexData);
-	}
-	else if(mVertexData.VertexType == EVertexType::VT_PNT)
-	{
-		mVertexBuffer->SetVertexBufferData(mVertexData.PNT_VertexData);
-	}
-	else if(mVertexData.VertexType == EVertexType::VT_PT)
-	{
-		mVertexBuffer->SetVertexBufferData(mVertexData.PT_VertexData);
-	}
+	// setup vertex data
+	switch(mVertexData.VertexType)
+    {
+        case EVertexType::VT_PNT:
+            mVertexBuffer->SetVertexBufferData(mVertexData.PNT_VertexData);
+            break;
+        case EVertexType::VT_PNTT:
+            mVertexBuffer->SetVertexBufferData(mVertexData.PNTT_VertexData);
+            break;
+        case EVertexType::VT_PT:
+            mVertexBuffer->SetVertexBufferData(mVertexData.PT_VertexData);
+            break;
+    }
+	// setup instance data
+	if(mVertexData.bHasInstancedData)
+    {
+        mInstancedVertexBuffer = std::make_shared<SSDX11InstancedVertexBuffer>();
 
+        switch(mVertexData.InstanceData.InstanceDataType)
+        {
+            case EInstanceDataType::IDT_FLOAT2:
+                mInstancedVertexBuffer->SetInstanceVertexBufferData(mVertexData.InstanceData.Float2InstancedData);
+                break;
+            case EInstanceDataType::IDT_FLOAT3:
+                mInstancedVertexBuffer->SetInstanceVertexBufferData(mVertexData.InstanceData.Float3InstancedData);
+                break;
+            case EInstanceDataType::IDT_FLOAT4:
+                mInstancedVertexBuffer->SetInstanceVertexBufferData(mVertexData.InstanceData.Float4InstancedData);
+                break;
+        }
+    }
+
+	// setup index data
 	if(mVertexData.bHasIndexData)
 	{
 		mIndexBuffer = std::make_shared<SSIndexBuffer>();
