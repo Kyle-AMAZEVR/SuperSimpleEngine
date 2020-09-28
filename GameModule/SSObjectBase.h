@@ -44,8 +44,6 @@ public:
 	void SetVSConstantBufferData(SSName name, class SSConstantBufferProxy&& buffer);
 	void SetPSConstantBufferData(SSName name, class SSConstantBufferProxy&& buffer);
 
-	bool NeedToPullRenderingData() const { return bNeedToPullRenderingData; }
-
 protected:
 	virtual void CreateRenderData() {}
 	virtual void CreateVertexData() {}
@@ -58,8 +56,6 @@ protected:
 	friend class SSGameObjectManager;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mScale;
-
-	bool bNeedToPullRenderingData = false;
 
 	bool mVisible = true;
 	

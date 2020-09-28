@@ -17,37 +17,31 @@ SSObjectBase::~SSObjectBase()
 void SSObjectBase::SetVSConstantBufferData(SSName name, SSConstantBufferProxy&& buffer)
 {
 	mRenderData.VSConstantBufferMap[name] = std::move(buffer);
-	bNeedToPullRenderingData = true;
 }
 
 void SSObjectBase::SetPSConstantBufferData(SSName name, SSConstantBufferProxy&& buffer)
 {
 	mRenderData.PSConstantBufferMap[name] = std::move(buffer);
-	bNeedToPullRenderingData = true;
 }
 
 void SSObjectBase::SetVertexShader(SSName vs)
 {
 	mRenderData.VertexShaderName = vs;
-	bNeedToPullRenderingData = true;
 }
 
 void SSObjectBase::SetPixelShader(SSName ps)
 {
 	mRenderData.PixelShaderName = ps;
-	bNeedToPullRenderingData = true;
 }
 
 void SSObjectBase::SetPSTexture(SSName paramName, SSName texture)
 {
 	mRenderData.PSTextureMap[paramName] = texture;
-	bNeedToPullRenderingData = true;
 }
 
 void SSObjectBase::SetVSTexture(SSName paramName, SSName texture)
 {
 	mRenderData.VSTextureMap[paramName] = texture;
-	bNeedToPullRenderingData = true;
 }
 
 const SSMeshVertexData& SSObjectBase::GetVertexData()
