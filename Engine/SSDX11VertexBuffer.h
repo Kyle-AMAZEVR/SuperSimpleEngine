@@ -38,6 +38,8 @@ public:
     SSDX11InstancedVertexBuffer(){}
     template<class T>
     void SetInstanceVertexBufferData(const std::vector<T>& instanceData);
+    UINT GetStride() const { return mStride;}
+    UINT GetInstanceCount() const { return mInstanceCount;}
 protected:
     UINT mStride = 0;
     UINT mInstanceCount = 0;
