@@ -99,10 +99,11 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	//
 	if(mVertexData.bHasInstancedData == false)
     {
-	    auto stride = mVertexBuffer->GetStride();
-        UINT offset = 0;
+	    UINT stride[1]{mVertexBuffer->GetStride()};
+        UINT offset[1]{0};
+        ID3D11Buffer* buffer[1]{mVertexBuffer->GetDX11BufferPointer()};
         // set vertex buffer
-        deviceContext->IASetVertexBuffers(0, 1, mVertexBuffer->GetDX11BufferPointerRef(), &stride, &offset);
+        deviceContext->IASetVertexBuffers(0, 1, buffer, stride, offset);
     }
 	else
     {
