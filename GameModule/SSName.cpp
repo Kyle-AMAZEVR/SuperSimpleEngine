@@ -12,14 +12,14 @@ SSName::SSName(const SSName& other)
 
 SSName::SSName(const std::string& name)
 {
-	mHashValue = std::hash<std::string>{} {name};
+	mHashValue = std::hash<std::string>{} (name);
 	mBucketIndex = SSNameBucket::Get().AddName(mHashValue, name);
 }
 
 SSName::SSName(const char* name)
 {
 	std::string strName = name;
-	mHashValue = std::hash<std::string>{} {strName};
+	mHashValue = std::hash<std::string>{} (strName);
 	mBucketIndex = SSNameBucket::Get().AddName(mHashValue, strName);
 }
 
