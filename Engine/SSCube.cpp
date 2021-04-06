@@ -27,6 +27,10 @@ void SSCube::Draw(SSDX11Renderer* renderer)
 
 void SSCube::Draw(ID3D11DeviceContext* deviceContext)
 {
+	if(!bIsInitialized)
+	{
+		return;
+	}
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	
 	auto stride = mCubeVB->GetStride();
@@ -113,7 +117,9 @@ void SSCube::InternalCreate()
 	mCubeVB->SetVertexBufferData(vertexArray);
 
 	mCubeIB = new SSIndexBuffer();
-	mCubeIB->SetIndexBufferData(indexArray);	
+	mCubeIB->SetIndexBufferData(indexArray);
+
+	bIsInitialized = true;
 }
 // 
 SSIndexBuffer* SSCube::mCubeIB = nullptr;
