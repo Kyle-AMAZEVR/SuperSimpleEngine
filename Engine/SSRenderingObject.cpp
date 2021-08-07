@@ -69,15 +69,13 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 SSRenderingObject::~SSRenderingObject()
 {
 	if(mVertexBuffer)
-	{		
-		mVertexBuffer->Destroy();
+	{	
 		mVertexBuffer.reset();
 		mVertexBuffer = nullptr;
 	}
 
 	if(mIndexBuffer)
-	{
-		mIndexBuffer->Destroy();
+	{		
 		mIndexBuffer.reset();
 		mIndexBuffer = nullptr;
 	}

@@ -11,9 +11,9 @@ class ENGINE_API SSRenderTargetTexture2D : public SSTexture2DBase
 {
 public:	
 	SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
-
+	virtual ~SSRenderTargetTexture2D();
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
-	virtual void Destroy() override;
+	void Destroy();
 	virtual void SaveAsDDSFile(std::wstring filename);	
 	
 	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip].Get(); }
@@ -32,11 +32,11 @@ class ENGINE_API SSDepthRenderTargetTexture2D : public SSTexture2DBase
 {
 public:
 	SSDepthRenderTargetTexture2D(const UINT width, const UINT height,  DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
-
+	virtual ~SSDepthRenderTargetTexture2D();
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
 	ID3D11DepthStencilView* GetDepthStencilView() { return mDepthStencilView.Get(); }
 	virtual void Clear(ID3D11DeviceContext* deviceContext);
-	virtual void Destroy() override;
+	virtual void Destroy();
 protected:
 	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format);
 

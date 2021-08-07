@@ -124,12 +124,12 @@ void SSShaderManager::Shutdown()
 	//
 	for (auto& kvp : mVertexShaderMap)
 	{
-		kvp.second->Destroy();
+		//kvp.second->Destroy();
 	}
 
 	for (auto& kvp : mPixelShaderMap)
 	{
-		kvp.second->Destroy();
+		//kvp.second->Destroy();
 	}
 }
 

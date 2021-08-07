@@ -100,7 +100,7 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* dev
 	deviceContext->GenerateMips(mShaderResourceView.Get());
 }
 
-void SSCubemapRenderTarget::Destroy()
+SSCubemapRenderTarget::~SSCubemapRenderTarget()
 {
 	ReleaseCOM(mShaderResourceView);
 	ReleaseCOM(mTexturePtr);

@@ -17,7 +17,8 @@ public:
     vector<string_view> InstancedAttributes;
 };
 
-class ENGINE_API SSShader : public SSRenderThreadObject
+//class ENGINE_API SSShader : public SSRenderThreadObject
+class ENGINE_API SSShader :  public SSRenderThreadResidentObject
 {
 public:
 	virtual ~SSShader(){}
@@ -72,7 +73,7 @@ class ENGINE_API SSVertexShader : public SSShader
 {
 public:
     SSVertexShader() = default;
-	virtual void Destroy() override;
+	virtual ~SSVertexShader();	
     virtual bool CompileFromFile(std::wstring filepath) override;
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
     ID3D11VertexShader* GetShader() { return mVertexShader; } 
@@ -110,7 +111,7 @@ class ENGINE_API SSPixelShader : public SSShader
 {
 public:
     SSPixelShader() = default;
-	virtual void Destroy() override;
+	virtual ~SSPixelShader();	
     virtual bool CompileFromFile(std::wstring filepath) override;
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
     ID3D11PixelShader* GetShader() { return mPixelShader; }

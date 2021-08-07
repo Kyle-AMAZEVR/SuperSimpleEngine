@@ -77,6 +77,12 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 	HR(SSDX11Engine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &shaderResourceViewDesc, &mShaderResourceView));
 }
 
+SSRenderTargetTexture2D::~SSRenderTargetTexture2D()
+{
+	Destroy();
+}
+
+
 void SSRenderTargetTexture2D::Destroy()
 {
 	mTexturePtr.Reset();
@@ -222,6 +228,11 @@ void SSDepthRenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 	check(deviceContext);
 
 	deviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
+ SSDepthRenderTargetTexture2D::~SSDepthRenderTargetTexture2D()
+{
+	Destroy();	
 }
 
 void SSDepthRenderTargetTexture2D::Destroy()

@@ -2,10 +2,6 @@
 #include "SSCommon.h"
 #include "SSDX11Buffer.h"
 
-void SSDX11Buffer::Destroy()
-{
-	mpBuffer.Reset();
-}
 
 ID3D11Buffer* const* SSDX11Buffer::GetDX11BufferPointerRef()
 {

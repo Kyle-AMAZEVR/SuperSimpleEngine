@@ -7,8 +7,7 @@ using Microsoft::WRL::ComPtr;
 
 class ENGINE_API SSDX11Buffer : public SSBufferBase
 {
-public:
-    void Destroy() override;
+public:   
 
     ID3D11Buffer* const* GetDX11BufferPointerRef() override;
     ID3D11Buffer* GetDX11BufferPointer() override;

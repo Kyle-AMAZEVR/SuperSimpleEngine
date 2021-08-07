@@ -12,7 +12,7 @@ class SSTexture2DBase;
 
 #include "SSConstantBufferProxy.h"
 
-class ENGINE_API SSMaterial : public SSRenderThreadObject
+class ENGINE_API SSMaterial : public SSRenderThreadResidentObject
 {
 public:	
 	SSMaterial(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps);

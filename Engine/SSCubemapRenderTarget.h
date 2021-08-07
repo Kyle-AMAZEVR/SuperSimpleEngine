@@ -24,6 +24,7 @@ class SSCubemapRenderTarget : public IRenderTarget, public SSTextureCube
 {
 public:
 	SSCubemapRenderTarget(UINT width, UINT height ,DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
+	virtual ~SSCubemapRenderTarget();
 	
 	void SetCurrentRTAs(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
 
@@ -34,8 +35,6 @@ public:
 	virtual void CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext);
 
 	void ClearFace(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
-
-	virtual void Destroy() override;
 
 	class SSRenderTargetTexture2D* GetRenderTargetTexture(ECubemapFace eFace);	
 

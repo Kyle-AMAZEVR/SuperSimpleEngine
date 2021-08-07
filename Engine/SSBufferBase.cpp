@@ -5,5 +5,5 @@
 
 SSBufferBase::~SSBufferBase()
 {
-	Destroy();
+	
 }

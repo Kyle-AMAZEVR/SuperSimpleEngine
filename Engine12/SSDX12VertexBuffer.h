@@ -2,7 +2,7 @@
 #include "SSDX12Resource.h"
 #include "SSRenderThreadObject.h"
 
-class SSDX12VertexBuffer : public SSRenderThreadObject
+class SSDX12VertexBuffer : public SSRenderThreadResidentObject
 {
 public:
 	SSDX12VertexBuffer() = default;

@@ -86,13 +86,13 @@ std::vector<std::string> SSShader::GetSamplerNames()
 #pragma endregion
 
 
-void SSVertexShader::Destroy()
+SSVertexShader::~SSVertexShader()
 {
 	for (auto& kvp : mConstantBufferMap)
 	{
 		if (kvp.second)
 		{
-			kvp.second->Destroy();
+			//kvp.second->Destroy();
 		}
 	}
 
@@ -273,13 +273,13 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 
 #pragma region PixelShader
 
- void SSPixelShader::Destroy()
+ SSPixelShader::~SSPixelShader() 
  {
 	 for (auto& kvp : mConstantBufferMap)
 	 {
 		 if (kvp.second)
 		 {
-			 kvp.second->Destroy();
+			// kvp.second->Destroy();
 		 }
 	 }
 	 ReleaseCOM(mPixelShader);

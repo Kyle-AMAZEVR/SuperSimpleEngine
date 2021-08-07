@@ -12,3 +12,9 @@ public:
 	
 };
 
+class GAMEMODULE_API SSRenderThreadResidentObject
+{
+public:
+	SSRenderThreadResidentObject();
+	virtual ~SSRenderThreadResidentObject();
+};
