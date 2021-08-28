@@ -3,6 +3,12 @@
 #include "Core.h"
 #include "SSRenderer.h"
 
+struct SSAdapterInfo
+{
+	DXGI_ADAPTER_DESC AdapterDesc;
+	IDXGIAdapter* AdapterPointer = nullptr;
+};
+
 
 class ENGINE_API SSDX11Renderer : public SSRenderer
 {
@@ -53,6 +59,8 @@ private:
 
 	ID3D11Debug* mDebug = nullptr;
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
+
+	std::vector<SSAdapterInfo> mAdapterInfos;
 
 	std::shared_ptr<class SSMaterial> mTestMaterial;
 	std::shared_ptr<class SSMaterial> mTBNDebugMaterial;
