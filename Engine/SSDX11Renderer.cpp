@@ -31,6 +31,7 @@
 #include "SSRenderingObject.h"
 #include "SSSharedBufferCache.h"
 #include "SSCustomRenderThreadObject.h"
+#include <iostream>
 
 SSDX11Renderer::SSDX11Renderer()	
 {
@@ -41,6 +42,27 @@ SSDX11Renderer::SSDX11Renderer()
 void SSDX11Renderer::Initialize(HWND windowHandle)
 {
 	mWindowHandle = windowHandle;
+	IDXGIFactory* pFactory = nullptr;
+	CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&pFactory);
+	if (pFactory)
+	{
+		IDXGIAdapter* pAdapter = nullptr;
+		HRESULT AdapterResult = S_FALSE;
+		UINT i = 0;
+		do
+		{
+			AdapterResult = pFactory->EnumAdapters(i, &pAdapter);
+			if (AdapterResult == S_OK)
+			{
+				DXGI_ADAPTER_DESC desc;
+				pAdapter->GetDesc(&desc);
+				
+				mAdapterInfos.push_back(SSAdapterInfo{ desc, pAdapter });
+			}
+			i++;
+		} while (AdapterResult == S_OK);
+		
+	}
 	CreateDevice();
 	CreateSwapChain();	
 
@@ -199,40 +221,40 @@ void SSDX11Renderer::DrawCubeScene()
 		bEquidirectToCubeDrawn = true;
 	}
 
-    if (bEquidirectToCubeDrawn == false)
-    {
-        if (TryLoadEnvCubemap(L"./Prebaked/EnvCubemap.dds") == false)
-        {
-            CreateEnvCubemap();
-        }
-        bEquidirectToCubeDrawn = true;
-    }
+	if (bEquidirectToCubeDrawn == false)
+	{
+		if (TryLoadEnvCubemap(L"./Prebaked/EnvCubemap.dds") == false)
+		{
+			CreateEnvCubemap();
+		}
+		bEquidirectToCubeDrawn = true;
+	}
 
-    if (bConvolutionDrawn == false)
-    {
-        if (TryLoadEnvCubemapConvolution(L"./Prebaked/EnvConvolution.dds") == false)
-        {
-            CreateEnvCubemapConvolution();
-        }
-        bConvolutionDrawn = true;
-    }
-    if (bPrefilterDrawn == false)
-    {
-        if (TryLoadEnvCubemapPrefilter(L"./Prebaked/EnvPrefilter.dds") == false)
-        {
-            CreateEnvCubemapPrefilter();
-        }
-        bPrefilterDrawn = true;
-    }
+	if (bConvolutionDrawn == false)
+	{
+		if (TryLoadEnvCubemapConvolution(L"./Prebaked/EnvConvolution.dds") == false)
+		{
+			CreateEnvCubemapConvolution();
+		}
+		bConvolutionDrawn = true;
+	}
+	if (bPrefilterDrawn == false)
+	{
+		if (TryLoadEnvCubemapPrefilter(L"./Prebaked/EnvPrefilter.dds") == false)
+		{
+			CreateEnvCubemapPrefilter();
+		}
+		bPrefilterDrawn = true;
+	}
 
-    if (bLUTCreated == false)
-    {
-        if (TryLoad2DLUTTexture() == false)
-        {
-            Create2DLUTTexture();
-        }
-        bLUTCreated = true;
-    }
+	if (bLUTCreated == false)
+	{
+		if (TryLoad2DLUTTexture() == false)
+		{
+			Create2DLUTTexture();
+		}
+		bLUTCreated = true;
+	}
 
 	check(mDeviceContext != nullptr);
 
@@ -254,19 +276,19 @@ void SSDX11Renderer::DrawCubeScene()
 		v->Draw(deviceContext);
 	}
 
-    mDeferredLightPostProcess->Draw(
-            deviceContext,
-            mGBuffer->GetPositionOutput(),
-            mGBuffer->GetColorOutput(),
-            mGBuffer->GetNormalOutput(),
-            m2DLUTTexture.get(),
-            mEnvCubemapConvolution.get(),
-            mEnvCubemapPrefilter.get());
+	mDeferredLightPostProcess->Draw(
+		deviceContext,
+		mGBuffer->GetPositionOutput(),
+		mGBuffer->GetColorOutput(),
+		mGBuffer->GetNormalOutput(),
+		m2DLUTTexture.get(),
+		mEnvCubemapConvolution.get(),
+		mEnvCubemapPrefilter.get());
 
-    mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
+	mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
 
-    mViewport->Clear(deviceContext);
-    mViewport->SetCurrentRenderTarget(deviceContext);
+	mViewport->Clear(deviceContext);
+	mViewport->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 
@@ -281,7 +303,12 @@ void SSDX11Renderer::DrawCubeScene()
 
 	blitDrawCmd.Do(deviceContext);
 
-	HR(mSwapChain->Present(0, 0));
+	HRESULT hr = mSwapChain->Present(0, 0);
+
+	if (!SUCCEEDED(hr))
+	{
+		OutputDebugStringA("Err");
+	}
 }
 
 
@@ -389,7 +416,15 @@ void SSDX11Renderer::DrawSponzaScene()
 
 	blitDrawCmd.Do(deviceContext);
 
-	HR(mSwapChain->Present(0, 0));
+	HRESULT presentResult = mSwapChain->Present(0, 0);
+	
+	if (presentResult == DXGI_ERROR_DEVICE_HUNG ||
+		presentResult == DXGI_ERROR_DEVICE_REMOVED ||
+		presentResult == DXGI_ERROR_DEVICE_RESET)
+	{
+		OutputDebugStringA("DXGI_Error");
+	}
+
 }
 
 
@@ -433,10 +468,29 @@ void SSDX11Renderer::TestCompileShader()
 bool SSDX11Renderer::CreateDevice()
 {
 	//
-	D3D_FEATURE_LEVEL featureLevel;
-	HR(D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mDeviceContext.ReleaseAndGetAddressOf()));
+	D3D_FEATURE_LEVEL featureLevelArray[] =
+	{
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_0,
+		D3D_FEATURE_LEVEL_9_3,
+		D3D_FEATURE_LEVEL_9_2,
+		D3D_FEATURE_LEVEL_9_1,
+		
+	};
 
-	HR(mDevice->CreateDeferredContext(0, mDeferredContext.ReleaseAndGetAddressOf()));
+	auto length = sizeof(featureLevelArray) / sizeof(D3D_FEATURE_LEVEL);
+
+	D3D_FEATURE_LEVEL outFeatureLevel;
+
+	HRESULT hr = D3D11CreateDevice(mAdapterInfos[0].AdapterPointer,
+		D3D_DRIVER_TYPE_UNKNOWN, 
+		0, 
+		D3D11_CREATE_DEVICE_DEBUG, 
+		featureLevelArray,
+		length, 
+		D3D11_SDK_VERSION, mDevice.GetAddressOf(), &outFeatureLevel, mDeviceContext.ReleaseAndGetAddressOf());
+
 
 	return true;
 }
