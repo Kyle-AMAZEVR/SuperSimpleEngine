@@ -33,8 +33,8 @@ void SSAppWindow::OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			GEngine->GetRenderingThread()->ExecuteInRenderingThread([this]()
 			{
-				GEngine->GetRenderingThread()->ResumeRendering();
 				GEngine->OnWindowResize(windowWidth, windowHeight);
+				GEngine->GetRenderingThread()->ResumeRendering();
 				mPauseRendering = false;
 			});
 		}
@@ -43,6 +43,13 @@ void SSAppWindow::OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 void SSAppWindow::OnEnterSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {	
+	if (GEngine)
+	{
+		if (GEngine->GetRenderingThread()->IsRunning())
+		{
+			GEngine->GetRenderingThread()->PauseRendering();
+		}
+	}
 }
 
 void SSAppWindow::OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
