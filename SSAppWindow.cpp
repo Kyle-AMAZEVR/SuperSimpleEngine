@@ -47,7 +47,10 @@ void SSAppWindow::OnEnterSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 	{
 		if (GEngine->GetRenderingThread()->IsRunning())
 		{
-			GEngine->GetRenderingThread()->PauseRendering();
+			GEngine->GetRenderingThread()->ExecuteInRenderingThread([this]()
+			{
+				GEngine->GetRenderingThread()->PauseRendering();
+			});
 		}
 	}
 }

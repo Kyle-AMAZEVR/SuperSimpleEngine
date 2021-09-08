@@ -205,10 +205,9 @@ void SSGameWindow::HandleMessage()
 		if (!TranslateAccelerator(msg.hwnd, mAccelTable, &msg))
 		{
 			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			DispatchMessage(&msg);	
 		}
 	}
-	
 }
 
 BOOL SSGameWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)

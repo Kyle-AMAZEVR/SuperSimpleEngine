@@ -60,7 +60,7 @@ void SSViewport::Resize(UINT newWidth, UINT newHeight)
 
 
 	// Resize the swap chain and recreate the render target view.
-	HR(dxSwapChain->ResizeBuffers(1, mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, 0));
+	HR(dxSwapChain->ResizeBuffers(0, mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, 0));
 	ID3D11Texture2D* backBuffer;
 	HR(dxSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
 	HR(dxDevice->CreateRenderTargetView(backBuffer, 0, &mRenderTargetView));
