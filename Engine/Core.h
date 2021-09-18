@@ -8,7 +8,6 @@
 #       define ENGINE_API
 #   endif
 
-#define STB_IMAGE_IMPLEMENTATION 1
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
