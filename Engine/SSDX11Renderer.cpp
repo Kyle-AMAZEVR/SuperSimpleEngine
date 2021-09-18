@@ -556,7 +556,7 @@ void SSDX11Renderer::Resize(int newWidth,int newHeight)
 
 bool SSDX11Renderer::CreateSwapChain()
 {
-	HR(mDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMSAAQuality));
+	HR(mDevice->CheckMultisampleQualityLevels(SwapChainFormat, 4, &m4xMSAAQuality));
 
 	HR(mDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&mDebug));
 
