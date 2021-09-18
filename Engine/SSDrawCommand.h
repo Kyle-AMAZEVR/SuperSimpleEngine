@@ -13,14 +13,14 @@ class SSTexture2DBase;
 class IRenderTarget;
 
 
-class ENGINE_API SSDrawCmdBase
+class DX11RENDERER_API SSDrawCmdBase
 {
 public :	
 	virtual void Do(ID3D11DeviceContext* deviceContext) = 0;
 };
 
 
-class ENGINE_API SSChangeRenderTargetCmd : public SSDrawCmdBase
+class DX11RENDERER_API SSChangeRenderTargetCmd : public SSDrawCmdBase
 {
 public:
 	SSChangeRenderTargetCmd(IRenderTarget* renderTarget);
@@ -30,7 +30,7 @@ protected:
 	IRenderTarget* mRenderTarget = nullptr;
 };
 
-class ENGINE_API SSDepthStateChangeCmd: public SSDrawCmdBase
+class DX11RENDERER_API SSDepthStateChangeCmd: public SSDrawCmdBase
 {
 public:
 	SSDepthStateChangeCmd();
@@ -39,7 +39,7 @@ protected:
 };
 
 
-class ENGINE_API SSDrawCommand  : public SSDrawCmdBase
+class DX11RENDERER_API SSDrawCommand  : public SSDrawCmdBase
 {
 public:
 	//SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object);

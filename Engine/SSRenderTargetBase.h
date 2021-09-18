@@ -2,7 +2,7 @@
 
 #include "SSRenderThreadObject.h"
 
-class ENGINE_API IRenderTarget 
+class DX11RENDERER_API IRenderTarget
 {
 public:
 	virtual UINT GetRenderTargetWidth() const = 0;

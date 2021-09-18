@@ -15,7 +15,7 @@ enum class EGBufferType : UINT8
 	Max,
 };
 
-class ENGINE_API SSGBuffer : public SSGenericRenderTarget
+class DX11RENDERER_API SSGBuffer : public SSGenericRenderTarget
 {
 public:
 	SSGBuffer(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT);

@@ -5,7 +5,7 @@
 #include "SSName.h"
 #include <map>
 
-class ENGINE_API SSTextureManager : public Singleton<SSTextureManager>, public SSManagerBase
+class DX11RENDERER_API SSTextureManager : public Singleton<SSTextureManager>, public SSManagerBase
 {
 public:
 	

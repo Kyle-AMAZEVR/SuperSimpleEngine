@@ -5,7 +5,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSDX11Buffer : public SSBufferBase
+class DX11RENDERER_API SSDX11Buffer : public SSBufferBase
 {
 public:   
 

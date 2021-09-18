@@ -4,7 +4,7 @@
 
 class SSTexture2DBase;
 //
-class ENGINE_API SSFXAAPostProcess : public SSPostProcess
+class DX11RENDERER_API SSFXAAPostProcess : public SSPostProcess
 {
 public:
 	SSFXAAPostProcess(UINT width, UINT height);

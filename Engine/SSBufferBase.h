@@ -6,7 +6,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSBufferBase : public SSRenderThreadResidentObject
+class DX11RENDERER_API SSBufferBase : public SSRenderThreadResidentObject
 {
 public:
     virtual UINT GetBufferIndex() { return mBufferIndex; }

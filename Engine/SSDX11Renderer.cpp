@@ -519,7 +519,10 @@ bool SSDX11Renderer::CreateDevice()
 		length, 
 		D3D11_SDK_VERSION, mDevice.GetAddressOf(), &outFeatureLevel, mDeviceContext.ReleaseAndGetAddressOf());
 
-
+	if (hr == 0)
+	{
+		std::cout << "Device created" << std::endl;
+	}
 	return true;
 }
 

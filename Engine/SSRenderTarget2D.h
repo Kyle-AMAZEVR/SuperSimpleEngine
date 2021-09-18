@@ -7,7 +7,7 @@
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSRenderTargetTexture2D : public SSTexture2DBase
+class DX11RENDERER_API SSRenderTargetTexture2D : public SSTexture2DBase
 {
 public:	
 	SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
@@ -28,7 +28,7 @@ protected:
 	bool mGenerateMips = false;	
 };
 
-class ENGINE_API SSDepthRenderTargetTexture2D : public SSTexture2DBase
+class DX11RENDERER_API SSDepthRenderTargetTexture2D : public SSTexture2DBase
 {
 public:
 	SSDepthRenderTargetTexture2D(const UINT width, const UINT height,  DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
@@ -43,7 +43,7 @@ protected:
 	ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
 };
 
-class ENGINE_API SSGenericRenderTarget : public IRenderTarget
+class DX11RENDERER_API SSGenericRenderTarget : public IRenderTarget
 {
 public:
 	SSGenericRenderTarget(UINT width, UINT height, UINT count, bool bDepthExist = true, DXGI_FORMAT eFormat = DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_FORMAT eDepthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);

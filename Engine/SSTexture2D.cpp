@@ -3,7 +3,6 @@
 
 #include "Core.h"
 #include "SSTexture2D.h"
-#include "stb_image.h"
 #include "SSDX11Engine.h"
 
 SSTexture2D::SSTexture2D()

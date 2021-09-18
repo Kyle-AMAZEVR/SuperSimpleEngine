@@ -3,7 +3,7 @@
 #include "SSTexture2DBase.h"
 #include "DirectXTex.h"
 
-class ENGINE_API SSTexture2D : public SSTexture2DBase
+class DX11RENDERER_API SSTexture2D : public SSTexture2DBase
 {
 public:
 	SSTexture2D();	

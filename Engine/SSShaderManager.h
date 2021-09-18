@@ -6,7 +6,7 @@
 
 
 
-class ENGINE_API SSShaderManager : public Singleton<SSShaderManager>, public SSManagerBase
+class DX11RENDERER_API SSShaderManager : public Singleton<SSShaderManager>, public SSManagerBase
 {
 public:
 	virtual void Initialize() override;

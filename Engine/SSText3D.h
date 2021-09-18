@@ -2,7 +2,7 @@
 
 #include "SSGameObject.h"
 
-class ENGINE_API SSText3D : public SSGameObject
+class DX11RENDERER_API SSText3D : public SSGameObject
 {
 public:
 

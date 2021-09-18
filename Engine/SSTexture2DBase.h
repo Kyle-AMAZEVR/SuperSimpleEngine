@@ -6,7 +6,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSTexture2DBase : public SSRenderThreadResidentObject
+class DX11RENDERER_API SSTexture2DBase : public SSRenderThreadResidentObject
 {
 public:
 

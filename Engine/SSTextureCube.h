@@ -3,7 +3,7 @@
 #include "SSTexture2DBase.h"
 #include <vector>
 
-class ENGINE_API SSTextureCube : public SSTexture2DBase
+class DX11RENDERER_API SSTextureCube : public SSTexture2DBase
 {
 public:
 	

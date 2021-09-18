@@ -7,7 +7,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSViewport : public IRenderTarget
+class DX11RENDERER_API SSViewport : public IRenderTarget
 {
 public:
     virtual UINT GetRenderTargetWidth() const override { return mWidth; }

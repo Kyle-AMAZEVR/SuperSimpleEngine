@@ -10,7 +10,7 @@
 using namespace std;
 using Microsoft::WRL::ComPtr;
 
-class ENGINE_API SSCompileContext
+class DX11RENDERER_API SSCompileContext
 {
 public:
     vector<pair<string_view, string_view>> MacroDefines;
@@ -18,7 +18,7 @@ public:
 };
 
 //class ENGINE_API SSShader : public SSRenderThreadObject
-class ENGINE_API SSShader :  public SSRenderThreadResidentObject
+class DX11RENDERER_API SSShader :  public SSRenderThreadResidentObject
 {
 public:
 	virtual ~SSShader(){}
@@ -69,7 +69,7 @@ void SSShader::SetConstantBufferData(std::string bufferName, const T& data)
 
 
 // vertex shader
-class ENGINE_API SSVertexShader : public SSShader
+class DX11RENDERER_API SSVertexShader : public SSShader
 {
 public:
     SSVertexShader() = default;
@@ -107,7 +107,7 @@ void SSVertexShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, s
 }
 
 // pixel shader
-class ENGINE_API SSPixelShader : public SSShader
+class DX11RENDERER_API SSPixelShader : public SSShader
 {
 public:
     SSPixelShader() = default;

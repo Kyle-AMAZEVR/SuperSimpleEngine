@@ -28,16 +28,16 @@ add_subdirectory("../lib/DirectXTex" "./DirectXTex")
 add_subdirectory("../lib/freetype" "./freetype")
 add_subdirectory("../lib/simdjson" "./simdjson")
 
-add_library(SSDX11 SHARED ${SOURCES} ${HEADERS})
+add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 
-add_dependencies(SSDX11 GameModule)
+add_dependencies(DX11Renderer GameModule)
 
-target_link_libraries(SSDX11 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule simdjson)
+target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule simdjson)
 
-target_precompile_headers(SSDX11 PRIVATE "Core.h")
+target_precompile_headers(DX11Renderer PRIVATE "Core.h")
 
-target_compile_definitions(SSDX11 PRIVATE ENGINE_EXPORTS)
-target_compile_definitions(SSDX11 INTERFACE ENGINE_IMPORTS)
+target_compile_definitions(DX11Renderer PRIVATE DX11RENDERER_EXPORTS)
+target_compile_definitions(DX11Renderer INTERFACE DX11RENDERER_IMPORTS)
 
 
 ###########################################################

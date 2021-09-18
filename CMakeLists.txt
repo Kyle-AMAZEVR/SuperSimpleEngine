@@ -26,7 +26,7 @@ add_subdirectory("Engine12")
 
 add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp DXApp.cpp DXWindow.rc)
 
-add_dependencies(SuperSimpleEngine SSDX11)
+add_dependencies(SuperSimpleEngine DX11Renderer)
 add_dependencies(SuperSimpleEngine SSDX12)
 
 
@@ -36,7 +36,7 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(SuperSimpleEngine SSDX11)
+target_link_libraries(SuperSimpleEngine DX11Renderer)
 target_link_libraries(SuperSimpleEngine SSDX12)
 
 #INSTALL( TARGETS SuperSimpleEngine Engine DESTINATION ${CMAKE_BUILD_TYPE})

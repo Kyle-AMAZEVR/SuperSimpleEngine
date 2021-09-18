@@ -10,7 +10,7 @@ struct SSAdapterInfo
 };
 
 
-class ENGINE_API SSDX11Renderer : public SSRenderer
+class DX11RENDERER_API SSDX11Renderer : public SSRenderer
 {
 public:
 	SSDX11Renderer();	

@@ -11,7 +11,7 @@
 using Microsoft::WRL::ComPtr;
 
 // Super Simple
-class ENGINE_API SSDX11Engine : public SSEngineBase
+class DX11RENDERER_API SSDX11Engine : public SSEngineBase
 {
 public:
 	static SSDX11Engine& Get();

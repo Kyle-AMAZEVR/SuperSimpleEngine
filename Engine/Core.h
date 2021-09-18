@@ -1,11 +1,11 @@
 
-#   ifdef ENGINE_EXPORTS
+#   ifdef DX11RENDERER_EXPORTS
 #       define THIS_IS_ENGINE_MODULE
-#       define ENGINE_API __declspec(dllexport)
-#   elif defined(ENGINE_IMPORTS)
-#       define ENGINE_API __declspec(dllimport)
+#       define DX11RENDERER_API __declspec(dllexport)
+#   elif defined(DX11RENDERER_IMPORTS)
+#       define DX11RENDERER_API __declspec(dllimport)
 #   else
-#       define ENGINE_API
+#       define DX11RENDERER_API
 #   endif
 
 

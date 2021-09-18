@@ -2,7 +2,7 @@
 
 #include "SSMeshRenderData.h"
 
-class ENGINE_API SSRenderingObject
+class DX11RENDERER_API SSRenderingObject
 {
 public:
 	SSRenderingObject(class SSObjectBase* pObject);

@@ -10,7 +10,7 @@
 
 bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNormalTexcoordTangent& b);
 
-class ENGINE_API SSObjMesh : public SSGameObject
+class DX11RENDERER_API SSObjMesh : public SSGameObject
 {
 public:
 	SSObjMesh();

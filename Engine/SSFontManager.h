@@ -3,7 +3,7 @@
 
 
 
-class ENGINE_API SSFontCharacter
+class DX11RENDERER_API SSFontCharacter
 {
 public:
 	
@@ -12,7 +12,7 @@ public:
 	std::vector<XMFLOAT2> mPoints;
 };
 
-class ENGINE_API SSFontManager : public Singleton<SSFontManager>
+class DX11RENDERER_API SSFontManager : public Singleton<SSFontManager>
 {
 public:
 	bool IsInitialized() const { return bInitialized; }
