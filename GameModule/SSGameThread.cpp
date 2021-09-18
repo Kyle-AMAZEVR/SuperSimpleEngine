@@ -55,6 +55,8 @@ void SSGameThread::Tick()
 
 	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
 
+	
+
 	// set event
 	SetEvent(mGameThreadDoneEventHandle);
 }

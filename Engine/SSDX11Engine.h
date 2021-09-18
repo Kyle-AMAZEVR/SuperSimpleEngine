@@ -31,7 +31,7 @@ public:
 	ID3D11Device* GetDevice() const;
 	ID3D11DeviceContext* GetImmediateDeviceContext() const;	
 	inline IDXGISwapChain* GetSwapChain() const;
-
+	
 	void Run() override;
 	void TickRenderThread(float deltaTime) override;
 

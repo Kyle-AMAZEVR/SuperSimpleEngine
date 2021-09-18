@@ -5,7 +5,9 @@
 
 void SSViewport::Clear(ID3D11DeviceContext* deviceContext)
 {
-	float Color[4]{ 0.0f, 1.0f, 0.0f, 1.0f };
+	float r = (std::rand() % 100) * 0.01f;
+
+	float Color[4]{ r, 0, 0, 1.0f };
 
 	check(deviceContext);
 
@@ -46,7 +48,7 @@ void SSViewport::Resize(UINT newWidth, UINT newHeight)
 
     UINT msaaQuality;
 
-    HR(dxDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R16G16B16A16_FLOAT, 4, &msaaQuality));    
+    HR(dxDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &msaaQuality));
 
     check ( newWidth > 0 && newHeight > 0 );
     mWidth = newWidth;
@@ -60,7 +62,7 @@ void SSViewport::Resize(UINT newWidth, UINT newHeight)
 
 
 	// Resize the swap chain and recreate the render target view.
-	HR(dxSwapChain->ResizeBuffers(0, mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT, 0));
+	HR(dxSwapChain->ResizeBuffers(0, mWidth, mHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
 	ID3D11Texture2D* backBuffer;
 	HR(dxSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
 	HR(dxDevice->CreateRenderTargetView(backBuffer, 0, &mRenderTargetView));

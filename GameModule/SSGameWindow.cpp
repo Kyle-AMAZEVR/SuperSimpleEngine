@@ -201,12 +201,9 @@ void SSGameWindow::HandleMessage()
 	MSG msg{};
 
 	if(PeekMessage(&msg, nullptr, 0,0, PM_REMOVE))
-	{	
-		if (!TranslateAccelerator(msg.hwnd, mAccelTable, &msg))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);	
-		}
+	{		
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);	
 	}
 }
 

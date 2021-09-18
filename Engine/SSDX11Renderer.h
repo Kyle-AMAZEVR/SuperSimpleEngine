@@ -28,10 +28,13 @@ public:
 	void AppendRenderCommand(class SSDrawCmdBase* cmd);
 	void FlushRenderCommands();
 
+	DXGI_FORMAT SwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+
 protected:
 	void DrawCubeScene();
 	void DrawSponzaScene();
 	void DrawSkybox();
+	void DrawDummyScene();
 	
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
 

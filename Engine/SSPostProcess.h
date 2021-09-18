@@ -8,7 +8,7 @@ class SSTexture2DBase;
 class ENGINE_API SSPostProcess
 {
 public:	
-	SSPostProcess(UINT width , UINT height, UINT rtCount=1, bool bDepthExist =false, bool bFixed =false, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
+	SSPostProcess(UINT width , UINT height, UINT rtCount=1, bool bDepthExist =false, bool bFixed =false, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 	
 	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0) {}
 	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1) {}

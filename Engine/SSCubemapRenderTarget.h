@@ -23,7 +23,7 @@ enum class ECubemapFace : unsigned char
 class SSCubemapRenderTarget : public IRenderTarget, public SSTextureCube
 {
 public:
-	SSCubemapRenderTarget(UINT width, UINT height ,DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
+	SSCubemapRenderTarget(UINT width, UINT height ,DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 	virtual ~SSCubemapRenderTarget();
 	
 	void SetCurrentRTAs(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
@@ -63,7 +63,7 @@ protected:
 class SSPrefilterCubemapRenderTarget : public SSCubemapRenderTarget
 {
 public:
-	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);		
+	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 	virtual void CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext) override;	
 	void SetCurrentRTAs(ID3D11DeviceContext* deviceContext, ECubemapFace eFace, UINT mip);
 	

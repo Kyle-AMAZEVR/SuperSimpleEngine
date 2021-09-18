@@ -113,9 +113,19 @@ void SSDX11Engine::Run()
 	
 	EngineStart();
 
-	while(!bRequestExit)
+	// Main message loop
+	MSG msg = { 0 };
+	while (!bRequestExit)
 	{
-		mGameThread->Tick();
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else
+		{
+			mGameThread->Tick();
+		}
 	}
 
 	Shutdown();
