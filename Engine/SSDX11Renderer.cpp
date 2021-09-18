@@ -278,15 +278,13 @@ void SSDX11Renderer::DrawCubeScene()
 		bLUTCreated = true;
 	}
 
-	check(mDeviceContext != nullptr);
-
-	auto* deviceContext = GetImmediateDeviceContext();
-	check(deviceContext);
-
 	// @draw cubemap to gbuffer
 	// @start
-	mGBuffer->Clear(deviceContext);
-	mGBuffer->SetCurrentRenderTarget(deviceContext);
+
+	ID3D11DeviceContext* deviceContext = mDeviceContext.Get();
+
+	mGBuffer->Clear(mDeviceContext.Get());
+	mGBuffer->SetCurrentRenderTarget(mDeviceContext.Get());
 
 	// cubemap draw
 	DrawSkybox();
@@ -314,9 +312,9 @@ void SSDX11Renderer::DrawCubeScene()
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 
-	if (true)
+	if (false)
 	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
+		blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
 	}
 	else
 	{
@@ -324,6 +322,7 @@ void SSDX11Renderer::DrawCubeScene()
 	}
 
 	blitDrawCmd.Do(deviceContext);
+
 
 	HRESULT presentResult = mSwapChain->Present(0, 0);
 
@@ -570,29 +569,6 @@ bool SSDX11Renderer::CreateSwapChain()
 	IDXGIFactory* dxgiFactory = nullptr;
 	HR(dxgiAdaptor->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory));
 
-	DXGI_SWAP_CHAIN_DESC sd{};
-
-	sd.SampleDesc.Count = 1;
-	sd.SampleDesc.Quality = 0;
-
-	sd.BufferDesc.Width = mBufferWidth;
-	sd.BufferDesc.Height = mBufferHeight;
-	sd.BufferDesc.RefreshRate.Numerator = 120;
-	sd.BufferDesc.RefreshRate.Denominator = 1;
-
-	// sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.BufferDesc.Format = SwapChainFormat;
-	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	//sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount = 2;
-	sd.OutputWindow = mWindowHandle;
-	sd.Windowed = true;
-	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	//sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-	sd.Flags = 0;
-
 	// Create swap chain
 	IDXGIFactory2* dxgiFactory2 = nullptr;
 	HR(dxgiFactory->QueryInterface(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory2)));
@@ -611,10 +587,11 @@ bool SSDX11Renderer::CreateSwapChain()
 		sd.Width = mBufferWidth;
 		sd.Height = mBufferHeight;
 		sd.Format = SwapChainFormat;
-		sd.SampleDesc.Count = 1;
-		sd.SampleDesc.Quality = 0;
+		sd.SampleDesc.Count = 4;
+		sd.SampleDesc.Quality = m4xMSAAQuality-1;
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		sd.BufferCount = 1;
+		sd.BufferCount = 2;
+		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 		HR(dxgiFactory2->CreateSwapChainForHwnd(mDevice.Get(), mWindowHandle, &sd, nullptr, nullptr, &SwapChain1));
 		

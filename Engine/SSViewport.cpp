@@ -7,7 +7,7 @@ void SSViewport::Clear(ID3D11DeviceContext* deviceContext)
 {
 	float r = (std::rand() % 100) * 0.01f;
 
-	float Color[4]{ r, 0, 0, 1.0f };
+	float Color[4]{ 1, 0, 0, 1.0f };
 
 	check(deviceContext);
 
