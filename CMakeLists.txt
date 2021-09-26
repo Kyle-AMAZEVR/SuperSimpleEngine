@@ -17,11 +17,13 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 include_directories("Engine")
 include_directories("Engine12")
 include_directories("GameModule")
+include_directories("Core")
 
 message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory("Engine")
 add_subdirectory("Engine12")
+add_subdirectory("Core")
 
 
 add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp DXApp.cpp DXWindow.rc)

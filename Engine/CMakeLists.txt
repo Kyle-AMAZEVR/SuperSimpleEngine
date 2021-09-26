@@ -30,8 +30,6 @@ add_subdirectory("../lib/simdjson" "./simdjson")
 
 add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 
-add_dependencies(DX11Renderer GameModule)
-
 target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule simdjson)
 
 target_precompile_headers(DX11Renderer PRIVATE "Core.h")
