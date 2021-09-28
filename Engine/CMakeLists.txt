@@ -23,11 +23,6 @@ include_directories("../lib/freetype/include")
 include_directories("../GameModule")
 include_directories("../lib/simdjson")
 
-#add_subdirectory("lib/DirectXTK")
-add_subdirectory("../lib/DirectXTex" "./DirectXTex")
-add_subdirectory("../lib/freetype" "./freetype")
-add_subdirectory("../lib/simdjson" "./simdjson")
-
 add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 
 target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule simdjson)

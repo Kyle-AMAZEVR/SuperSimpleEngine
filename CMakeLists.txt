@@ -24,7 +24,9 @@ message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 add_subdirectory("Engine")
 add_subdirectory("Engine12")
 add_subdirectory("Core")
-
+add_subdirectory("lib/DirectXTex")
+add_subdirectory("lib/simdjson")
+add_subdirectory("lib/freetype")
 
 add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp DXApp.cpp DXWindow.rc)
 
@@ -38,15 +40,11 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(SuperSimpleEngine DX11Renderer)
-target_link_libraries(SuperSimpleEngine SSDX12)
-
-#INSTALL( TARGETS SuperSimpleEngine Engine DESTINATION ${CMAKE_BUILD_TYPE})
+target_link_libraries(SuperSimpleEngine DX11Renderer SSDX12 GameModule)
 
 
-add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Shader $<TARGET_FILE_DIR:SuperSimpleEngine>/Shader)
-add_custom_command(TARGET SuperSimpleEngine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resource $<TARGET_FILE_DIR:SuperSimpleEngine>/Resource)
-
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resource DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 ###########################################################
