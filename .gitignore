@@ -51,3 +51,4 @@ GameModule/CMakeFiles/*
 Makefile
 CMakeDirectoryInformation.cmake
 generate.stamp.depend
+*.cmake
