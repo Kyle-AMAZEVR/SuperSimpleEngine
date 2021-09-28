@@ -21,37 +21,12 @@
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
 #endif
-// Next default values for new objects
-//
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-
-#define _APS_NO_MFC					130
-#define _APS_NEXT_RESOURCE_VALUE	129
-#define _APS_NEXT_COMMAND_VALUE		32771
-#define _APS_NEXT_CONTROL_VALUE		1000
-#define _APS_NEXT_SYMED_VALUE		110
-#endif
-#endif
 
 #define MAX_LOADSTRING 100
 // Global Variables:
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-
-// Next default values for new objects
-//
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-
-#define _APS_NO_MFC					130
-#define _APS_NEXT_RESOURCE_VALUE	129
-#define _APS_NEXT_COMMAND_VALUE		32771
-#define _APS_NEXT_CONTROL_VALUE		1000
-#define _APS_NEXT_SYMED_VALUE		110
-#endif
-#endif
 
 SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
 	: InstanceHandle(_hInstance)
@@ -158,8 +133,8 @@ LRESULT CALLBACK SSGameWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, L
 	auto iter = MsgHandlerMap[message];
 
 	if (iter == nullptr)
-	{
-		return DefWindowProc(hWnd, message, wParam, lParam);
+	{		
+		return DefWindowProcW(hWnd, message, wParam, lParam);
 	}
 	else
 	{	
@@ -209,7 +184,8 @@ void SSGameWindow::HandleMessage()
 
 BOOL SSGameWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-	WindowHandle = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+	
+	WindowHandle = CreateWindowW(szWindowClass, L"SuperSimple", WS_OVERLAPPEDWINDOW | WS_BORDER,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
 	if (!WindowHandle)
@@ -225,10 +201,8 @@ BOOL SSGameWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 WORD SSGameWindow::RegisterWindowClass(HINSTANCE hInstance)
 {
-	WNDCLASSEXW wcex;
-
-	wcex.cbSize = sizeof(WNDCLASSEX);
-
+	WNDCLASSEXW wcex{};
+	wcex.cbSize = sizeof(WNDCLASSEX);	
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = &SSGameWindow::WndProc;
 	wcex.cbClsExtra = 0;
