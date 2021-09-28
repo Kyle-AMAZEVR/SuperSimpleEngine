@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "Engine/Core.h"
+#include "Renderer/Core.h"
 #include "GameModule/SSGameWindow.h"
 
 class SSAppWindow : public SSGameWindow

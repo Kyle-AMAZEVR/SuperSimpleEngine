@@ -14,14 +14,14 @@ set(SIMDJSON_JUST_LIBRARY 1)
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-include_directories("Engine")
+include_directories("Renderer")
 include_directories("Engine12")
 include_directories("GameModule")
 include_directories("Core")
 
 message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-add_subdirectory("Engine")
+add_subdirectory("Renderer")
 add_subdirectory("Engine12")
 add_subdirectory("Core")
 add_subdirectory("lib/DirectXTex")
