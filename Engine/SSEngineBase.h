@@ -8,8 +8,9 @@ using namespace std;
 class SSGameThread;
 class SSRenderingThread;
 
+#include "SSEngine.h"
 
-class GAMEMODULE_API SSEngineBase
+class ENGINE_API SSEngineBase
 {
 public:
 	SSEngineBase() = default;
@@ -45,4 +46,4 @@ protected:
 	bool bRequestExit = false;
 };
 
-extern "C" GAMEMODULE_API SSEngineBase* GEngine;
+extern "C" ENGINE_API SSEngineBase* GEngine;

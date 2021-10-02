@@ -1,5 +1,5 @@
 
-#include "Core.h"
+
 #include "SSDX11Engine.h"
 #include "SSTexture2D.h"
 #include "SSObjMesh.h"

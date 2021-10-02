@@ -1,3 +1,4 @@
+#pragma once
 
 #   ifdef ENGINE_EXPORTS
 #		define THIS_IS_ENGINE_MODULE
@@ -9,9 +10,3 @@
 #   else
 #       define ENGINE_API
 #   endif
-
-class ENGINE_API SSEngine
-{
-public:
-	void HelloWorld();
-};

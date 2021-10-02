@@ -353,7 +353,7 @@ void SSPixelShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string n
 {
 	check(deviceContext != nullptr);
 
-	if (mTextureMap.count(name) > 0)
+	if (mTextureMap.count(name) > 0 && texture != nullptr)
 	{
 		UINT slotIndex = mTextureMap[name];
 

@@ -1,5 +1,4 @@
 
-#include "SSCommon.h"
 #include "SSEngineBase.h"
 #include "SSGameWindow.h"
 
