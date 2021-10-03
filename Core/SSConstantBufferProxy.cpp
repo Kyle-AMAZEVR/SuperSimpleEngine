@@ -1,4 +1,4 @@
-#include "SSCommon.h"
+#include "SSCore.h"
 #include "SSConstantBufferProxy.h"
 
 SSConstantBufferProxy::~SSConstantBufferProxy()

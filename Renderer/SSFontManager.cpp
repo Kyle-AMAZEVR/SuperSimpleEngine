@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSCore.h"
 #include "SSFontManager.h"
 #include "ft2build.h"
 #include FT_FREETYPE_H

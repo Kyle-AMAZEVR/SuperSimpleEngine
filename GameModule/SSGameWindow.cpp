@@ -1,4 +1,5 @@
-#include "SSCommon.h"
+#include "SSGameModule.h"
+#include "SSCore.h"
 #include "SSGameWindow.h"
 #include "SSTimer.h"
 #include "SSInputManager.h"

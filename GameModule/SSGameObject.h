@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SSGameModule.h"
 #include "SSMeshRenderData.h"
 #include "SSObjectBase.h"
 

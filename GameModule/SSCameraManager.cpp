@@ -1,5 +1,5 @@
 
-#include "SSCommon.h"
+#include "SSCore.h"
 #include "SSFreeCamera.h"
 #include "SSCameraManager.h"
 #include "SSMathHelper.h"

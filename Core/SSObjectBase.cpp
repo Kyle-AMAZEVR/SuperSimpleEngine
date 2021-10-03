@@ -1,5 +1,5 @@
 
-#include "SSCommon.h"
+#include "SSCore.h"
 #include "SSObjectBase.h"
 
 using namespace DirectX;

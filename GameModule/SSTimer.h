@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "SSCommon.h"
+#include "SSGameModule.h"
 
 class GAMEMODULE_API SSGameTimer
 {

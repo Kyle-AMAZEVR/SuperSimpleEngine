@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SSGameModule.h"
 #include <fstream>
 #include <vector>
 #include <map>

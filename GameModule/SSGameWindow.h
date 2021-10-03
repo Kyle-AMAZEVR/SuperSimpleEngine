@@ -1,6 +1,7 @@
 #pragma once
-#include <windows.h>
 
+#include "SSGameModule.h"
+#include <windows.h>
 #include <functional>
 #include <map>
 

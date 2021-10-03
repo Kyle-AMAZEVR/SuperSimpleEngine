@@ -1,4 +1,6 @@
 #pragma once
+
+#include "SSGameModule.h"
 #include "DirectXMath.h"
 
 using namespace DirectX;

@@ -1,5 +1,5 @@
 
-#include "SSCommon.h"
+#include "SSGameModule.h"
 #include "SSTangentVectorGenerator.h"
 
 std::vector<XMFLOAT4> SSTangentVectorGenerator::GenerateTangents(const std::vector<XMFLOAT4>& tempVertexList,

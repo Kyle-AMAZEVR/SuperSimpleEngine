@@ -1,6 +1,6 @@
 
 #ifdef THIS_IS_GAMEMODULE
-#include "SSCommon.h"
+#include "SSGameModule.h"
 #endif
 #ifdef THIS_IS_ENGINE_MODULE
 #include "Core.h"

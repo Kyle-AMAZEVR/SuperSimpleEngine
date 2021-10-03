@@ -1,4 +1,4 @@
-#include "Core.h"
+#include "SSCore.h"
 #include "SSSamplerManager.h"
 #include "SSDX11Renderer.h"
 

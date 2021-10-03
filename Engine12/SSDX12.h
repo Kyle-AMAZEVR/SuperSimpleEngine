@@ -15,7 +15,7 @@
 #include <wrl.h>
 #include <wrl/client.h>
 #include <combaseapi.h>
-#include "SSCommon.h"
+#include "SSGameModule.h"
 #include "d3dcompiler.h"
 #include "DirectXMath.h"
 #include <cassert>

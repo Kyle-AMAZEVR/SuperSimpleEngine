@@ -19,11 +19,7 @@ public:
 	virtual void OnWindowResize(int newWidth, int newHeight) = 0;	
 	virtual void EngineStart();
 	
-
 	virtual void Run() = 0;
-
-
-	virtual void TickRenderThread(float deltaTime) = 0;
 
 	static SSGameThread* GetGameThread()  { return mGameThread; }
 	static SSRenderingThread* GetRenderingThread()  { return mRenderingThread; }

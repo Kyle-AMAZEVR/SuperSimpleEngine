@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSCore.h"
 #include "SSRasterizeStateManager.h"
 #include "SSDX11Renderer.h"
 

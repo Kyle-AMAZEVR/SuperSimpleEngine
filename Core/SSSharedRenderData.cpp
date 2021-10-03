@@ -1,6 +1,6 @@
 
 
-#include "SSCommon.h"
+#include "SSCore.h"
 #include "SSSharedRenderData.h"
 
 using namespace DirectX;

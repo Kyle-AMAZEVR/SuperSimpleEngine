@@ -22,7 +22,7 @@ include_directories("../Core")
 
 add_library(GameModule SHARED ${SOURCES} ${HEADERS})
 
-target_precompile_headers(GameModule PRIVATE "SSCommon.h")
+target_precompile_headers(GameModule PRIVATE "SSGameModule.h")
 
 target_link_libraries(GameModule d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib freetype simdjson Core)
 

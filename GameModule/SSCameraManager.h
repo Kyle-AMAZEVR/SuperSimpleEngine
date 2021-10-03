@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "SSGameModule.h"
 #include "SSCameraBase.h"
 
 using namespace DirectX;

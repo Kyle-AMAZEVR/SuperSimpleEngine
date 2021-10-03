@@ -1,6 +1,6 @@
 #pragma once
+#include "SSGameModule.h"
 #include <DirectXMath.h>
-
 
 class GAMEMODULE_API SSCameraBase
 {

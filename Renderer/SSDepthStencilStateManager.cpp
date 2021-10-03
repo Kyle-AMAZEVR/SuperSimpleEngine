@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSCore.h"
 #include "SSDepthStencilStateManager.h"
 #include "SSDX11Renderer.h"
 
