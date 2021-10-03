@@ -2,12 +2,13 @@
 
 #pragma once
 
+#include "SSCore.h"
 #include <map>
 #include <unordered_map>
 #include <vector>
 #include "Singleton.h"
 
-class GAMEMODULE_API SSName
+class CORE_API SSName
 {
 public:
 	SSName(){}
@@ -82,7 +83,7 @@ protected:
 };
 
 
-class GAMEMODULE_API SSNameBucket : public Singleton<SSNameBucket>
+class CORE_API SSNameBucket : public Singleton<SSNameBucket>
 {
 public:
 	SSNameBucket();
@@ -93,9 +94,27 @@ public:
 protected:
 
 	std::vector<std::vector<std::string>> mNameBucket;
-	UINT mBucketSize = 8192;
-
-	
-
+	unsigned int mBucketSize = 8192;
 };
+
+
+template<class T>
+class TestTemplateClass
+{
+public:
+	static T& Get()
+	{
+		if (mInstance == nullptr)
+		{
+			mInstance = new T();
+		}
+		return *mInstance;
+	}
+private:
+	static T* mInstance;
+};
+
+template<class T>
+T* TestTemplateClass<T>::mInstance = nullptr;
+
 

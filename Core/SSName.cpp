@@ -1,8 +1,6 @@
 
-#include "SSCommon.h"
+#include "SSCore.h"
 #include "SSName.h"
-#include "SSFreeCamera.h"
-
 
 SSName::SSName(const SSName& other)
 {
@@ -43,7 +41,7 @@ SSNameBucket::SSNameBucket()
 
 size_t SSNameBucket::AddName(size_t hashValue, const std::string& name)
 {
-	UINT bucketIndex = hashValue % mBucketSize;
+	unsigned int bucketIndex = hashValue % mBucketSize;
 
 	if (mNameBucket[bucketIndex].size() > 0)
 	{
@@ -73,7 +71,7 @@ const std::string& SSNameBucket::GetName(const SSName* name) const
 {
 	auto& Ptr = TestTemplateClass<double>::Get();
 
-	UINT bucketIndex = name->mHashValue % mBucketSize;
+	unsigned int bucketIndex = name->mHashValue % mBucketSize;
 
 	if (mNameBucket[bucketIndex].size() > 0)
 	{

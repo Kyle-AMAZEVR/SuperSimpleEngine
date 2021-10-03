@@ -28,6 +28,10 @@ public:
 	static SSGameThread* GetGameThread()  { return mGameThread; }
 	static SSRenderingThread* GetRenderingThread()  { return mRenderingThread; }
 
+	void WaitForGameThread(const DWORD WaitTime);
+	void WaitForRenderingTheread(const DWORD WaitTime);
+
+
 	static DWORD MainThreadId;
 
 	void RequestExit() { bRequestExit = true; }

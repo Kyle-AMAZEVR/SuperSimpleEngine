@@ -1,12 +1,13 @@
 
 
 #pragma once
+#include "SSCore.h"
 #include "Singleton.h"
 #include "SSVertexTypes.h"
 #include <vector>
 
 
-class GAMEMODULE_API SSSharedRenderData : public Singleton<SSSharedRenderData>
+class CORE_API SSSharedRenderData : public Singleton<SSSharedRenderData>
 {
 public:
 	void Initialize();

@@ -1,7 +1,8 @@
 #pragma once
 
+#include "SSCore.h"
 
-class GAMEMODULE_API SSConstantBufferProxy
+class CORE_API SSConstantBufferProxy
 {
 public:
 	SSConstantBufferProxy(){}

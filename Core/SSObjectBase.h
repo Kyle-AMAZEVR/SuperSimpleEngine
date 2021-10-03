@@ -1,7 +1,9 @@
 #pragma once
+
+#include "SSCore.h"
 #include "SSMeshRenderData.h"
 
-class GAMEMODULE_API SSObjectBase
+class CORE_API SSObjectBase
 {
 public:
 	SSObjectBase();

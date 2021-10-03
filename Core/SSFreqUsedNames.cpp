@@ -1,5 +1,6 @@
 
-#include "SSCommon.h"
+#include "SSCore.h"
+#include "SSName.h"
 #include "SSFreqUsedNames.h"
 
 

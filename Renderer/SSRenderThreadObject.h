@@ -1,9 +1,9 @@
 
 #pragma once
-
+#include "Core.h"
 #include "SSObjectBase.h"
 
-class GAMEMODULE_API SSRenderThreadObject : public SSObjectBase
+class DX11RENDERER_API SSRenderThreadObject : public SSObjectBase
 {
 public:
 	SSRenderThreadObject();
@@ -12,7 +12,7 @@ public:
 	
 };
 
-class GAMEMODULE_API SSRenderThreadResidentObject
+class DX11RENDERER_API SSRenderThreadResidentObject
 {
 public:
 	SSRenderThreadResidentObject();

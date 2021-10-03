@@ -1,6 +1,7 @@
 
 #include "SSEngineBase.h"
 #include "SSGameWindow.h"
+#include "SSGameThread.h"
 
 
 void SSEngineBase::EngineStart()
@@ -11,6 +12,15 @@ void SSEngineBase::EngineStart()
 	// start rendering thread
 	mRenderingThread = new SSRenderingThread();
 	mRenderingThread->Start(SSGameWindow::GetPtr()->GetWindowHandle(), this);
+}
+
+void SSEngineBase::WaitForGameThread(const DWORD WaitTime)
+{
+	mGameThread->WaitForGameThread(WaitTime);
+}
+void SSEngineBase::WaitForRenderingTheread(const DWORD WaitTime)
+{
+
 }
 
 

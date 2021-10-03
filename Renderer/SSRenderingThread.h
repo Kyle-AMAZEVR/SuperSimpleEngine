@@ -1,9 +1,10 @@
 #pragma once
+#include "SSCore.h"
 #include <functional>
 #include <deque>
 
 
-class GAMEMODULE_API SSRenderingThread
+class DX11RENDERER_API SSRenderingThread
 {
 public:	
     void Start(HWND handle, class SSEngineBase* pEngine);

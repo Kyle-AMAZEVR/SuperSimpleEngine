@@ -1,5 +1,5 @@
 
-#include "SSCommon.h"
+#include "SSCore.h"
 #include "SSRenderingThread.h"
 #include "Windows.h"
 #include "SSTimer.h"
@@ -40,7 +40,7 @@ DWORD SSRenderingThread::Run()
 
 	while (1)
 	{
-		mEngineInstance->GetGameThread()->WaitForGameThread(100);
+		mEngineInstance->WaitForGameThread(100);
 		
 		// consume command queue
 		{
