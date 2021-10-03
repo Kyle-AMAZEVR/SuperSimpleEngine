@@ -33,12 +33,12 @@ public:
 	inline IDXGISwapChain* GetSwapChain() const;
 	
 	void Run() override;
-	void TickRenderThread(float deltaTime) override;
 
 protected:
 
 	static SSDX11Engine* mInstance;
 
+	// renderer
 	class SSDX11Renderer* mRenderer = nullptr;
 
 	class SSGameScene* mCurrentScene = nullptr;

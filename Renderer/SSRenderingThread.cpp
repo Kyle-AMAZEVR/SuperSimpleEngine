@@ -4,8 +4,8 @@
 #include "Windows.h"
 #include "SSTimer.h"
 #include "SSEngineBase.h"
-#include "SSGameThread.h"
 #include "SSDX11Renderer.h"
+#include "SSRenderingObjectManager.h"
 
 void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 {
@@ -15,6 +15,7 @@ void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
 	InitializeCriticalSection(&mCriticalSection);
 	mEventName = "RenderingThreadDoneEvent";
 	mRenderingDoneEventHandle = CreateEvent(nullptr, false, false, mEventName);
+	mGameThreadWaitHandle = CreateEvent(nullptr, false, false, "GameThreadWaitHandle");
 }
 
 void SSRenderingThread::SetRenderer(class SSRenderer* renderer)
@@ -27,6 +28,11 @@ void SSRenderingThread::WaitForRenderingThread(const DWORD WaitTime)
 	WaitForSingleObject(mRenderingDoneEventHandle, WaitTime);
 }
 
+// called from engine when game thread done
+void SSRenderingThread::SetGameThreadDone()
+{
+	SetEvent(mGameThreadWaitHandle);
+}
 
 DWORD SSRenderingThread::Run()
 {
@@ -40,8 +46,13 @@ DWORD SSRenderingThread::Run()
 
 	while (1)
 	{
-		mEngineInstance->WaitForGameThread(100);
-		
+		// wait for game thread done
+		DWORD Result = WaitForSingleObject(mGameThreadWaitHandle, 100);
+		if (Result != WAIT_OBJECT_0)
+		{
+			// game thread wait time expired 
+		}
+
 		// consume command queue
 		{
 			EnterCriticalSection(&mCriticalSection);
@@ -60,7 +71,11 @@ DWORD SSRenderingThread::Run()
 
 		// Tick Rendering Thread
 
-		mEngineInstance->TickRenderThread(renderingThreadTimer.GetDeltaTime());
+		if (mRenderer)
+		{
+			SSRenderingObjectManager::Get().Tick(renderingThreadTimer.GetDeltaTime());
+			mRenderer->DrawScene();
+		}
 
 		SetEvent(mRenderingDoneEventHandle);
 

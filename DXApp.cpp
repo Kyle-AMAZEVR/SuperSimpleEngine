@@ -14,7 +14,7 @@
 #include "d3d11.h"
 #include "DXApp.h"
 #include "Renderer/Core.h"
-#include "Renderer/SSDX11Engine.h"
+#include "Engine/SSDX11Engine.h"
 #include "GameModule/SSGameWindow.h"
 #include "SSAppWindow.h"
 #include "SSEngine12.h"

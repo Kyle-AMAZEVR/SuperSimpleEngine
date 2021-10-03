@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include "SSCommon.h"
+
 class GAMEMODULE_API SSGameTimer
 {
 public:

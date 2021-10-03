@@ -125,19 +125,11 @@ void SSDX11Engine::Run()
 		else
 		{
 			mGameThread->Tick();
+			mRenderingThread->SetGameThreadDone();
 		}
 	}
 
 	Shutdown();
 }
 
-void SSDX11Engine::TickRenderThread(float deltaTime)
-{
-	if (mRenderer)
-	{
-		SSRenderingObjectManager::Get().Tick(deltaTime);
-
-		mRenderer->DrawScene();
-	}
-}
 

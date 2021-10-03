@@ -1,5 +1,5 @@
 #pragma once
-#include "SSCore.h"
+#include "Core.h"
 #include <functional>
 #include <deque>
 
@@ -20,12 +20,17 @@ public:
 
 	void WaitForRenderingThread(const DWORD WaitTime = INFINITE);
 
+	void SetGameThreadDone();
+
 	void SetRenderer(class SSRenderer* renderer);
 
 	void PauseRendering();
 	void ResumeRendering();
 
+
 protected:
+
+	HANDLE mGameThreadWaitHandle = nullptr;
 	HANDLE mThreadHandle = nullptr;
 	static DWORD mRenderingThreadId;
     static DWORD Run(LPVOID param);

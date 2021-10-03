@@ -1,9 +1,10 @@
 #pragma once
 
+
 #include <map>
 #include "Singleton.h"
 
-class SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
+class DX11RENDERER_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
 {
 public:
 	void Tick(float deltaSeconds);

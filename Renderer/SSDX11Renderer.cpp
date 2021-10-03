@@ -520,7 +520,7 @@ bool SSDX11Renderer::CreateDevice()
 		
 	};
 
-	auto length = sizeof(featureLevelArray) / sizeof(D3D_FEATURE_LEVEL);
+	UINT length = sizeof(featureLevelArray) / sizeof(D3D_FEATURE_LEVEL);
 
 	D3D_FEATURE_LEVEL outFeatureLevel;
 
