@@ -57,7 +57,7 @@ bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 		mTextureFormat = description.Format = metaData.format;
 	}
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
 	
 	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
 	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
@@ -66,7 +66,7 @@ bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 	resourceViewDesc.Texture2D.MipLevels = static_cast<UINT>(metaData.mipLevels);
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
 
 	for (UINT face = 0; face < 6; ++face)
 	{
@@ -76,7 +76,7 @@ bool SSTextureCube::LoadFromDDSFile(std::wstring filename)
 			check(pLodImage != nullptr);
 
 			auto dstSubresource = D3D11CalcSubresource(mipLevel, face, static_cast<UINT>(metaData.mipLevels));			
-			SSDX11Engine::Get().GetImmediateDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
+			SSDX11Renderer::Get().GetImmediateDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
 		}
 	}	
 

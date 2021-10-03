@@ -100,7 +100,7 @@ bool SSTexture2D::LoadInternal(ID3D11DeviceContext* deviceContext, const DirectX
 	}
 
 	//
-	HR(SSDX11Engine::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
 	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
@@ -109,7 +109,7 @@ bool SSTexture2D::LoadInternal(ID3D11DeviceContext* deviceContext, const DirectX
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 	resourceViewDesc.Texture2D.MipLevels = static_cast<UINT>(metaData.mipLevels);
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
 
 	// update lod data
 	for (int i = 0; i < metaData.mipLevels; ++i)

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "SSConstantBufferProxy.h"
+#include "SSDX11Renderer.h"
 
 template<class TBufferType>
 class SSTypedConstantBuffer : public SSBufferBase
@@ -29,7 +30,7 @@ SSTypedConstantBuffer<TBufferType>::SSTypedConstantBuffer()
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = sizeof(TBufferType);
 
-    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
+    HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
 }
 
 
@@ -40,11 +41,11 @@ void SSTypedConstantBuffer<TBufferType>::Write(const TBufferType& data)
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-    HR(SSDX11Engine::Get().GetImmediateDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
+    HR(SSDX11Renderer::Get().GetImmediateDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
     
     memcpy(mappedResource.pData, &data, sizeof(data));
 
-    HR(SSDX11Engine::Get().GetImmediateDeviceContext()->Unmap(mpBuffer, 0));   
+    HR(SSDX11Renderer::Get().GetImmediateDeviceContext()->Unmap(mpBuffer, 0));
     
 }
 
@@ -59,7 +60,7 @@ struct VariableInConstantBufferInfo
     std::string Name;
 };
 
-class SSGenericConstantBuffer : public SSDX11Buffer
+class DX11RENDERER_API SSGenericConstantBuffer : public SSDX11Buffer
 {
 public:
     SSGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);

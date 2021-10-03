@@ -11,6 +11,7 @@ class SSPixelShader;
 class SSTexture2DBase;
 
 #include "SSConstantBufferProxy.h"
+#include "DXConstantBuffer.h"
 
 class DX11RENDERER_API SSMaterial : public SSRenderThreadResidentObject
 {

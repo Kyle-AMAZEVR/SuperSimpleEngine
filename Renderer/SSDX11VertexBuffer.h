@@ -63,7 +63,7 @@ void SSDX11InstancedVertexBuffer::SetInstanceVertexBufferData(const std::vector<
         vertexSubresourceData.SysMemPitch = 0;
         vertexSubresourceData.SysMemSlicePitch = 0;
 
-        HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
+        HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
 
         mStride = sizeof(T);
         mInstanceCount = static_cast<UINT>(instanceData.size());
@@ -87,7 +87,7 @@ void SSDX11VertexBuffer::InternalCreateVertexBuffer(const std::vector<T>& vertex
 	vertexSubresourceData.SysMemPitch = 0;
 	vertexSubresourceData.SysMemSlicePitch = 0;
 
-    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
+    HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, &vertexSubresourceData, &mpBuffer));
 
 	mStride = sizeof(T);
 	mVertexCount = static_cast<UINT>(vertexData.size());

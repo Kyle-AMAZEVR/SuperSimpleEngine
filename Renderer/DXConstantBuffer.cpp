@@ -1,7 +1,6 @@
 
 #include "Core.h"
 #include "DXConstantBuffer.h"
-#include "SSDX11Engine.h"
 #include "SSShader.h"
 
 // trigger compile
@@ -51,7 +50,7 @@ SSGenericConstantBuffer::SSGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = mBufferSize;
 
-    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, mpBuffer.ReleaseAndGetAddressOf()));
+    HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, mpBuffer.ReleaseAndGetAddressOf()));
 }
 
 SSGenericConstantBuffer::~SSGenericConstantBuffer()
