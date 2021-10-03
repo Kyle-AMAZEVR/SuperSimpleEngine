@@ -1,10 +1,9 @@
 
-#include "SSRendererModulePCH.h"
 #include "SSCube.h"
 #include "SSSphere.h"
-#include "SSDX11CubeScene.h"
+#include "SSCubeScene.h"
 
-void SSDX11CubeScene::InitializeScene()
+void SSCubeScene::InitializeScene()
 {
 	mCube = std::make_shared<SSCube>();
 	mCube->SetPositionX(10);
@@ -17,7 +16,7 @@ void SSDX11CubeScene::InitializeScene()
 	mPBRSphere->SetPositionY(-10);
 }
 
-void SSDX11CubeScene::DestroyScene()
+void SSCubeScene::DestroyScene()
 {
 
 }

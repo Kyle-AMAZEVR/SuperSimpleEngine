@@ -4,7 +4,7 @@
 #include "SSCameraBase.h"
 #include "DirectXMath.h"
 
-class GAMEMODULE_API SSFreeCamera : public SSCameraBase
+class CORE_API SSFreeCamera : public SSCameraBase
 {
 public:
 	SSFreeCamera();

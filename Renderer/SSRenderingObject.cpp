@@ -11,6 +11,7 @@
 #include "SSTextureManager.h"
 #include "SSTexture2D.h"
 #include "SSSamplerManager.h"
+#include "SSCameraManager.h"
 
 SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	: mpObject(pObject)

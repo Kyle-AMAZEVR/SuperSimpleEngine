@@ -5,6 +5,7 @@
 #include "Windows.h"
 #include "SSDX11Renderer.h"
 #include "SSRenderingObjectManager.h"
+#include "SSTimer.h"
 
 SSRenderingThread::SSRenderingThread(SSRenderer* pRenderer)
 {

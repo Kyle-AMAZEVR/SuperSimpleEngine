@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SSGameModule.h"
+#include "SSCore.h"
 #include <fstream>
 #include <vector>
 #include <map>
@@ -21,7 +21,7 @@ struct IsBulkSerializable<class SSObjMeshSection>
 };
 
 #pragma region SerializeReader
-class GAMEMODULE_API SerializeReader
+class CORE_API SerializeReader
 {
 public:
 	SerializeReader(const std::string& FilePath);
@@ -61,7 +61,7 @@ SerializeReader& operator >> (SerializeReader& Archive, class SSObjMeshMaterial&
 #endif
 #pragma endregion
 
-class GAMEMODULE_API SerializeWriter
+class CORE_API SerializeWriter
 {
 public:
 	SerializeWriter(const std::string& FilePath);

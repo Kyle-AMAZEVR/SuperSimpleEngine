@@ -1,5 +1,4 @@
 
-#include "SSGameModule.h"
 #include "SSFreeCamera.h"
 
 using namespace DirectX;

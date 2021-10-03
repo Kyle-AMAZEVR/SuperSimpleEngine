@@ -27,6 +27,8 @@
 #include "SSSharedBufferCache.h"
 #include "SSCustomRenderThreadObject.h"
 #include "SSViewport.h"
+#include "SSMathHelper.h"
+#include "SSCameraManager.h"
 #include <iostream>
 
 SSDX11Renderer* SSDX11Renderer::mRendererInstance = nullptr;

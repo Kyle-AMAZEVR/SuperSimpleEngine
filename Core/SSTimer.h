@@ -1,13 +1,12 @@
 #pragma once
 
 
-#include "SSGameModule.h"
+#include "SSCore.h"
 
-class GAMEMODULE_API SSGameTimer
+class CORE_API SSGameTimer
 {
 public:
 	SSGameTimer();
-
 
 	float GetDeltaTime() const;
 

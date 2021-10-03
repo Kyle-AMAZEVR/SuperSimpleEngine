@@ -66,7 +66,6 @@ protected:
 	std::vector<UINT> mRealVertexIndices;
 
 	std::vector<SSObjMeshSection> mMeshSectionList;
-	std::map<std::string, SSObjMeshMaterial> mMeshMaterialMap;
 	
 	//bool GetSimilarVertexIndex(const VT_PositionNormalTexcoordTangent& vertex, UINT& index);
 };

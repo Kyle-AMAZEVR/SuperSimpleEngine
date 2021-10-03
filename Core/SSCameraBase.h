@@ -1,8 +1,8 @@
 #pragma once
-#include "SSGameModule.h"
+#include "SSCore.h"
 #include <DirectXMath.h>
 
-class GAMEMODULE_API SSCameraBase
+class CORE_API SSCameraBase
 {
 public:
 	SSCameraBase()

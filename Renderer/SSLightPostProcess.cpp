@@ -5,10 +5,7 @@
 #include "SSDrawCommand.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSScreenBlit.h"
-
-
-
-
+#include "SSCameraManager.h"
 
 SSLightPostProcess::SSLightPostProcess(UINT width, UINT height)
 	: SSPostProcess(width, height)

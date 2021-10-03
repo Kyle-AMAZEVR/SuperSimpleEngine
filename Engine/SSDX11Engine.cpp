@@ -4,7 +4,7 @@
 #include "SSTexture2D.h"
 #include "SSObjMesh.h"
 #include "SSDX11Renderer.h"
-#include "SSDX11CubeScene.h"
+#include "SSCubeScene.h"
 #include "SSGameObjectManager.h"
 #include "SSRenderingObjectManager.h"
 #include "SSSharedRenderData.h"
@@ -53,7 +53,7 @@ void SSDX11Engine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;	
 
-	mCurrentScene = new SSDX11CubeScene();
+	mCurrentScene = new SSCubeScene();
 	mCurrentScene->InitializeScene();
 	
 	bInitialized = true;

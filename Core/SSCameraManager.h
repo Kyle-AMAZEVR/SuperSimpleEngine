@@ -1,12 +1,12 @@
 
 #pragma once
 
-#include "SSGameModule.h"
+#include "SSCore.h"
 #include "SSCameraBase.h"
 
 using namespace DirectX;
 
-class GAMEMODULE_API SSCameraManager
+class CORE_API SSCameraManager
 {
 public:
 	SSCameraManager();

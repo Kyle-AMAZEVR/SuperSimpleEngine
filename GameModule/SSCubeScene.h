@@ -3,7 +3,7 @@
 #include "SSGameScene.h"
 
 
-class DX11RENDERER_API SSDX11CubeScene : public SSGameScene
+class GAMEMODULE_API SSCubeScene : public SSGameScene
 {
 public:
 	void InitializeScene() override;

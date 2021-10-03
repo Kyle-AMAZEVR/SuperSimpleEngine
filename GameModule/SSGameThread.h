@@ -1,4 +1,5 @@
 #pragma once
+#include "SSGameModule.h"
 #include "SSTimer.h"
 
 // game thread is the same as main thread

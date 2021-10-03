@@ -1,7 +1,6 @@
 #include "SSRendererModulePCH.h"
 #include "SSShader.h"
 #include "SSDX11Renderer.h"
-#include "SSVertexElementDeclaration.h"
 #include <filesystem>
 #include <map>
 #include "SSDXTranslator.h"
