@@ -1,9 +1,7 @@
 
 
-#include "SSGameModule.h"
 #include "SSMathHelper.h"
 #include "DirectXMath.h"
-#include "SSCore.h"
 
 using namespace DirectX;
 

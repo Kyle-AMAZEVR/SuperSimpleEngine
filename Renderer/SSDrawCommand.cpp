@@ -3,7 +3,6 @@
 #include "SSRendererModulePCH.h"
 #include "SSDX11Renderer.h"
 #include "SSDrawCommand.h"
-#include "SSGameObject.h"
 #include "SSSamplerManager.h"
 #include "SSMaterial.h"
 #include "SSRenderTargetBase.h"

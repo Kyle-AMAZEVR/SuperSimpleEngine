@@ -1,11 +1,10 @@
 #pragma once
-
-#include "SSGameModule.h"
+#include "SSCore.h"
 #include "DirectXMath.h"
 
 using namespace DirectX;
 
-class GAMEMODULE_API SSMathHelper
+class CORE_API SSMathHelper
 {
 
 public :

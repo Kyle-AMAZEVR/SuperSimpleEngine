@@ -3,7 +3,6 @@
 #include "SSLightPostProcess.h"
 #include "SSShaderManager.h"
 #include "SSDrawCommand.h"
-#include "SSCameraManager.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSScreenBlit.h"
 

@@ -1,5 +1,4 @@
 #pragma once
-#include "SSGameObject.h"
 #include <vector>
 #include <unordered_map>
 #include <map>

@@ -1,12 +1,12 @@
 
 #include "SSRendererModulePCH.h"
-#include "SSGameObject.h"
+
 #include "SSRenderingObject.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSIndexBuffer.h"
 #include "SSShaderManager.h"
 #include "SSFreqUsedNames.h"
-#include "SSCameraManager.h"
+
 #include "SSMaterial.h"
 #include "SSTextureManager.h"
 #include "SSTexture2D.h"
