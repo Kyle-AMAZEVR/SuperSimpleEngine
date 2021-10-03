@@ -1,5 +1,5 @@
 #include "Core.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 #include "SSIndexBuffer.h"
 
 
@@ -21,5 +21,5 @@ void SSIndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_
 	indexSubresourceData.SysMemPitch = 0;
 	indexSubresourceData.SysMemSlicePitch = 0;
 
-    HR(SSDX11Engine::Get().GetDevice()->CreateBuffer(&mBufferDescription, &indexSubresourceData, &mpBuffer));
+    HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, &indexSubresourceData, &mpBuffer));
 }

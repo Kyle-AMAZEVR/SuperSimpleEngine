@@ -33,11 +33,23 @@
 #include "SSCustomRenderThreadObject.h"
 #include <iostream>
 
+SSDX11Renderer* SSDX11Renderer::mRendererInstance = nullptr;
+
 SSDX11Renderer::SSDX11Renderer()	
 {
-
+	check(mRendererInstance == nullptr);
+	mRendererInstance = this;
 }
 
+SSDX11Renderer& SSDX11Renderer::Get()
+{
+	return *mRendererInstance;
+}
+
+SSDX11Renderer* SSDX11Renderer::GetPtr()
+{
+	return mRendererInstance;
+}
 
 void SSDX11Renderer::Initialize(HWND windowHandle)
 {

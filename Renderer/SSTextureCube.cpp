@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSTextureCube.h"
 #include "DirectXTex.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 
 std::shared_ptr<SSTextureCube> SSTextureCube::CreateFromDDSFile(std::wstring filename)
 {

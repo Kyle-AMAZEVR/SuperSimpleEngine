@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSGBuffer.h"
 #include "SSRenderTarget2D.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 
 
 SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)

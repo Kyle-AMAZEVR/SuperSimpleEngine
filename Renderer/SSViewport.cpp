@@ -1,5 +1,5 @@
 #include "Core.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 #include "SSViewport.h"
 #include "SSCameraManager.h"
 

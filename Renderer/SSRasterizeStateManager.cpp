@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSRasterizeStateManager.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 
 void SSRasterizeStateManager::Initialize()
 {
@@ -20,23 +20,23 @@ void SSRasterizeStateManager::Initialize()
 	mDefaultDesc.AntialiasedLineEnable = false;
 
 	
-	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mDefaultDesc, &mDefaultState));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateRasterizerState(&mDefaultDesc, &mDefaultState));
 	
 	mCullModeNoneDesc = mDefaultDesc;
 	mCullModeNoneDesc.CullMode = D3D11_CULL_NONE;
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mCullModeNoneDesc, &mCullModeNoneState));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateRasterizerState(&mCullModeNoneDesc, &mCullModeNoneState));
 
 
 	mFrontCounterClockwiseDesc = mDefaultDesc;
 	mFrontCounterClockwiseDesc.FrontCounterClockwise = true;
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mFrontCounterClockwiseDesc, &mFrontCounterClockwiseState));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateRasterizerState(&mFrontCounterClockwiseDesc, &mFrontCounterClockwiseState));
 
 	mWireFrameDesc = mDefaultDesc;
 	mWireFrameDesc.FillMode = D3D11_FILL_WIREFRAME;
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateRasterizerState(&mWireFrameDesc, &mWireFrameState));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateRasterizerState(&mWireFrameDesc, &mWireFrameState));
 
 }
 

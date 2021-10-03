@@ -1,6 +1,6 @@
 #include "Core.h"
 #include "SSShader.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 #include "SSVertexElementDeclaration.h"
 #include <filesystem>
 #include <map>

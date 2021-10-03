@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "SSMaterial.h"
 #include "SSShader.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 
 SSMaterial::SSMaterial(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps)
 	: mVS(vs), mPS(ps)
@@ -14,7 +14,7 @@ SSMaterial::SSMaterial(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPix
 
 void SSMaterial::SetCurrent()
 {
-	ID3D11DeviceContext* deviceContext = SSDX11Engine::Get().GetImmediateDeviceContext();
+	ID3D11DeviceContext* deviceContext = SSDX11Renderer::Get().GetImmediateDeviceContext();
 
 	// @ set input layout
 	deviceContext->IASetInputLayout(mVS->GetInputLayout());

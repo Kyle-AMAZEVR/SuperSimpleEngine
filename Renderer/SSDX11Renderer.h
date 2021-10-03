@@ -20,6 +20,9 @@ public:
 	virtual void OnWindowResize(int newWidth, int newHeight) override;
 	virtual void DrawScene() override;
 	
+	static SSDX11Renderer& Get();
+	static SSDX11Renderer* GetPtr();
+	
 	inline ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	inline ID3D11DeviceContext* GetImmediateDeviceContext() const { return mDeviceContext.Get(); }
 	inline ID3D11DeviceContext* GetDeferredDeviceContext() const { return mDeferredContext.Get(); }
@@ -39,6 +42,8 @@ protected:
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
 
 	std::vector<class SSDrawCmdBase*> mRenderCommandList;
+
+	static SSDX11Renderer* mRendererInstance;
 
 	void TestCompileShader();
 	void TestCreateResources();

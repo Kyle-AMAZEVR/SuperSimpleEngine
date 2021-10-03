@@ -1,6 +1,6 @@
 #include "Core.h"
 #include "SSSamplerManager.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 
 void SSSamplerManager::Initialize()
 {
@@ -21,7 +21,7 @@ void SSSamplerManager::CreateDefaultSampler()
 	desc.MaxLOD = D3D11_FLOAT32_MAX;
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
-	auto* dxDevice = SSDX11Engine::Get().GetDevice();
+	auto* dxDevice = SSDX11Renderer::Get().GetDevice();
 
 	HR(dxDevice->CreateSamplerState(&desc, &mDefaultSamplerState));
 }

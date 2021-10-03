@@ -1,7 +1,7 @@
 
 #include "Core.h"
 #include "SSRenderTarget2D.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 #include "SSMathHelper.h"
 #include "DirectXTex.h"
 
@@ -53,7 +53,7 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.Format = mTextureFormat = format;
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &mTexturePtr));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &mTexturePtr));
 
 	for (UINT i = 0; i < mipLevels; ++i)
 	{
@@ -63,7 +63,7 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 		renderTargetDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		renderTargetDesc.Texture2D.MipSlice = i;
 
-		HR(SSDX11Engine::Get().GetDevice()->CreateRenderTargetView(mTexturePtr.Get(), &renderTargetDesc, mRenderTargetView[i].ReleaseAndGetAddressOf()));
+		HR(SSDX11Renderer::Get().GetDevice()->CreateRenderTargetView(mTexturePtr.Get(), &renderTargetDesc, mRenderTargetView[i].ReleaseAndGetAddressOf()));
 	}
 	
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
@@ -74,7 +74,7 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
 	shaderResourceViewDesc.Texture2D.MipLevels = mipLevels;
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &shaderResourceViewDesc, &mShaderResourceView));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &shaderResourceViewDesc, &mShaderResourceView));
 }
 
 SSRenderTargetTexture2D::~SSRenderTargetTexture2D()
@@ -139,9 +139,9 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 	textureDesc.Format = mTextureFormat;
 	ID3D11Texture2D* copiedTexturePtr = nullptr;
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &copiedTexturePtr));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &copiedTexturePtr));
 
-	SSDX11Engine::Get().GetImmediateDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr.Get());
+	SSDX11Renderer::Get().GetImmediateDeviceContext()->CopyResource(copiedTexturePtr, mTexturePtr.Get());
 
 	// copy resource
 	if (mGenerateMips)
@@ -156,7 +156,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 			UINT subresource = D3D11CalcSubresource(i, 0, mMipLevels);
 
 			D3D11_MAPPED_SUBRESOURCE mapped;
-			HR(SSDX11Engine::Get().GetImmediateDeviceContext()->Map(copiedTexturePtr, subresource, D3D11_MAP_READ, 0, &mapped));
+			HR(SSDX11Renderer::Get().GetImmediateDeviceContext()->Map(copiedTexturePtr, subresource, D3D11_MAP_READ, 0, &mapped));
 						
 			InitD3DDesc(imageList[i]);
 			imageList[i].width = mipTextureWidth;
@@ -169,7 +169,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 			// copy raw data
 			memcpy_s(imageList[i].pixels, mapped.RowPitch * mipTextureHeight, mapped.pData, mapped.RowPitch * mipTextureHeight);
 
-			SSDX11Engine::Get().GetImmediateDeviceContext()->Unmap(copiedTexturePtr, subresource);
+			SSDX11Renderer::Get().GetImmediateDeviceContext()->Unmap(copiedTexturePtr, subresource);
 		}
 
 		TexMetadata metaData;
@@ -190,7 +190,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 	else
 	{
 		D3D11_MAPPED_SUBRESOURCE mapped;
-		HR(SSDX11Engine::Get().GetImmediateDeviceContext()->Map(copiedTexturePtr, 0, D3D11_MAP_READ, 0, &mapped));
+		HR(SSDX11Renderer::Get().GetImmediateDeviceContext()->Map(copiedTexturePtr, 0, D3D11_MAP_READ, 0, &mapped));
 
 		DirectX::Image image;
 		InitD3DDesc(image);
@@ -204,7 +204,7 @@ void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 		// copy raw data
 		memcpy_s(image.pixels, mapped.RowPitch * mHeight, mapped.pData, mapped.RowPitch * mHeight);
 
-		SSDX11Engine::Get().GetImmediateDeviceContext()->Unmap(copiedTexturePtr, 0);
+		SSDX11Renderer::Get().GetImmediateDeviceContext()->Unmap(copiedTexturePtr, 0);
 
 		HR(DirectX::SaveToDDSFile(image, 0, filename.c_str()));
 		delete[] image.pixels;
@@ -266,7 +266,7 @@ void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UIN
 	depthStencilDesc.CPUAccessFlags = 0;
 	depthStencilDesc.MiscFlags = 0;	
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &mTexturePtr));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &mTexturePtr));
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{ 0 };	
 
@@ -274,7 +274,7 @@ void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UIN
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-	HR(SSDX11Engine::Get().GetDevice()->CreateDepthStencilView(mTexturePtr.Get(), &depthStencilViewDesc, &mDepthStencilView));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateDepthStencilView(mTexturePtr.Get(), &depthStencilViewDesc, &mDepthStencilView));
 }
 
 

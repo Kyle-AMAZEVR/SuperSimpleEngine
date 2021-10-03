@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "SSDX11Buffer.h"
-#include "SSDX11Engine.h"
+#include "SSDX11Renderer.h"
 
 class SSDX11VertexBuffer : public SSDX11Buffer
 {
