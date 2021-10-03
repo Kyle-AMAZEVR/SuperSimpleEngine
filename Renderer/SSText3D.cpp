@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSText3D.h"
 #include "SSFontManager.h"
 #include "SSMaterial.h"

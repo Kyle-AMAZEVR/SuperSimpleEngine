@@ -1,5 +1,4 @@
 
-#include "Core.h"
 #include "SSSphere.h"
 #include <cmath>
 #include "SSVertexTypes.h"

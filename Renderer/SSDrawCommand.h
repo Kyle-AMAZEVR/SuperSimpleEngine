@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSConstantBuffer.h"
 #include "SSRenderThreadObject.h"
 #include "SSName.h"

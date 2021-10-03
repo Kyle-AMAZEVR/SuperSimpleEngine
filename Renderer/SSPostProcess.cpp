@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSPostProcess.h"
 #include "SSRenderTarget2D.h"
 #include "SSScreenBlit.h"

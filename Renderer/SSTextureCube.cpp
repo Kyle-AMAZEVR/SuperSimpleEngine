@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSTextureCube.h"
 #include "DirectXTex.h"
 #include "SSDX11Renderer.h"

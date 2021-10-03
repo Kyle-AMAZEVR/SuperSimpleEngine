@@ -1,8 +1,9 @@
 #pragma once
 
 
+#include "SSRendererModulePCH.h"
 
-class GAMEMODULE_API SSDXTranslator
+class DX11RENDERER_API SSDXTranslator
 {
 public:
 	static DXGI_FORMAT GetVertexShaderInputType(D3D11_SIGNATURE_PARAMETER_DESC desc);

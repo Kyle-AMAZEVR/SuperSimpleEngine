@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSRenderThreadObject.h"
 #include "SSConstantBuffer.h"
 #include "SSName.h"

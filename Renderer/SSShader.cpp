@@ -1,4 +1,4 @@
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSShader.h"
 #include "SSDX11Renderer.h"
 #include "SSVertexElementDeclaration.h"

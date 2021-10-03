@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSGameObject.h"
 #include "SSGameObjectManager.h"
 #include "SSRenderingObjectManager.h"

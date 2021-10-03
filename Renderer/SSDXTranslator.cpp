@@ -1,5 +1,4 @@
 
-#include "SSGameModule.h"
 #include "SSDXTranslator.h"
 
 UINT SSDXTranslator::GetDXGIFormatByteSize(DXGI_FORMAT format)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSRenderer.h"
 
 struct SSAdapterInfo

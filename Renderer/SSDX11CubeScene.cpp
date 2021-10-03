@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSCube.h"
 #include "SSSphere.h"
 #include "SSDX11CubeScene.h"

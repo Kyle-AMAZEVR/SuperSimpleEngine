@@ -27,7 +27,7 @@ add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 
 target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule simdjson)
 
-target_precompile_headers(DX11Renderer PRIVATE "Core.h")
+target_precompile_headers(DX11Renderer PRIVATE "SSRendererModulePCH.h")
 
 target_compile_definitions(DX11Renderer PRIVATE DX11RENDERER_EXPORTS)
 target_compile_definitions(DX11Renderer INTERFACE DX11RENDERER_IMPORTS)

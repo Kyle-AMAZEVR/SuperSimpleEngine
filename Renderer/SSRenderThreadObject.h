@@ -1,6 +1,6 @@
 
 #pragma once
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSObjectBase.h"
 
 class DX11RENDERER_API SSRenderThreadObject : public SSObjectBase

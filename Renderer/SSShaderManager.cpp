@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSShaderManager.h"
 #include "SSName.h"
 #include "SSShader.h"

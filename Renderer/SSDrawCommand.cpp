@@ -1,6 +1,6 @@
 
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSDX11Renderer.h"
 #include "SSDrawCommand.h"
 #include "SSGameObject.h"

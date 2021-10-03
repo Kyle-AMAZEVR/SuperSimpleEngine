@@ -1,6 +1,6 @@
 
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSManagerBase.h"
 
 SSManagerBase::SSManagerBase()

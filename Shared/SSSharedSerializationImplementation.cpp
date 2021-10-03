@@ -3,7 +3,7 @@
 #include "SSGameModule.h"
 #endif
 #ifdef THIS_IS_ENGINE_MODULE
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #endif
 #include "SSISerializable.h"
 #include "SSName.h"

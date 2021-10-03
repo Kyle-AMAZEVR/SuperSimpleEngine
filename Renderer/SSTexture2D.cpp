@@ -1,7 +1,7 @@
 
 
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSTexture2D.h"
 #include "SSDX11Renderer.h"
 

@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSScreenBlit.h"
 #include "SSVertexTypes.h"
 #include <vector>

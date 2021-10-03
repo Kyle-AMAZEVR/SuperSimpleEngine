@@ -1,5 +1,4 @@
 
-#include "Core.h"
 #include "SSCube.h"
 #include "SSVertexTypes.h"
 #include "SSDX11VertexBuffer.h"

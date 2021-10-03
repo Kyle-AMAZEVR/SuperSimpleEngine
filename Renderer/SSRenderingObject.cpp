@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSGameObject.h"
 #include "SSRenderingObject.h"
 #include "SSDX11VertexBuffer.h"

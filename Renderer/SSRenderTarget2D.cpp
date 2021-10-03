@@ -1,5 +1,5 @@
 
-#include "Core.h"
+#include "SSRendererModulePCH.h"
 #include "SSRenderTarget2D.h"
 #include "SSDX11Renderer.h"
 #include "SSMathHelper.h"
