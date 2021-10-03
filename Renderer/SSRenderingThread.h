@@ -7,7 +7,8 @@
 class DX11RENDERER_API SSRenderingThread
 {
 public:	
-    void Start(HWND handle, class SSEngineBase* pEngine);
+	SSRenderingThread(class SSRenderer* pRenderer);
+    void Start(HWND handle);
     void Join();
     void RequestExit() { bRequestExit = true;}
 
@@ -45,8 +46,6 @@ protected:
     HWND mWindowHandle;
     bool bRequestExit = false;
 	LPCSTR mEventName;
-
-	class SSEngineBase* mEngineInstance = nullptr;
 
 	class SSRenderer* mRenderer = nullptr;
 };

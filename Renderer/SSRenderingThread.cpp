@@ -1,14 +1,19 @@
 
 #include "SSCore.h"
+#include "SSRenderer.h"
 #include "SSRenderingThread.h"
 #include "Windows.h"
 #include "SSTimer.h"
 #include "SSDX11Renderer.h"
 #include "SSRenderingObjectManager.h"
 
-void SSRenderingThread::Start(HWND handle, SSEngineBase* pEngine)
+SSRenderingThread::SSRenderingThread(SSRenderer* pRenderer)
 {
-	mEngineInstance = pEngine;
+	mRenderer = pRenderer;
+}
+
+void SSRenderingThread::Start(HWND handle)
+{
     mWindowHandle = handle;
 	mThreadHandle = CreateThread(nullptr, 0, &SSRenderingThread::Run, this, 0, &mRenderingThreadId);
 	InitializeCriticalSection(&mCriticalSection);
@@ -35,8 +40,8 @@ void SSRenderingThread::SetGameThreadDone()
 
 DWORD SSRenderingThread::Run()
 {
-	// init engine
-	mEngineInstance->Initialize(mWindowHandle);	
+	// init renderer
+	mRenderer->Initialize(mWindowHandle);	
 
 	bIsRunning = true;
 

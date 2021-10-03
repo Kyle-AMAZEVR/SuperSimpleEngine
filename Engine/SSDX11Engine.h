@@ -21,6 +21,7 @@ public:
     virtual void Initialize(HWND windowHandle) override;
 	virtual void Shutdown() override;
     virtual void OnWindowResize(int newWidth, int newHeight) override;
+	virtual void EngineStart() override;
     
 	static bool IsInitialized() { return bInitialized; }
 	/**
@@ -38,10 +39,7 @@ protected:
 
 	static SSDX11Engine* mInstance;
 
-	// renderer
-	class SSDX11Renderer* mRenderer = nullptr;
-
-	class SSGameScene* mCurrentScene = nullptr;
+	
 
 private:
 

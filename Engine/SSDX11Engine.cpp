@@ -8,6 +8,7 @@
 #include "SSGameObjectManager.h"
 #include "SSRenderingObjectManager.h"
 #include "SSSharedRenderData.h"
+#include "SSGameWindow.h"
 
 bool SSDX11Engine::bInitialized = false;
 
@@ -50,11 +51,6 @@ inline IDXGISwapChain* SSDX11Engine::GetSwapChain() const
 
 void SSDX11Engine::Initialize(HWND windowHandle)
 {
-	mRenderer = new SSDX11Renderer();
-	mRenderer->Initialize(windowHandle);
-
-	mRenderingThread->SetRenderer(mRenderer);
-	
     mWindowHandle = windowHandle;	
 
 	mCurrentScene = new SSDX11CubeScene();
@@ -105,6 +101,21 @@ void SSDX11Engine::OnWindowResize(int newWidth, int newHeight)
 	}
 }
 
+
+void SSDX11Engine::EngineStart()
+{
+	// start game thread
+	mGameThread = new SSGameThread(GetCurrentThreadId());
+
+	// create renderer
+	mRenderer = new SSDX11Renderer();
+
+	// start rendering thread
+	mRenderingThread = new SSRenderingThread(mRenderer);
+	mRenderingThread->Start(SSGameWindow::GetPtr()->GetWindowHandle());
+
+	Initialize(SSGameWindow::GetPtr()->GetWindowHandle());
+}
 
 
 void SSDX11Engine::Run()

@@ -4,15 +4,6 @@
 #include "SSGameThread.h"
 
 
-void SSEngineBase::EngineStart()
-{
-	// start game thread
-	mGameThread = new SSGameThread(GetCurrentThreadId());	
-
-	// start rendering thread
-	mRenderingThread = new SSRenderingThread();
-	mRenderingThread->Start(SSGameWindow::GetPtr()->GetWindowHandle(), this);
-}
 
 void SSEngineBase::WaitForGameThread(const DWORD WaitTime)
 {

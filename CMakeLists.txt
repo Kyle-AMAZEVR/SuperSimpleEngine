@@ -31,6 +31,10 @@ add_subdirectory("lib/freetype")
 add_subdirectory("Engine")
 
 include_directories("HeaderOnly")
+include_directories("Engine")
+include_directories("Renderer")
+include_directories("GameModule")
+include_directories("Core")
 
 add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp DXApp.cpp DXWindow.rc)
 

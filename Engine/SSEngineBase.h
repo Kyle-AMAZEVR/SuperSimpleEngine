@@ -17,7 +17,7 @@ public:
 	virtual void Initialize(HWND windowHandle) = 0;
 	virtual void Shutdown() = 0;
 	virtual void OnWindowResize(int newWidth, int newHeight) = 0;	
-	virtual void EngineStart();
+	virtual void EngineStart() = 0;
 	
 	virtual void Run() = 0;
 
@@ -33,10 +33,12 @@ public:
 	void RequestExit() { bRequestExit = true; }
 
 protected:
-	
-
 	static SSGameThread* mGameThread;
 	static SSRenderingThread* mRenderingThread;
+
+	// renderer
+	class SSDX11Renderer* mRenderer = nullptr;
+	class SSGameScene* mCurrentScene = nullptr;
 
 	int mBufferWidth = 1024;
 	int mBufferHeight = 768;

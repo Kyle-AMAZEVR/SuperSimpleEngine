@@ -17,7 +17,6 @@
 #include "Engine/SSDX11Engine.h"
 #include "GameModule/SSGameWindow.h"
 #include "SSAppWindow.h"
-#include "SSEngine12.h"
 #include "SSGameThread.h"
 #include "SSEngineBase.h"
 #include "SSSharedRenderData.h"
