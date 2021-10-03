@@ -1,6 +1,6 @@
 
 #include "Core.h"
-#include "DXConstantBuffer.h"
+#include "SSConstantBuffer.h"
 #include "SSShader.h"
 
 // trigger compile

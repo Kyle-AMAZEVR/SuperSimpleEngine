@@ -1,6 +1,6 @@
 
 #include "Core.h"
-#include "DXConstantBuffer.h"
+#include "SSConstantBuffer.h"
 #include "SSRenderThreadObject.h"
 #include "SSName.h"
 #include <functional>

@@ -58,7 +58,7 @@ void SSFontManager::Initialize(int dpiX, int dpiY)
 				points.push_back(newPoint);
 			}
 
-			XMFLOAT2 point(glygh->outline.points[start].x >> 6, glygh->outline.points[start].y >> 6);
+			XMFLOAT2 point(static_cast<float>( glygh->outline.points[start].x >> 6), static_cast<float>( glygh->outline.points[start].y >> 6) );
 			points.push_back(point);
 		}		
 

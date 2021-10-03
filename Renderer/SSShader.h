@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "SSRenderThreadObject.h"
-#include "DXConstantBuffer.h"
+#include "SSConstantBuffer.h"
 #include "SSName.h"
 #include "wrl/client.h"
 #include <map>

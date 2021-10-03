@@ -3,6 +3,8 @@
 #include "SSRenderThreadObject.h"
 #include "SSName.h"
 #include "SSVertexTypes.h"
+#include "SSConstantBufferProxy.h"
+#include "SSConstantBuffer.h"
 
 using namespace std;
 
@@ -10,8 +12,6 @@ class SSVertexShader;
 class SSPixelShader;
 class SSTexture2DBase;
 
-#include "SSConstantBufferProxy.h"
-#include "DXConstantBuffer.h"
 
 class DX11RENDERER_API SSMaterial : public SSRenderThreadResidentObject
 {

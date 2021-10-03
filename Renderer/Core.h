@@ -30,9 +30,6 @@
 
 #define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
 
-
-
-
 #define checkMsg(expression,msg) if(!(expression)) { PrintError(AT, STRINGFY(msg));}
 
 //#if defined(DEBUG) | defined(_DEBUG)
