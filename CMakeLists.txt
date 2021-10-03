@@ -14,11 +14,11 @@ set(SIMDJSON_JUST_LIBRARY 1)
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-include_directories("Renderer")
-include_directories("Engine12")
-include_directories("GameModule")
-include_directories("Core")
-include_directories("Engine")
+#include_directories(PRIVATE "Engine12")
+#include_directories(PRIVATE "HeaderOnly")
+#include_directories(PRIVATE "Renderer")
+#include_directories(PRIVATE "Engine")
+#include_directories(PRIVATE "Core")
 
 message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
@@ -30,10 +30,9 @@ add_subdirectory("lib/simdjson")
 add_subdirectory("lib/freetype")
 add_subdirectory("Engine")
 
+include_directories("HeaderOnly")
+
 add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp DXApp.cpp DXWindow.rc)
-
-target_link_libraries(SuperSimpleEngine Engine)
-
 
 if(WIN32)
 	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")
@@ -41,7 +40,7 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(SuperSimpleEngine Engine)
+target_link_libraries(SuperSimpleEngine PRIVATE Engine)
 
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

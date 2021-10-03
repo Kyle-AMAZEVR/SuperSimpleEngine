@@ -16,12 +16,12 @@ file(GLOB SOURCES "./*.cpp")
 file(GLOB HEADERS "./*.h")
 
 include_directories("../lib/DirectXMath/Include")
-
-#include_directories("lib/DirectXTK/Inc")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
 include_directories("../GameModule")
 include_directories("../lib/simdjson")
+include_directories("../Core")
+include_directories("../HeaderOnly")
 
 add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 

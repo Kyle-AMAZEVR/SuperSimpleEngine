@@ -1,10 +1,8 @@
 
 #include "SSCube.h"
 #include "SSVertexTypes.h"
-#include "SSDX11VertexBuffer.h"
-#include "FreqUsedConstantBufferTypes.h"
 #include "SSSharedRenderData.h"
-
+#include "FreqUsedConstantBufferTypes.h"
 
 SSCube::SSCube()
 {

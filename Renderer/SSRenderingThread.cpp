@@ -3,7 +3,6 @@
 #include "SSRenderingThread.h"
 #include "Windows.h"
 #include "SSTimer.h"
-#include "SSEngineBase.h"
 #include "SSDX11Renderer.h"
 #include "SSRenderingObjectManager.h"
 

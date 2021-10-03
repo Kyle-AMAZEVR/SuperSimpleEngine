@@ -19,6 +19,7 @@ include_directories("../lib/freetype/include")
 include_directories("../Shared")
 include_directories("../lib/simdjson")
 include_directories("../Core")
+include_directories("../HeaderOnly")
 
 add_library(GameModule SHARED ${SOURCES} ${HEADERS})
 

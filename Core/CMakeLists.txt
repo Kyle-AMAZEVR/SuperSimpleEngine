@@ -12,6 +12,8 @@ set(CMAKE_CXX_STANDARD 17)
 file(GLOB SOURCES "./*.cpp")
 file(GLOB HEADERS "./*.h")
 
+include_directories("../HeaderOnly")
+
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
 

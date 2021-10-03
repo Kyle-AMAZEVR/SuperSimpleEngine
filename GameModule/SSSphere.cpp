@@ -2,19 +2,12 @@
 #include "SSSphere.h"
 #include <cmath>
 #include "SSVertexTypes.h"
-#include "SSDX11VertexBuffer.h"
-#include "SSIndexBuffer.h"
-#include "SSMaterial.h"
 #include "SSFreqUsedNames.h"
 #include "SSName.h"
 #include "SSCameraManager.h"
-#include "FreqUsedConstantBufferTypes.h"
-#include "SSSamplerManager.h"
-#include "SSTextureManager.h"
 #include "SSMathHelper.h"
-#include "SSScreenBlit.h"
-#include "SSTexture2D.h"
 #include "SSSharedRenderData.h"
+#include "FreqUsedConstantBufferTypes.h"
 
 SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 	: mSectorCount(sector), mStackCount(stack), mRadius(radius)
