@@ -13,7 +13,7 @@ public:
 	static SSGameObjectManager& Get();
 	static SSGameObjectManager* GetPtr();
 
-	const std::map<UINT, SSObjectBase*>& GetGameObjectMap() { return mGameObjectMap; }
+	std::map<UINT, SSObjectBase*> GetGameObjectMap() { return mGameObjectMap; }
 
 	UINT IssueObjectId() { return mNextObjectId++; }
 protected:	

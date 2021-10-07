@@ -77,7 +77,8 @@ DWORD SSRenderingThread::Run()
 
 		if (mRenderer)
 		{
-			SSRenderingObjectManager::Get().Tick(renderingThreadTimer.GetDeltaTime());
+			// sync gamethread object <-> rendering thread object
+			SSRenderingObjectManager::Get().UpdateObjects();
 			mRenderer->DrawScene();
 		}
 

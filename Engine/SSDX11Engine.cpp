@@ -136,6 +136,8 @@ void SSDX11Engine::Run()
 		else
 		{
 			mGameThread->Tick();
+			// this is awkward...
+			SSRenderingObjectManager::Get().SetPendingObjects(SSGameObjectManager::Get().GetGameObjectMap());
 			mRenderingThread->SetGameThreadDone();
 		}
 	}
