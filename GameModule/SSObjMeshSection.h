@@ -1,10 +1,11 @@
 #pragma once
 
+#include "SSGameModule.h"
 #include <string>
 #include "SSISerializable.h"
 
 
-class SSObjMeshSection
+class GAMEMODULE_API SSObjMeshSection
 {	
 public:
 	SSObjMeshSection(){}

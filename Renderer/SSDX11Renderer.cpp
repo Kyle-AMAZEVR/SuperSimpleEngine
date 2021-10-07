@@ -16,7 +16,6 @@
 #include "SSCubemapRenderTarget.h"
 #include "SSFreqUsedNames.h"
 #include "SSFileHelper.h"
-#include "SSObjMesh.h"
 #include "SSShaderManager.h"
 #include "SSMaterial.h"
 #include "SSFXAAPostProcess.h"
@@ -167,20 +166,7 @@ void SSDX11Renderer::TestCreateResources()
 	mMetalGrid->SetPosition(40, 20, 40);
 	*/
 
-	mSponzaMesh = std::make_shared<SSObjMesh>();
-
-
 	mRenderTargetCube->SetScale(1,1,1);
-
-	if (SSFileHelper::FileExists(L"./Prebaked/sponza.mesh"))		
-	{
-		mSponzaMesh->LoadCookedFile("./Prebaked/sponza.mesh");
-	}
-	else
-	{
-		mSponzaMesh->ImportObjFile("./Resource/ObjMesh/sponza2.obj", "./Resource/ObjMesh/sponza2.mtl");
-	}	
-	
 
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
 }
@@ -422,8 +408,6 @@ void SSDX11Renderer::DrawSponzaScene()
 	mGBuffer->SetCurrentRenderTarget(deviceContext);
 
 	DrawSkybox();
-
-	mSponzaMesh->Draw(deviceContext, mTestMaterial.get());
 
 	mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 

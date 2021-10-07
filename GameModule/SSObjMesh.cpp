@@ -1,4 +1,4 @@
-#include "SSRendererModulePCH.h"
+
 #include "SSObjMesh.h"
 #include <vector>
 #include <string>
@@ -7,25 +7,14 @@
 #include <algorithm> 
 #include <cctype>
 #include <locale>
-#include "SSDX11VertexBuffer.h"
 #include "SSISerializable.h"
 #include "SSObjMeshMaterial.h"
-#include "SSMaterial.h"
-#include "SSTextureManager.h"
-#include "SSTexture2D.h"
 #include "SSFreqUsedNames.h"
 #include "SSCameraManager.h"
-#include "SSIndexBuffer.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSMathHelper.h"
-#include "SSSamplerManager.h"
-#include "SSDepthStencilStateManager.h"
-#include "SSRasterizeStateManager.h"
 #include <unordered_set>
 #include <unordered_map>
-
-
-
 
 // trim from start (in place)
 static inline void ltrim(std::string &s) 
@@ -73,6 +62,7 @@ static inline std::string trim_copy(std::string s)
 	return s;
 }
 
+/*
 void SSObjMesh::DebugDraw(ID3D11DeviceContext* deviceContext, SSMaterial* material)
 {
 	material->SetPrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
@@ -92,7 +82,7 @@ void SSObjMesh::DebugDraw(ID3D11DeviceContext* deviceContext, SSMaterial* materi
 
 	deviceContext->Draw(mTBNDebugVB->GetVertexCount(), 0);
 }
-
+*/
 
 bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& MtlFilePath)
 {
@@ -184,19 +174,20 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 	writer << mRealVertexIndices;
 	writer << mMeshSectionList;
 
-	writer << static_cast<UINT>(mMeshMaterialMap.size());
+	//writer << static_cast<UINT>(mMeshMaterialMap.size());
 
-	for(auto& kvp : mMeshMaterialMap)
-	{
-		writer << kvp.first;
-		writer << kvp.second;		
-	}
+	//for(auto& kvp : mMeshMaterialMap)
+	//{
+	//	writer << kvp.first;
+	//	writer << kvp.second;		
+	//}
 
-	CreateVertexIndexBuffer();	
+	//CreateVertexIndexBuffer();	
 	
 	return true;
 }
 
+/*
 void SSObjMesh::CreateDebugTBNVertexIndexBuffer()
 {
 	std::vector<VT_PositionColor> debugVertexArray;
@@ -261,10 +252,8 @@ void SSObjMesh::CreateVertexIndexBuffer()
 	mIB = std::make_shared<SSIndexBuffer>();
 	mIB->SetIndexBufferData(mRealVertexIndices);
 
-
-	
 }
-
+*/
 
 bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 {
@@ -286,10 +275,10 @@ bool SSObjMesh::LoadCookedFile(const std::string& filePath)
 			reader >> name;
 			reader >> material;
 
-			mMeshMaterialMap[name] = material;
+			//mMeshMaterialMap[name] = material;
 		}
 
-		CreateVertexIndexBuffer();
+		//CreateVertexIndexBuffer();
 		
 		return true;
 	}
@@ -317,7 +306,7 @@ SSObjMesh::SSObjMesh()
 	mVisible = false;
 }
 
-void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
+/*void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext)
 {
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -445,6 +434,7 @@ void SSObjMesh::Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* mater
 		}		
 	}
 }
+*/
 
 void SSObjMesh::OptimizedGenerateVertices()
 {	
@@ -595,7 +585,7 @@ bool SSObjMesh::ParseMtlFile(const std::string& filepath)
 				if (newMtlStarted)
 				{
 					check(newMaterial != nullptr);
-					mMeshMaterialMap[newMaterial->mMaterialName] = *newMaterial;
+					//mMeshMaterialMap[newMaterial->mMaterialName] = *newMaterial;
 					delete newMaterial;
 					newMaterial = nullptr;
 					newMtlStarted = false;
@@ -605,7 +595,7 @@ bool SSObjMesh::ParseMtlFile(const std::string& filepath)
 
 		if (newMtlStarted == true && newMaterial != nullptr)
 		{
-			mMeshMaterialMap[newMaterial->mMaterialName] = *newMaterial;
+			//mMeshMaterialMap[newMaterial->mMaterialName] = *newMaterial;
 			delete newMaterial;
 			newMaterial = nullptr;
 		}

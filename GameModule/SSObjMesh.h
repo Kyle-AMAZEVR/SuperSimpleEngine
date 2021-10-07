@@ -1,4 +1,5 @@
 #pragma once
+#include "SSGameObject.h"
 #include <vector>
 #include <unordered_map>
 #include <map>
@@ -9,7 +10,7 @@
 
 bool operator< (const VT_PositionNormalTexcoordTangent& a, const VT_PositionNormalTexcoordTangent& b);
 
-class DX11RENDERER_API SSObjMesh : public SSGameObject
+class GAMEMODULE_API SSObjMesh : public SSGameObject
 {
 public:
 	SSObjMesh();
@@ -17,10 +18,10 @@ public:
 	void ImportMtlFile(const std::string& FilePath);
 	bool LoadCookedFile(const std::string& filePath);
 
-	virtual void Draw(ID3D11DeviceContext* deviceContext) override;
+	//virtual void Draw(ID3D11DeviceContext* deviceContext) override;
 
-	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
-	virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
+	//virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) override;
+	//virtual void DebugDraw(ID3D11DeviceContext* deviceContext, class SSMaterial* material);
 
 	void SetRoughnessOverride(bool bOverride) { mbRoughnessOverride = bOverride; }
 	void SetMetalicOverride(bool bOverride) { mbMetalicOverride = bOverride; }
@@ -35,20 +36,14 @@ protected:
 
 	void GenerateTangents();
 	void OptimizedGenerateVertices();
-	void CreateVertexIndexBuffer();
-	void CreateDebugTBNVertexIndexBuffer();
+	//void CreateVertexIndexBuffer();
+	//void CreateDebugTBNVertexIndexBuffer();
 	
 	bool ParseMtlFile(const std::string& filepath);
 
 	XMFLOAT3 mMinPosition;
 	XMFLOAT3 mMaxPosition;
 	XMFLOAT3 mCenterPosition;
-
-	std::shared_ptr<class SSDX11VertexBuffer> mVB;
-	std::shared_ptr<class SSIndexBuffer> mIB;
-
-	std::shared_ptr<class SSDX11VertexBuffer> mTBNDebugVB;
-	std::shared_ptr<class SSIndexBuffer> mTBNDebugIB;
 
 	std::vector<XMFLOAT4> mTempVertexList;
 	std::vector<XMFLOAT3> mTempNormalList;
@@ -66,8 +61,6 @@ protected:
 	std::vector<UINT> mRealVertexIndices;
 
 	std::vector<SSObjMeshSection> mMeshSectionList;
-	
-	//bool GetSimilarVertexIndex(const VT_PositionNormalTexcoordTangent& vertex, UINT& index);
 };
 
 

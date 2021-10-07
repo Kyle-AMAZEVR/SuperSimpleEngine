@@ -1,15 +1,9 @@
 
-#ifdef THIS_IS_GAMEMODULE
-#include "SSGameModule.h"
-#endif
-#ifdef THIS_IS_ENGINE_MODULE
-#include "SSRendererModulePCH.h"
-#endif
+#include "SSCore.h"
 #include "SSISerializable.h"
 #include "SSName.h"
 
 #pragma region SerializeReader
-#ifdef THIS_IS_GAMEMODULE
 SerializeReader::SerializeReader(const std::string& FilePath)
 {
 	Stream.open(FilePath.c_str(), std::ios::binary);
@@ -21,7 +15,6 @@ bool SerializeReader::IsGood() const
 {
 	return Stream.good();
 }
-#endif
 
 SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT4& Vec4)
 {
@@ -97,7 +90,6 @@ SerializeReader& operator >> (SerializeReader& Archive, bool& Value)
 
 
 #pragma endregion
-#ifdef THIS_IS_GAMEMODULE
 SerializeWriter::SerializeWriter(const std::string& FilePath)
 {
 	Stream.open(FilePath.c_str(), std::ios::binary | std::ios::out);
@@ -110,8 +102,6 @@ bool SerializeWriter::IsGood() const
 {
 	return Stream.good();
 }
-
-#endif
 
 
 SerializeWriter& operator << (SerializeWriter& Archive, const float Value)

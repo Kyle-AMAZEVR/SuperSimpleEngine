@@ -1,10 +1,5 @@
 
-
-
-#include "SSRendererModulePCH.h"
 #include "SSObjMeshMaterial.h"
-
-
 
 SerializeWriter& operator << (SerializeWriter& Archive, const SSObjMeshMaterial& Value)
 {

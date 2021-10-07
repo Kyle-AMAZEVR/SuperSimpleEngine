@@ -26,13 +26,13 @@ class CORE_API SerializeReader
 public:
 	SerializeReader(const std::string& FilePath);
 
-	friend SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT4& Vec4);
-	friend SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT3& Vec3);
-	friend SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT2& Vec2);
-	friend SerializeReader& operator >> (SerializeReader& Archive, std::string& RHS);
-	friend SerializeReader& operator >> (SerializeReader& Archive, float& Value);
-	friend SerializeReader& operator >> (SerializeReader& Archive, unsigned int& Value);
-	friend SerializeReader& operator >> (SerializeReader& Archive, size_t& Value);
+	CORE_API friend SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT4& Vec4);
+	CORE_API friend SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT3& Vec3);
+	CORE_API friend SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT2& Vec2);
+	CORE_API friend SerializeReader& operator >> (SerializeReader& Archive, std::string& RHS);
+	CORE_API friend SerializeReader& operator >> (SerializeReader& Archive, float& Value);
+	CORE_API friend SerializeReader& operator >> (SerializeReader& Archive, unsigned int& Value);
+	CORE_API friend SerializeReader& operator >> (SerializeReader& Archive, size_t& Value);
 
 	template<typename T>
 	friend SerializeReader& operator >> (SerializeReader& Archive, std::vector<T>& RHS);
@@ -45,15 +45,14 @@ public:
 	std::ifstream Stream;
 };
 
-SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT4& Vec4);
-SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT3& Vec3);
-SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT2& Vec2);
-SerializeReader& operator >> (SerializeReader& Archive, std::string& RHS);
-SerializeReader& operator >> (SerializeReader& Archive, size_t& Value);
-SerializeReader& operator >> (SerializeReader& Archive, float& Value);
-SerializeReader& operator >> (SerializeReader& Archive, unsigned int& Value);
-SerializeReader& operator >> (SerializeReader& Archive, int& Value);
-SerializeReader& operator >> (SerializeReader& Archive, bool& Value);
+CORE_API SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT4& Vec4);
+CORE_API SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT3& Vec3);
+CORE_API SerializeReader& operator >> (SerializeReader& Archive, XMFLOAT2& Vec2);
+CORE_API SerializeReader& operator >> (SerializeReader& Archive, std::string& RHS);
+CORE_API SerializeReader& operator >> (SerializeReader& Archive, float& Value);
+CORE_API SerializeReader& operator >> (SerializeReader& Archive, unsigned int& Value);
+CORE_API SerializeReader& operator >> (SerializeReader& Archive, size_t& Value);
+
 #ifdef THIS_IS_ENGINE_MODULE
 #include "SSVertexTypes.h"
 SerializeReader& operator >> (SerializeReader& Archive, VT_PositionNormalTexcoordTangent& Value);
@@ -65,16 +64,15 @@ class CORE_API SerializeWriter
 {
 public:
 	SerializeWriter(const std::string& FilePath);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT4& Vec4);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT3& Vec3);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT2& Vec2);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const std::string& RHS);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const float Value);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const unsigned int Value);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const int Value);
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const size_t& Value);
-
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT4& Vec4);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT3& Vec3);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT2& Vec2);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const std::string& RHS);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const float Value);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const unsigned int Value);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const int Value);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const size_t& Value);
+	CORE_API friend SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
 	
 
 	template<typename T>
@@ -203,20 +201,20 @@ SerializeReader& operator >> (SerializeReader& Archive, std::map<T1&, T2&>& RHS)
 	}
 }
 
-SerializeWriter& operator << (SerializeWriter& Archive, const float Value);
-SerializeWriter& operator << (SerializeWriter& Archive, const size_t& Value);
-SerializeWriter& operator << (SerializeWriter& Archive, const unsigned int Value);
-SerializeWriter& operator << (SerializeWriter& Archive, const int Value);
-SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT4& Vec4);
-SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT3& Vec3);
-SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT2& Vec2);
-SerializeWriter& operator << (SerializeWriter& Archive, const std::string& RHS);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const float Value);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const size_t& Value);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const unsigned int Value);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const int Value);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT4& Vec4);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT3& Vec3);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const XMFLOAT2& Vec2);
+CORE_API SerializeWriter& operator << (SerializeWriter& Archive, const std::string& RHS);
 
 
-std::ofstream& operator<<(std::ofstream& Archive, const std::string& S);
-std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT2& Vec2);
-std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT4& Vec4);
-std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT3& Vec3);
+CORE_API std::ofstream& operator<<(std::ofstream& Archive, const std::string& S);
+CORE_API std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT2& Vec2);
+CORE_API std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT4& Vec4);
+CORE_API std::ofstream& operator<<(std::ofstream& Archive, const XMFLOAT3& Vec3);
 
 #ifdef THIS_IS_ENGINE_MODULE
 std::ofstream& operator<<(std::ofstream& Archive, const VT_PositionNormalTexcoord& p);

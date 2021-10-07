@@ -2,11 +2,11 @@
 
 #pragma once
 
-
+#include "SSGameModule.h"
 #include <string>
 #include "SSISerializable.h"
 
-class SSObjMeshMaterial
+class GAMEMODULE_API SSObjMeshMaterial
 {
 public:
 	SSObjMeshMaterial(){}

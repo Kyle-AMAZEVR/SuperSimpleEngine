@@ -1,8 +1,9 @@
 #pragma once
 
+#include "SSCore.h"
 #include <vector>
 
-class SSFileHelper
+class CORE_API SSFileHelper
 {
 public:
 	static bool FileExists(std::wstring filename);
