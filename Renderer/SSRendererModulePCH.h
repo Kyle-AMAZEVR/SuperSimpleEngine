@@ -8,6 +8,7 @@
 #       define DX11RENDERER_API
 #   endif
 
+#define CORE_API __declspec(dllimport)
 
 #include <d3d12.h>
 #include <dxgi1_4.h>

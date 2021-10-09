@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "SSCore.h"
 #include <map>
 #include <unordered_map>
 #include <vector>

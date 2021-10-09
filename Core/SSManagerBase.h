@@ -3,7 +3,7 @@
 #include "Singleton.h"
 #include <vector>
 
-class DX11RENDERER_API SSManagerBase
+class CORE_API SSManagerBase
 {
 public:
 	SSManagerBase();
