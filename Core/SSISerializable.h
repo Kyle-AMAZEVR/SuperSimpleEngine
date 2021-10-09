@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SSCore.h"
 #include <fstream>
 #include <vector>
 #include <map>

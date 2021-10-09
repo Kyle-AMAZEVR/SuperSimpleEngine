@@ -1,5 +1,4 @@
 #pragma once
-#include "SSCore.h"
 #include "DirectXMath.h"
 
 using namespace DirectX;

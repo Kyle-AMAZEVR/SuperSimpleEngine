@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SSCore.h"
 #include "SSName.h"
 
 CORE_API_EXTERN SSName ModelName;

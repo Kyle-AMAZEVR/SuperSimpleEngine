@@ -1,7 +1,6 @@
 
 
 #pragma once
-#include "SSCore.h"
 #include "Singleton.h"
 #include "SSVertexTypes.h"
 #include <vector>

@@ -1,5 +1,5 @@
 #pragma once
-#include "SSCore.h"
+
 #include <DirectXMath.h>
 
 class CORE_API SSCameraBase

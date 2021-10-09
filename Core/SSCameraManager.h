@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include "SSCore.h"
 #include "SSCameraBase.h"
 
 using namespace DirectX;

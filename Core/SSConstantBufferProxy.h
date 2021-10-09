@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SSCore.h"
 
 class CORE_API SSConstantBufferProxy
 {
