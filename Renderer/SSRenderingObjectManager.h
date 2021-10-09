@@ -7,6 +7,8 @@
 class DX11RENDERER_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
 {
 public:
+	SSRenderingObjectManager();
+
 	void SetPendingObjects(std::map<UINT, SSObjectBase*> objectMap);
 
 	void UpdateObjects();
@@ -16,4 +18,7 @@ public:
 private:
 	std::map<UINT, class SSRenderingObject*> mRenderingObjectMap;
 	std::map<UINT, class SSObjectBase*> mPendingObjectMap;
+
+	CRITICAL_SECTION mCriticalSection;
+
 };
