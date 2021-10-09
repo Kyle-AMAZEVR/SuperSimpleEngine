@@ -53,6 +53,7 @@ public:
     SSPBRSphere();
 	SSPBRSphere(SSName diffuseTex, SSName normalTex, SSName metalTex, SSName roughTex);
 	virtual void CreateRenderData() override;
+	virtual void Tick(float delta) override;
 
 protected:
 	SSName mDiffuseTexName;

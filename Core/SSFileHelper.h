@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SSCore.h"
 #include <vector>
 
 class CORE_API SSFileHelper

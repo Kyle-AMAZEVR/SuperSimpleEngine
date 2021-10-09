@@ -20,6 +20,9 @@ add_library(Core SHARED ${SOURCES} ${HEADERS})
 target_compile_definitions(Core PRIVATE CORE_EXPORTS)
 target_compile_definitions(Core INTERFACE CORE_IMPORTS)
 
+target_precompile_headers(Core PRIVATE SSCore.h)
+
+target_compile_options(Core PRIVATE /GR-)
 
 
 

@@ -31,6 +31,7 @@ target_compile_definitions(GameModule PRIVATE GAMEMODULE_EXPORTS)
 target_compile_definitions(GameModule INTERFACE GAMEMODULE_IMPORTS)
 
 
+target_compile_options(GameModule PRIVATE /GR-)
 
 
 ###########################################################

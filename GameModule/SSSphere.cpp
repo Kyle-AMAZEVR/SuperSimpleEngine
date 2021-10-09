@@ -74,6 +74,11 @@ SSPBRSphere::SSPBRSphere(SSName diffuseTexName, SSName normalTexName, SSName met
 	CreateRenderData();
 }
 
+void SSPBRSphere::Tick(float delta)
+{
+	mYaw -= 1.f * delta;
+}
+
 void SSPBRSphere::CreateRenderData()
 {
     mRenderData.VertexShaderName = "GBuffer.vs";

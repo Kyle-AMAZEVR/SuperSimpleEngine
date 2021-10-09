@@ -31,6 +31,7 @@ target_precompile_headers(DX11Renderer PRIVATE "SSRendererModulePCH.h")
 target_compile_definitions(DX11Renderer PRIVATE DX11RENDERER_EXPORTS)
 target_compile_definitions(DX11Renderer INTERFACE DX11RENDERER_IMPORTS)
 
+target_compile_options(DX11Renderer PRIVATE /GR-)
 
 ###########################################################
 
