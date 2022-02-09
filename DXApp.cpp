@@ -44,19 +44,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-
-    // TODO: Place code here.
-
-    AllocConsole();
-    FILE* fp{};
-
-    freopen_s(&fp, "CONIN&", "r", stdin);
-
-    freopen_s(&fp, "CONOUT&", "w", stdout);
-
-    freopen_s(&fp, "CONOUT&", "w", stderr);
-
-
+    
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
 
 	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);

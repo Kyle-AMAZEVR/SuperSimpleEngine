@@ -35,6 +35,10 @@ public:
     class SSCameraBase* GetCurrentCamera() { return mCurrentCamera; }
 
 protected:
+
+	virtual void UpdateMVP();
+
     class SSCameraBase* mCurrentCamera = nullptr;
 	static SSCameraManager* mInstance;
+	XMMATRIX mCurrentMVP;
 };

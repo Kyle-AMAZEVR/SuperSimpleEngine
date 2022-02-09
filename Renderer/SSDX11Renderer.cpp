@@ -292,6 +292,8 @@ void SSDX11Renderer::DrawCubeScene()
 		v->Draw(deviceContext);
 	}
 
+	//mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
+
 	mDeferredLightPostProcess->Draw(
 		deviceContext,
 		mGBuffer->GetPositionOutput(),
@@ -302,12 +304,12 @@ void SSDX11Renderer::DrawCubeScene()
 		mEnvCubemapPrefilter.get());
 
 	mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
-
+	
 	mViewport->Clear(deviceContext);
 	mViewport->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
-
+	
 	if (false)
 	{
 		blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));

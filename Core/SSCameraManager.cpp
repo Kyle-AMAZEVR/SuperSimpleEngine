@@ -58,42 +58,45 @@ XMMATRIX SSCameraManager::GetCurrentCameraTranslation() const
 void SSCameraManager::RotateYaw(float amount)
 {
 	mCurrentCamera->RotateYaw(amount);
+	UpdateCurrentCamera();
 }
 
 void SSCameraManager::RotatePitch(float amount)
 {
 	mCurrentCamera->RotatePitch(amount);
+	UpdateCurrentCamera();
 }
 
 void SSCameraManager::MoveFoward(float amount)
 {
 	mCurrentCamera->MoveFoward(amount);
+	UpdateCurrentCamera();
 }
 
 void SSCameraManager::MoveBackward(float amount)
 {
 	mCurrentCamera->MoveBackward(amount);
+	UpdateCurrentCamera();
 }
 
-XMMATRIX SSCameraManager::GetCurrentCameraViewProj() const 
-{
-	check(mCurrentCamera != nullptr);
-	return mCurrentCamera->GetViewProj();
-}
-
-XMMATRIX SSCameraManager::GetCurrentCameraMVP() const
+void SSCameraManager::UpdateMVP()
 {
 	XMMATRIX translation = GetCurrentCameraTranslation();
 	XMMATRIX modelView = translation * GetCurrentCameraView();
-	XMMATRIX mvp = modelView * GetCurrentCameraProj();
+	mCurrentMVP = modelView * GetCurrentCameraProj();
+}
 
-	return mvp;
+
+XMMATRIX SSCameraManager::GetCurrentCameraMVP() const
+{
+	return mCurrentMVP;
 }
 
 void SSCameraManager::UpdateCurrentCamera()
 {
 	check(mCurrentCamera != nullptr);
 	mCurrentCamera->Update();
+	UpdateMVP();
 }
 
 void SSCameraManager::SetCurrentCameraFOV(float fov)
