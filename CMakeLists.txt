@@ -31,11 +31,11 @@ include_directories("Renderer")
 include_directories("GameModule")
 include_directories("Core")
 
-add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp DXApp.cpp DXWindow.rc)
+add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp SSApplication.cpp DXWindow.rc)
 
 if(WIN32)
-	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")
-	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
+	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")	
+	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")	
 endif(WIN32)
 
 

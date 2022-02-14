@@ -9,6 +9,7 @@
 #include <windows.h>
 
 // C RunTime Header Files
+#include <iostream>
 #include <stdlib.h>
 
 #include "d3d11.h"
@@ -44,10 +45,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-    
+
+    HWND ConsoleHWND = GetConsoleWindow();
+    ShowWindow(ConsoleHWND, SW_HIDE);
+        
+    AllocConsole();
+    freopen("CONOUT$", "w", stdout);
+
+    std::cout << "This works?" << std::endl;
+   
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
 
-	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);
+	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);    
 
 	check(SSGameWindow::GetPtr() != nullptr);
 
