@@ -17,34 +17,23 @@ file(GLOB HEADERS "./*.h")
 
 include_directories("../lib/DirectXMath/Include")
 include_directories("../lib/DirectXTex/DirectXTex")
-include_directories("../lib/freetype/include")
-include_directories("../lib/simdjson")
 include_directories("../Core")
-include_directories("../RenderCore")
-include_directories("../HeaderOnly")
 include_directories("../lib/bin")
 
-add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
+add_library(RenderCore SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(DX11Renderer 
-d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib 
+target_link_libraries(RenderCore d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib 
 $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Debug/directxtex.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Release/directxtex.lib>
 $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/RelWithDebInfo/directxtex.lib>
 $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
-$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>
-GameModule 
-simdjson 
-RenderCore)
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>)
 
+target_compile_definitions(RenderCore PRIVATE RENDERCORE_EXPORTS)
+target_compile_definitions(RenderCore INTERFACE RENDERCORE_IMPORTS)
 
-target_precompile_headers(DX11Renderer PRIVATE "SSRendererModulePCH.h")
-
-target_compile_definitions(DX11Renderer PRIVATE DX11RENDERER_EXPORTS)
-target_compile_definitions(DX11Renderer INTERFACE DX11RENDERER_IMPORTS)
-
-target_compile_options(DX11Renderer PRIVATE /GR-)
+target_compile_options(RenderCore PRIVATE /GR-)
 
 ###########################################################
 
