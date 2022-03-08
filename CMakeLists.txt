@@ -22,7 +22,8 @@ add_subdirectory("Core")
 add_subdirectory("lib/simdjson")
 add_subdirectory("Engine")
 add_subdirectory("RenderCore")
-add_subdirectory("Engine12")
+add_subdirectory("GameModule")
+#add_subdirectory("Engine12")
 
 
 include_directories("HeaderOnly")
