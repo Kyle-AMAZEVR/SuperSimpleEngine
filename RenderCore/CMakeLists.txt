@@ -30,6 +30,8 @@ $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
 $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>)
 
+target_precompile_headers(RenderCore PRIVATE "SSRenderCore.h")
+
 target_compile_definitions(RenderCore PRIVATE RENDERCORE_EXPORTS)
 target_compile_definitions(RenderCore INTERFACE RENDERCORE_IMPORTS)
 

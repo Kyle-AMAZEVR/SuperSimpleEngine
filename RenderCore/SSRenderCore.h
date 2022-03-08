@@ -8,5 +8,7 @@
 #       define RENDERCORE_API __declspec(dllimport)
 #		define RENDERCORE_API_EXTERN extern __declspec(dllimport)
 #   else
+#	ifndef RENDERCORE_API
 #       define RENDERCORE_API
+#	endif
 #   endif
