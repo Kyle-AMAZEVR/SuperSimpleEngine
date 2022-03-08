@@ -20,7 +20,6 @@ message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 add_subdirectory("Renderer")
 add_subdirectory("Engine12")
 add_subdirectory("Core")
-add_subdirectory("lib/DirectXTex")
 add_subdirectory("lib/simdjson")
 add_subdirectory("Engine")
 

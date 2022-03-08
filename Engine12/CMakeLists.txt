@@ -16,7 +16,6 @@ file(GLOB SOURCES "./*.cpp")
 file(GLOB HEADERS "./*.h")
 
 include_directories("../lib/DirectXMath/Include")
-
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
 include_directories("../GameModule")
@@ -27,7 +26,7 @@ add_dependencies(SSDX12 GameModule)
 
 link_directories("../lib/bin")
 
-target_link_libraries(SSDX12 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype.lib GameModule) 
+target_link_libraries(SSDX12 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex.lib freetype.lib GameModule) 
 
 target_precompile_headers(SSDX12 PRIVATE "SSDX12.h")
 

@@ -23,12 +23,17 @@ include_directories("../Core")
 include_directories("../HeaderOnly")
 include_directories("../lib/bin")
 
-message(${CMAKE_SOURCE_DIR}/lib/bin/test.lib)
-
 add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex 
- ${CMAKE_SOURCE_DIR}/lib/bin/freetype.lib GameModule simdjson)
+target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib 
+$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Debug/directxtex.lib>
+$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Release/directxtex.lib>
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/RelWithDebInfo/directxtex.lib>
+$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
+$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>
+GameModule simdjson)
+
 
 target_precompile_headers(DX11Renderer PRIVATE "SSRendererModulePCH.h")
 

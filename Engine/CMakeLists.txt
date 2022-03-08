@@ -16,6 +16,7 @@ include_directories("../Renderer")
 include_directories("../GameModule")
 include_directories("../HeaderOnly")
 include_directories("../Core")
+include_directories("../lib/DirectXTex/DirectXTex")
 
 add_library(Engine SHARED ${SOURCES} ${HEADERS})
 
