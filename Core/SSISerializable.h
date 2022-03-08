@@ -109,7 +109,7 @@ public:
 
 	SerializeReader& ReadVector(SerializeReader& Archive, std::vector<T>& RHS)
 	{
-		std::vector<T>::size_type Size;
+		typename std::vector<T>::size_type Size;
 		Archive.Stream.read((char*)&Size, sizeof(std::vector<T>::size_type));
 		RHS.resize(Size);
 		auto TotalBytes = RHS.size() * sizeof(T);
@@ -135,11 +135,11 @@ public:
 
 	SerializeReader& ReadVector(SerializeReader& Archive, std::vector<T>& RHS)
 	{
-		std::vector<T>::size_type Size;
+		typename std::vector<T>::size_type Size;
 		Archive.Stream.read((char*)&Size, sizeof(std::vector<T>::size_type));
 		RHS.resize(Size);
 
-		for (std::vector<T>::size_type i = 0; i < Size; ++i)
+		for (typename std::vector<T>::size_type i = 0; i < Size; ++i)
 		{
 			Archive >> RHS[i];
 		}

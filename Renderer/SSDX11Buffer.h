@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SSBufferBase.h"
+#include "d3d11.h"
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;

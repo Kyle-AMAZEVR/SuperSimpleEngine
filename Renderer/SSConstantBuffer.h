@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "SSBufferBase.h"
 #include "SSDX11Buffer.h"
 #include <vector>
 #include <string>
@@ -8,7 +9,7 @@
 #include "SSDX11Renderer.h"
 
 template<class TBufferType>
-class SSTypedConstantBuffer : public SSBufferBase
+class SSTypedConstantBuffer : public SSDX11Buffer
 {
 public:
     SSTypedConstantBuffer();
@@ -22,7 +23,7 @@ protected:
 
 template<class TBufferType>
 SSTypedConstantBuffer<TBufferType>::SSTypedConstantBuffer()
-{
+{    
     mBufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;

@@ -20,6 +20,6 @@ public:
     static D3D12_INPUT_ELEMENT_DESC PositionNormalTexcoordElementDesc[3];
 
 	// Position, Color, Texcoord
-	static D3D12_INPUT_ELEMENT_DESC SSVertexElementDeclaration::PositionColorTexcoordElementDesc[3];
+	static D3D12_INPUT_ELEMENT_DESC PositionColorTexcoordElementDesc[3];
 };
 

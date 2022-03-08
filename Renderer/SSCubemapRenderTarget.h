@@ -3,7 +3,7 @@
 #include "SSTexture2D.h"
 #include "SSTextureCube.h"
 
-enum class ECubemapFace : unsigned char
+enum ECubemapFace
 {
 	POSITIVE_X,
 	NEGATIVE_X,
