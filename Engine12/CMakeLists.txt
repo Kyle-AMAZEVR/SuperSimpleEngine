@@ -25,7 +25,9 @@ add_library(SSDX12 SHARED ${SOURCES} ${HEADERS})
 add_subdirectory("../GameModule/" "../GameModule")
 add_dependencies(SSDX12 GameModule)
 
-target_link_libraries(SSDX12 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule) 
+link_directories("../lib/bin")
+
+target_link_libraries(SSDX12 d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype.lib GameModule) 
 
 target_precompile_headers(SSDX12 PRIVATE "SSDX12.h")
 

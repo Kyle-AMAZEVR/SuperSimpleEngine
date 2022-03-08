@@ -21,11 +21,13 @@ include_directories("../lib/simdjson")
 include_directories("../Core")
 include_directories("../HeaderOnly")
 
+link_directories("../lib/bin")
+
 add_library(GameModule SHARED ${SOURCES} ${HEADERS})
 
 target_precompile_headers(GameModule PRIVATE "SSGameModule.h")
 
-target_link_libraries(GameModule d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib freetype simdjson Core)
+target_link_libraries(GameModule d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib simdjson Core)
 
 target_compile_definitions(GameModule PRIVATE GAMEMODULE_EXPORTS)
 target_compile_definitions(GameModule INTERFACE GAMEMODULE_IMPORTS)

@@ -22,7 +22,6 @@ add_subdirectory("Engine12")
 add_subdirectory("Core")
 add_subdirectory("lib/DirectXTex")
 add_subdirectory("lib/simdjson")
-add_subdirectory("lib/freetype")
 add_subdirectory("Engine")
 
 include_directories("HeaderOnly")
@@ -45,6 +44,7 @@ target_compile_options(SuperSimpleEngine PRIVATE /GR-)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resource DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lib/bin DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 

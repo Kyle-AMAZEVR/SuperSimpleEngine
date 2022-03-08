@@ -21,10 +21,14 @@ include_directories("../lib/freetype/include")
 include_directories("../lib/simdjson")
 include_directories("../Core")
 include_directories("../HeaderOnly")
+include_directories("../lib/bin")
+
+message(${CMAKE_SOURCE_DIR}/lib/bin/test.lib)
 
 add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 
-target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex freetype GameModule simdjson)
+target_link_libraries(DX11Renderer d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib dxgi.lib directxtex 
+ ${CMAKE_SOURCE_DIR}/lib/bin/freetype.lib GameModule simdjson)
 
 target_precompile_headers(DX11Renderer PRIVATE "SSRendererModulePCH.h")
 
