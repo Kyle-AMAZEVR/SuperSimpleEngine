@@ -3,7 +3,7 @@
 #include "SSObjectBase.h"
 #include <map>
 
-class RENDERCORE_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
+class DX11RENDERER_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
 {
 public:
 	SSRenderingObjectManager();

@@ -12,6 +12,7 @@
 #define CORE_API __declspec(dllimport)
 #endif
 
+#include "SSCore.h"
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <d3d11_1.h>
