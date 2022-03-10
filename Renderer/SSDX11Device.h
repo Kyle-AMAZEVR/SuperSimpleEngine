@@ -9,12 +9,14 @@ struct SSAdapterInfo
 	IDXGIAdapter* AdapterPointer = nullptr;
 };
 
-class SSDX11Device : public SSRenderDevice
+class DX11RENDERER_API SSDX11Device : public SSRenderDevice
 {
 public:
-	bool CreateDevice();
+	ID3D11Device*				GetDevice()const;
 	ID3D11DeviceContext*		GetDeviceContext() const;
 
+	virtual bool				InitializeDevice(HWND windowHandle) override;
+	virtual bool				CreateDevice() override;
 	virtual void				SetVertexShader(class SSVertexShader* vs) override;
 	virtual void				SetPixelShader(class SSPixelShader* ps) override;
 	virtual void				ClearCurrentRenderTarget() override;
@@ -25,11 +27,12 @@ public:
 	virtual void				ClearViewport() override;
 
 protected:
+	bool						CreateSwapChain(HWND windowHandle);	
 
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> mDeviceContext;
-	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
-
+	ComPtr<ID3D11DeviceContext> mDeviceContext;
+	ComPtr<ID3D11Device> mDevice;
+	ComPtr<IDXGISwapChain> mSwapChain;
+	
 	std::vector<SSAdapterInfo> mAdapterInfos;
-
-	std::unique_ptr<SSDX11Viewport> mViewport;
+	std::unique_ptr<class SSDX11Viewport> mViewport;
 };

@@ -13,12 +13,12 @@ class DX11RENDERER_API SSDX11RenderTargetTexture2D : public SSDX11Texture2D
 public:	
 	SSDX11RenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
 	virtual ~SSDX11RenderTargetTexture2D();
-	virtual void Resize(const UINT newWidth, const UINT newHeight);
-	void Destroy();
+	virtual void Resize(const UINT newWidth, const UINT newHeight);	
 	virtual void SaveAsDDSFile(std::wstring filename);	
 	
 	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip].Get(); }
 	virtual void Clear(ID3D11DeviceContext* deviceContext);
+	void Destroy();
 	UINT GetMipLevels() const { return mMipLevels; }
 
 protected:

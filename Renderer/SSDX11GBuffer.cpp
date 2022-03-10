@@ -1,16 +1,16 @@
 
 #include "SSRendererModulePCH.h"
-#include "SSGBuffer.h"
+#include "SSDX11GBuffer.h"
 #include "SSRenderTarget2D.h"
 #include "SSDX11Renderer.h"
 
 
-SSGBuffer::SSGBuffer(UINT width, UINT height, DXGI_FORMAT format)
+SSDX11GBuffer::SSDX11GBuffer(UINT width, UINT height, DXGI_FORMAT format)
 	: SSDX11RenderTarget(width, height, static_cast<UINT>(EGBufferType::Max))
 {	
 }
 
-void SSGBuffer::Destroy()
+void SSDX11GBuffer::Destroy()
 {
 	for (UINT8 i = 0; i < static_cast<UINT8>(EGBufferType::Max); ++i)
 	{

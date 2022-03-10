@@ -1,14 +1,8 @@
 #pragma once
 
+#include "SSDX11Device.h"
 #include "SSRendererModulePCH.h"
 #include "SSRenderer.h"
-
-struct SSAdapterInfo
-{
-	DXGI_ADAPTER_DESC AdapterDesc;
-	IDXGIAdapter* AdapterPointer = nullptr;
-};
-
 
 class DX11RENDERER_API SSDX11Renderer : public SSRenderer
 {
@@ -21,17 +15,15 @@ public:
 	virtual void DrawScene() override;
 	
 	static SSDX11Renderer& Get();
-	static SSDX11Renderer* GetPtr();
+	static SSDX11Renderer* GetPtr();	
 	
-	inline ID3D11Device* GetDevice() const { return mDevice.Get(); }
-	inline ID3D11DeviceContext* GetImmediateDeviceContext() const { return mDeviceContext.Get(); }
-	inline ID3D11DeviceContext* GetDeferredDeviceContext() const { return mDeferredContext.Get(); }
-	inline IDXGISwapChain* GetSwapChain() const { return mSwapChain.Get(); }
-
 	void AppendRenderCommand(class SSDrawCmdBase* cmd);
 	void FlushRenderCommands();
 
 	DXGI_FORMAT SwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	ID3D11Device* GetDevice();
+	ID3D11DeviceContext* GetImmediateDeviceContext();
 
 protected:
 	void DrawCubeScene();
@@ -48,22 +40,12 @@ protected:
 	void TestCompileShader();
 	void TestCreateResources();
 
-private:
-	virtual bool CreateDevice() override;
-	virtual bool CreateSwapChain() override;
-
-	HWND mWindowHandle;
-	UINT m4xMSAAQuality;
-
+private:		
 	bool bInitialized = false;
-
 	bool bGbufferDump = false;
 
 private:
-	ComPtr<ID3D11Device> mDevice = nullptr;
-	ComPtr<ID3D11DeviceContext> mDeviceContext = nullptr;
-	ComPtr<ID3D11DeviceContext> mDeferredContext = nullptr;
-	ComPtr<IDXGISwapChain> mSwapChain = nullptr;
+	SSDX11Device* mDX11Device;	
 
 	ID3D11Debug* mDebug = nullptr;
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
@@ -129,7 +111,7 @@ private:
 	
 	std::shared_ptr<class SSTexture2D> mHDREnvmap;
 
-	std::shared_ptr<class SSGBuffer> mGBuffer;
+	std::shared_ptr<class SSDX11GBuffer> mGBuffer;
 
 	std::shared_ptr<class SSDX11RenderTarget> m2DLUTRenderTarget;
 	//

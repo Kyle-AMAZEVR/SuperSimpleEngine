@@ -15,10 +15,10 @@ enum class EGBufferType : UINT8
 	Max,
 };
 
-class DX11RENDERER_API SSGBuffer : public SSDX11RenderTarget
+class DX11RENDERER_API SSDX11GBuffer : public SSDX11RenderTarget
 {
 public:
-	SSGBuffer(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT);
+	SSDX11GBuffer(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT);
 
 	void Destroy();
 	

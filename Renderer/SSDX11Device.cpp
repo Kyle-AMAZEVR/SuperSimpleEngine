@@ -59,9 +59,21 @@ bool SSDX11Device::CreateDevice()
 	return true;
 }
 
+
+ID3D11Device* SSDX11Device::GetDevice() const
+{
+	return mDevice.Get();
+}
+
 ID3D11DeviceContext* SSDX11Device::GetDeviceContext() const
 {
-	return nullptr;
+	return mDeviceContext.Get();
+}
+
+bool SSDX11Device::InitializeDevice(HWND windowHandle)
+{
+	bool bDeviceCreated = CreateDevice();
+	bool bSwapChainCreated = CreateSwapChain();
 }
 
 void SSDX11Device::SetVertexShader(SSVertexShader* vs)
@@ -87,10 +99,68 @@ void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
 
 void SSDX11Device::ResizeViewport(unsigned width, unsigned height)
 {
-	
+	if (mBufferWidth != newWidth || mBufferHeight != newHeight)
+	{
+		Resize(newWidth, newHeight);
+	}
 }
 
 void SSDX11Device::ClearViewport()
 {
 
+}
+
+bool SSDX11Device::CreateSwapChain(HWND windowHandle)
+{
+	HR(mDevice->CheckMultisampleQualityLevels(SwapChainFormat, 4, &m4xMSAAQuality));
+
+	HR(mDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&mDebug));
+
+	IDXGIDevice* dxgiDevice = nullptr;
+	HR(mDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice));
+
+	IDXGIAdapter* dxgiAdaptor = nullptr;
+	HR(dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdaptor));
+
+	IDXGIFactory* dxgiFactory = nullptr;
+	HR(dxgiAdaptor->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory));
+
+	// Create swap chain
+	IDXGIFactory2* dxgiFactory2 = nullptr;
+	HR(dxgiFactory->QueryInterface(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory2)));
+	if (dxgiFactory2)
+	{
+		// DirectX 11.1 or later
+		ID3D11Device1* Device1;
+		ID3D11DeviceContext1* DeviceContext1;
+		IDXGISwapChain1* SwapChain1;
+		HR(mDevice->QueryInterface(__uuidof(ID3D11Device1), reinterpret_cast<void**>(&Device1)));
+		{
+			(void)mDevice->QueryInterface(__uuidof(ID3D11DeviceContext1), reinterpret_cast<void**>(&DeviceContext1));
+		}
+
+		DXGI_SWAP_CHAIN_DESC1 sd = {};
+		sd.Width = mBufferWidth;
+		sd.Height = mBufferHeight;
+		sd.Format = SwapChainFormat;
+		sd.SampleDesc.Count = 4;
+		sd.SampleDesc.Quality = m4xMSAAQuality - 1;
+		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		sd.BufferCount = 2;
+		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+
+		HR(dxgiFactory2->CreateSwapChainForHwnd(mDevice.Get(), windowHandle, &sd, nullptr, nullptr, &SwapChain1));
+
+		{
+			HR(SwapChain1->QueryInterface(__uuidof(IDXGISwapChain), reinterpret_cast<void**>(mSwapChain.GetAddressOf())));
+		}
+
+		dxgiFactory2->Release();
+	}
+
+	ReleaseCOM(dxgiDevice);
+	ReleaseCOM(dxgiAdaptor);
+	ReleaseCOM(dxgiFactory);
+
+	return true;
 }

@@ -41,9 +41,8 @@ public:
 	// @IRenderTarget Interface
 	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
-	
-	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override {}
-	virtual void Clear(ID3D11DeviceContext* deviceContext) override;	
+		
+	void Clear(ID3D11DeviceContext* deviceContext);	
 	virtual void Resize(UINT width, UINT height) override {}
 	// @IRenderTarget Interface
 

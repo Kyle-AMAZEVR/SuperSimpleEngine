@@ -7,7 +7,7 @@
 #include "SSTexture2D.h"
 #include "SSSamplerManager.h"
 #include "SSDrawCommand.h"
-#include "SSGBuffer.h"
+#include "SSDX11GBuffer.h"
 #include "SSScreenBlit.h"
 #include "SSRenderTarget2D.h"
 #include "SSTextureCube.h"
@@ -50,30 +50,8 @@ SSDX11Renderer* SSDX11Renderer::GetPtr()
 
 void SSDX11Renderer::Initialize(HWND windowHandle)
 {
-	mWindowHandle = windowHandle;
-	IDXGIFactory* pFactory = nullptr;
-	CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&pFactory);
-	if (pFactory)
-	{
-		IDXGIAdapter* pAdapter = nullptr;
-		HRESULT AdapterResult = S_FALSE;
-		UINT i = 0;
-		do
-		{
-			AdapterResult = pFactory->EnumAdapters(i, &pAdapter);
-			if (AdapterResult == S_OK)
-			{
-				DXGI_ADAPTER_DESC desc;
-				pAdapter->GetDesc(&desc);
-				
-				mAdapterInfos.push_back(SSAdapterInfo{ desc, pAdapter });
-			}
-			i++;
-		} while (AdapterResult == S_OK);
-		
-	}
-	CreateDevice();
-	CreateSwapChain();	
+	mDX11Device = new SSDX11Device();
+	mDX11Device->InitializeDevice(windowHandle);
 
 	SSShaderManager::Get().Initialize();
 	SSSamplerManager::Get().Initialize();
@@ -82,7 +60,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	SSSharedBufferCache::Get().Initialize();
 
 	mViewport = std::make_shared<SSDX11Viewport>();
-	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
+	mGBuffer = std::make_shared<SSDX11GBuffer>(1024, 768);
 
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024, 1024);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
@@ -99,8 +77,6 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 		SSFileHelper::MakeDirectory(L"./Prebaked");
 	}	
 
-
-
 	mScreenBlit = std::make_shared<class SSScreenBlit>();
 	TestCompileShader();
 	TestCreateResources();
@@ -116,11 +92,7 @@ void SSDX11Renderer::Shutdown()
 	SSDepthStencilStateManager::Get().Shutdown();
 	SSRasterizeStateManager::Get().Shutdown();
 	SSSamplerManager::Get().Shutdown();
-	SSShaderManager::Get().Shutdown();
-
-	mSwapChain.Reset();
-	mDevice.Reset();
-	mDeviceContext.Reset();
+	SSShaderManager::Get().Shutdown();	
 }
 
 void SSDX11Renderer::TestCreateResources()
@@ -205,6 +177,25 @@ void SSDX11Renderer::DrawDummyScene()
 
 
 	mSwapChain->Present(0, 0);
+}
+
+ID3D11Device* SSDX11Renderer::GetDevice()
+{
+	if(mDX11Device)
+	{
+		return mDX11Device->GetDevice();
+	}
+	return nullptr;
+}
+
+ID3D11DeviceContext* SSDX11Renderer::GetImmediateDeviceContext()
+{
+	if (mDX11Device)
+	{
+		return mDX11Device->GetDeviceContext();
+	}
+
+	return nullptr;
 }
 
 void SSDX11Renderer::DrawCubeScene()
@@ -351,7 +342,10 @@ void SSDX11Renderer::DrawSponzaScene()
 		return;
 	}
 
-	check(mDeviceContext != nullptr);
+	if(mDX11Device == nullptr)
+	{
+		return;
+	}
 
 	// @equirect to cube
 	// @start
@@ -489,52 +483,16 @@ void SSDX11Renderer::TestCompileShader()
 	//mRenderTargetCube = std::make_shared<SSRenderTargetCube>("Prefilter.vs", "Prefilter.ps");
 }
 
-bool SSDX11Renderer::CreateDevice()
-{
-	//
-	D3D_FEATURE_LEVEL featureLevelArray[] =
-	{
-		D3D_FEATURE_LEVEL_11_1,
-		D3D_FEATURE_LEVEL_11_0,
-		D3D_FEATURE_LEVEL_10_0,
-		D3D_FEATURE_LEVEL_9_3,
-		D3D_FEATURE_LEVEL_9_2,
-		D3D_FEATURE_LEVEL_9_1,
-		
-	};
-
-	UINT length = sizeof(featureLevelArray) / sizeof(D3D_FEATURE_LEVEL);
-
-	D3D_FEATURE_LEVEL outFeatureLevel;
-
-	HRESULT hr = D3D11CreateDevice(mAdapterInfos[0].AdapterPointer,
-		D3D_DRIVER_TYPE_UNKNOWN, 
-		0, 
-		D3D11_CREATE_DEVICE_DEBUG, 
-		featureLevelArray,
-		length, 
-		D3D11_SDK_VERSION, mDevice.GetAddressOf(), &outFeatureLevel, mDeviceContext.ReleaseAndGetAddressOf());
-
-	if (hr == 0)
-	{
-		std::cout << "Device created" << std::endl;
-	}
-	return true;
-}
 
 void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 {
 	if (bInitialized)
 	{	
-		check(mDeviceContext);
-		check(mDevice);
-		check(mSwapChain);
-
 		check(newWidth > 0 && newHeight > 0);
 
-		if (mBufferWidth != newWidth || mBufferHeight != newHeight)
+		if(mDX11Device)
 		{
-			Resize(newWidth, newHeight);
+			mDX11Device->ResizeViewport(newWidth, newHeight);
 		}
 	}
 }
@@ -552,61 +510,6 @@ void SSDX11Renderer::Resize(int newWidth,int newHeight)
 	mDeferredLightPostProcess->OnResize(newWidth, newHeight);
 }
 
-
-bool SSDX11Renderer::CreateSwapChain()
-{
-	HR(mDevice->CheckMultisampleQualityLevels(SwapChainFormat, 4, &m4xMSAAQuality));
-
-	HR(mDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&mDebug));
-
-	IDXGIDevice* dxgiDevice = nullptr;
-	HR(mDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice));
-
-	IDXGIAdapter* dxgiAdaptor = nullptr;
-	HR(dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdaptor));
-
-	IDXGIFactory* dxgiFactory = nullptr;
-	HR(dxgiAdaptor->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory));
-
-	// Create swap chain
-	IDXGIFactory2* dxgiFactory2 = nullptr;
-	HR(dxgiFactory->QueryInterface(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory2)));
-	if (dxgiFactory2)
-	{
-		// DirectX 11.1 or later
-		ID3D11Device1* Device1;
-		ID3D11DeviceContext1* DeviceContext1;
-		IDXGISwapChain1* SwapChain1;
-		HR(mDevice->QueryInterface(__uuidof(ID3D11Device1), reinterpret_cast<void**>(&Device1)));
-		{
-			(void)mDevice->QueryInterface(__uuidof(ID3D11DeviceContext1), reinterpret_cast<void**>(&DeviceContext1));
-		}
-
-		DXGI_SWAP_CHAIN_DESC1 sd = {};
-		sd.Width = mBufferWidth;
-		sd.Height = mBufferHeight;
-		sd.Format = SwapChainFormat;
-		sd.SampleDesc.Count = 4;
-		sd.SampleDesc.Quality = m4xMSAAQuality-1;
-		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		sd.BufferCount = 2;
-		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-
-		HR(dxgiFactory2->CreateSwapChainForHwnd(mDevice.Get(), mWindowHandle, &sd, nullptr, nullptr, &SwapChain1));
-		
-		{
-			HR(SwapChain1->QueryInterface(__uuidof(IDXGISwapChain), reinterpret_cast<void**>(mSwapChain.GetAddressOf())));
-		}
-
-		dxgiFactory2->Release();
-	}
-
-	ReleaseCOM(dxgiDevice);
-	ReleaseCOM(dxgiAdaptor);
-	ReleaseCOM(dxgiFactory);
-
-	return true;
-}
 
 void SSDX11Renderer::Create2DLUTTexture()
 {

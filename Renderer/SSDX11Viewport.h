@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "SSDX11Device.h"
-#include "SSRenderTargetBase.h"
+
 #include "SSViewport.h"
 #include "wrl/client.h"
 
@@ -15,7 +14,7 @@ public:
     virtual void Resize(UINT newWidth, UINT newHeight) override;
 	virtual void Clear() override;
 
-	void SetCurrentRenderTarget(SSDX11Device* device);
+	void SetCurrentRenderTarget(class SSDX11Device* device);
 
 protected:
     ComPtr<ID3D11Texture2D> mDepthStencilBuffer = nullptr;

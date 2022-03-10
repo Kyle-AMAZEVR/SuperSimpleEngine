@@ -9,7 +9,8 @@ class SSIndexBuffer;
 class RENDERCORE_API SSRenderDevice
 {
 public:
-	bool	CreateDevice();	
+	virtual bool				InitializeDevice(HWND windowHandle) = 0;
+	virtual bool				CreateDevice() = 0;
 
 	virtual SSVertexBuffer*		CreateVertexBuffer() = 0;
 	virtual SSIndexBuffer*		CreateIndexBuffer() = 0;
@@ -37,6 +38,10 @@ public:
 	virtual void				ClearViewport() = 0;
 	
 protected:
+	int mBufferWidth = 1920;
+	int mBufferHeight = 1080;
+	HWND mWindowHandle;
+	UINT m4xMSAAQuality = 0;
 };
 
 
