@@ -5,6 +5,7 @@
 
 #include <wrl.h>
 #include <wrl/client.h>
+class SSDX11Device;
 using Microsoft::WRL::ComPtr;
 
 class DX11RENDERER_API SSDX11RenderTargetTexture2D : public SSDX11Texture2D
@@ -47,22 +48,26 @@ class DX11RENDERER_API SSDX11RenderTarget : public IRenderTarget
 {
 public:
 	SSDX11RenderTarget(UINT width, UINT height, UINT count, bool bDepthExist = true, DXGI_FORMAT eFormat = DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_FORMAT eDepthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
-
 	SSDX11RenderTargetTexture2D* GetOutput(UINT nIndex);
+
+	UINT GetCount() const { return mCount; }
 
 	void SaveRTTexture(UINT index, std::wstring filename);
 
 	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
+
+	void SetCurrentRenderTarget(SSDX11Device* device);
+	void Clear(SSDX11Device* deviceContext);
 	
-	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override;
-
-	virtual void Clear(ID3D11DeviceContext* deviceContext) override;	
 	virtual void Resize(UINT width, UINT height) override;
-
 	virtual void Destroy();
 
+	bool IsDepthExist() const { return mDepthExist; }
+	D3D11_VIEWPORT& GetViewport() { return mViewport; }
+
 protected:
+	friend class SSDX11Device;
 	SSDX11RenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
 	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
 	ID3D11RenderTargetView** mRenderTargetViews{ nullptr };

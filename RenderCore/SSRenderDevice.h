@@ -35,6 +35,7 @@ public:
 
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) = 0;
 	virtual void				ClearViewport() = 0;
+	
 protected:
 };
 

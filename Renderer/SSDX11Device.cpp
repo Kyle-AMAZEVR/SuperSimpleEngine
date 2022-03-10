@@ -2,6 +2,7 @@
 #include "SSDX11Device.h"
 #include <iostream>
 
+#include "SSRenderTarget2D.h"
 #include "SSShader.h"
 
 bool SSDX11Device::CreateDevice()
@@ -83,10 +84,6 @@ void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
 	
 }
 
-void SSDX11Device::SetCurrentRenderTarget(SSDX11RenderTarget* rt)
-{
-
-}
 
 void SSDX11Device::ResizeViewport(unsigned width, unsigned height)
 {

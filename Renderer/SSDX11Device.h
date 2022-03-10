@@ -13,14 +13,13 @@ class SSDX11Device : public SSRenderDevice
 {
 public:
 	bool CreateDevice();
-	ID3D11DeviceContext* GetDeviceContext() const;
+	ID3D11DeviceContext*		GetDeviceContext() const;
 
 	virtual void				SetVertexShader(class SSVertexShader* vs) override;
 	virtual void				SetPixelShader(class SSPixelShader* ps) override;
 	virtual void				ClearCurrentRenderTarget() override;
 
-	virtual void				SetCurrentRenderTarget(class SSViewport* viewport)override;
-	virtual void				SetCurrentRenderTarget(class SSDX11RenderTarget* rt) override;
+	virtual void				SetCurrentRenderTarget(class SSViewport* viewport)override;	
 
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) override;
 	virtual void				ClearViewport() override;

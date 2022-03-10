@@ -4,6 +4,7 @@
 #include "SSDX11Renderer.h"
 #include "SSMathHelper.h"
 #include "DirectXTex.h"
+#include "SSDX11Device.h"
 
 SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips, UINT maxMipCount)
 {
@@ -308,7 +309,7 @@ SSDX11RenderTarget::SSDX11RenderTarget(UINT width, UINT height, UINT count, bool
 	mRenderTargetViews = new ID3D11RenderTargetView*[mCount];
 }
 
-void SSDX11RenderTarget::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
+void SSDX11RenderTarget::SetCurrentRenderTarget(SSDX11Device* device)
 {
 	for (UINT i = 0; i < mCount; ++i)
 	{
@@ -319,15 +320,15 @@ void SSDX11RenderTarget::SetCurrentRenderTarget(ID3D11DeviceContext* deviceConte
 	{
 		ID3D11DepthStencilView* depthStencil = mDepthTarget->GetDepthStencilView();
 
-		deviceContext->OMSetRenderTargets(mCount, mRenderTargetViews, depthStencil);
+		device->GetDeviceContext()->OMSetRenderTargets(mCount, mRenderTargetViews, depthStencil);
 
-		deviceContext->RSSetViewports(1, &mViewport);
+		device->GetDeviceContext()->RSSetViewports(1, &mViewport);
 	}
 	else
 	{
-		deviceContext->OMSetRenderTargets(mCount, mRenderTargetViews, nullptr);
+		device->GetDeviceContext()->OMSetRenderTargets(mCount, mRenderTargetViews, nullptr);
 
-		deviceContext->RSSetViewports(1, &mViewport);
+		device->GetDeviceContext()->RSSetViewports(1, &mViewport);
 	}
 }
 
@@ -389,16 +390,16 @@ void SSDX11RenderTarget::SaveRTTexture(UINT index, std::wstring filename)
 	mRenderTargetArray[index]->SaveAsDDSFile(filename);
 }
 
-void SSDX11RenderTarget::Clear(ID3D11DeviceContext* deviceContext)
+void SSDX11RenderTarget::Clear(SSDX11Device* device)
 {
 	for(UINT i = 0; i < mCount;++i)
 	{
-		mRenderTargetArray[i]->Clear(deviceContext);
+		mRenderTargetArray[i]->Clear(device->GetDeviceContext());
 	}
 
 	if (mDepthExist)
 	{
-		mDepthTarget->Clear(deviceContext);
+		mDepthTarget->Clear(device->GetDeviceContext());
 	}
 
 	
