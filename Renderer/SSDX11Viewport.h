@@ -11,8 +11,8 @@ using Microsoft::WRL::ComPtr;
 class DX11RENDERER_API SSDX11Viewport : public SSViewport
 {
 public: 		
-    virtual void Resize(UINT newWidth, UINT newHeight) override;
-	virtual void Clear() override;
+    virtual void Resize(SSRenderDevice* device, UINT newWidth, UINT newHeight) override;
+	virtual void Clear(SSRenderDevice* device) override;
 
 	void SetCurrentRenderTarget(class SSDX11Device* device);
 

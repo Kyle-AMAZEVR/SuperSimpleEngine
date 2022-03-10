@@ -73,7 +73,7 @@ ID3D11DeviceContext* SSDX11Device::GetDeviceContext() const
 bool SSDX11Device::InitializeDevice(HWND windowHandle)
 {
 	bool bDeviceCreated = CreateDevice();
-	bool bSwapChainCreated = CreateSwapChain();
+	bool bSwapChainCreated = CreateSwapChain(windowHandle);
 }
 
 void SSDX11Device::SetVertexShader(SSVertexShader* vs)
@@ -99,7 +99,7 @@ void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
 
 void SSDX11Device::ResizeViewport(unsigned width, unsigned height)
 {
-	if (mBufferWidth != newWidth || mBufferHeight != newHeight)
+	if (mBufferWidth != width || mBufferHeight != height)
 	{
 		Resize(newWidth, newHeight);
 	}
@@ -109,6 +109,23 @@ void SSDX11Device::ClearViewport()
 {
 
 }
+
+void SSDX11Device::ClearRenderTargetView(ID3D11RenderTargetView* rtView, float color[4])
+{
+	mDeviceContext->ClearRenderTargetView(rtView, color);
+}
+
+void SSDX11Device::SetCurrentRenderTarget(ID3D11RenderTargetView* rtView, ID3D11DepthStencilView* depthStencilView)
+{
+	ID3D11RenderTargetView* rtViews[]{rtView};
+	mDeviceContext->OMSetRenderTargets(1, rtViews, depthStencilView);
+}
+
+void SSDX11Device::SetCurrentRenderTargets(ID3D11RenderTargetView** rtView, ID3D11DepthStencilView* depthStencilView)
+{
+
+}
+
 
 bool SSDX11Device::CreateSwapChain(HWND windowHandle)
 {

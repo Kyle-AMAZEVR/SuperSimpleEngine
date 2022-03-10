@@ -3,19 +3,14 @@
 #include "SSDX11Viewport.h"
 #include "SSCameraManager.h"
 
-void SSDX11Viewport::Clear(ID3D11DeviceContext* deviceContext)
+void SSDX11Viewport::Clear(SSRenderDevice* device)
 {
-	float r = (std::rand() % 100) * 0.01f;
-
 	float Color[4]{ 1, 0, 0, 1.0f };
 
-	check(deviceContext);
-
-	if (deviceContext != nullptr)
-	{
-		deviceContext->ClearRenderTargetView(mRenderTargetView.Get(), Color);
-		deviceContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	}
+	SSDX11Device* DX11Device = static_cast<SSDX11Device*>(device);
+	
+	DX11Device->GetDeviceContext()->ClearRenderTargetView(mRenderTargetView.Get(), Color);
+	DX11Device->GetDeviceContext()->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);	
 }
 
 void SSDX11Viewport::SetCurrentRenderTarget(SSDX11Device* device)
@@ -37,7 +32,7 @@ void SSDX11Viewport::SetCurrentRenderTarget(SSDX11Device* device)
 }
 
 
-void SSDX11Viewport::Resize(UINT newWidth, UINT newHeight)
+void SSDX11Viewport::Resize(SSRenderDevice* device, UINT newWidth, UINT newHeight)
 {
     auto* dxDevice = SSDX11Renderer::Get().GetDevice();
     auto* dxDeviceContext = SSDX11Renderer::Get().GetImmediateDeviceContext();

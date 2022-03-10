@@ -1,6 +1,7 @@
 
 
 #include "SSRenderingObjectManager.h"
+#include "SSRenderingObject.h"
 
 SSRenderingObjectManager::SSRenderingObjectManager()
 {

@@ -22,7 +22,7 @@ public:
 	virtual void				SetPSConstantBufferData() = 0;
 	
 	virtual void				SetCurrentRenderTarget(class SSViewport* viewport) = 0;
-	virtual void				SetCurrentRenderTarget(class SSDX11RenderTarget* rt) = 0;
+	
 	
 	virtual void				ClearCurrentRenderTarget() = 0;
 

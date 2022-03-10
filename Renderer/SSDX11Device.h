@@ -26,6 +26,10 @@ public:
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) override;
 	virtual void				ClearViewport() override;
 
+	void						ClearRenderTargetView(ID3D11RenderTargetView* rtView, float color[4]);
+	void						SetCurrentRenderTarget(ID3D11RenderTargetView* rtView, ID3D11DepthStencilView* depthStencilView);
+	void						SetCurrentRenderTargets(ID3D11RenderTargetView** rtView, ID3D11DepthStencilView* depthStencilView);
+
 protected:
 	bool						CreateSwapChain(HWND windowHandle);	
 

@@ -4,8 +4,8 @@
 class RENDERCORE_API SSViewport
 {
 public:
-	virtual void Resize(unsigned int width, unsigned int height) = 0;
-	virtual void Clear() = 0;
+	virtual void Resize(class SSRenderDevice* device, unsigned int width, unsigned int height) = 0;
+	virtual void Clear(SSRenderDevice* device) = 0;
 
 protected:
 	unsigned int mWidth;

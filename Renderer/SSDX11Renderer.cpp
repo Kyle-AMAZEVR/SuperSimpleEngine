@@ -266,9 +266,7 @@ void SSDX11Renderer::DrawCubeScene()
 	}
 
 	// @draw cubemap to gbuffer
-	// @start
-
-	ID3D11DeviceContext* deviceContext = mDeviceContext.Get();
+	// @start	
 
 	mGBuffer->Clear(mDeviceContext.Get());
 	mGBuffer->SetCurrentRenderTarget(mDeviceContext.Get());

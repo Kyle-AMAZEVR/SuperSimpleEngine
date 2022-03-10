@@ -325,7 +325,7 @@ void SSDX11RenderTarget::SetCurrentRenderTarget(SSDX11Device* device)
 		device->GetDeviceContext()->RSSetViewports(1, &mViewport);
 	}
 	else
-	{
+	{		
 		device->GetDeviceContext()->OMSetRenderTargets(mCount, mRenderTargetViews, nullptr);
 
 		device->GetDeviceContext()->RSSetViewports(1, &mViewport);
