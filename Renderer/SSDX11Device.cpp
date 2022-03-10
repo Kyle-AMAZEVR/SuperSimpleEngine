@@ -2,6 +2,8 @@
 #include "SSDX11Device.h"
 #include <iostream>
 
+#include "SSShader.h"
+
 bool SSDX11Device::CreateDevice()
 {
 	IDXGIFactory* pFactory = nullptr;
@@ -59,4 +61,39 @@ bool SSDX11Device::CreateDevice()
 ID3D11DeviceContext* SSDX11Device::GetDeviceContext() const
 {
 	return nullptr;
+}
+
+void SSDX11Device::SetVertexShader(SSVertexShader* vs)
+{
+	mDeviceContext->VSSetShader(vs->GetShader(), nullptr, 0);
+}
+
+void SSDX11Device::SetPixelShader(SSPixelShader* ps)
+{
+	mDeviceContext->PSSetShader(ps->GetShader(), nullptr, 0);
+}
+
+void SSDX11Device::ClearCurrentRenderTarget()
+{
+	
+}
+
+void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
+{
+	
+}
+
+void SSDX11Device::SetCurrentRenderTarget(SSDX11RenderTarget* rt)
+{
+
+}
+
+void SSDX11Device::ResizeViewport(unsigned width, unsigned height)
+{
+	
+}
+
+void SSDX11Device::ClearViewport()
+{
+
 }

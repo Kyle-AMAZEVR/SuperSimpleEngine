@@ -30,14 +30,14 @@ void SSMaterial::SetCurrent()
 }
 
 
-void SSMaterial::SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture)
+void SSMaterial::SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
 {	
 	mPixelShaderTextureMap[name] = texture;
 	mPS->SetTexture(deviceContext, name, texture);
 }
 
 
-void SSMaterial::SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture)
+void SSMaterial::SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
 {	
 	mVertexShaderTextureMap[name] = texture;
 	mVS->SetTexture(deviceContext, name, texture);

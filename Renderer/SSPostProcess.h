@@ -3,23 +3,23 @@
 #include "SSRenderThreadObject.h"
 #include "SSRenderTarget2D.h"
 
-class SSTexture2DBase;
+class SSDX11Texture2D;
 
 class DX11RENDERER_API SSPostProcess
 {
 public:	
 	SSPostProcess(UINT width , UINT height, UINT rtCount=1, bool bDepthExist =false, bool bFixed =false, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
 	
-	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0) {}
-	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1) {}
-	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2){}
-	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3) {}
-	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3, SSTexture2DBase* input4) {}
-	virtual void Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0, SSTexture2DBase* input1, SSTexture2DBase* input2, SSTexture2DBase* input3, SSTexture2DBase* input4, SSTexture2DBase* input5 ) {}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0) {}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0, SSDX11Texture2D* input1) {}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2){}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2, SSDX11Texture2D* input3) {}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2, SSDX11Texture2D* input3, SSDX11Texture2D* input4) {}
+	virtual void Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2, SSDX11Texture2D* input3, SSDX11Texture2D* input4, SSDX11Texture2D* input5 ) {}
 
 	virtual void Destroy();
 
-	SSRenderTargetTexture2D* GetOutput(UINT nIndex);
+	SSDX11RenderTargetTexture2D* GetOutput(UINT nIndex);
 
 	virtual void OnResize(UINT width, UINT height);
 
@@ -28,7 +28,7 @@ public:
 	UINT GetRTCount() const { return mRTCount; }
 
 protected:
-	std::unique_ptr<class SSGenericRenderTarget> mRenderTarget;
+	std::unique_ptr<class SSDX11RenderTarget> mRenderTarget;
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;
 
 	UINT mWidth;

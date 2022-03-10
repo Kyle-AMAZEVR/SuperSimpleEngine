@@ -64,35 +64,6 @@ struct VertexType<T1, T2, T3, T4, T5>
     T5 VertexAttribute5;
 };
 
-template<DXGI_FORMAT>
-struct DXGIFormatToNativeType
-{    
-};
-
-template<>
-struct DXGIFormatToNativeType<DXGI_FORMAT_R32G32B32A32_FLOAT>
-{
-    using type = DirectX::XMFLOAT4;
-};
-
-template<>
-struct DXGIFormatToNativeType<DXGI_FORMAT_R32G32B32_FLOAT>
-{
-    using type = DirectX::XMFLOAT3;
-};
-
-template<>
-struct DXGIFormatToNativeType<DXGI_FORMAT_R32G32_FLOAT>
-{
-    using type = DirectX::XMFLOAT2;
-};
-
-template<>
-struct DXGIFormatToNativeType<DXGI_FORMAT_R32_FLOAT>
-{
-    using type = float;    
-};
-
 using VT_Position3Color4 = VertexType<DirectX::XMFLOAT3, DirectX::XMFLOAT4>;
 using VT_PositionColor = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT3>;
 using VT_PositionTexcoord = VertexType<DirectX::XMFLOAT4, DirectX::XMFLOAT2>;

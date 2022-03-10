@@ -5,7 +5,7 @@
 #include "SSMathHelper.h"
 #include "DirectXTex.h"
 
-SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips, UINT maxMipCount)
+SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips, UINT maxMipCount)
 {
 	mWidth = width;
 	mHeight = height;
@@ -30,7 +30,7 @@ SSRenderTargetTexture2D::SSRenderTargetTexture2D(const UINT width, const UINT he
 }
 
 
-void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format, const UINT mipLevels)
+void SSDX11RenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format, const UINT mipLevels)
 {
 	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
 	textureDesc.Width = mWidth = width;
@@ -77,13 +77,13 @@ void SSRenderTargetTexture2D::InternalCreate(const UINT width, const UINT height
 	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &shaderResourceViewDesc, &mShaderResourceView));
 }
 
-SSRenderTargetTexture2D::~SSRenderTargetTexture2D()
+SSDX11RenderTargetTexture2D::~SSDX11RenderTargetTexture2D()
 {
 	Destroy();
 }
 
 
-void SSRenderTargetTexture2D::Destroy()
+void SSDX11RenderTargetTexture2D::Destroy()
 {
 	mTexturePtr.Reset();
 	mShaderResourceView.Reset();	
@@ -94,7 +94,7 @@ void SSRenderTargetTexture2D::Destroy()
 	}
 }
 
-void SSRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
+void SSDX11RenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
 {
 	// 
 	if (mGenerateMips)
@@ -110,7 +110,7 @@ void SSRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
 }
 
 
-void SSRenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
+void SSDX11RenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 {
 	check(deviceContext);
 
@@ -122,7 +122,7 @@ void SSRenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 	}
 }
 
-void SSRenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
+void SSDX11RenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 {
 
 	// @create staging texture for copy
@@ -279,7 +279,7 @@ void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UIN
 
 
 
-SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count, bool bDepthExist, DXGI_FORMAT eFormat, DXGI_FORMAT eDepthFormat)
+SSDX11RenderTarget::SSDX11RenderTarget(UINT width, UINT height, UINT count, bool bDepthExist, DXGI_FORMAT eFormat, DXGI_FORMAT eDepthFormat)
 	: mWidth(width), mHeight(height), mFormat(eFormat), mCount(count)
 {
 	check(mCount >= 1);
@@ -287,7 +287,7 @@ SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count
 
 	for (UINT i = 0; i < mCount; ++i)
 	{
-		mRenderTargetArray[i] = new SSRenderTargetTexture2D(mWidth, mHeight, mFormat);		
+		mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, mFormat);		
 	}
 
 	mDepthExist = bDepthExist;
@@ -308,7 +308,7 @@ SSGenericRenderTarget::SSGenericRenderTarget(UINT width, UINT height, UINT count
 	mRenderTargetViews = new ID3D11RenderTargetView*[mCount];
 }
 
-void SSGenericRenderTarget::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
+void SSDX11RenderTarget::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
 {
 	for (UINT i = 0; i < mCount; ++i)
 	{
@@ -331,7 +331,7 @@ void SSGenericRenderTarget::SetCurrentRenderTarget(ID3D11DeviceContext* deviceCo
 	}
 }
 
-void SSGenericRenderTarget::Resize(UINT width, UINT height)
+void SSDX11RenderTarget::Resize(UINT width, UINT height)
 {
 	mWidth = width;
 	mHeight = height;
@@ -355,7 +355,7 @@ void SSGenericRenderTarget::Resize(UINT width, UINT height)
 	mViewport.MaxDepth = 1.0f;	
 }
 
-SSRenderTargetTexture2D* SSGenericRenderTarget::GetOutput(UINT nIndex)
+SSDX11RenderTargetTexture2D* SSDX11RenderTarget::GetOutput(UINT nIndex)
 {
 	check(nIndex >= 0);
 	check(nIndex < mCount);
@@ -368,7 +368,7 @@ SSRenderTargetTexture2D* SSGenericRenderTarget::GetOutput(UINT nIndex)
 	return nullptr;
 }
 
-void SSGenericRenderTarget::Destroy()
+void SSDX11RenderTarget::Destroy()
 {
 	for(UINT i = 0; i < mCount; ++i)
 	{
@@ -384,12 +384,12 @@ void SSGenericRenderTarget::Destroy()
 	}
 }
 
-void SSGenericRenderTarget::SaveRTTexture(UINT index, std::wstring filename)
+void SSDX11RenderTarget::SaveRTTexture(UINT index, std::wstring filename)
 {
 	mRenderTargetArray[index]->SaveAsDDSFile(filename);
 }
 
-void SSGenericRenderTarget::Clear(ID3D11DeviceContext* deviceContext)
+void SSDX11RenderTarget::Clear(ID3D11DeviceContext* deviceContext)
 {
 	for(UINT i = 0; i < mCount;++i)
 	{

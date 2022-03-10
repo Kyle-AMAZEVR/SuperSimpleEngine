@@ -17,12 +17,12 @@ public:
 
 	virtual void Draw(
 		ID3D11DeviceContext* deviceContext,
-		SSTexture2DBase* input0,
-		SSTexture2DBase* input1,
-		SSTexture2DBase* input2,
-		SSTexture2DBase* input3,
-		SSTexture2DBase* input4,
-		SSTexture2DBase* input5) override;
+		SSDX11Texture2D* input0,
+		SSDX11Texture2D* input1,
+		SSDX11Texture2D* input2,
+		SSDX11Texture2D* input3,
+		SSDX11Texture2D* input4,
+		SSDX11Texture2D* input5) override;
 		
 
 	

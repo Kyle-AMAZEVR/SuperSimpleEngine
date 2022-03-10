@@ -16,7 +16,7 @@ SSFXAAPostProcess::SSFXAAPostProcess(UINT width, UINT height)
 	mFXAAPixelShader = SSShaderManager::Get().GetPixelShader("FXAA.ps");
 }
 
-void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSTexture2DBase* input0)
+void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0)
 {
 	check(deviceContext != nullptr);
 

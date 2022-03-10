@@ -1,25 +1,14 @@
 #pragma once
 
-#include "SSTexture2DBase.h"
+#include "SSDX11Texture2D.h"
 #include "DirectXTex.h"
 
-class DX11RENDERER_API SSTexture2D : public SSTexture2DBase
+class DX11RENDERER_API SSTexture2D : public SSDX11Texture2D
 {
 public:
 	SSTexture2D();	
 	
-	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bSRGB=false);
-	static std::shared_ptr<SSTexture2D> CreateFromDDSFile(ID3D11DeviceContext* deviceContext, std::string filename, bool bSRGB = false);
-
-	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bSRGB = false);
-	static std::shared_ptr<SSTexture2D> CreateFromHDRFile(ID3D11DeviceContext* deviceContext, std::string filename, bool bSRGB = false);
-
-	static std::shared_ptr<SSTexture2D> CreateFromTGAFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bSRGB = false);
-	static std::shared_ptr<SSTexture2D> CreateFromTGAFile(ID3D11DeviceContext* deviceContext, std::string filename, bool bSRGB = false);
-
-	bool LoadFromDDSFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bSRGB = false);
-	bool LoadFromTGAFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bSRGB = false);
-	bool LoadFromHDRFile(ID3D11DeviceContext* deviceContext, std::wstring filename, bool bSRGB = false);
+	
 
 	bool Release();
 

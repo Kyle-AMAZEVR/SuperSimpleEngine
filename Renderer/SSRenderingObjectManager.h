@@ -2,9 +2,8 @@
 
 #include "SSObjectBase.h"
 #include <map>
-#include "Singleton.h"
 
-class DX11RENDERER_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
+class RENDERCORE_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
 {
 public:
 	SSRenderingObjectManager();

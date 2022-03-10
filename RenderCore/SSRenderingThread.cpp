@@ -3,8 +3,6 @@
 #include "SSRenderer.h"
 #include "SSRenderingThread.h"
 #include "Windows.h"
-#include "SSDX11Renderer.h"
-#include "SSRenderingObjectManager.h"
 #include "SSTimer.h"
 
 SSRenderingThread::SSRenderingThread(SSRenderer* pRenderer)
@@ -78,7 +76,7 @@ DWORD SSRenderingThread::Run()
 		if (mRenderer)
 		{
 			// sync gamethread object <-> rendering thread object
-			SSRenderingObjectManager::Get().UpdateObjects();
+			mRenderer->UpdateRenderingObjects();
 			mRenderer->DrawScene();
 		}
 

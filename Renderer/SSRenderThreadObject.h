@@ -11,10 +11,3 @@ public:
 	virtual void Destroy(){}
 	
 };
-
-class DX11RENDERER_API SSRenderThreadResidentObject
-{
-public:
-	SSRenderThreadResidentObject();
-	virtual ~SSRenderThreadResidentObject();
-};

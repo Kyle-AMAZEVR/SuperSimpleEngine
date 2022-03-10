@@ -36,7 +36,7 @@ public:
 
 	void ClearFace(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
 
-	class SSRenderTargetTexture2D* GetRenderTargetTexture(ECubemapFace eFace);	
+	class SSDX11RenderTargetTexture2D* GetRenderTargetTexture(ECubemapFace eFace);	
 
 	// @IRenderTarget Interface
 	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
@@ -50,7 +50,7 @@ public:
 protected:
 	SSCubemapRenderTarget() {}
 
-	class SSRenderTargetTexture2D* mRenderTargetArray[ECubemapFace::MAX]{ nullptr };
+	class SSDX11RenderTargetTexture2D* mRenderTargetArray[ECubemapFace::MAX]{ nullptr };
 
 	virtual void InternalCreate();
 

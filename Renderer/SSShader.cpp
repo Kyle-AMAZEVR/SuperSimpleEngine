@@ -244,7 +244,7 @@ bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileConte
  }
 
 
-void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture)
+void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
 {
 	check(mTextureMap.count(name) > 0);
 	check(deviceContext != nullptr);	
@@ -281,7 +281,7 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 			// kvp.second->Destroy();
 		 }
 	 }
-	 ReleaseCOM(mPixelShader);
+	 ReleaseCOM(mPixelShader.PixelShaderDX11Ptr);
  }
 
 bool SSPixelShader::CompileFromFile(std::wstring filepath, const SSCompileContext& context)
@@ -310,7 +310,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath, const SSCompileContex
     }
 
     auto* dxDevice = SSDX11Renderer::Get().GetDevice();
-    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
+    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader.PixelShaderDX11Ptr));
 
     // @constant buffer reflection
     ID3D11ShaderReflection* pixelShaderReflection = nullptr;
@@ -348,7 +348,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
 }
 
 
-void SSPixelShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture)
+void SSPixelShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
 {
 	check(deviceContext != nullptr);
 

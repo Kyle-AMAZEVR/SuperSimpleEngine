@@ -1,7 +1,6 @@
 
-#include "SSRendererModulePCH.h"
+
 #include "SSRenderingObjectManager.h"
-#include "SSRenderingObject.h"
 
 SSRenderingObjectManager::SSRenderingObjectManager()
 {

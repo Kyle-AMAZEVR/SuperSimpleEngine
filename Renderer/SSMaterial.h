@@ -10,7 +10,7 @@ using namespace std;
 
 class SSVertexShader;
 class SSPixelShader;
-class SSTexture2DBase;
+class SSDX11Texture2D;
 
 
 class DX11RENDERER_API SSMaterial : public SSRenderThreadResidentObject
@@ -33,8 +33,8 @@ public:
 	template<class T>
 	void SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 
-	void SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture);
-	void SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSTexture2DBase* texture);
+	void SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture);
+	void SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture);
 
 	virtual void SetPSSampler(std::string name, ID3D11SamplerState* sampler);
 
@@ -51,8 +51,8 @@ protected:
 	std::map<SSName, class SSGenericConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
-	std::map<std::string, class SSTexture2DBase*> mPixelShaderTextureMap;
-	std::map<std::string, class SSTexture2DBase*> mVertexShaderTextureMap;
+	std::map<std::string, class SSDX11Texture2D*> mPixelShaderTextureMap;
+	std::map<std::string, class SSDX11Texture2D*> mVertexShaderTextureMap;
 
 	//
 	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;

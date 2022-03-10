@@ -9,7 +9,7 @@
 class SSVertexShader;
 class SSPixelShader;
 class SSGameObject;
-class SSTexture2DBase;
+class SSDX11Texture2D;
 class IRenderTarget;
 
 
@@ -51,9 +51,9 @@ public:
 	template<class T>
 	void StorePSConstantBufferData(SSName name, const T& value);
 
-	void SetPSTexture(std::string name, SSTexture2DBase* texture);
+	void SetPSTexture(std::string name, SSDX11Texture2D* texture);
 
-	void SetVSTexture(std::string name, SSTexture2DBase* texture);
+	void SetVSTexture(std::string name, SSDX11Texture2D* texture);
 
 	void SetPrimitiveType(D3D_PRIMITIVE_TOPOLOGY ePrimitiveType) { mPrimitiveType = ePrimitiveType; }
 
@@ -71,8 +71,8 @@ protected:
 	std::map<SSName, class SSGenericConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
-	std::map<std::string, class SSTexture2DBase*> mPixelShaderTextureMap;
-	std::map<std::string, class SSTexture2DBase*> mVertexShaderTextureMap;
+	std::map<std::string, class SSDX11Texture2D*> mPixelShaderTextureMap;
+	std::map<std::string, class SSDX11Texture2D*> mVertexShaderTextureMap;
 
 	//
 	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;

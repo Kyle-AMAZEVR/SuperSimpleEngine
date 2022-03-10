@@ -94,13 +94,13 @@ void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
 }
 
 
-void SSDrawCommand::SetPSTexture(std::string name, SSTexture2DBase* texture)
+void SSDrawCommand::SetPSTexture(std::string name, SSDX11Texture2D* texture)
 {
 	mPixelShaderTextureMap[name] = texture;
 }
 
 
-void SSDrawCommand::SetVSTexture(std::string name, SSTexture2DBase* texture)
+void SSDrawCommand::SetVSTexture(std::string name, SSDX11Texture2D* texture)
 {
 	mVertexShaderTextureMap[name] = texture;
 }

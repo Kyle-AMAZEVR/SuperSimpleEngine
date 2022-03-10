@@ -14,14 +14,3 @@ SSRenderThreadObject::~SSRenderThreadObject()
 	check(SSRenderingThread::IsInRenderingThread() == true);
 }
 
-
-SSRenderThreadResidentObject::SSRenderThreadResidentObject()
-{
-    check(SSRenderingThread::IsInRenderingThread() == true);
-}
-
-SSRenderThreadResidentObject::~SSRenderThreadResidentObject()
-{
-    check(SSRenderingThread::IsInRenderingThread() == true);
-}
-

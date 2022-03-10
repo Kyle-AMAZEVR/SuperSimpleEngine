@@ -1,10 +1,9 @@
 #pragma once
-#include "SSRendererModulePCH.h"
+
 #include <functional>
 #include <deque>
 
-
-class DX11RENDERER_API SSRenderingThread
+class RENDERCORE_API SSRenderingThread
 {
 public:	
 	SSRenderingThread(class SSRenderer* pRenderer);

@@ -15,15 +15,15 @@ enum class EGBufferType : UINT8
 	Max,
 };
 
-class DX11RENDERER_API SSGBuffer : public SSGenericRenderTarget
+class DX11RENDERER_API SSGBuffer : public SSDX11RenderTarget
 {
 public:
 	SSGBuffer(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT);
 
 	void Destroy();
 	
-	SSRenderTargetTexture2D* GetPositionOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Position)]; }
-	SSRenderTargetTexture2D* GetColorOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Color)]; }
-	SSRenderTargetTexture2D* GetNormalOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Normal)]; }	
+	SSDX11RenderTargetTexture2D* GetPositionOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Position)]; }
+	SSDX11RenderTargetTexture2D* GetColorOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Color)]; }
+	SSDX11RenderTargetTexture2D* GetNormalOutput() { return mRenderTargetArray[static_cast<UINT8>(EGBufferType::Normal)]; }	
 	
 };

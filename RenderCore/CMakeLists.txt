@@ -19,6 +19,7 @@ include_directories("../lib/DirectXMath/Include")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../Core")
 include_directories("../lib/bin")
+include_directories("../HeaderOnly")
 
 add_library(RenderCore SHARED ${SOURCES} ${HEADERS})
 
@@ -28,7 +29,8 @@ $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Release/directxtex.li
 $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/RelWithDebInfo/directxtex.lib>
 $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
-$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>)
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>
+Core)
 
 target_precompile_headers(RenderCore PRIVATE "SSRenderCore.h")
 

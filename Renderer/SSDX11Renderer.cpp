@@ -25,7 +25,7 @@
 #include "SSRenderingObject.h"
 #include "SSSharedBufferCache.h"
 #include "SSCustomRenderThreadObject.h"
-#include "SSViewport.h"
+#include "SSDX11Viewport.h"
 #include "SSMathHelper.h"
 #include "SSCameraManager.h"
 #include <iostream>
@@ -81,13 +81,13 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	SSRasterizeStateManager::Get().Initialize();
 	SSSharedBufferCache::Get().Initialize();
 
-	mViewport = std::make_shared<SSViewport>();
+	mViewport = std::make_shared<SSDX11Viewport>();
 	mGBuffer = std::make_shared<SSGBuffer>(1024, 768);
 
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024, 1024);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024, 5);
-	m2DLUTRenderTarget = std::make_shared<class SSGenericRenderTarget>(512, 512, 1, false);
+	m2DLUTRenderTarget = std::make_shared<class SSDX11RenderTarget>(512, 512, 1, false);
 
 	mFXAAPostProcess = std::make_shared<SSFXAAPostProcess>(1024, 768);
 	mGBufferDumpProcess = std::make_shared<SSGBufferDumpPostProcess>(512, 512);

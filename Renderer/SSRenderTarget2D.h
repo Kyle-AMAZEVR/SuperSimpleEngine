@@ -1,17 +1,17 @@
 #pragma once
 
 #include "SSRenderTargetBase.h"
-#include "SSTexture2DBase.h"
+#include "SSDX11Texture2D.h"
 
 #include <wrl.h>
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
 
-class DX11RENDERER_API SSRenderTargetTexture2D : public SSTexture2DBase
+class DX11RENDERER_API SSDX11RenderTargetTexture2D : public SSDX11Texture2D
 {
 public:	
-	SSRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
-	virtual ~SSRenderTargetTexture2D();
+	SSDX11RenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
+	virtual ~SSDX11RenderTargetTexture2D();
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
 	void Destroy();
 	virtual void SaveAsDDSFile(std::wstring filename);	
@@ -28,7 +28,7 @@ protected:
 	bool mGenerateMips = false;	
 };
 
-class DX11RENDERER_API SSDepthRenderTargetTexture2D : public SSTexture2DBase
+class DX11RENDERER_API SSDepthRenderTargetTexture2D : public SSDX11Texture2D
 {
 public:
 	SSDepthRenderTargetTexture2D(const UINT width, const UINT height,  DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
@@ -43,12 +43,12 @@ protected:
 	ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
 };
 
-class DX11RENDERER_API SSGenericRenderTarget : public IRenderTarget
+class DX11RENDERER_API SSDX11RenderTarget : public IRenderTarget
 {
 public:
-	SSGenericRenderTarget(UINT width, UINT height, UINT count, bool bDepthExist = true, DXGI_FORMAT eFormat = DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_FORMAT eDepthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
+	SSDX11RenderTarget(UINT width, UINT height, UINT count, bool bDepthExist = true, DXGI_FORMAT eFormat = DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_FORMAT eDepthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
 
-	SSRenderTargetTexture2D* GetOutput(UINT nIndex);
+	SSDX11RenderTargetTexture2D* GetOutput(UINT nIndex);
 
 	void SaveRTTexture(UINT index, std::wstring filename);
 
@@ -63,7 +63,7 @@ public:
 	virtual void Destroy();
 
 protected:
-	SSRenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
+	SSDX11RenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
 	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
 	ID3D11RenderTargetView** mRenderTargetViews{ nullptr };
 	

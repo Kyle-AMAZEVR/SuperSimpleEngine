@@ -3,29 +3,21 @@
 #pragma once
 
 #include "SSRenderTargetBase.h"
+#include "SSViewport.h"
 #include "wrl/client.h"
 
 using Microsoft::WRL::ComPtr;
 
-class DX11RENDERER_API SSViewport : public IRenderTarget
+class DX11RENDERER_API SSDX11Viewport : public SSViewport
 {
-public:
-    virtual UINT GetRenderTargetWidth() const override { return mWidth; }
-	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
-
-	virtual void Clear(ID3D11DeviceContext* deviceContext) override;    
+public: 		
     virtual void Resize(UINT newWidth, UINT newHeight) override;
-	
-	virtual void SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext) override;
+	virtual void Clear() override;
 
 protected:
-
     ComPtr<ID3D11Texture2D> mDepthStencilBuffer = nullptr;
 	ComPtr<ID3D11RenderTargetView> mRenderTargetView = nullptr;
 	ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
     D3D11_VIEWPORT mScreenViewport;
-
-	UINT mWidth;
-	UINT mHeight;
 	DXGI_FORMAT mFormat = DXGI_FORMAT_UNKNOWN;
 };

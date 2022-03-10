@@ -1,9 +1,6 @@
 
 #pragma once
 #include "SSEngine.h"
-#include "Singleton.h"
-#include "SSViewport.h"
-#include <vector>
 #include "SSShader.h"
 #include "SSEngineBase.h"
 #include <wrl/client.h>

@@ -28,7 +28,7 @@ public:
 
     virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
 
-	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* textrue ){}	
+	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSDX11Texture2D* textrue ){}	
 	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name){}
 	virtual void SetTextureAsNull(std::string name){}
 	
@@ -82,7 +82,7 @@ public:
 	template<class T>
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
-	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* texture) override;
+	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSDX11Texture2D* texture) override;
 
 	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) override;	
 	
@@ -114,18 +114,29 @@ public:
 	virtual ~SSPixelShader();	
     virtual bool CompileFromFile(std::wstring filepath) override;
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
-    ID3D11PixelShader* GetShader() { return mPixelShader; }
+
+	ID3D11PixelShader* GetShader()
+	{
+		return mPixelShader.PixelShaderDX11Ptr;
+	}	
 
 	template<class T>
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
 
 	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name)override;
-	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSTexture2DBase* texture) override;
+	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSDX11Texture2D* texture) override;
 	virtual void SetTextureAsNull(std::string name) override;
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
 	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) override;
 protected:
-    ID3D11PixelShader* mPixelShader = nullptr;
+
+	union PixelShaderPtr
+	{
+		void* PixelShaderVoidPtr;
+		ID3D11PixelShader* PixelShaderDX11Ptr;
+	} ;
+
+	PixelShaderPtr mPixelShader;
 };
 
 template<class T>

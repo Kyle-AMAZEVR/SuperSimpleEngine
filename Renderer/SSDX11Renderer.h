@@ -131,7 +131,7 @@ private:
 
 	std::shared_ptr<class SSGBuffer> mGBuffer;
 
-	std::shared_ptr<class SSGenericRenderTarget> m2DLUTRenderTarget;
+	std::shared_ptr<class SSDX11RenderTarget> m2DLUTRenderTarget;
 	//
 
 	std::shared_ptr<class SSObjMesh> mSponzaMesh;

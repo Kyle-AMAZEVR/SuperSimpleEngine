@@ -1,16 +1,12 @@
 #pragma once
 
 
-
 #include <vector>
-
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;
 
-
-
-class DX11RENDERER_API SSRenderer
+class RENDERCORE_API SSRenderer
 {
 public:
 	SSRenderer();
@@ -20,6 +16,7 @@ public:
 	virtual void DrawScene() = 0;
 	virtual void PauseRendering() { mPaused = true; }
 	virtual void ResumeRendering() { mPaused = false; }
+	virtual void UpdateRenderingObjects() = 0;
 		
 
 protected:

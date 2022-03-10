@@ -1,9 +1,9 @@
 #include "SSRendererModulePCH.h"
 #include "SSDX11Renderer.h"
-#include "SSViewport.h"
+#include "SSDX11Viewport.h"
 #include "SSCameraManager.h"
 
-void SSViewport::Clear(ID3D11DeviceContext* deviceContext)
+void SSDX11Viewport::Clear(ID3D11DeviceContext* deviceContext)
 {
 	float r = (std::rand() % 100) * 0.01f;
 
@@ -18,12 +18,10 @@ void SSViewport::Clear(ID3D11DeviceContext* deviceContext)
 	}
 }
 
-void SSViewport::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
+void SSDX11Viewport::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
 {
 	check(deviceContext != nullptr);
-	// Bind the render target view and depth/stencil view to the pipeline.
-	deviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
-
+	
 	// Set the viewport transform.
 	mScreenViewport.TopLeftX = 0;
 	mScreenViewport.TopLeftY = 0;
@@ -32,11 +30,14 @@ void SSViewport::SetCurrentRenderTarget(ID3D11DeviceContext* deviceContext)
 	mScreenViewport.MinDepth = 0.0f;
 	mScreenViewport.MaxDepth = 1.0f;
 
+	// Bind the render target view and depth/stencil view to the pipeline.
+	deviceContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
+
 	deviceContext->RSSetViewports(1, &mScreenViewport);
 }
 
 
-void SSViewport::Resize(UINT newWidth, UINT newHeight)
+void SSDX11Viewport::Resize(UINT newWidth, UINT newHeight)
 {
     auto* dxDevice = SSDX11Renderer::Get().GetDevice();
     auto* dxDeviceContext = SSDX11Renderer::Get().GetImmediateDeviceContext();

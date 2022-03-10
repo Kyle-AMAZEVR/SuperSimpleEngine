@@ -7,7 +7,7 @@
 SSPostProcess::SSPostProcess(UINT width, UINT height, UINT rtCount, bool bDepthExist, bool bFixed, DXGI_FORMAT format)
 	: mWidth(width), mHeight(height), mRTCount(rtCount), mFixedSize(bFixed), mDepthExist(bDepthExist)
 {
-	mRenderTarget = std::make_unique< SSGenericRenderTarget>(width, height, rtCount, bDepthExist, format);
+	mRenderTarget = std::make_unique< SSDX11RenderTarget>(width, height, rtCount, bDepthExist, format);
 	mScreenBlit = std::make_shared<SSScreenBlit>();
 }
 
@@ -23,7 +23,7 @@ void SSPostProcess::OnResize(UINT width, UINT height)
 }
 
 
-SSRenderTargetTexture2D* SSPostProcess::GetOutput(UINT nIndex)
+SSDX11RenderTargetTexture2D* SSPostProcess::GetOutput(UINT nIndex)
 {
 	if (mRenderTarget != nullptr)
 	{
