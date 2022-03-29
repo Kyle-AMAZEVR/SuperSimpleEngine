@@ -18,7 +18,7 @@ class SSGBufferDumpPostProcess : public SSPostProcess
 public:
 	SSGBufferDumpPostProcess(UINT width, UINT height);
  
-	virtual void Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2) override;
+	virtual void Draw(SSDX11Device* renderDevice, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2) override;
 
 	void ChangeNextDumpMode();
 

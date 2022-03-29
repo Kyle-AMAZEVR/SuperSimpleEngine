@@ -26,12 +26,15 @@ public:
 
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) = 0;
 	virtual void				ClearViewport() = 0;
-	
+
+	virtual void				Present() = 0;
+
 protected:
 	int mBufferWidth = 1920;
 	int mBufferHeight = 1080;
 	HWND mWindowHandle;
 	UINT m4xMSAAQuality = 0;
+	DXGI_FORMAT mSwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 };
 
 

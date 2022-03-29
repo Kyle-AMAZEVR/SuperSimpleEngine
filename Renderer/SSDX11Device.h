@@ -21,7 +21,7 @@ public:
 	virtual void				SetPixelShader(class SSPixelShader* ps) override;
 	virtual void				ClearCurrentRenderTarget() override;
 
-	
+	virtual void				Present() override;
 
 	virtual SSVertexBuffer*		CreateVertexBuffer() override;
 	virtual SSIndexBuffer*		CreateIndexBuffer() override;
@@ -47,4 +47,5 @@ protected:
 	
 	std::vector<SSAdapterInfo> mAdapterInfos;
 	std::unique_ptr<class SSDX11Viewport> mViewport;
+	ID3D11Debug* mDebug = nullptr;
 };

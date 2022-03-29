@@ -125,10 +125,26 @@ void SSDX11Device::SetCurrentRenderTargets(ID3D11RenderTargetView** rtView, ID3D
 
 }
 
+void SSDX11Device::Present()
+{
+	HRESULT presentResult = mSwapChain->Present(0, 0);
+
+	if (presentResult == DXGI_ERROR_DEVICE_HUNG ||
+		presentResult == DXGI_ERROR_DEVICE_REMOVED ||
+		presentResult == DXGI_ERROR_DEVICE_RESET)
+	{
+		HRESULT removedReason = mDevice->GetDeviceRemovedReason();
+		wchar_t outString[100];
+		size_t size = 100;
+		swprintf_s(outString, size, L"Device removed! DXGI_ERROR code: 0x%X\n", removedReason);
+		OutputDebugStringW(outString);
+	}
+}
+
 
 bool SSDX11Device::CreateSwapChain(HWND windowHandle)
 {
-	HR(mDevice->CheckMultisampleQualityLevels(SwapChainFormat, 4, &m4xMSAAQuality));
+	HR(mDevice->CheckMultisampleQualityLevels(mSwapChainFormat, 4, &m4xMSAAQuality));
 
 	HR(mDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&mDebug));
 
@@ -158,7 +174,7 @@ bool SSDX11Device::CreateSwapChain(HWND windowHandle)
 		DXGI_SWAP_CHAIN_DESC1 sd = {};
 		sd.Width = mBufferWidth;
 		sd.Height = mBufferHeight;
-		sd.Format = SwapChainFormat;
+		sd.Format = mSwapChainFormat;
 		sd.SampleDesc.Count = 4;
 		sd.SampleDesc.Quality = m4xMSAAQuality - 1;
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;

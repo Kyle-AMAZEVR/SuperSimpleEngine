@@ -170,14 +170,11 @@ void SSDX11Renderer::DrawDummyScene()
 	{
 		return;
 	}
-	auto* deviceContext = GetImmediateDeviceContext();
-	check(deviceContext);
 
 	mViewport->SetCurrentRenderTarget(deviceContext);
-	mViewport->Clear(deviceContext);
+	mViewport->Clear(mDX11Device);
 
-
-	mSwapChain->Present(0, 0);
+	mDX11Device->Present();
 }
 
 ID3D11Device* SSDX11Renderer::GetDevice()
@@ -309,22 +306,9 @@ void SSDX11Renderer::DrawCubeScene()
 		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
 	}
 
-	blitDrawCmd.Do(deviceContext);
+	blitDrawCmd.Do(mDX11Device->GetDeviceContext());
 
-
-	HRESULT presentResult = mSwapChain->Present(0, 0);
-
-	if (presentResult == DXGI_ERROR_DEVICE_HUNG ||
-		presentResult == DXGI_ERROR_DEVICE_REMOVED ||
-		presentResult == DXGI_ERROR_DEVICE_RESET)
-	{
-		HRESULT removedReason = mDevice->GetDeviceRemovedReason();
-
-		wchar_t outString[100];
-		size_t size = 100;
-		swprintf_s(outString, size, L"Device removed! DXGI_ERROR code: 0x%X\n", removedReason);
-		OutputDebugStringW(outString);
-	}
+	mDX11Device->Present();
 }
 
 
@@ -399,8 +383,8 @@ void SSDX11Renderer::DrawSponzaScene()
 
 	// @draw cubemap to gbuffer
 	// @start
-	mGBuffer->Clear(deviceContext);
-	mGBuffer->SetCurrentRenderTarget(deviceContext);
+	mGBuffer->Clear(mDX11Device);
+	mGBuffer->SetCurrentRenderTarget(mDX11Device);
 
 	DrawSkybox();
 
@@ -417,7 +401,7 @@ void SSDX11Renderer::DrawSponzaScene()
 
     mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
 
-	mViewport->Clear(deviceContext);
+	mViewport->Clear(mDX11Device);
 	mViewport->SetCurrentRenderTarget(deviceContext);
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
@@ -433,15 +417,8 @@ void SSDX11Renderer::DrawSponzaScene()
 
 	blitDrawCmd.Do(deviceContext);
 
-	HRESULT presentResult = mSwapChain->Present(0, 0);
-	
-	if (presentResult == DXGI_ERROR_DEVICE_HUNG ||
-		presentResult == DXGI_ERROR_DEVICE_REMOVED ||
-		presentResult == DXGI_ERROR_DEVICE_RESET)
-	{
-		OutputDebugStringA("DXGI_Error");
-	}
 
+	mDX11Device->Present();
 }
 
 
@@ -498,9 +475,6 @@ void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 
 void SSDX11Renderer::Resize(int newWidth,int newHeight)
 {
-	mBufferWidth = newWidth;
-	mBufferHeight = newHeight;
-
 	mViewport->Resize(newWidth, newHeight);
 	mGBuffer->Resize(newWidth, newHeight);
 

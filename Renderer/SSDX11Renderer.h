@@ -49,7 +49,6 @@ private:
 private:
 	SSDX11Device* mDX11Device;	
 
-	ID3D11Debug* mDebug = nullptr;
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;
 
 	std::vector<SSAdapterInfo> mAdapterInfos;
