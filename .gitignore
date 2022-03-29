@@ -1,5 +1,7 @@
 
 CMakeFiles/*
+lib/freetype/build
+CMakeFiles
 *.dir
 x64/*
 ipch/*

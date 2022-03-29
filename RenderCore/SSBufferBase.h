@@ -6,15 +6,16 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DX11RENDERER_API SSBufferBase : public SSRenderThreadResidentObject
+class RENDERCORE_API SSBufferBase : public SSRenderThreadResidentObject
 {
 public:
+    SSBufferBase();
     virtual UINT GetBufferIndex() { return mBufferIndex; }
     virtual UINT GetBufferSize() { return mBufferSize; }
     std::string GetBufferName() { return mBufferName; }
 
 protected:
-    virtual ~SSBufferBase(){}
+    virtual ~SSBufferBase();
 
     UINT mBufferIndex = 0;
     UINT mBufferSize = 0;

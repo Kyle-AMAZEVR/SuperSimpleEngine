@@ -103,6 +103,26 @@ void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
 	
 }
 
+SSVertexBuffer* SSDX11Device::CreateVertexBuffer()
+{
+	return nullptr;
+}
+SSDX11IndexBuffer* SSDX11Device::CreateIndexBuffer()
+{
+	return nullptr;
+}
+
+void	SSDX11Device::SetVSConstantBufferData()
+{
+	
+}
+
+void	SSDX11Device::SetPSConstantBufferData()
+{
+	
+}
+
+
 
 void SSDX11Device::ResizeViewport(unsigned int newWidth, unsigned int newHeight)
 {

@@ -1,14 +1,13 @@
 
 
 #include "SSDX11Engine.h"
-#include "SSTexture2D.h"
-#include "SSObjMesh.h"
 #include "SSDX11Renderer.h"
 #include "SSCubeScene.h"
 #include "SSGameObjectManager.h"
 #include "SSRenderingObjectManager.h"
 #include "SSSharedRenderData.h"
 #include "SSGameWindow.h"
+#include "SSRenderingThread.h"
 
 bool SSDX11Engine::bInitialized = false;
 

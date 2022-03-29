@@ -17,13 +17,14 @@ include_directories("../GameModule")
 include_directories("../HeaderOnly")
 include_directories("../Core")
 include_directories("../lib/DirectXTex/DirectXTex")
+include_directories("../RenderCore")
 
 add_library(Engine SHARED ${SOURCES} ${HEADERS})
-
+ 
 target_compile_definitions(Engine PRIVATE ENGINE_EXPORTS)
 target_compile_definitions(Engine INTERFACE ENGINE_IMPORTS)
 
-target_link_libraries(Engine GameModule DX11Renderer)
+target_link_libraries(Engine GameModule DX11Renderer RenderCore)
 target_precompile_headers(Engine PRIVATE SSEngine.h SSEngineBase.h)
 
 target_compile_options(Engine PRIVATE /GR-)

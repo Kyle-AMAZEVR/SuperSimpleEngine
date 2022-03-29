@@ -85,6 +85,10 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	mDX11Device->ResizeViewport(1200, 700);
 }
 
+void SSDX11Renderer::UpdateRenderingObjects()
+{
+
+}
 
 void SSDX11Renderer::Shutdown()
 {
