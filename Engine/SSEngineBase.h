@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SSGameThread.h"
-#include "SSRenderingThread.h"
 
 using namespace std;
 

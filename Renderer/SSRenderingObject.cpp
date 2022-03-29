@@ -9,7 +9,6 @@
 
 #include "SSMaterial.h"
 #include "SSTextureManager.h"
-#include "SSTexture2D.h"
 #include "SSSamplerManager.h"
 #include "SSCameraManager.h"
 
@@ -142,14 +141,14 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	// @ set pixel shader texture
 	for (auto& [name, texture] : mRenderData.PSTextureMap)
 	{
-		shared_ptr<SSTexture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
+		shared_ptr<SSDX11Texture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
 		mMaterial->SetPSTexture(deviceContext, name, resource.get());
 	}
 
 	// @ set vertex shader texture 
 	for (auto& [name, texture] : mRenderData.VSTextureMap)
 	{
-		shared_ptr<SSTexture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
+		shared_ptr<SSDX11Texture2D> resource = SSTextureManager::Get().LoadTexture2D(deviceContext, texture);
 		mMaterial->SetVSTexture(deviceContext, name, resource.get());
 	}
 

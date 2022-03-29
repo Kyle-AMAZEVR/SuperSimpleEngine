@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <map>
 #include "SSDXTranslator.h"
-#include "SSTexture2D.h"
+#include "SSDX11Texture2D.h"
 
 #pragma region DXShaderImplementation
 
@@ -336,7 +336,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
     }
 
     auto* dxDevice = SSDX11Renderer::Get().GetDevice();
-    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
+    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader.PixelShaderDX11Ptr));
 
 	// @constant buffer reflection
 	ID3D11ShaderReflection* pixelShaderReflection = nullptr;

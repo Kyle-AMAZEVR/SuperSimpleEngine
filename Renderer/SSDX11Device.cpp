@@ -70,10 +70,18 @@ ID3D11DeviceContext* SSDX11Device::GetDeviceContext() const
 	return mDeviceContext.Get();
 }
 
+IDXGISwapChain* SSDX11Device::GetSwapChain() const
+{
+	return mSwapChain.Get();
+}
+
+
 bool SSDX11Device::InitializeDevice(HWND windowHandle)
 {
 	bool bDeviceCreated = CreateDevice();
 	bool bSwapChainCreated = CreateSwapChain(windowHandle);
+
+	return bDeviceCreated && bSwapChainCreated;
 }
 
 void SSDX11Device::SetVertexShader(SSVertexShader* vs)
@@ -100,7 +108,7 @@ void SSDX11Device::ResizeViewport(unsigned int newWidth, unsigned int newHeight)
 {
 	if (mBufferWidth != newWidth || mBufferHeight != newHeight)
 	{
-		Resize(newWidth, newHeight);
+		mViewport->Resize(this, newWidth, newHeight);
 	}
 }
 

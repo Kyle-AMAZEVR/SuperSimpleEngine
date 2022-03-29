@@ -1,6 +1,5 @@
 #pragma once
 #include "SSRenderTargetBase.h"
-#include "SSTexture2D.h"
 #include "SSTextureCube.h"
 
 enum ECubemapFace

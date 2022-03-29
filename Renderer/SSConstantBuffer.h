@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include "SSBufferBase.h"
 #include "SSDX11Buffer.h"
 #include <vector>
 #include <string>

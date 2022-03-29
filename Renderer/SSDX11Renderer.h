@@ -26,6 +26,7 @@ public:
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetImmediateDeviceContext();
+	IDXGISwapChain* GetSwapChain();
 
 protected:
 	void DrawCubeScene();
@@ -107,10 +108,10 @@ private:
 	std::shared_ptr<class SSTextureCube> mEnvCubemap;
 	std::shared_ptr<class SSTextureCube> mEnvCubemapConvolution;
 	std::shared_ptr<class SSTextureCube> mEnvCubemapPrefilter;
-	std::shared_ptr<class SSTexture2D> m2DLUTTexture;
+	std::shared_ptr<class SSDX11Texture2D> m2DLUTTexture;
 	// @
 	
-	std::shared_ptr<class SSTexture2D> mHDREnvmap;
+	std::shared_ptr<class SSDX11Texture2D> mHDREnvmap;
 
 	std::shared_ptr<class SSDX11GBuffer> mGBuffer;
 

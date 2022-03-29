@@ -16,7 +16,7 @@ class IRenderTarget;
 class DX11RENDERER_API SSDrawCmdBase
 {
 public :	
-	virtual void Do(ID3D11DeviceContext* deviceContext) = 0;
+	virtual void Do(SSDX11Device* deviceContext) = 0;
 };
 
 
@@ -25,7 +25,7 @@ class DX11RENDERER_API SSChangeRenderTargetCmd : public SSDrawCmdBase
 public:
 	SSChangeRenderTargetCmd(IRenderTarget* renderTarget);
 	
-	virtual void Do(ID3D11DeviceContext* deviceContext) override;
+	virtual void Do(SSDX11Device* deviceContext) override;
 protected:
 	IRenderTarget* mRenderTarget = nullptr;
 };
@@ -59,7 +59,7 @@ public:
 
 	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }
 
-	virtual void Do(ID3D11DeviceContext* deviceContext) override;
+	virtual void Do(SSDX11Device* deviceContext) override;
 
 protected:
 	std::shared_ptr<class SSVertexShader> mpVS = nullptr;

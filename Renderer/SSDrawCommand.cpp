@@ -14,9 +14,9 @@ SSChangeRenderTargetCmd::SSChangeRenderTargetCmd(IRenderTarget* renderTarget)
 {	
 }
 
-void SSChangeRenderTargetCmd::Do(ID3D11DeviceContext* deviceContext)
+void SSChangeRenderTargetCmd::Do(SSDX11Device* device)
 {
-	mRenderTarget->SetCurrentRenderTarget(deviceContext);	
+	//mRenderTarget->SetCurrentRenderTarget(device);	
 }
 
 
@@ -29,11 +29,12 @@ SSDrawCommand::SSDrawCommand(std::shared_ptr<SSVertexShader> vs, std::shared_ptr
 
 
 
-void SSDrawCommand::Do(ID3D11DeviceContext* deviceContext)
+void SSDrawCommand::Do(SSDX11Device* device)
 {
 	check(mpVS != nullptr);
 	check(mpPS != nullptr);
-	check(deviceContext != nullptr);	
+
+	ID3D11DeviceContext* deviceContext = device->GetDeviceContext();
 
 	// @ set input layout
 	deviceContext->IASetInputLayout(mpVS->GetInputLayout());

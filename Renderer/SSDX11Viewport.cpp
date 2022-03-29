@@ -13,9 +13,13 @@ void SSDX11Viewport::Clear(SSRenderDevice* device)
 	DX11Device->GetDeviceContext()->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);	
 }
 
-void SSDX11Viewport::SetCurrentRenderTarget(SSDX11Device* device)
+
+
+void SSDX11Viewport::SetCurrentRenderTarget(SSRenderDevice* device)
 {
 	check(device != nullptr);
+
+	SSDX11Device* dx11Device = static_cast<SSDX11Device*>(device);
 	
 	// Set the viewport transform.
 	mScreenViewport.TopLeftX = 0;
@@ -26,9 +30,9 @@ void SSDX11Viewport::SetCurrentRenderTarget(SSDX11Device* device)
 	mScreenViewport.MaxDepth = 1.0f;
 
 	// Bind the render target view and depth/stencil view to the pipeline.
-	device->GetDeviceContext()->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
+	dx11Device->GetDeviceContext()->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
-	device->GetDeviceContext()->RSSetViewports(1, &mScreenViewport);
+	dx11Device->GetDeviceContext()->RSSetViewports(1, &mScreenViewport);
 }
 
 

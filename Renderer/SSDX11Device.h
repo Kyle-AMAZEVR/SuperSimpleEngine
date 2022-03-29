@@ -14,6 +14,7 @@ class DX11RENDERER_API SSDX11Device : public SSRenderDevice
 public:
 	ID3D11Device*				GetDevice()const;
 	ID3D11DeviceContext*		GetDeviceContext() const;
+	IDXGISwapChain*				GetSwapChain()const;
 
 	virtual bool				InitializeDevice(HWND windowHandle) override;
 	virtual bool				CreateDevice() override;

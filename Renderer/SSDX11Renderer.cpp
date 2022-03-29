@@ -2,9 +2,7 @@
 #include "SSRendererModulePCH.h"
 #include "SSDX11Renderer.h"
 #include "FreqUsedConstantBufferTypes.h"
-#include "SSDX11VertexBuffer.h"
 #include "SSDX11IndexBuffer.h"
-#include "SSTexture2D.h"
 #include "SSSamplerManager.h"
 #include "SSDrawCommand.h"
 #include "SSDX11GBuffer.h"
@@ -153,7 +151,7 @@ void SSDX11Renderer::FlushRenderCommands()
 {
 	for(SSDrawCmdBase* cmd : mRenderCommandList)
 	{
-		cmd->Do(mDX11Device->GetDeviceContext());
+		cmd->Do(mDX11Device);
 	}
 
 	mRenderCommandList.clear();
@@ -171,7 +169,7 @@ void SSDX11Renderer::DrawDummyScene()
 		return;
 	}
 
-	mViewport->SetCurrentRenderTarget(deviceContext);
+	mViewport->SetCurrentRenderTarget(mDX11Device);
 	mViewport->Clear(mDX11Device);
 
 	mDX11Device->Present();
@@ -191,6 +189,16 @@ ID3D11DeviceContext* SSDX11Renderer::GetImmediateDeviceContext()
 	if (mDX11Device)
 	{
 		return mDX11Device->GetDeviceContext();
+	}
+
+	return nullptr;
+}
+
+IDXGISwapChain* SSDX11Renderer::GetSwapChain()
+{
+	if(mDX11Device)
+	{
+		return mDX11Device->GetSwapChain();
 	}
 
 	return nullptr;
@@ -293,7 +301,7 @@ void SSDX11Renderer::DrawCubeScene()
 	mFXAAPostProcess->Draw(mDX11Device, mDeferredLightPostProcess->GetOutput(0));
 	
 	mViewport->Clear(mDX11Device);
-	mViewport->SetCurrentRenderTarget(mDX11Device->GetDeviceContext());
+	mViewport->SetCurrentRenderTarget(mDX11Device);
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 	
@@ -306,7 +314,7 @@ void SSDX11Renderer::DrawCubeScene()
 		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
 	}
 
-	blitDrawCmd.Do(mDX11Device->GetDeviceContext());
+	blitDrawCmd.Do(mDX11Device);
 
 	mDX11Device->Present();
 }
@@ -388,10 +396,10 @@ void SSDX11Renderer::DrawSponzaScene()
 
 	DrawSkybox();
 
-	mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
+	mGBufferDumpProcess->Draw(mDX11Device, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 
 	mDeferredLightPostProcess->Draw(
-		deviceContext,
+		mDX11Device,
 		mGBuffer->GetPositionOutput(),
 		mGBuffer->GetColorOutput(),
 		mGBuffer->GetNormalOutput(),
@@ -399,10 +407,10 @@ void SSDX11Renderer::DrawSponzaScene()
 		mEnvCubemapConvolution.get(),
 		mEnvCubemapPrefilter.get());
 
-    mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
+    mFXAAPostProcess->Draw(mDX11Device, mDeferredLightPostProcess->GetOutput(0));
 
 	mViewport->Clear(mDX11Device);
-	mViewport->SetCurrentRenderTarget(deviceContext);
+	mViewport->SetCurrentRenderTarget(mDX11Device);
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 
@@ -415,7 +423,7 @@ void SSDX11Renderer::DrawSponzaScene()
 		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
 	}
 
-	blitDrawCmd.Do(deviceContext);
+	blitDrawCmd.Do(mDX11Device);
 
 
 	mDX11Device->Present();
@@ -475,7 +483,7 @@ void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 
 void SSDX11Renderer::Resize(int newWidth,int newHeight)
 {
-	mViewport->Resize(newWidth, newHeight);
+	mViewport->Resize(mDX11Device, newWidth, newHeight);
 	mGBuffer->Resize(newWidth, newHeight);
 
 	mFXAAPostProcess->OnResize(newWidth, newHeight);
@@ -488,11 +496,11 @@ void SSDX11Renderer::Create2DLUTTexture()
 {
 	auto* deviceContext = GetImmediateDeviceContext();
 
-	m2DLUTRenderTarget->Clear(deviceContext);
-	m2DLUTRenderTarget->SetCurrentRenderTarget(deviceContext);
+	m2DLUTRenderTarget->Clear(mDX11Device);
+	m2DLUTRenderTarget->SetCurrentRenderTarget(mDX11Device);
 
 	SSDrawCommand blitDrawCmd{ m2DLUTVertexShader, m2DLUTPixelShader, mScreenBlit };
-	blitDrawCmd.Do(deviceContext);
+	blitDrawCmd.Do(mDX11Device);
 
 	m2DLUTRenderTarget->SaveRTTexture(0, L"./Prebaked/2DLUT.dds");
 }
@@ -519,27 +527,27 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 
 		SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
-		convolutionDrawCmd.Do(deviceContext);
+		convolutionDrawCmd.Do(mDX11Device);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Y);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
-		convolutionDrawCmd.Do(deviceContext);
+		convolutionDrawCmd.Do(mDX11Device);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Y);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
-		convolutionDrawCmd.Do(deviceContext);
+		convolutionDrawCmd.Do(mDX11Device);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_X);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
-		convolutionDrawCmd.Do(deviceContext);
+		convolutionDrawCmd.Do(mDX11Device);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Z);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
-		convolutionDrawCmd.Do(deviceContext);
+		convolutionDrawCmd.Do(mDX11Device);
 
 		mConvolutionRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Z);
 		convolutionDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
-		convolutionDrawCmd.Do(deviceContext);
+		convolutionDrawCmd.Do(mDX11Device);
 
 		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
@@ -582,27 +590,27 @@ void SSDX11Renderer::CreateEnvCubemapPrefilter()
 			prefilterDrawCmd.StorePSConstantBufferData(RoughnessName, temp);
 			prefilterDrawCmd.SetPSTexture("EnvironmentMap", mEquirectToCubemapRenderTarget.get());
 
-			prefilterDrawCmd.Do(deviceContext);
+			prefilterDrawCmd.Do(mDX11Device);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Y, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
-			prefilterDrawCmd.Do(deviceContext);
+			prefilterDrawCmd.Do(mDX11Device);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Z, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
-			prefilterDrawCmd.Do(deviceContext);
+			prefilterDrawCmd.Do(mDX11Device);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_X, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
-			prefilterDrawCmd.Do(deviceContext);
+			prefilterDrawCmd.Do(mDX11Device);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Y, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
-			prefilterDrawCmd.Do(deviceContext);
+			prefilterDrawCmd.Do(mDX11Device);
 
 			mPrefilterRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Z, mip);
 			prefilterDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
-			prefilterDrawCmd.Do(deviceContext);
+			prefilterDrawCmd.Do(mDX11Device);
 		}
 		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
@@ -635,7 +643,7 @@ bool SSDX11Renderer::TryLoadEnvCubemapConvolution(std::wstring filepath)
 
 bool SSDX11Renderer::TryLoad2DLUTTexture()
 {
-	m2DLUTTexture = SSTexture2D::CreateFromDDSFile(GetImmediateDeviceContext(), L"./Prebaked/2DLUT.dds");
+	m2DLUTTexture = SSDX11Texture2D::CreateFromDDSFile(L"./Prebaked/2DLUT.dds");
 	return m2DLUTTexture != nullptr;
 }
 
@@ -646,7 +654,7 @@ void SSDX11Renderer::CreateEnvCubemap()
 	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
 	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
 
-	mHDREnvmap = SSTexture2D::CreateFromHDRFile(deviceContext, "./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
+	mHDREnvmap = SSDX11Texture2D::CreateFromHDRFile("./Resource/Tex/HDR/Circus_Backstage_3k.hdr");
 	{
         SSDrawCommand equirectToCubeDrawCmd{ mEquirectToCubemapVertexShader, mEquirectToCubemapPixelShader, mRenderTargetCube };
 
@@ -660,27 +668,27 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 		SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
-		equirectToCubeDrawCmd.Do(deviceContext);
+		equirectToCubeDrawCmd.Do(mDX11Device);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Y);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveYViewMatrix));
-		equirectToCubeDrawCmd.Do(deviceContext);
+		equirectToCubeDrawCmd.Do(mDX11Device);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Y);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeYViewMatrix));
-		equirectToCubeDrawCmd.Do(deviceContext);
+		equirectToCubeDrawCmd.Do(mDX11Device);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_X);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeXViewMatrix));
-		equirectToCubeDrawCmd.Do(deviceContext);
+		equirectToCubeDrawCmd.Do(mDX11Device);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::NEGATIVE_Z);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::NegativeZViewMatrix));
-		equirectToCubeDrawCmd.Do(deviceContext);
+		equirectToCubeDrawCmd.Do(mDX11Device);
 
 		mEquirectToCubemapRenderTarget->SetCurrentRTAs(deviceContext, ECubemapFace::POSITIVE_Z);
 		equirectToCubeDrawCmd.StoreVSConstantBufferData(ViewName, XMMatrixTranspose(SSMathHelper::PositiveZViewMatrix));
-		equirectToCubeDrawCmd.Do(deviceContext);
+		equirectToCubeDrawCmd.Do(mDX11Device);
 
 		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
@@ -716,7 +724,7 @@ void SSDX11Renderer::DrawSkybox()
     SSDepthStencilStateManager::Get().SetDepthCompLessEqual(deviceContext);
     SSRasterizeStateManager::Get().SetCullModeNone(deviceContext);
 
-    skyboxCmd.Do(deviceContext);
+    skyboxCmd.Do(mDX11Device);
 
     SSDepthStencilStateManager::Get().SetToDefault(deviceContext);
     SSRasterizeStateManager::Get().SetToDefault(deviceContext);

@@ -1,6 +1,7 @@
 
 #include "SSAppWindow.h"
 #include "SSEngineBase.h"
+#include "SSRenderingThread.h"
 
 SSAppWindow::SSAppWindow(HINSTANCE hInstance, int nCmdShow)
 	: SSGameWindow(hInstance, nCmdShow)
