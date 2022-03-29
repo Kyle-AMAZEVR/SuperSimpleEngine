@@ -38,10 +38,12 @@ void SSDX11Viewport::SetCurrentRenderTarget(SSRenderDevice* device)
 
 void SSDX11Viewport::Resize(SSRenderDevice* device, UINT newWidth, UINT newHeight)
 {
-    auto* dxDevice = SSDX11Renderer::Get().GetDevice();
-    auto* dxDeviceContext = SSDX11Renderer::Get().GetImmediateDeviceContext();
-    auto* dxSwapChain = SSDX11Renderer::Get().GetSwapChain();
-    
+	SSDX11Device* dx11Device = static_cast<SSDX11Device*>(device);
+
+	auto* dxDevice = dx11Device->GetDevice();
+	auto* dxDeviceContext = dx11Device->GetDeviceContext();
+	auto* dxSwapChain = dx11Device->GetSwapChain();
+
 	check(dxDevice != nullptr);
 	check(dxDeviceContext != nullptr);
 	check(dxSwapChain != nullptr);
