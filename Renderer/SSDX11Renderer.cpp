@@ -82,7 +82,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 
 	bInitialized = true;
 
-	mDX11Device->ResizeViewport(1200, 700);
+	mViewport->Resize(mDX11Device, 1200, 700);
 }
 
 void SSDX11Renderer::UpdateRenderingObjects()
