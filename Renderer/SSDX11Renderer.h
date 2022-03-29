@@ -13,10 +13,12 @@ public:
 	virtual void Shutdown() override;
 	virtual void OnWindowResize(int newWidth, int newHeight) override;
 	virtual void DrawScene() override;
+
 	
 	static SSDX11Renderer& Get();
-	static SSDX11Renderer* GetPtr();	
+	static SSDX11Renderer* GetPtr();
 	
+
 	void AppendRenderCommand(class SSDrawCmdBase* cmd);
 	void FlushRenderCommands();
 

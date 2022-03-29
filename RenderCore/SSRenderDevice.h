@@ -22,17 +22,7 @@ public:
 	virtual void				SetPSConstantBufferData() = 0;
 	
 	virtual void				SetCurrentRenderTarget(class SSViewport* viewport) = 0;
-	
-	
 	virtual void				ClearCurrentRenderTarget() = 0;
-
-	virtual void				SetDepthTestDisabled() = 0;
-	virtual void				SetDepthCompLessEqual() = 0;
-
-	virtual void				SetRasterizerStateToDefault() = 0;
-	virtual void				SetCullModeNone()=0;
-	virtual void				SetFrontCounterClockwise()=0;
-	virtual void				SetWireFrameMode()=0;
 
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) = 0;
 	virtual void				ClearViewport() = 0;

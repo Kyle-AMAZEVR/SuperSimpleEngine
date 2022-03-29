@@ -21,10 +21,18 @@ public:
 	virtual void				SetPixelShader(class SSPixelShader* ps) override;
 	virtual void				ClearCurrentRenderTarget() override;
 
-	virtual void				SetCurrentRenderTarget(class SSViewport* viewport)override;	
+	
+
+	virtual SSVertexBuffer*		CreateVertexBuffer() override;
+	virtual SSIndexBuffer*		CreateIndexBuffer() override;
+
+	virtual void				SetVSConstantBufferData() override;
+	virtual void				SetPSConstantBufferData() override;
 
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) override;
 	virtual void				ClearViewport() override;
+
+	virtual void				SetCurrentRenderTarget(class SSViewport* viewport)override;	
 
 	void						ClearRenderTargetView(ID3D11RenderTargetView* rtView, float color[4]);
 	void						SetCurrentRenderTarget(ID3D11RenderTargetView* rtView, ID3D11DepthStencilView* depthStencilView);

@@ -48,6 +48,7 @@ SSDX11Renderer* SSDX11Renderer::GetPtr()
 	return mRendererInstance;
 }
 
+
 void SSDX11Renderer::Initialize(HWND windowHandle)
 {
 	mDX11Device = new SSDX11Device();
@@ -83,7 +84,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 
 	bInitialized = true;
 
-	Resize(mBufferWidth, mBufferHeight);
+	mDX11Device->ResizeViewport(1200, 700);
 }
 
 
@@ -152,7 +153,7 @@ void SSDX11Renderer::FlushRenderCommands()
 {
 	for(SSDrawCmdBase* cmd : mRenderCommandList)
 	{
-		cmd->Do(mDeviceContext.Get());
+		cmd->Do(mDX11Device->GetDeviceContext());
 	}
 
 	mRenderCommandList.clear();
@@ -268,8 +269,8 @@ void SSDX11Renderer::DrawCubeScene()
 	// @draw cubemap to gbuffer
 	// @start	
 
-	mGBuffer->Clear(mDeviceContext.Get());
-	mGBuffer->SetCurrentRenderTarget(mDeviceContext.Get());
+	mGBuffer->Clear(mDX11Device);
+	mGBuffer->SetCurrentRenderTarget(mDX11Device);
 
 	// cubemap draw
 	DrawSkybox();
@@ -278,13 +279,13 @@ void SSDX11Renderer::DrawCubeScene()
 	auto& objects = SSRenderingObjectManager::Get().GetRenderingObjectMap();
 	for (auto [k, v] : objects)
 	{
-		v->Draw(deviceContext);
+		v->Draw(mDX11Device->GetDeviceContext());
 	}
 
 	//mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 
 	mDeferredLightPostProcess->Draw(
-		deviceContext,
+		mDX11Device->GetDeviceContext(),
 		mGBuffer->GetPositionOutput(),
 		mGBuffer->GetColorOutput(),
 		mGBuffer->GetNormalOutput(),
@@ -292,10 +293,10 @@ void SSDX11Renderer::DrawCubeScene()
 		mEnvCubemapConvolution.get(),
 		mEnvCubemapPrefilter.get());
 
-	mFXAAPostProcess->Draw(deviceContext, mDeferredLightPostProcess->GetOutput(0));
+	mFXAAPostProcess->Draw(mDX11Device->GetDeviceContext(), mDeferredLightPostProcess->GetOutput(0));
 	
-	mViewport->Clear(deviceContext);
-	mViewport->SetCurrentRenderTarget(deviceContext);
+	mViewport->Clear(mDX11Device);
+	mViewport->SetCurrentRenderTarget(mDX11Device->GetDeviceContext());
 
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 	

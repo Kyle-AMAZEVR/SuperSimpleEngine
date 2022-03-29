@@ -16,7 +16,6 @@ public:
 	virtual void PauseRendering() { mPaused = true; }
 	virtual void ResumeRendering() { mPaused = false; }
 	virtual void UpdateRenderingObjects() = 0;
-		
 
 protected:	
 

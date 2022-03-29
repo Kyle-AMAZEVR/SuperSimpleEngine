@@ -17,7 +17,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(ID3D11DeviceC
 		
 		if (path.find(".dds") != std::string::npos)
 		{
-			texture = SSTexture2D::CreateFromDDSFile(deviceContext, path, bSRGB);
+			texture = SSTexture2D::CreateFromDDSFile( path, bSRGB);
 
 			if (texture == nullptr)
 			{
@@ -31,7 +31,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(ID3D11DeviceC
 		}
 		else if (path.find(".tga") != std::string::npos)
 		{
-			texture = SSTexture2D::CreateFromTGAFile(deviceContext, path, bSRGB);
+			texture = SSTexture2D::CreateFromTGAFile( path, bSRGB);
 
 			if (texture == nullptr)
 			{
@@ -45,7 +45,7 @@ std::shared_ptr<class SSTexture2D> SSTextureManager::LoadTexture2D(ID3D11DeviceC
 		}
 		else if (path.find(".hdr") != std::string::npos)
 		{
-			texture = SSTexture2D::CreateFromHDRFile(deviceContext, path, bSRGB);
+			texture = SSTexture2D::CreateFromHDRFile( path, bSRGB);
 
 			if (texture == nullptr)
 			{

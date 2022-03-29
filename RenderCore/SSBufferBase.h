@@ -13,15 +13,8 @@ public:
     virtual UINT GetBufferSize() { return mBufferSize; }
     std::string GetBufferName() { return mBufferName; }
 
-    virtual ID3D11Buffer* const* GetDX11BufferPointerRef() = 0;
-    virtual ID3D11Buffer* GetDX11BufferPointer() = 0;	
-
 protected:
-
-    virtual void SubmitDataToDevice(ID3D11DeviceContext* deviceContext) {}
-    virtual void SubmitDataToDevice() {}
-
-    virtual ~SSBufferBase();
+    virtual ~SSBufferBase(){}
 
     UINT mBufferIndex = 0;
     UINT mBufferSize = 0;

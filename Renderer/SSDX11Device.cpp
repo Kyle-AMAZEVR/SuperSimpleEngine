@@ -88,7 +88,6 @@ void SSDX11Device::SetPixelShader(SSPixelShader* ps)
 
 void SSDX11Device::ClearCurrentRenderTarget()
 {
-	
 }
 
 void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
@@ -97,9 +96,9 @@ void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
 }
 
 
-void SSDX11Device::ResizeViewport(unsigned width, unsigned height)
+void SSDX11Device::ResizeViewport(unsigned int newWidth, unsigned int newHeight)
 {
-	if (mBufferWidth != width || mBufferHeight != height)
+	if (mBufferWidth != newWidth || mBufferHeight != newHeight)
 	{
 		Resize(newWidth, newHeight);
 	}
