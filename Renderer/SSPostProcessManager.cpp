@@ -1,6 +1,6 @@
 
 #include "SSRendererModulePCH.h"
-#include "SSPostProcess.h"
+#include "SSDX11PostProcess.h"
 #include "SSPostProcessManager.h"
 
 

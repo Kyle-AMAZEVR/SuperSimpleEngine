@@ -2,7 +2,7 @@
 #include "SSCustomRenderThreadObject.h"
 #include "SSSharedBufferCache.h"
 #include "SSDX11VertexBuffer.h"
-#include "SSIndexBuffer.h"
+#include "SSDX11IndexBuffer.h"
 
 SSRenderTargetCube::SSRenderTargetCube()
 {

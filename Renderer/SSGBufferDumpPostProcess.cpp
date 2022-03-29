@@ -1,7 +1,7 @@
 
 
 #include "SSRendererModulePCH.h"
-#include "SSPostProcess.h"
+#include "SSDX11PostProcess.h"
 #include "SSDrawCommand.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSShaderManager.h"
@@ -9,7 +9,7 @@
 #include "SSGBufferDumpPostProcess.h"
 
 SSGBufferDumpPostProcess::SSGBufferDumpPostProcess(UINT width, UINT height)
-	: SSPostProcess(width, height)
+	: SSDX11PostProcess(width, height)
 {
 	mVertexShader = SSShaderManager::Get().GetVertexShader("GBufferDump.vs");
 	mPixelShader = SSShaderManager::Get().GetPixelShader("GBufferDump.ps");
@@ -17,12 +17,12 @@ SSGBufferDumpPostProcess::SSGBufferDumpPostProcess(UINT width, UINT height)
 	UpdateDumpSettings();
 }
 
-void SSGBufferDumpPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2)
+void SSGBufferDumpPostProcess::Draw(SSDX11Device* device, SSDX11Texture2D* input0, SSDX11Texture2D* input1, SSDX11Texture2D* input2)
 {
-	check(deviceContext != nullptr);
+	check(device != nullptr);
 
-	mRenderTarget->Clear(deviceContext);
-	mRenderTarget->SetCurrentRenderTarget(deviceContext);
+	mRenderTarget->Clear(device);
+	mRenderTarget->SetCurrentRenderTarget(device);
 
 	SSAlignedCBuffer<int, int, int, int,int> mDumpSettings;
 
@@ -41,7 +41,7 @@ void SSGBufferDumpPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSDX11Te
 
 	gbufferDumpDrawCmd.StorePSConstantBufferData("Dump", mDumpSettings);
 
-	gbufferDumpDrawCmd.Do(deviceContext);
+	gbufferDumpDrawCmd.Do(device);
 }
 
 void SSGBufferDumpPostProcess::ChangeNextDumpMode()

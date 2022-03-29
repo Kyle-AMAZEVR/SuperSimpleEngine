@@ -3,6 +3,7 @@
 #include "SSDX11Texture2D.h"
 #include "DirectXTex.h"
 #include "SSDX11Renderer.h"
+#include "SSDX11RenderTarget.h"
 
 
 bool SSDX11Texture2D::LoadFromHDRFile(std::wstring filename, bool bsrgb)
@@ -105,9 +106,8 @@ bool SSDX11Texture2D::LoadInternal(const DirectX::TexMetadata& metaData, const D
 		check(pLodImage != nullptr);
 
 		auto dstSubresource = D3D11CalcSubresource(i, 0, static_cast<UINT>(metaData.mipLevels));
-		check(deviceContext != nullptr);
 
-		deviceContext->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
+		SSDX11Renderer::Get().GetImmediateDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
 	}
 
 	return true;

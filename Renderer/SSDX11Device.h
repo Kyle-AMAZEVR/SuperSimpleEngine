@@ -24,7 +24,7 @@ public:
 	virtual void				Present() override;
 
 	virtual SSVertexBuffer*		CreateVertexBuffer() override;
-	virtual SSIndexBuffer*		CreateIndexBuffer() override;
+	virtual SSDX11IndexBuffer*		CreateIndexBuffer() override;
 
 	virtual void				SetVSConstantBufferData() override;
 	virtual void				SetPSConstantBufferData() override;

@@ -29,6 +29,6 @@ protected:
 
 	std::shared_ptr<class SSDX11VertexBuffer> mVertexBuffer = nullptr;
 	std::shared_ptr<class SSDX11InstancedVertexBuffer> mInstancedVertexBuffer = nullptr;
-	std::shared_ptr<class SSIndexBuffer> mIndexBuffer = nullptr;
+	std::shared_ptr<class SSDX11IndexBuffer> mIndexBuffer = nullptr;
 	class SSMaterial* mMaterial = nullptr;
 };

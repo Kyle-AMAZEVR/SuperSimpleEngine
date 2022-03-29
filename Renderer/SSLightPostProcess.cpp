@@ -8,7 +8,7 @@
 #include "SSCameraManager.h"
 
 SSLightPostProcess::SSLightPostProcess(UINT width, UINT height)
-	: SSPostProcess(width, height)
+	: SSDX11PostProcess(width, height)
 {
 	mVertexShader = SSShaderManager::Get().GetVertexShader("DeferredLighting.vs");
 	mPixelShader = SSShaderManager::Get().GetPixelShader("DeferredLighting.ps");
@@ -32,15 +32,15 @@ SSLightPostProcess::SSLightPostProcess(UINT width, UINT height)
 
 
 void SSLightPostProcess::Draw(
-	ID3D11DeviceContext* deviceContext,
+	SSDX11Device* device,
 	SSDX11Texture2D* input0, 
 	SSDX11Texture2D* input1, SSDX11Texture2D* input2,
 	SSDX11Texture2D* input3, SSDX11Texture2D* input4, SSDX11Texture2D* input5)
 {
-	check(deviceContext != nullptr);
+	check(device != nullptr);
 
-	mRenderTarget->Clear(deviceContext);
-	mRenderTarget->SetCurrentRenderTarget(deviceContext);
+	mRenderTarget->Clear(device);
+	mRenderTarget->SetCurrentRenderTarget(device);
 		
 	SSDrawCommand drawCmd{mVertexShader, mPixelShader, mScreenBlit };
 
@@ -59,5 +59,5 @@ void SSLightPostProcess::Draw(
 	drawCmd.StorePSConstantBufferData("LightPosition", mLightInfo.lightPosition);
 	drawCmd.StorePSConstantBufferData("LightColor", mLightInfo.lightColors);
 	drawCmd.StorePSConstantBufferData("LightMinMax", mLightInfo.lightMinMaxs);
-	drawCmd.Do(deviceContext);
+	drawCmd.Do(device);
 }

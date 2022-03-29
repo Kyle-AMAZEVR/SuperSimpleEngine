@@ -86,7 +86,7 @@ void SSDX11Viewport::Resize(SSRenderDevice* device, UINT newWidth, UINT newHeigh
 	HR(dxDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
 	HR(dxDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), 0, &mDepthStencilView));
 
-	SetCurrentRenderTarget(dxDeviceContext);
+	SetCurrentRenderTarget(device);
 
 	SSCameraManager::Get().SetCurrentCameraAspectRatio(static_cast<float>(mWidth) / static_cast<float>(mHeight));
 }

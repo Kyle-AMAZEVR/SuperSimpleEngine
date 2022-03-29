@@ -3,7 +3,7 @@
 
 #include "SSRenderingObject.h"
 #include "SSDX11VertexBuffer.h"
-#include "SSIndexBuffer.h"
+#include "SSDX11IndexBuffer.h"
 #include "SSShaderManager.h"
 #include "SSFreqUsedNames.h"
 
@@ -56,7 +56,7 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	// setup index data
 	if(mVertexData.bHasIndexData)
 	{
-		mIndexBuffer = std::make_shared<SSIndexBuffer>();
+		mIndexBuffer = std::make_shared<SSDX11IndexBuffer>();
 		mIndexBuffer->SetIndexBufferData(mVertexData.IndexData);
 	}
 

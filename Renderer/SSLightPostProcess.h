@@ -1,7 +1,9 @@
 #pragma once
 
-#include "SSPostProcess.h"
+#include "SSDX11PostProcess.h"
 #include "FreqUsedConstantBufferTypes.h"
+
+class SSDX11Device;
 
 struct LightCBuffer
 {
@@ -10,13 +12,13 @@ struct LightCBuffer
 	XMFLOAT4 lightMinMaxs[16];
 };
 
-class SSLightPostProcess : public SSPostProcess
+class SSLightPostProcess : public SSDX11PostProcess
 {
 public:
 	SSLightPostProcess(UINT width, UINT height);
 
 	virtual void Draw(
-		ID3D11DeviceContext* deviceContext,
+		SSDX11Device* deviceContext,
 		SSDX11Texture2D* input0,
 		SSDX11Texture2D* input1,
 		SSDX11Texture2D* input2,

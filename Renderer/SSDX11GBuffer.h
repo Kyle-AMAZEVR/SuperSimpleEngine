@@ -2,7 +2,7 @@
 #pragma once
 
 #include "SSRenderTargetBase.h"
-#include "SSRenderTarget2D.h"
+#include "SSDX11RenderTarget.h"
 
 class SSRenderTarget2D;
 class SSDepthRenderTargetTexture2D;

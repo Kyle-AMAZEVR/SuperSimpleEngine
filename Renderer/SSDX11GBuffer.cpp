@@ -1,7 +1,7 @@
 
 #include "SSRendererModulePCH.h"
 #include "SSDX11GBuffer.h"
-#include "SSRenderTarget2D.h"
+#include "SSDX11RenderTarget.h"
 #include "SSDX11Renderer.h"
 
 

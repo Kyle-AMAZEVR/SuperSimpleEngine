@@ -4,7 +4,7 @@
 #include "SSRendererModulePCH.h"
 #include "SSSharedBufferCache.h"
 #include "SSSharedRenderData.h"
-#include "SSIndexBuffer.h"
+#include "SSDX11IndexBuffer.h"
 #include "SSDX11VertexBuffer.h"
 
 void SSSharedBufferCache::Initialize()
@@ -20,7 +20,7 @@ shared_ptr<SSDX11VertexBuffer> SSSharedBufferCache::GetCubeVertexBuffer()
 	return mCubeVertexBuffer;
 }
 
-shared_ptr<SSIndexBuffer> SSSharedBufferCache::GetCubeIndexBuffer()
+shared_ptr<SSDX11IndexBuffer> SSSharedBufferCache::GetCubeIndexBuffer()
 {
 	return mCubeIndexBuffer;
 }
@@ -35,14 +35,14 @@ shared_ptr<SSDX11VertexBuffer> SSSharedBufferCache::GetScreenBlitVertexBuffer()
 	return mScreenBlitVertexBuffer;
 }
 
-shared_ptr<SSIndexBuffer> SSSharedBufferCache::GetScreenIndexBuffer()
+shared_ptr<SSDX11IndexBuffer> SSSharedBufferCache::GetScreenIndexBuffer()
 {
 	return mScreenBlitIndexBuffer;
 }
 
 void SSSharedBufferCache::InitializeCube()
 {
-	mCubeIndexBuffer = std::make_shared<SSIndexBuffer>();
+	mCubeIndexBuffer = std::make_shared<SSDX11IndexBuffer>();
 	mCubeIndexBuffer->SetIndexBufferData(SSSharedRenderData::Get().GetCubeIndexData());
 
 	mCubeVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
@@ -59,7 +59,7 @@ void SSSharedBufferCache::InitializeSphere()
 
 void SSSharedBufferCache::InitializeScreenBlit()
 {
-	mScreenBlitIndexBuffer = std::make_shared<SSIndexBuffer>();
+	mScreenBlitIndexBuffer = std::make_shared<SSDX11IndexBuffer>();
 	mScreenBlitVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
 
 	mScreenBlitVertexBuffer->SetVertexBufferData(SSSharedRenderData::Get().GetScreenBlitVertexData());

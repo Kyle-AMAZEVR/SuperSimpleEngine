@@ -6,7 +6,7 @@
 #include "SSSamplerManager.h"
 #include "SSMaterial.h"
 #include "SSRenderTargetBase.h"
-#include "SSRenderTarget2D.h"
+#include "SSDX11RenderTarget.h"
 #include "SSShader.h"
 
 SSChangeRenderTargetCmd::SSChangeRenderTargetCmd(IRenderTarget* renderTarget)

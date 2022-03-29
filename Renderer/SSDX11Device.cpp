@@ -2,7 +2,7 @@
 #include "SSDX11Device.h"
 #include <iostream>
 
-#include "SSRenderTarget2D.h"
+#include "SSDX11RenderTarget.h"
 #include "SSShader.h"
 
 bool SSDX11Device::CreateDevice()

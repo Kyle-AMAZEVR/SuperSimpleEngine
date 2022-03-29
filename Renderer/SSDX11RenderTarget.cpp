@@ -1,6 +1,6 @@
 
 #include "SSRendererModulePCH.h"
-#include "SSRenderTarget2D.h"
+#include "SSDX11RenderTarget.h"
 #include "SSDX11Renderer.h"
 #include "SSMathHelper.h"
 #include "DirectXTex.h"

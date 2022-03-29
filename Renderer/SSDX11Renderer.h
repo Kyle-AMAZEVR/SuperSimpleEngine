@@ -120,9 +120,9 @@ private:
 	std::shared_ptr<class SSObjMesh> mSponzaMesh;
 	std::shared_ptr<class SSObjMesh> mObjMeshSphere;
 
-	std::shared_ptr<class SSPostProcess> mFXAAPostProcess;
+	std::shared_ptr<class SSDX11PostProcess> mFXAAPostProcess;
 	std::shared_ptr<class SSGBufferDumpPostProcess> mGBufferDumpProcess;
-	std::shared_ptr<class SSPostProcess> mDeferredLightPostProcess;
+	std::shared_ptr<class SSDX11PostProcess> mDeferredLightPostProcess;
 
 	std::shared_ptr<class SSText3D> mText3D;
 

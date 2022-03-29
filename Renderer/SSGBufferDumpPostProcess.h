@@ -1,5 +1,5 @@
 #pragma once
-#include "SSPostProcess.h"
+#include "SSDX11PostProcess.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSShader.h"
 
@@ -13,7 +13,7 @@ enum class EDumpMode : unsigned char
 	ERoughnessDump,
 };
 
-class SSGBufferDumpPostProcess : public SSPostProcess
+class SSGBufferDumpPostProcess : public SSDX11PostProcess
 {
 public:
 	SSGBufferDumpPostProcess(UINT width, UINT height);

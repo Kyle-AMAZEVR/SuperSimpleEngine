@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
 #include "SSManagerBase.h"
-#include "SSPostProcess.h"
+#include "SSDX11PostProcess.h"
 
 
 class SSPostProcessManager : public Singleton<SSPostProcessManager> , public SSManagerBase
@@ -15,5 +15,5 @@ public:
 
 protected:
 
-	std::vector<SSPostProcess*> mPostProcessList;
+	std::vector<SSDX11PostProcess*> mPostProcessList;
 };

@@ -1,7 +1,7 @@
 
 
 #include "SSRendererModulePCH.h"
-#include "SSPostProcess.h"
+#include "SSDX11PostProcess.h"
 #include "SSFXAAPostProcess.h"
 
 #include "SSDrawCommand.h"
@@ -10,18 +10,18 @@
 #include "SSScreenBlit.h"
 
 SSFXAAPostProcess::SSFXAAPostProcess(UINT width, UINT height)
-	: SSPostProcess(width, height, 1, false, false)
+	: SSDX11PostProcess(width, height, 1, false, false)
 {
 	mFXAAVertexShader = SSShaderManager::Get().GetVertexShader("FXAA.vs");
 	mFXAAPixelShader = SSShaderManager::Get().GetPixelShader("FXAA.ps");
 }
 
-void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D* input0)
+void SSFXAAPostProcess::Draw(SSDX11Device* device, SSDX11Texture2D* input0)
 {
-	check(deviceContext != nullptr);
+	check(device != nullptr);
 
-	mRenderTarget->Clear(deviceContext);
-	mRenderTarget->SetCurrentRenderTarget(deviceContext);
+	mRenderTarget->Clear(device);
+	mRenderTarget->SetCurrentRenderTarget(device);
 
 	SSDrawCommand fxaaDrawCmd{ mFXAAVertexShader, mFXAAPixelShader, mScreenBlit };
 	fxaaDrawCmd.SetPSTexture("ScreenTex", input0);
@@ -32,5 +32,5 @@ void SSFXAAPostProcess::Draw(ID3D11DeviceContext* deviceContext, SSDX11Texture2D
 	
 	fxaaDrawCmd.StorePSConstantBufferData("CBInverseScreenSize", invScreenSize);
 
-	fxaaDrawCmd.Do(deviceContext);
+	fxaaDrawCmd.Do(device);
 }

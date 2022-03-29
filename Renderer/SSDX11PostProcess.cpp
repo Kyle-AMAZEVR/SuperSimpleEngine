@@ -1,10 +1,10 @@
 
 #include "SSRendererModulePCH.h"
-#include "SSPostProcess.h"
-#include "SSRenderTarget2D.h"
+#include "SSDX11PostProcess.h"
+#include "SSDX11RenderTarget.h"
 #include "SSScreenBlit.h"
 
-SSPostProcess::SSPostProcess(UINT width, UINT height, UINT rtCount, bool bDepthExist, bool bFixed, DXGI_FORMAT format)
+SSDX11PostProcess::SSDX11PostProcess(UINT width, UINT height, UINT rtCount, bool bDepthExist, bool bFixed, DXGI_FORMAT format)
 	: mWidth(width), mHeight(height), mRTCount(rtCount), mFixedSize(bFixed), mDepthExist(bDepthExist)
 {
 	mRenderTarget = std::make_unique< SSDX11RenderTarget>(width, height, rtCount, bDepthExist, format);
@@ -12,7 +12,7 @@ SSPostProcess::SSPostProcess(UINT width, UINT height, UINT rtCount, bool bDepthE
 }
 
 
-void SSPostProcess::OnResize(UINT width, UINT height)
+void SSDX11PostProcess::OnResize(UINT width, UINT height)
 {
 	if (mFixedSize == false)
 	{
@@ -23,7 +23,7 @@ void SSPostProcess::OnResize(UINT width, UINT height)
 }
 
 
-SSDX11RenderTargetTexture2D* SSPostProcess::GetOutput(UINT nIndex)
+SSDX11RenderTargetTexture2D* SSDX11PostProcess::GetOutput(UINT nIndex)
 {
 	if (mRenderTarget != nullptr)
 	{
@@ -33,7 +33,7 @@ SSDX11RenderTargetTexture2D* SSPostProcess::GetOutput(UINT nIndex)
 	return nullptr;
 }
 
-void SSPostProcess::Destroy()
+void SSDX11PostProcess::Destroy()
 {
 	if(mRenderTarget != nullptr)
 	{

@@ -4,7 +4,7 @@
 #include "SSVertexTypes.h"
 #include <vector>
 #include "SSDX11VertexBuffer.h"
-#include "SSIndexBuffer.h"
+#include "SSDX11IndexBuffer.h"
 #include "SSSharedBufferCache.h"
 #include "SSSharedRenderData.h"
 

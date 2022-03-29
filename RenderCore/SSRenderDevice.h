@@ -4,7 +4,7 @@
 #include "SSRenderCore.h"
 
 class SSVertexBuffer;
-class SSIndexBuffer;
+class SSDX11IndexBuffer;
 
 class RENDERCORE_API SSRenderDevice
 {
@@ -13,7 +13,7 @@ public:
 	virtual bool				CreateDevice() = 0;
 
 	virtual SSVertexBuffer*		CreateVertexBuffer() = 0;
-	virtual SSIndexBuffer*		CreateIndexBuffer() = 0;
+	virtual SSDX11IndexBuffer*		CreateIndexBuffer() = 0;
 
 	virtual void				SetVertexShader(class SSVertexShader* vs) = 0;
 	virtual void				SetPixelShader(class SSPixelShader* ps) = 0;

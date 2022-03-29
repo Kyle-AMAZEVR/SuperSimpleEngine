@@ -12,5 +12,5 @@ public:
 
 protected:		
 	std::shared_ptr<class SSDX11VertexBuffer> mScreenVB;
-	std::shared_ptr<class SSIndexBuffer> mScreenIB;
+	std::shared_ptr<class SSDX11IndexBuffer> mScreenIB;
 };

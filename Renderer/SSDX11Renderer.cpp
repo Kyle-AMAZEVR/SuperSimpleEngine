@@ -3,13 +3,13 @@
 #include "SSDX11Renderer.h"
 #include "FreqUsedConstantBufferTypes.h"
 #include "SSDX11VertexBuffer.h"
-#include "SSIndexBuffer.h"
+#include "SSDX11IndexBuffer.h"
 #include "SSTexture2D.h"
 #include "SSSamplerManager.h"
 #include "SSDrawCommand.h"
 #include "SSDX11GBuffer.h"
 #include "SSScreenBlit.h"
-#include "SSRenderTarget2D.h"
+#include "SSDX11RenderTarget.h"
 #include "SSTextureCube.h"
 #include "SSDepthStencilStateManager.h"
 #include "SSRasterizeStateManager.h"
@@ -282,7 +282,7 @@ void SSDX11Renderer::DrawCubeScene()
 	//mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
 
 	mDeferredLightPostProcess->Draw(
-		mDX11Device->GetDeviceContext(),
+		mDX11Device,
 		mGBuffer->GetPositionOutput(),
 		mGBuffer->GetColorOutput(),
 		mGBuffer->GetNormalOutput(),
@@ -290,7 +290,7 @@ void SSDX11Renderer::DrawCubeScene()
 		mEnvCubemapConvolution.get(),
 		mEnvCubemapPrefilter.get());
 
-	mFXAAPostProcess->Draw(mDX11Device->GetDeviceContext(), mDeferredLightPostProcess->GetOutput(0));
+	mFXAAPostProcess->Draw(mDX11Device, mDeferredLightPostProcess->GetOutput(0));
 	
 	mViewport->Clear(mDX11Device);
 	mViewport->SetCurrentRenderTarget(mDX11Device->GetDeviceContext());
