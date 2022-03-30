@@ -3,7 +3,7 @@
 #include "SSDX11IndexBuffer.h"
 
 
-void SSDX11IndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D11_PRIMITIVE_TOPOLOGY ePrimitiveType )
+void SSDX11IndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D_PRIMITIVE_TOPOLOGY ePrimitiveType )
 {
 	mPrimitiveType = ePrimitiveType;
 	mIndexCount = static_cast<UINT>(indexData.size());

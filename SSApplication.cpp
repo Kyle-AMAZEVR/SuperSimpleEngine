@@ -13,12 +13,10 @@
 #include <stdlib.h>
 
 #include "d3d11.h"
-#include "DXApp.h"
 #include "Renderer/SSRendererModulePCH.h"
 #include "Engine/SSDX11Engine.h"
 #include "GameModule/SSGameWindow.h"
 #include "SSAppWindow.h"
-#include "SSGameThread.h"
 #include "SSEngineBase.h"
 #include "SSSharedRenderData.h"
 

@@ -9,8 +9,8 @@ using Microsoft::WRL::ComPtr;
 class DX11RENDERER_API SSDX11Buffer : public SSBufferBase
 {
 public:   
-    ID3D11Buffer* const* GetDX11BufferPointerRef();
-    ID3D11Buffer* GetDX11BufferPointer();
+    virtual void* const* GetBufferPointerRef() override;
+    virtual void* GetBufferPointer() override;
     virtual void SubmitDataToDevice(ID3D11DeviceContext* deviceContext){}
 protected:
 

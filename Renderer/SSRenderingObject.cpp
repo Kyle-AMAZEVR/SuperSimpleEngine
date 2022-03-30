@@ -99,7 +99,7 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
     {
 	    UINT stride[1]{mVertexBuffer->GetStride()};
         UINT offset[1]{0};
-        ID3D11Buffer* buffer[1]{mVertexBuffer->GetDX11BufferPointer()};
+        ID3D11Buffer* buffer[1]{(ID3D11Buffer*)mVertexBuffer->GetBufferPointer()};
         // set vertex buffer
         deviceContext->IASetVertexBuffers(0, 1, buffer, stride, offset);
     }
@@ -107,14 +107,14 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
     {
 	    UINT stride[2]{mVertexBuffer->GetStride(), mInstancedVertexBuffer->GetStride()};
 	    UINT offset[2]{0,0};
-	    ID3D11Buffer* buffer[2] {mVertexBuffer->GetDX11BufferPointer(), mInstancedVertexBuffer->GetDX11BufferPointer()};
+		ID3D11Buffer* buffer[2] {(ID3D11Buffer*)mVertexBuffer->GetBufferPointer(), (ID3D11Buffer*)mInstancedVertexBuffer->GetBufferPointer()};
 	    deviceContext->IASetVertexBuffers(0, 2, buffer, stride, offset);
     }
 
 	if (mVertexData.bHasIndexData)
 	{
 		// set indexbuffer
-		deviceContext->IASetIndexBuffer(mIndexBuffer->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->IASetIndexBuffer((ID3D11Buffer*)mIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 	}
 		
 	// 

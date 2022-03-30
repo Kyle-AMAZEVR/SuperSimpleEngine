@@ -53,7 +53,7 @@ void SSDrawCommand::Do(SSDX11Device* device)
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, (ID3D11Buffer* const*) kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader constant buffer
@@ -63,7 +63,7 @@ void SSDrawCommand::Do(SSDX11Device* device)
 
 		UINT bufferIndex = kvp.second->GetBufferIndex();
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, kvp.second->GetDX11BufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, (ID3D11Buffer* const*)kvp.second->GetBufferPointerRef());
 	}
 
 	// @ set pixel shader texture 

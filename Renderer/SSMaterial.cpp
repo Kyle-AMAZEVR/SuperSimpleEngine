@@ -67,7 +67,7 @@ void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext
 
 		check(deviceContext != nullptr);
 
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, mVertexShaderConstantBufferMap[name]->GetDX11BufferPointerRef());
+		deviceContext->VSSetConstantBuffers(bufferIndex, 1, (ID3D11Buffer* const*) mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
 }
 
@@ -82,6 +82,6 @@ void SSMaterial::SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext
 
 		check(deviceContext != nullptr);
 
-		deviceContext->PSSetConstantBuffers(bufferIndex, 1, mPixelShaderConstantBufferMap[name]->GetDX11BufferPointerRef());
+		deviceContext->PSSetConstantBuffers(bufferIndex, 1, (ID3D11Buffer* const*)mPixelShaderConstantBufferMap[name]->GetBufferPointerRef());
 	}
 }

@@ -2,12 +2,12 @@
 #include "SSDX11Buffer.h"
 
 
-ID3D11Buffer* const* SSDX11Buffer::GetDX11BufferPointerRef()
+void* const* SSDX11Buffer::GetBufferPointerRef()
 {
-	return mpBuffer.GetAddressOf();
+	return (void* const*) mpBuffer.GetAddressOf();
 }
 
-ID3D11Buffer* SSDX11Buffer::GetDX11BufferPointer()
+void* SSDX11Buffer::GetBufferPointer()
 {
 	return mpBuffer.Get();
 }

@@ -84,6 +84,7 @@ bool SSDX11Device::InitializeDevice(HWND windowHandle)
 	return bDeviceCreated && bSwapChainCreated;
 }
 
+
 void SSDX11Device::SetVertexShader(SSVertexShader* vs)
 {
 	mDeviceContext->VSSetShader(vs->GetShader(), nullptr, 0);

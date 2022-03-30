@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
+#include "SSIndexBuffer.h"
 #include "SSRenderCore.h"
 
 class SSVertexBuffer;
@@ -13,7 +14,7 @@ public:
 	virtual bool				CreateDevice() = 0;
 
 	virtual SSVertexBuffer*		CreateVertexBuffer() = 0;
-	virtual SSDX11IndexBuffer*		CreateIndexBuffer() = 0;
+	virtual SSDX11IndexBuffer*	CreateIndexBuffer() = 0;
 
 	virtual void				SetVertexShader(class SSVertexShader* vs) = 0;
 	virtual void				SetPixelShader(class SSPixelShader* ps) = 0;
