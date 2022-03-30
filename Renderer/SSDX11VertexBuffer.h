@@ -5,25 +5,25 @@
 #include <vector>
 #include "SSDX11Buffer.h"
 #include "SSDX11Renderer.h"
+#include "SSVertexBuffer.h"
 
-class SSDX11VertexBuffer : public SSDX11Buffer
+class SSDX11VertexBuffer : public SSVertexBuffer
 {
 public:
     SSDX11VertexBuffer(){}
-    
+    ~SSDX11VertexBuffer();
     template<class T>
     void SetVertexBufferData(const std::vector<T>& vertexData);
 
-
-	UINT GetStride() const;
-	UINT GetVertexCount() const;
+    virtual void* GetBufferPointer() override;
+    virtual void* const* GetBufferPointerRef() override;
 
 protected:
     template<class T>
     void InternalCreateVertexBuffer(const std::vector<T>& vertexData);
     
-	UINT mStride = 0;
-	UINT mVertexCount = 0;
+    D3D11_BUFFER_DESC mBufferDescription;
+    ComPtr<ID3D11Buffer> mpBuffer = nullptr;
 };
 
 template<class T>

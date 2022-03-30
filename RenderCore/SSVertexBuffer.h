@@ -6,8 +6,8 @@
 class RENDERCORE_API SSVertexBuffer : public SSBufferBase
 {
 public:
-	SSVertexBuffer(){}
-	virtual ~SSVertexBuffer(){}
+	SSVertexBuffer();
+	virtual ~SSVertexBuffer();
 
 	virtual unsigned int GetStride() const { return mStride; }
 	virtual unsigned int GetVertexCount() const { return mVertexCount; }

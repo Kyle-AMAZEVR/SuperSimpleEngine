@@ -3,12 +3,21 @@
 #include "SSDX11VertexBuffer.h"
 
 
-UINT SSDX11VertexBuffer::GetStride() const
-{	
-	return mStride;
+void* SSDX11VertexBuffer::GetBufferPointer()
+{
+	return (void*) mpBuffer.Get();
+}
+void* const* SSDX11VertexBuffer::GetBufferPointerRef()
+{
+	return (void* const*)mpBuffer.GetAddressOf();
 }
 
-UINT SSDX11VertexBuffer::GetVertexCount() const
+
+SSDX11VertexBuffer::~SSDX11VertexBuffer()
 {
-	return mVertexCount;
+	if(mpBuffer)
+	{
+		mpBuffer->Release();
+		mpBuffer = nullptr;
+	}
 }

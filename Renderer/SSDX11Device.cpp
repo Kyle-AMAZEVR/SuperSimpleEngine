@@ -87,7 +87,7 @@ bool SSDX11Device::InitializeDevice(HWND windowHandle)
 
 SSVertexBuffer* SSDX11Device::CreateVertexBuffer(void* data, unsigned int size)
 {
-	
+	return nullptr;
 }
 
 
