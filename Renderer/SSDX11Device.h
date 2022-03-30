@@ -27,6 +27,9 @@ public:
 	virtual SSVertexBuffer*		CreateVertexBuffer() override;
 	virtual SSDX11IndexBuffer*	CreateIndexBuffer() override;
 
+
+	virtual SSVertexBuffer*		CreateVertexBuffer(void* data, unsigned int size);
+
 	virtual void				SetVSConstantBufferData() override;
 	virtual void				SetPSConstantBufferData() override;
 

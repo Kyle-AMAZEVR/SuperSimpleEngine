@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "SSDX11RenderTarget.h"
+#include "SSDX11VertexBuffer.h"
 #include "SSShader.h"
 
 bool SSDX11Device::CreateDevice()
@@ -82,6 +83,11 @@ bool SSDX11Device::InitializeDevice(HWND windowHandle)
 	bool bSwapChainCreated = CreateSwapChain(windowHandle);
 
 	return bDeviceCreated && bSwapChainCreated;
+}
+
+SSVertexBuffer* SSDX11Device::CreateVertexBuffer(void* data, unsigned int size)
+{
+	
 }
 
 

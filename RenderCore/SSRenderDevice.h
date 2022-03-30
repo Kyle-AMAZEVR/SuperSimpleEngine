@@ -16,6 +16,8 @@ public:
 	virtual SSVertexBuffer*		CreateVertexBuffer() = 0;
 	virtual SSDX11IndexBuffer*	CreateIndexBuffer() = 0;
 
+	virtual SSVertexBuffer*		CreateVertexBuffer(void* data, unsigned int size);
+
 	virtual void				SetVertexShader(class SSVertexShader* vs) = 0;
 	virtual void				SetPixelShader(class SSPixelShader* ps) = 0;
 

@@ -12,6 +12,7 @@ class RENDERCORE_API SSBufferBase : public SSRenderThreadResidentObject
 {
 public:
     SSBufferBase();
+
     virtual UINT GetBufferIndex() { return mBufferIndex; }
     virtual UINT GetBufferSize() { return mBufferSize; }
     std::string GetBufferName() { return mBufferName; }

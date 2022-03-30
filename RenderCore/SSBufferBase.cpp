@@ -10,3 +10,9 @@ SSBufferBase::~SSBufferBase()
 {
 	
 }
+
+SSBufferBase::SSBufferBase(void* ptrData)
+	: mPtrData(ptrData)
+{
+	
+}
