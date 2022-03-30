@@ -3,6 +3,17 @@
 #include "SSDX11IndexBuffer.h"
 
 
+void* SSDX11IndexBuffer::GetBufferPointer()
+{
+    return mpBuffer.Get();
+}
+
+void* const* SSDX11IndexBuffer::GetBufferPointerRef()
+{
+    return (void* const*)mpBuffer.GetAddressOf();
+}
+
+
 void SSDX11IndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D_PRIMITIVE_TOPOLOGY ePrimitiveType )
 {
 	mPrimitiveType = ePrimitiveType;

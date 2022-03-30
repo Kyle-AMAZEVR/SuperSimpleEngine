@@ -2,17 +2,20 @@
 #pragma once
 
 #include <vector>
-#include "SSDX11Buffer.h"
+#include "SSIndexBuffer.h"
 
-
-class SSDX11IndexBuffer : public SSDX11Buffer
+class SSDX11IndexBuffer : public SSIndexBuffer
 {
 public:
-    SSDX11IndexBuffer(){}	
-    void SetIndexBufferData(const std::vector<UINT> indexData, D3D_PRIMITIVE_TOPOLOGY ePrimitiveType = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }
-	UINT GetIndexCount()  { return mIndexCount; }
+    SSDX11IndexBuffer(){}
+
+	virtual void SetIndexBufferData(const std::vector<UINT> indexData, 
+		D3D_PRIMITIVE_TOPOLOGY ePrimitiveType = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST) override;
+
+	virtual void* GetBufferPointer() override;
+	virtual void* const* GetBufferPointerRef() override;
+
 protected:
-	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	UINT mIndexCount = 0;
+	D3D11_BUFFER_DESC mBufferDescription;
+	ComPtr<ID3D11Buffer> mpBuffer = nullptr;
 };

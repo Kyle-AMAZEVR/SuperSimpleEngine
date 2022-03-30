@@ -3,7 +3,7 @@
 #include "SSBufferBase.h"
 #include <vector>
 
-class RENDERCORE_API SSIndexBufferBase : public SSBufferBase
+class RENDERCORE_API SSIndexBuffer : public SSBufferBase
 {
 public:
 	virtual void SetIndexBufferData(const std::vector<UINT> indexData, D3D_PRIMITIVE_TOPOLOGY ePrimitiveType = D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST) = 0;
