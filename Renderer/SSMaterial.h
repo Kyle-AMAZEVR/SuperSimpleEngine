@@ -4,7 +4,7 @@
 #include "SSName.h"
 #include "SSVertexTypes.h"
 #include "SSConstantBufferProxy.h"
-#include "SSConstantBuffer.h"
+#include "SSDX11ConstantBuffer.h"
 
 using namespace std;
 

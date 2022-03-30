@@ -1,6 +1,6 @@
 
 
-#include "SSConstantBuffer.h"
+#include "SSDX11ConstantBuffer.h"
 #include "SSShader.h"
 
 // trigger compile

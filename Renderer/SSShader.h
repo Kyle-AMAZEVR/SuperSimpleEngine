@@ -2,7 +2,7 @@
 
 #include "SSRendererModulePCH.h"
 #include "SSRenderThreadObject.h"
-#include "SSConstantBuffer.h"
+#include "SSDX11ConstantBuffer.h"
 #include "SSName.h"
 #include "wrl/client.h"
 #include <map>
