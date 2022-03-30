@@ -14,12 +14,12 @@ SSObjectBase::~SSObjectBase()
 {
 }
 
-void SSObjectBase::SetVSConstantBufferData(SSName name, SSConstantBufferProxy&& buffer)
+void SSObjectBase::SetVSConstantBufferData(SSName name, SSConatantBufferData&& buffer)
 {
 	mRenderData.VSConstantBufferMap[name] = std::move(buffer);
 }
 
-void SSObjectBase::SetPSConstantBufferData(SSName name, SSConstantBufferProxy&& buffer)
+void SSObjectBase::SetPSConstantBufferData(SSName name, SSConatantBufferData&& buffer)
 {
 	mRenderData.PSConstantBufferMap[name] = std::move(buffer);
 }

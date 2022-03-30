@@ -40,7 +40,7 @@ void SSSphere::CreateRenderData()
 	settings.value4 = 1; // roghness
 	settings.value5 = 1; // diffuse
 
-	SSConstantBufferProxy proxy{ settings };
+	SSConatantBufferData proxy{ settings };
 
 	mRenderData.PSConstantBufferMap[SSName("TextureExist")] = std::move(proxy);
 }

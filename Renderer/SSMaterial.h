@@ -3,7 +3,7 @@
 #include "SSRenderThreadObject.h"
 #include "SSName.h"
 #include "SSVertexTypes.h"
-#include "SSConstantBufferProxy.h"
+#include "SSConatantBufferData.h"
 #include "SSDX11ConstantBuffer.h"
 
 using namespace std;
@@ -26,8 +26,8 @@ public:
 	template<class T>
 	void SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 
-	void SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& buffer);
-	void SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& buffer);
+	void SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
+	void SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
 	
 
 	template<class T>

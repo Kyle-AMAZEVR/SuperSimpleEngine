@@ -1,23 +1,23 @@
 #pragma once
 
 
-class CORE_API SSConstantBufferProxy
+class CORE_API SSConatantBufferData
 {
 public:
-	SSConstantBufferProxy(){}
+	SSConatantBufferData(){}
 	
 	template<class T>
-	SSConstantBufferProxy(const T& value);
+	SSConatantBufferData(const T& value);
 
-	SSConstantBufferProxy(const SSConstantBufferProxy& rhs);
+	SSConatantBufferData(const SSConatantBufferData& rhs);
 
-	SSConstantBufferProxy(SSConstantBufferProxy&& rhs);
+	SSConatantBufferData(SSConatantBufferData&& rhs);
 
-	SSConstantBufferProxy& operator=(SSConstantBufferProxy&& rhs);
+	SSConatantBufferData& operator=(SSConatantBufferData&& rhs);
 
-	SSConstantBufferProxy& operator=(const SSConstantBufferProxy& rhs);
+	SSConatantBufferData& operator=(const SSConatantBufferData& rhs);
 
-	~SSConstantBufferProxy();
+	~SSConatantBufferData();
 		
 	template<class T>
 	void SetBufferData(const T& value);
@@ -35,7 +35,7 @@ protected:
 
 
 template<class T>
-void SSConstantBufferProxy::SetBufferData(const T& value)
+void SSConatantBufferData::SetBufferData(const T& value)
 {	
 	if(mBufferSize != sizeof(T))
 	{
@@ -48,7 +48,7 @@ void SSConstantBufferProxy::SetBufferData(const T& value)
 }
 
 template<class T>
-SSConstantBufferProxy::SSConstantBufferProxy(const T& value)
+SSConatantBufferData::SSConatantBufferData(const T& value)
 {	
 	SetBufferData(value);
 }

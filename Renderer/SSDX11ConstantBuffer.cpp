@@ -62,7 +62,7 @@ SSGenericConstantBuffer::~SSGenericConstantBuffer()
     }
 }
 
-void SSGenericConstantBuffer::StoreBufferProxyData(const SSConstantBufferProxy& data)
+void SSGenericConstantBuffer::StoreBufferProxyData(const SSConatantBufferData& data)
 {   
     check(mpBuffer != nullptr);
     

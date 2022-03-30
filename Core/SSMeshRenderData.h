@@ -3,7 +3,7 @@
 #include "SSVertexTypes.h"
 #include <vector>
 #include "SSName.h"
-#include "SSConstantBufferProxy.h"
+#include "SSConatantBufferData.h"
 
 using namespace DirectX;
 
@@ -60,8 +60,8 @@ public:
 	SSName PixelShaderName;
 
 	//
-	std::map<SSName, SSConstantBufferProxy> VSConstantBufferMap;
-	std::map<SSName, SSConstantBufferProxy> PSConstantBufferMap;
+	std::map<SSName, SSConatantBufferData> VSConstantBufferMap;
+	std::map<SSName, SSConatantBufferData> PSConstantBufferMap;
 
 	std::map<SSName, SSName> VSTextureMap;
 	std::map<SSName, SSName> PSTextureMap;
@@ -72,8 +72,8 @@ struct SSMeshElementRenderData
 	SSName VertexShaderName;
 	SSName PixelShaderName;
 	//
-	std::map<SSName, SSConstantBufferProxy> VSConstantBufferMap;
-	std::map<SSName, SSConstantBufferProxy> PSConstantBufferMap;
+	std::map<SSName, SSConatantBufferData> VSConstantBufferMap;
+	std::map<SSName, SSConatantBufferData> PSConstantBufferMap;
 
 	std::map<SSName, SSName> VSTextureMap;
 	std::map<SSName, SSName> PSTextureMap;

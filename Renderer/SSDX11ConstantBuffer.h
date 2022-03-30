@@ -4,7 +4,7 @@
 #include "SSDX11Buffer.h"
 #include <vector>
 #include <string>
-#include "SSConstantBufferProxy.h"
+#include "SSConatantBufferData.h"
 #include "SSDX11Renderer.h"
 
 
@@ -27,7 +27,7 @@ public:
     template<class T>
     void SetBufferData(ID3D11DeviceContext* deviceContext, const T& value);
 
-    void StoreBufferProxyData(const SSConstantBufferProxy& data);
+    void StoreBufferProxyData(const SSConatantBufferData& data);
 
 	template<class T>
 	void StoreBufferData(const T& value);

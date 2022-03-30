@@ -56,7 +56,7 @@ void SSMaterial::ReleaseCurrent()
 	}
 }
 
-void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& data)
+void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& data)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
@@ -71,7 +71,7 @@ void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext
 	}
 }
 
-void SSMaterial::SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConstantBufferProxy& data)
+void SSMaterial::SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& data)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{

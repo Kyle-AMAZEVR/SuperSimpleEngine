@@ -1,12 +1,12 @@
 #include "SSCore.h"
-#include "SSConstantBufferProxy.h"
+#include "SSConatantBufferData.h"
 
-SSConstantBufferProxy::~SSConstantBufferProxy()
+SSConatantBufferData::~SSConatantBufferData()
 {
 	FreeBufferData();
 }
 
-void SSConstantBufferProxy::FreeBufferData()
+void SSConatantBufferData::FreeBufferData()
 {
 	if (mpBufferData != nullptr && mBufferSize > 0)
 	{
@@ -16,41 +16,23 @@ void SSConstantBufferProxy::FreeBufferData()
 	}
 }
 
-SSConstantBufferProxy::SSConstantBufferProxy(const SSConstantBufferProxy& rhs)
+SSConatantBufferData::SSConatantBufferData(const SSConatantBufferData& rhs)
 {
-	if(mBufferSize != rhs.mBufferSize)
+	if (mBufferSize != rhs.mBufferSize)
 	{
 		FreeBufferData();
 	}
-	
+
 	mBufferSize = rhs.mBufferSize;
 	if (mpBufferData == nullptr)
 	{
 		mpBufferData = new BYTE[mBufferSize];
 	}
-	
+
 	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
 }
 
-SSConstantBufferProxy::SSConstantBufferProxy(SSConstantBufferProxy&& rhs)
-{
-	if(mBufferSize != rhs.mBufferSize)
-	{
-		FreeBufferData();
-	}
-	
-	mBufferSize = rhs.mBufferSize;
-	if (mpBufferData == nullptr)
-	{
-		mpBufferData = new BYTE[mBufferSize];
-	}
-	
-	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
-
-	rhs.FreeBufferData();	
-}
-
-SSConstantBufferProxy& SSConstantBufferProxy::operator=(SSConstantBufferProxy&& rhs)
+SSConatantBufferData::SSConatantBufferData(SSConatantBufferData&& rhs)
 {
 	if (mBufferSize != rhs.mBufferSize)
 	{
@@ -66,11 +48,29 @@ SSConstantBufferProxy& SSConstantBufferProxy::operator=(SSConstantBufferProxy&& 
 	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
 
 	rhs.FreeBufferData();
-	
+}
+
+SSConatantBufferData& SSConatantBufferData::operator = (SSConatantBufferData&& rhs)
+{
+	if (mBufferSize != rhs.mBufferSize)
+	{
+		FreeBufferData();
+	}
+
+	mBufferSize = rhs.mBufferSize;
+	if (mpBufferData == nullptr)
+	{
+		mpBufferData = new BYTE[mBufferSize];
+	}
+
+	memcpy_s(mpBufferData, mBufferSize, rhs.mpBufferData, mBufferSize);
+
+	rhs.FreeBufferData();
+
 	return *this;
 }
 
-SSConstantBufferProxy& SSConstantBufferProxy::operator=(const SSConstantBufferProxy& rhs)
+SSConatantBufferData& SSConatantBufferData::operator=(const SSConatantBufferData& rhs)
 {
 	if (mBufferSize != rhs.mBufferSize)
 	{
