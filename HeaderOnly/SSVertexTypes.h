@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <cstddef>
+#include "DirectXMath.h"
 
 template<class... Types>
 struct count 
