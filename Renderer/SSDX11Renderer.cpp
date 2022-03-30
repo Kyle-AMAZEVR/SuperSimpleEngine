@@ -87,7 +87,8 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 
 void SSDX11Renderer::UpdateRenderingObjects()
 {
-
+	//
+	SSRenderingObjectManager::Get().UpdateObjects();
 }
 
 void SSDX11Renderer::Shutdown()
