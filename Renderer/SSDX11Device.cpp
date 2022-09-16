@@ -135,7 +135,10 @@ void SSDX11Device::ResizeViewport(unsigned int newWidth, unsigned int newHeight)
 {
 	if (mBufferWidth != newWidth || mBufferHeight != newHeight)
 	{
-		mViewport->Resize(this, newWidth, newHeight);
+		if (mViewport)
+		{
+			mViewport->Resize(this, newWidth, newHeight);
+		}
 	}
 }
 
