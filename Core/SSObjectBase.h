@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "SSMeshRenderData.h"
 
 class CORE_API SSObjectBase
@@ -65,6 +66,7 @@ protected:
 	float mRoll = 0;
 	UINT mObjectId = 0;
 
+	
 	std::shared_ptr<class SSMaterial> mMaterial;
 	//
 	bool mRenderingReady = false;	

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "SSRenderDevice.h"
 #include "SSDX11Viewport.h"
 

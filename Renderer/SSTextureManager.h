@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Singleton.h"
 #include "SSManagerBase.h"
 #include "SSName.h"
