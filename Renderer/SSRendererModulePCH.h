@@ -13,18 +13,4 @@
 #endif
 
 #include "SSCore.h"
-#include <d3d12.h>
-#include <dxgi1_4.h>
-#include <d3d11_1.h>
-#include <windows.h>
-#include <wrl.h>
-#include <combaseapi.h>
-#include "d3dcompiler.h"
-#include "DirectXMath.h"
-#include <cassert>
-#include <string>
-#include <map>
-#include <vector>
-#include <functional>
-
 
