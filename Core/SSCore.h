@@ -14,19 +14,6 @@
 #	endif
 #   endif
 
-
-#define STRINGFY(x) #x
-#define TOSTRING(x) STRINGFY(x)
-#define AT __FILE__ ":" TOSTRING(__LINE__)
-
-void CORE_API PrintError(const char* loc, const char* msg);
-
-#define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
-
-#define checkMsg(expression,msg) if(!(expression)) { PrintError(AT, STRINGFY(msg));}
-
-
-
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <d3d11.h>
@@ -40,3 +27,35 @@ void CORE_API PrintError(const char* loc, const char* msg);
 #include <map>
 #include <vector>
 #include <functional>
+
+
+#define STRINGFY(x) #x
+#define TOSTRING(x) STRINGFY(x)
+#define AT __FILE__ ":" TOSTRING(__LINE__)
+
+void CORE_API PrintError(const char* loc, const char* msg);
+
+#define check(expression) if(!(expression)) { PrintError(AT, STRINGFY(expression));}
+
+#define checkMsg(expression,msg) if(!(expression)) { PrintError(AT, STRINGFY(msg));}
+
+//#if defined(DEBUG) | defined(_DEBUG)
+#if 1
+#ifndef HR
+#define HR(x)									\
+        {       									\
+            HRESULT hr = (x);						\
+            checkMsg(SUCCEEDED(hr),x)                    \
+        }
+#endif
+#else
+#ifndef HR
+#define HR(x) (x)
+#endif
+#endif
+
+
+#define ReleaseCOM(x) { if(x){ x->Release(); x = nullptr; } }
+#define InitD3DDesc(x)  ZeroMemory(&x, sizeof(x)) 
+
+using namespace DirectX;

@@ -11,15 +11,10 @@
 // C RunTime Header Files
 #include <iostream>
 #include <stdlib.h>
-
-#include "d3d11.h"
-#include "Renderer/SSRendererModulePCH.h"
 #include "Engine/SSDX11Engine.h"
 #include "GameModule/SSGameWindow.h"
 #include "SSAppWindow.h"
 #include "SSEngineBase.h"
-#include "SSSharedRenderData.h"
-
 
 
 #define MAX_LOADSTRING 100
@@ -50,8 +45,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     AllocConsole();
     freopen("CONOUT$", "w", stdout);
 
-    std::cout << "This works?" << std::endl;
-   
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
 
 	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow);    

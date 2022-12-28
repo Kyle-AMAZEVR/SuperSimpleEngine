@@ -47,6 +47,9 @@ target_link_libraries(SuperSimpleEngine PRIVATE Engine)
 
 target_compile_options(SuperSimpleEngine PRIVATE /GR-)
 
+target_compile_options(SuperSimpleEngine PRIVATE /EHs-c-)
+
+
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Shader DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resource DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lib/bin DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
