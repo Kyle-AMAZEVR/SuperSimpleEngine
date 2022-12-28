@@ -479,9 +479,9 @@ void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 	{	
 		check(newWidth > 0 && newHeight > 0);
 
-		if(mDX11Device)
+		if (mViewport)
 		{
-			mDX11Device->ResizeViewport(newWidth, newHeight);
+			mViewport->Resize(mDX11Device, newWidth, newHeight);
 		}
 	}
 }
