@@ -126,19 +126,11 @@ void SSDX11Engine::Run()
 	// Main message loop
 	MSG msg = { 0 };
 	while (!bRequestExit)
-	{
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		else
-		{
-			mGameThread->Tick();
-			// this is awkward...
-			SSRenderingObjectManager::Get().SetPendingObjects(SSGameObjectManager::Get().GetGameObjectMap());
-			mRenderingThread->SetGameThreadDone();
-		}
+	{	
+		mGameThread->Tick();
+		// this is awkward...
+		SSRenderingObjectManager::Get().SetPendingObjects(SSGameObjectManager::Get().GetGameObjectMap());
+		mRenderingThread->SetGameThreadDone();		
 	}
 
 	Shutdown();
