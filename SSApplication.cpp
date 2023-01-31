@@ -46,13 +46,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    HWND ConsoleHWND = GetConsoleWindow();
-    ShowWindow(ConsoleHWND, SW_HIDE);
-        
-    AllocConsole();
-    freopen("CONOUT$", "w", stdout);
-
-    std::cout << "This works?" << std::endl;
    
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
 
