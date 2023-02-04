@@ -3,8 +3,9 @@
 #include "Singleton.h"
 #include "SSManagerBase.h"
 #include "SSName.h"
-
-
+#include <memory>
+#include <map>
+#include <string>
 
 class DX11RENDERER_API SSShaderManager : public Singleton<SSShaderManager>, public SSManagerBase
 {

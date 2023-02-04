@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include "Singleton.h"
 #include "SSName.h"
 

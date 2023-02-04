@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "SSMeshRenderData.h"
 
 class CORE_API SSObjectBase

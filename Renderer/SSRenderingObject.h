@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "SSMeshRenderData.h"
 
 class DX11RENDERER_API SSRenderingObject

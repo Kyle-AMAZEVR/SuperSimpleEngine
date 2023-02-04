@@ -3,7 +3,7 @@
 #include "SSShaderManager.h"
 #include "SSName.h"
 #include "SSShader.h"
-
+#include <map>
 #include <filesystem>
 #include "simdjson.h"
 

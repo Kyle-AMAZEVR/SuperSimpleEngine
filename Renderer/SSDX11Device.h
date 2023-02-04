@@ -2,6 +2,7 @@
 
 #include "SSRenderDevice.h"
 #include "SSDX11Viewport.h"
+#include <memory>
 
 struct SSAdapterInfo
 {
