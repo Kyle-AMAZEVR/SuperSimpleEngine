@@ -10,6 +10,12 @@ struct SSAdapterInfo
 	IDXGIAdapter* AdapterPointer = nullptr;
 };
 
+class SSDX11DeviceStateCache
+{
+public:
+
+};
+
 class DX11RENDERER_API SSDX11Device : public SSRenderDevice
 {
 public:
@@ -19,8 +25,10 @@ public:
 
 	virtual bool				InitializeDevice(HWND windowHandle) override;
 	virtual bool				CreateDevice() override;
+	
 	virtual void				SetVertexShader(class SSVertexShader* vs) override;
 	virtual void				SetPixelShader(class SSPixelShader* ps) override;
+
 	virtual void				ClearCurrentRenderTarget() override;
 
 	virtual void				Present() override;
