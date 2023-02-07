@@ -7,47 +7,6 @@
 #include "SSConstantBufferProxy.h"
 #include "SSDX11Renderer.h"
 
-template<class TBufferType>
-class SSTypedConstantBuffer : public SSDX11Buffer
-{
-public:
-    SSTypedConstantBuffer();
-    
-    void Write(const TBufferType& data);
-
-protected:
-
-};
-
-
-template<class TBufferType>
-SSTypedConstantBuffer<TBufferType>::SSTypedConstantBuffer()
-{    
-    mBufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    mBufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-    mBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
-    mBufferDescription.MiscFlags = 0;
-    mBufferDescription.StructureByteStride = 0;
-    mBufferDescription.ByteWidth = sizeof(TBufferType);
-
-    HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, &mpBuffer));
-}
-
-
-template<class TBufferType>
-void SSTypedConstantBuffer<TBufferType>::Write(const TBufferType& data)
-{
-    check(mpBuffer != nullptr);
-
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-    HR(SSDX11Renderer::Get().GetImmediateDeviceContext()->Map(mpBuffer, 0, D3D11_MAP_WRITE_DISCARD, &mappedResource));
-    
-    memcpy(mappedResource.pData, &data, sizeof(data));
-
-    HR(SSDX11Renderer::Get().GetImmediateDeviceContext()->Unmap(mpBuffer, 0));
-    
-}
 
 
 /////////////////////////////////////

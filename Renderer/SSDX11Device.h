@@ -28,6 +28,7 @@ public:
 	
 	virtual void				SetVertexShader(class SSVertexShader* vs) override;
 	virtual void				SetPixelShader(class SSPixelShader* ps) override;
+	
 
 	virtual void				ClearCurrentRenderTarget() override;
 

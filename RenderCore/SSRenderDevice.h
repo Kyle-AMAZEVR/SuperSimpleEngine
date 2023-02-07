@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
+#include <string>
 #include "SSRenderCore.h"
 
 class SSVertexBuffer;
@@ -17,6 +18,9 @@ public:
 
 	virtual void				SetVertexShader(class SSVertexShader* vs) = 0;
 	virtual void				SetPixelShader(class SSPixelShader* ps) = 0;
+
+	virtual void				SetVertexShaderTexture(std::string InName, class SSTextureBase* InTexture) {}
+	virtual void				SetPixelShaderTexture(std::string InName, class SSTextureBase* InTexture) {}
 
 	virtual void				SetVSConstantBufferData() = 0;
 	virtual void				SetPSConstantBufferData() = 0;

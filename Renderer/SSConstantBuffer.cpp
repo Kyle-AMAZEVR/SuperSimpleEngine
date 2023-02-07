@@ -75,7 +75,7 @@ void SSGenericConstantBuffer::SubmitDataToDevice(ID3D11DeviceContext* deviceCont
 { 	
 	check(deviceContext);
 
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    D3D11_MAPPED_SUBRESOURCE mappedResource{};
 	deviceContext->Map(mpBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
 	deviceContext->Unmap(mpBuffer.Get(), 0);
