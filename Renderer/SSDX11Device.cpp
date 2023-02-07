@@ -91,7 +91,22 @@ void SSDX11Device::SetVertexShader(SSVertexShader* vs)
 
 void SSDX11Device::SetPixelShader(SSPixelShader* ps)
 {
-	mDeviceContext->PSSetShader(ps->GetShader(), nullptr, 0);
+	if (mDeviceContext)
+	{
+		mDeviceContext->PSSetShader(ps->GetShader(), nullptr, 0);
+	}
+}
+
+ID3D11SamplerState* SSDX11Device::CreateSamplerState(const D3D11_SAMPLER_DESC& InSamplerDesc)
+{
+	if(mDevice)
+	{
+		ID3D11SamplerState* NewSamplerState{};
+		HR(mDevice->CreateSamplerState(&InSamplerDesc, &NewSamplerState));
+		return NewSamplerState;
+	}
+
+	return nullptr;
 }
 
 void SSDX11Device::ClearCurrentRenderTarget()

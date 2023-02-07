@@ -14,13 +14,13 @@ public:
 	virtual bool				CreateDevice() = 0;
 
 	virtual SSVertexBuffer*		CreateVertexBuffer() = 0;
-	virtual SSDX11IndexBuffer*		CreateIndexBuffer() = 0;
+	virtual SSDX11IndexBuffer*	CreateIndexBuffer() = 0;
 
 	virtual void				SetVertexShader(class SSVertexShader* vs) = 0;
 	virtual void				SetPixelShader(class SSPixelShader* ps) = 0;
 
 	virtual void				SetVertexShaderTexture(std::string InName, class SSTextureBase* InTexture) {}
-	virtual void				SetPixelShaderTexture(std::string InName, class SSTextureBase* InTexture) {}
+	virtual void				SetPixelShaderTexture(std::string InName, class SSTextureBase* InTexture) {}	
 
 	virtual void				SetVSConstantBufferData() = 0;
 	virtual void				SetPSConstantBufferData() = 0;

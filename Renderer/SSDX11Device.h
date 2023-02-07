@@ -10,6 +10,8 @@ struct SSAdapterInfo
 	IDXGIAdapter* AdapterPointer = nullptr;
 };
 
+ 
+
 class SSDX11DeviceStateCache
 {
 public:
@@ -25,10 +27,20 @@ public:
 
 	virtual bool				InitializeDevice(HWND windowHandle) override;
 	virtual bool				CreateDevice() override;
-	
+
+	// vs , ps
 	virtual void				SetVertexShader(class SSVertexShader* vs) override;
 	virtual void				SetPixelShader(class SSPixelShader* ps) override;
-	
+
+	// 
+	virtual void				SetVSConstantBufferData() override;
+	virtual void				SetPSConstantBufferData() override;	
+
+	//
+	virtual void				SetVSSampler();
+	virtual void				SetPSSampler();
+
+	virtual ID3D11SamplerState* CreateSamplerState(const D3D11_SAMPLER_DESC& InSamplerDesc);
 
 	virtual void				ClearCurrentRenderTarget() override;
 
@@ -36,10 +48,6 @@ public:
 
 	virtual SSVertexBuffer*		CreateVertexBuffer() override;
 	virtual SSDX11IndexBuffer*	CreateIndexBuffer() override;
-
-
-	virtual void				SetVSConstantBufferData() override;
-	virtual void				SetPSConstantBufferData() override;
 
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) override;
 	virtual void				ClearViewport() override;
