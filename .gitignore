@@ -21,7 +21,6 @@ x64
 *.user
 *.vcxproj
 .vs
-Debug
 *.sln
 CMakeCache.txt
 cmake_install.cmake
