@@ -13,6 +13,7 @@ public:
     
     template<class T>
     void SetVertexBufferData(const std::vector<T>& vertexData);
+
 	UINT GetStride() const;
 	UINT GetVertexCount() const;
 

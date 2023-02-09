@@ -27,9 +27,6 @@ target_link_libraries(RenderCore d3d11.lib d3d12.lib d3dcompiler.lib dxguid.lib 
 $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Debug/directxtex.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Release/directxtex.lib>
 $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/RelWithDebInfo/directxtex.lib>
-$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
-$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
-$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>
 Core)
 
 target_precompile_headers(RenderCore PRIVATE "SSRenderCore.h")

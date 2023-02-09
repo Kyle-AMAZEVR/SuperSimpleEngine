@@ -4,6 +4,7 @@
 
 #include "SSDX11RenderTarget.h"
 #include "SSShader.h"
+#include "SSDX11VertexBuffer.h"
 
 bool SSDX11Device::CreateDevice()
 {
@@ -32,11 +33,6 @@ bool SSDX11Device::CreateDevice()
 	{
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
-		D3D_FEATURE_LEVEL_10_0,
-		D3D_FEATURE_LEVEL_9_3,
-		D3D_FEATURE_LEVEL_9_2,
-		D3D_FEATURE_LEVEL_9_1,
-
 	};
 
 	UINT length = sizeof(featureLevelArray) / sizeof(D3D_FEATURE_LEVEL);
@@ -86,7 +82,10 @@ bool SSDX11Device::InitializeDevice(HWND windowHandle)
 
 void SSDX11Device::SetVertexShader(SSVertexShader* vs)
 {
-	mDeviceContext->VSSetShader(vs->GetShader(), nullptr, 0);
+	if (mDeviceContext)
+	{
+		mDeviceContext->VSSetShader(vs->GetShader(), nullptr, 0);
+	}
 }
 
 void SSDX11Device::SetPixelShader(SSPixelShader* ps)
@@ -101,13 +100,18 @@ ID3D11SamplerState* SSDX11Device::CreateSamplerState(const D3D11_SAMPLER_DESC& I
 {
 	if(mDevice)
 	{
+		
+
 		ID3D11SamplerState* NewSamplerState{};
-		HR(mDevice->CreateSamplerState(&InSamplerDesc, &NewSamplerState));
+		HR(mDevice->CreateSamplerState(&InSamplerDesc, &NewSamplerState));		
+
 		return NewSamplerState;
 	}
 
 	return nullptr;
 }
+
+
 
 void SSDX11Device::ClearCurrentRenderTarget()
 {
@@ -118,8 +122,24 @@ void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
 	
 }
 
-SSVertexBuffer* SSDX11Device::CreateVertexBuffer()
+SSDX11VertexBuffer* SSDX11Device::CreateVertexBuffer(unsigned char* InVertexData, int InStride, unsigned int InDataCount)
 {
+	D3D11_BUFFER_DESC VertexBufferDesc{};
+	VertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	VertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	VertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	VertexBufferDesc.MiscFlags = 0;
+	VertexBufferDesc.StructureByteStride = 0;
+	VertexBufferDesc.ByteWidth = static_cast<UINT>(InDataCount);
+
+	D3D11_SUBRESOURCE_DATA VertexSubresourceData;
+
+	VertexSubresourceData.pSysMem = InVertexData;
+	VertexSubresourceData.SysMemPitch = 0;
+	VertexSubresourceData.SysMemSlicePitch = 0;
+
+	//HR(mDevice->CreateBuffer(&VertexBufferDesc, &VertexSubresourceData, &mpBuffer));	
+
 	return nullptr;
 }
 SSDX11IndexBuffer* SSDX11Device::CreateIndexBuffer()
