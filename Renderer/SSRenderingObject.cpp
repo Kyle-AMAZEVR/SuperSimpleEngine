@@ -80,8 +80,6 @@ SSRenderingObject::~SSRenderingObject()
 		mIndexBuffer = nullptr;
 	}
 
-
-
 	if(mMaterial != nullptr)
 	{
 		delete mMaterial;

@@ -12,8 +12,8 @@ public:
     ID3D11Buffer* const* GetDX11BufferPointerRef();
     ID3D11Buffer* GetDX11BufferPointer();
     virtual void SubmitDataToDevice(ID3D11DeviceContext* deviceContext){}
-protected:
 
+protected:
 	D3D11_BUFFER_DESC mBufferDescription;
     ComPtr<ID3D11Buffer> mpBuffer = nullptr;
 };

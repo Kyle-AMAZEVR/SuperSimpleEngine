@@ -4,6 +4,7 @@
 
 #include "SSDX11RenderTarget.h"
 #include "SSShader.h"
+#include "SSDX11IndexBuffer.h"
 #include "SSDX11VertexBuffer.h"
 
 bool SSDX11Device::CreateDevice()
@@ -96,6 +97,31 @@ void SSDX11Device::SetPixelShader(SSPixelShader* ps)
 	}
 }
 
+
+void SSDX11Device::SetVertexBuffer(SSDX11VertexBuffer* VB)
+{
+	if (mDeviceContext)
+	{
+		UINT stride[1]{ VB->GetStride() };
+		UINT offset[1]{ 0 };
+		ID3D11Buffer* buffer[1]{ VB->GetDX11BufferPointer() };
+		
+		// set vertex buffer
+		mDeviceContext->IASetVertexBuffers(0, 1, buffer, stride, offset);		
+	}
+}
+
+void SSDX11Device::SetIndexBuffer(SSDX11IndexBuffer* IB)
+{
+	if (mDeviceContext)
+	{
+		// set indexbuffer
+		mDeviceContext->IASetIndexBuffer(IB->GetDX11BufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+	}
+}
+
+
+
 ID3D11SamplerState* SSDX11Device::CreateSamplerState(const D3D11_SAMPLER_DESC& InSamplerDesc)
 {
 	if(mDevice)
@@ -145,6 +171,14 @@ SSDX11VertexBuffer* SSDX11Device::CreateVertexBuffer(unsigned char* InVertexData
 SSDX11IndexBuffer* SSDX11Device::CreateIndexBuffer()
 {
 	return nullptr;
+}
+
+void SSDX11Device::SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY InTopology)
+{
+	if (mDeviceContext)
+	{
+		mDeviceContext->IASetPrimitiveTopology(InTopology);
+	}
 }
 
 void	SSDX11Device::SetVSConstantBufferData()

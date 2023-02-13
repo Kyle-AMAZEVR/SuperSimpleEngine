@@ -48,12 +48,14 @@ public:
 
 
 	// set vertex, index buffer
-	virtual void				SetVertexBuffer(class SSDX11VertexBuffer* InVertexBuffer){}
-	virtual void				SetIndexBuffer(class SSDX11IndexBuffer* InIndexBuffer){}
+	virtual void				SetVertexBuffer(class SSDX11VertexBuffer* InVertexBuffer);
+	virtual void				SetIndexBuffer(class SSDX11IndexBuffer* InIndexBuffer);	
+	virtual void				SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY InTopology);
 	
 	// create vertex, index buffer
 	virtual SSDX11VertexBuffer*	CreateVertexBuffer(unsigned char* InData, int InStride, unsigned int InDataCount);
 	virtual SSDX11IndexBuffer*	CreateIndexBuffer();
+
 
 	virtual void				ResizeViewport(unsigned int width, unsigned int height) override;
 	virtual void				ClearViewport() override;
