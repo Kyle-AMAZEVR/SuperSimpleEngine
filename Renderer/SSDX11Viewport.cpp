@@ -3,7 +3,7 @@
 #include "SSDX11Viewport.h"
 #include "SSCameraManager.h"
 
-void SSDX11Viewport::Clear(SSRenderDevice* device)
+void SSDX11Viewport::Clear(SSDX11Device* device)
 {
 	float Color[4]{ 1, 0, 0, 1.0f };
 
@@ -15,7 +15,7 @@ void SSDX11Viewport::Clear(SSRenderDevice* device)
 
 
 
-void SSDX11Viewport::SetCurrentRenderTarget(SSRenderDevice* device)
+void SSDX11Viewport::SetCurrentRenderTarget(SSDX11Device* device)
 {
 	check(device != nullptr);
 
@@ -36,7 +36,7 @@ void SSDX11Viewport::SetCurrentRenderTarget(SSRenderDevice* device)
 }
 
 
-void SSDX11Viewport::Resize(SSRenderDevice* device, UINT newWidth, UINT newHeight)
+void SSDX11Viewport::Resize(SSDX11Device* device, UINT newWidth, UINT newHeight)
 {
 	SSDX11Device* dx11Device = static_cast<SSDX11Device*>(device);
 

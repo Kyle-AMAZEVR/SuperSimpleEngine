@@ -11,9 +11,9 @@ using Microsoft::WRL::ComPtr;
 class DX11RENDERER_API SSDX11Viewport : public SSViewport
 {
 public: 		
-    virtual void Resize(SSRenderDevice* device, UINT newWidth, UINT newHeight) override;
-	virtual void Clear(SSRenderDevice* device) override;
-	virtual void SetCurrentRenderTarget(SSRenderDevice* device) override;
+    virtual void Resize(SSDX11Device* device, UINT newWidth, UINT newHeight) override;
+	virtual void Clear(SSDX11Device* device) override;
+	virtual void SetCurrentRenderTarget(SSDX11Device* device) override;
 protected:
     ComPtr<ID3D11Texture2D> mDepthStencilBuffer = nullptr;
 	ComPtr<ID3D11RenderTargetView> mRenderTargetView = nullptr;

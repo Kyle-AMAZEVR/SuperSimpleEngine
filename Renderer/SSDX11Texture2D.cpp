@@ -103,11 +103,13 @@ bool SSDX11Texture2D::LoadInternal(const DirectX::TexMetadata& metaData, const D
 	for (int i = 0; i < metaData.mipLevels; ++i)
 	{
 		auto* pLodImage = image.GetImage(i, 0, 0);
-		check(pLodImage != nullptr);
+		
+		if (pLodImage)
+		{
+			auto dstSubresource = D3D11CalcSubresource(i, 0, static_cast<UINT>(metaData.mipLevels));
 
-		auto dstSubresource = D3D11CalcSubresource(i, 0, static_cast<UINT>(metaData.mipLevels));
-
-		SSDX11Renderer::Get().GetImmediateDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
+			SSDX11Renderer::Get().GetImmediateDeviceContext()->UpdateSubresource(mTexturePtr.Get(), dstSubresource, nullptr, pLodImage->pixels, static_cast<UINT>(pLodImage->rowPitch), 0);
+		}
 	}
 
 	return true;
