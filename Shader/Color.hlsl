@@ -11,7 +11,7 @@ struct VertexIn
 };
 
 struct VertexOut
-{
+{	
 	float4 PosH  : SV_POSITION;
     float4 Color : COLOR;
 	float2 Tex : TEXCOORD0;

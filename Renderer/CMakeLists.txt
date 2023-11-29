@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5.0)
 project(DXEngine)
 
 add_compile_options(/wd4251)
@@ -33,8 +33,7 @@ $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/Release/directxtex.li
 $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/RelWithDebInfo/directxtex.lib>
 $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
-$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>
-GameModule 
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib> 
 simdjson 
 RenderCore)
 
