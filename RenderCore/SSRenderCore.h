@@ -12,3 +12,6 @@
 #       define RENDERCORE_API
 #	endif
 #   endif
+
+#include <d3d11.h>
+#include <memory>
