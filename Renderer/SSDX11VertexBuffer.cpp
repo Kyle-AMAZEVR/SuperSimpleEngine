@@ -3,6 +3,11 @@
 #include "SSDX11VertexBuffer.h"
 
 
+SSDX11VertexBuffer::SSDX11VertexBuffer() 
+	: mBufferDescription{}
+{
+}
+
 void* SSDX11VertexBuffer::GetBufferPointer()
 {
 	return (void*) mpBuffer.Get();

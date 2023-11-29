@@ -20,16 +20,13 @@ public:
 	IDXGISwapChain*				GetSwapChain()const;
 
 	virtual bool				InitializeDevice(HWND windowHandle);
-	virtual bool				CreateDevice();
+
 	virtual void				SetVertexShader(class SSVertexShader* vs);
 	virtual void				SetPixelShader(class SSPixelShader* ps);
-	virtual void				ClearCurrentRenderTarget();
-
-	virtual void				Present();
+	virtual void				ClearCurrentRenderTarget();	
 
 	virtual SSVertexBuffer*		CreateVertexBuffer();
 	virtual SSDX11IndexBuffer*	CreateIndexBuffer();
-
 
 	virtual SSVertexBuffer*		CreateVertexBuffer(void* data, unsigned int size);
 
@@ -44,9 +41,12 @@ public:
 	void						ClearRenderTargetView(ID3D11RenderTargetView* rtView, float color[4]);
 	void						SetCurrentRenderTarget(ID3D11RenderTargetView* rtView, ID3D11DepthStencilView* depthStencilView);
 	void						SetCurrentRenderTargets(ID3D11RenderTargetView** rtView, ID3D11DepthStencilView* depthStencilView);
-
+	virtual void				Present();
 protected:
 	bool						CreateSwapChain(HWND windowHandle);	
+
+protected:
+	virtual bool				CreateDevice();	
 
 	ComPtr<ID3D11DeviceContext> mDeviceContext;
 	ComPtr<ID3D11Device> mDevice;
