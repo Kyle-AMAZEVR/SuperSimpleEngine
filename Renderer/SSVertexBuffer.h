@@ -3,7 +3,7 @@
 #include "SSRenderCore.h"
 #include "SSBufferBase.h"
 
-class RENDERCORE_API SSVertexBuffer : public SSBufferBase
+class DX11RENDERER_API SSVertexBuffer : public SSBufferBase
 {
 public:
 	SSVertexBuffer();

@@ -2,7 +2,7 @@
 
 #include "SSRenderCore.h"
 
-class RENDERCORE_API IRenderTarget
+class DX11RENDERER_API IRenderTarget
 {
 public:
 	virtual unsigned int GetRenderTargetWidth() const = 0;

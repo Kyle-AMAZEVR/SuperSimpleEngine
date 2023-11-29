@@ -4,7 +4,7 @@
 #include "SSRenderCore.h"
 #include "SSObjectBase.h"
 
-class RENDERCORE_API SSRenderThreadObject : public SSObjectBase
+class DX11RENDERER_API SSRenderThreadObject : public SSObjectBase
 {
 public:
 	SSRenderThreadObject();

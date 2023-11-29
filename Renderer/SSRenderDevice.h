@@ -7,7 +7,7 @@
 class SSVertexBuffer;
 class SSDX11IndexBuffer;
 
-class RENDERCORE_API SSRenderDevice
+class DX11RENDERER_API SSRenderDevice
 {
 public:
 	virtual bool				InitializeDevice(HWND windowHandle) = 0;

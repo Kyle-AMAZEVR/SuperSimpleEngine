@@ -8,7 +8,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class RENDERCORE_API SSBufferBase : public SSRenderThreadResidentObject
+class DX11RENDERER_API SSBufferBase : public SSRenderThreadResidentObject
 {
 public:
     SSBufferBase();

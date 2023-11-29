@@ -5,7 +5,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class RENDERCORE_API SSRenderer
+class DX11RENDERER_API SSRenderer
 {
 public:
 	SSRenderer();

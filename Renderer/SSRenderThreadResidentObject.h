@@ -2,7 +2,7 @@
 
 #include "SSRenderCore.h"
 
-class RENDERCORE_API SSRenderThreadResidentObject
+class DX11RENDERER_API SSRenderThreadResidentObject
 {
 public:
 	SSRenderThreadResidentObject();

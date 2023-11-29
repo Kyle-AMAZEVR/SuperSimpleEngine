@@ -3,7 +3,7 @@
 #include "SSRenderCore.h"
 #include "SSBufferBase.h"
 
-class RENDERCORE_API SSConstantBuffer : public SSBufferBase
+class DX11RENDERER_API SSConstantBuffer : public SSBufferBase
 {
 public:
 

@@ -5,7 +5,7 @@
 #include <functional>
 #include <deque>
 
-class RENDERCORE_API SSRenderingThread
+class DX11RENDERER_API SSRenderingThread
 {
 public:	
 	SSRenderingThread(class SSRenderer* pRenderer);

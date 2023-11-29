@@ -1,7 +1,7 @@
 #pragma once
 
 
-class RENDERCORE_API SSRenderResource
+class DX11RENDERER_API SSRenderResource
 {
 public:
 

@@ -22,9 +22,8 @@ add_subdirectory("Renderer")
 add_subdirectory("Core")
 add_subdirectory("lib/simdjson")
 add_subdirectory("Engine")
-add_subdirectory("RenderCore")
 add_subdirectory("GameModule")
-#add_subdirectory("Engine12")
+
 
 
 include_directories("HeaderOnly")
@@ -32,7 +31,7 @@ include_directories("Engine")
 include_directories("Renderer")
 include_directories("GameModule")
 include_directories("Core")
-include_directories("RenderCore")
+
 
 
 add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp SSApplication.cpp DXWindow.rc)
