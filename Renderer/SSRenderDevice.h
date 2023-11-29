@@ -2,7 +2,6 @@
 
 #include <d3d11.h>
 #include "SSIndexBuffer.h"
-#include "SSRenderCore.h"
 
 class SSVertexBuffer;
 class SSDX11IndexBuffer;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SSRenderCore.h"
+
 
 #include <functional>
 #include <deque>

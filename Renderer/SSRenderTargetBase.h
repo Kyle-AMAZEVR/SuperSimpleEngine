@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SSRenderCore.h"
+
 
 class DX11RENDERER_API IRenderTarget
 {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SSRenderCore.h"
 #include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;

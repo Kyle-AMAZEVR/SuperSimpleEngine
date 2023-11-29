@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "SSRenderCore.h"
+
 #include "SSRenderThreadResidentObject.h"
 #include <wrl/client.h>
 #include <string>
