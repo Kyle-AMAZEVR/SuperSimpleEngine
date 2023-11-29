@@ -110,10 +110,31 @@ void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
 	
 }
 
-SSVertexBuffer* SSDX11Device::CreateVertexBuffer()
+std::shared_ptr<SSDX11VertexBuffer> SSDX11Device::CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData)
 {
-	return nullptr;
+	D3D11_BUFFER_DESC bufferDesc{};
+
+	bufferDesc.BindFlags		= D3D11_BIND_VERTEX_BUFFER;
+	bufferDesc.CPUAccessFlags	= D3D11_CPU_ACCESS_WRITE;
+	bufferDesc.Usage			= D3D11_USAGE_DYNAMIC;
+	bufferDesc.MiscFlags			= 0;
+	bufferDesc.StructureByteStride = 0;
+	bufferDesc.ByteWidth = static_cast<UINT>(stride * count);
+
+	D3D11_SUBRESOURCE_DATA vertexSubresourceData{};
+	vertexSubresourceData.pSysMem = ptrData;
+	vertexSubresourceData.SysMemPitch = 0;
+	vertexSubresourceData.SysMemSlicePitch = 0;
+
+	ID3D11Buffer* PtrBuffer = nullptr;
+
+	HR(mDevice->CreateBuffer(&bufferDesc, &vertexSubresourceData, &PtrBuffer));
+
+	std::shared_ptr<SSDX11VertexBuffer> Result = make_shared<SSDX11VertexBuffer>(PtrBuffer, stride, count);
+
+	return Result;
 }
+
 SSDX11IndexBuffer* SSDX11Device::CreateIndexBuffer()
 {
 	return nullptr;

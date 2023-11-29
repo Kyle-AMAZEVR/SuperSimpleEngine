@@ -9,6 +9,7 @@
 class SSDX11VertexBuffer : public SSBufferBase
 {
 public:
+    SSDX11VertexBuffer(ID3D11Buffer* ptrBuffer, unsigned int stride, unsigned int count);
     SSDX11VertexBuffer();
     ~SSDX11VertexBuffer();
     template<class T>
