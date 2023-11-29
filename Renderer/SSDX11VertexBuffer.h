@@ -5,7 +5,6 @@
 #include <vector>
 #include "SSDX11Buffer.h"
 #include "SSDX11Renderer.h"
-#include "SSVertexBuffer.h"
 
 class SSDX11VertexBuffer : public SSBufferBase
 {
