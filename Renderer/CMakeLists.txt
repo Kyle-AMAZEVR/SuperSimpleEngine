@@ -3,6 +3,8 @@ project(DXEngine)
 
 add_compile_options(/wd4251)
 
+string(REPLACE "/GR" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+
 set(CMAKE_EXE_LINKER_FLAGS "/machine:x64")
 set(CMAKE_MODULE_LINKER_FLAGS "/machine:x64")
 set(CMAKE_SHARED_LINKER_FLAGS "/machine:x64")
