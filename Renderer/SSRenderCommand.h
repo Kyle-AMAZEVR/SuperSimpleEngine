@@ -11,7 +11,7 @@ public:
 class SSRenderCmdSetVS : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetVS(std::shared_ptr<class SSVertexShader> inVS)
+	SSRenderCmdSetVS(class SSVertexShader* inVS)
 		:mVS(inVS)
 	{
 	}
@@ -19,18 +19,47 @@ public:
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
 private:
-	std::shared_ptr<SSVertexShader> mVS;
+	SSVertexShader* mVS;
 };
 
 class SSRenderCmdSetPS : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetPS(std::shared_ptr<class SSDX11PixelShader> inPS)
+	SSRenderCmdSetPS(class SSPixelShader* inPS)
 		:mPS(inPS)
 	{
 	}
 
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+
 private:
-	std::shared_ptr<SSDX11PixelShader> mPS;
+	SSPixelShader* mPS;
 };
+
+class SSRenderCmdSetVSTexture : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdSetVSTexture(class SSVertexShader* inVS, class SSDX11Texture2D* inTex, unsigned int slotIndex);
+
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+
+protected:
+	SSVertexShader* mVS;
+	SSDX11Texture2D* mTex;
+	unsigned int mSlotIndex;
+};
+
+class SSRenderCmdSetPSTexture : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdSetPSTexture(class SSPixelShader* inPS, class SSDX11Texture2D* inTex, unsigned int slotIndex);
+
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+
+protected:
+	SSPixelShader* mPS;
+	SSDX11Texture2D* mTex;
+	unsigned int mSlotIndex;
+};
+
+//deviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
