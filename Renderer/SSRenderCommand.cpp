@@ -33,3 +33,23 @@ void SSRenderCmdSetPSTexture::Execute(ID3D11DeviceContext* inDeviceContext)
 {
 	inDeviceContext->PSSetShaderResources(mSlotIndex, 1, mTex->GetShaderResourceViewRef());
 }
+
+SSRenderCmdSetVSCBuffer::SSRenderCmdSetVSCBuffer(SSVertexShader* inVS, class SSDX11Buffer* inBuffer, unsigned int slot)	
+	: mVS(inVS), mBuffer(inBuffer),mSlotIndex(slot)
+{
+}
+
+void SSRenderCmdSetVSCBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
+{
+	inDeviceContext->VSSetConstantBuffers(mSlotIndex, 1, (ID3D11Buffer* const*) mBuffer->GetBufferPointer());
+}
+
+SSRenderCmdSetPSCBuffer::SSRenderCmdSetPSCBuffer(SSPixelShader* inPS, class SSDX11Buffer* inBuffer, unsigned int slot)
+	: mPS(inPS), mBuffer(inBuffer), mSlotIndex(slot)
+{
+}
+
+void SSRenderCmdSetPSCBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
+{
+	inDeviceContext->PSSetConstantBuffers(mSlotIndex, 1, (ID3D11Buffer* const*)mBuffer->GetBufferPointer());
+}

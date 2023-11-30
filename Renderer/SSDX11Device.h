@@ -60,4 +60,6 @@ protected:
 	HWND mWindowHandle;
 	UINT m4xMSAAQuality = 0;
 	DXGI_FORMAT mSwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	std::vector<class SSRenderCmdBase*> mRenderCommands;
 };

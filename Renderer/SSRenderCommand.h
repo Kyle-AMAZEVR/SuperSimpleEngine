@@ -62,4 +62,24 @@ protected:
 	unsigned int mSlotIndex;
 };
 
-//deviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
+class SSRenderCmdSetVSCBuffer : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdSetVSCBuffer(SSVertexShader* inVS, class SSDX11Buffer* inBuffer, unsigned int slot);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+protected:
+	SSVertexShader* mVS;
+	SSDX11Buffer* mBuffer;
+	unsigned int mSlotIndex;
+};
+
+class SSRenderCmdSetPSCBuffer : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdSetPSCBuffer(SSPixelShader* inVS, class SSDX11Buffer* inBuffer, unsigned int slot);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+protected:
+	SSPixelShader* mPS;
+	SSDX11Buffer* mBuffer;
+	unsigned int mSlotIndex;
+};
