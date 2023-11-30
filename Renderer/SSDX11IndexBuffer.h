@@ -7,6 +7,8 @@
 class SSDX11IndexBuffer : public SSIndexBuffer
 {
 public:
+
+	SSDX11IndexBuffer(ID3D11Buffer* ptrBuffer);
     SSDX11IndexBuffer(){}
 
 	virtual void SetIndexBufferData(const std::vector<UINT> indexData, 

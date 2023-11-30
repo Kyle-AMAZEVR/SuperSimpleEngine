@@ -25,11 +25,9 @@ public:
 	virtual void				SetPixelShader(class SSPixelShader* ps);
 	virtual void				ClearCurrentRenderTarget();	
 
-	virtual std::shared_ptr<class SSDX11VertexBuffer>		CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData);
+	virtual std::shared_ptr<class SSDX11VertexBuffer>	CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData);
+	virtual std::shared_ptr<class SSDX11IndexBuffer>	CreateIndexBuffer(std::vector<unsigned int>& inData);
 
-	virtual SSDX11IndexBuffer*	CreateIndexBuffer();
-
-	virtual SSVertexBuffer*		CreateVertexBuffer(void* data, unsigned int size);
 
 	virtual void				SetVSConstantBufferData();
 	virtual void				SetPSConstantBufferData();

@@ -4,6 +4,7 @@
 
 #include "SSDX11RenderTarget.h"
 #include "SSDX11VertexBuffer.h"
+#include "SSDX11IndexBuffer.h"
 #include "SSShader.h"
 
 bool SSDX11Device::CreateDevice()
@@ -85,10 +86,7 @@ bool SSDX11Device::InitializeDevice(HWND windowHandle)
 	return bDeviceCreated && bSwapChainCreated;
 }
 
-SSVertexBuffer* SSDX11Device::CreateVertexBuffer(void* data, unsigned int size)
-{
-	return nullptr;
-}
+
 
 
 void SSDX11Device::SetVertexShader(SSVertexShader* vs)
@@ -132,12 +130,31 @@ std::shared_ptr<SSDX11VertexBuffer> SSDX11Device::CreateVertexBuffer(unsigned in
 
 	std::shared_ptr<SSDX11VertexBuffer> Result = make_shared<SSDX11VertexBuffer>(PtrBuffer, stride, count);
 
-	return Result;
+	return std::move(Result);
 }
 
-SSDX11IndexBuffer* SSDX11Device::CreateIndexBuffer()
+std::shared_ptr<SSDX11IndexBuffer> SSDX11Device::CreateIndexBuffer(std::vector<unsigned int>& inData)
 {
-	return nullptr;
+	D3D11_BUFFER_DESC bufferDesc{};
+	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.MiscFlags = 0;
+	bufferDesc.StructureByteStride = 0;
+	bufferDesc.ByteWidth = static_cast<UINT>(sizeof(unsigned int) * inData.size());
+
+	D3D11_SUBRESOURCE_DATA indexSubresourceData;
+	indexSubresourceData.pSysMem = &inData[0];
+	indexSubresourceData.SysMemPitch = 0;
+	indexSubresourceData.SysMemSlicePitch = 0;
+
+	ID3D11Buffer* ptrBuffer = nullptr;
+
+	HR(mDevice->CreateBuffer(&bufferDesc, &indexSubresourceData, &ptrBuffer));
+
+	std::shared_ptr<SSDX11IndexBuffer> Result = make_shared<SSDX11IndexBuffer>(ptrBuffer);
+
+	return std::move(Result);
 }
 
 void	SSDX11Device::SetVSConstantBufferData()
