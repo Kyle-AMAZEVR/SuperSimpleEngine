@@ -23,13 +23,7 @@ protected:
 	void CreateRenderData() override;
 
 	float mRoughness = 0.1f;
-	float mMetalic = 0.9f;
-
-	// temp 
-	std::vector<XMFLOAT4> mTempVertexList;
-	std::vector<XMFLOAT3> mTempNormalList;
-	std::vector<XMFLOAT2> mTempTexCoordList;
-	std::vector<XMFLOAT4> mTempTangentList;
+	float mMetalic = 0.9f;	
 	
 	static std::vector< VT_PositionNormalTexcoordTangent > mVertexArray;
 

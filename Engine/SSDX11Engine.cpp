@@ -103,14 +103,16 @@ void SSDX11Engine::OnWindowResize(int newWidth, int newHeight)
 
 void SSDX11Engine::EngineStart()
 {
-	// start game thread
-	mGameThread = new SSGameThread(GetCurrentThreadId());
-
 	// create renderer
 	mRenderer = new SSDX11Renderer();
 
-	// start rendering thread
+	// 
 	mRenderingThread = new SSRenderingThread(mRenderer);
+	
+	// start game thread
+	mGameThread = new SSGameThread(GetCurrentThreadId());
+	
+	// start rendering thread
 	mRenderingThread->Start(SSGameWindow::GetPtr()->GetWindowHandle());
 
 	Initialize(SSGameWindow::GetPtr()->GetWindowHandle());
@@ -127,9 +129,16 @@ void SSDX11Engine::Run()
 	MSG msg = { 0 };
 	while (!bRequestExit)
 	{	
+		// wait for rendering thread
+		mRenderingThread->WaitForRenderingThread(100);
+
+		// tick
 		mGameThread->Tick();
+		
 		// this is awkward...
 		SSRenderingObjectManager::Get().SetPendingObjects(SSGameObjectManager::Get().GetGameObjectMap());
+
+		// notify rendering thread that game thread is done.
 		mRenderingThread->SetGameThreadDone();		
 	}
 

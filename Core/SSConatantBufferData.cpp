@@ -10,7 +10,7 @@ void SSConatantBufferData::FreeBufferData()
 {
 	if (mpBufferData != nullptr && mBufferSize > 0)
 	{
-		delete mpBufferData;
+		delete [] mpBufferData;
 		mpBufferData = nullptr;
 		mBufferSize = 0;
 	}
