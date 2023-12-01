@@ -304,9 +304,22 @@ SSDX11RenderTarget::SSDX11RenderTarget(UINT width, UINT height, UINT count, bool
 	mViewport.Width = static_cast<float>(mWidth);
 	mViewport.Height = static_cast<float>(mHeight);
 	mViewport.MinDepth = 0.0f;
-	mViewport.MaxDepth = 1.0f;
+	mViewport.MaxDepth = 1.0f;	
+}
 
-	mRenderTargetViews = new ID3D11RenderTargetView*[mCount];
+ID3D11RenderTargetView* SSDX11RenderTarget::GetRenderTargetView(UINT nIndex) const
+{
+	return mRenderTargetArray[nIndex]->GetRenderTargetView();
+}
+
+ID3D11DepthStencilView* SSDX11RenderTarget::GetDepthStencilView() const
+{
+	if (mDepthExist && mDepthTarget)
+	{
+		return mDepthTarget->GetDepthStencilView();
+	}
+
+	return nullptr;
 }
 
 void SSDX11RenderTarget::SetCurrentRenderTarget(SSDX11Device* device)

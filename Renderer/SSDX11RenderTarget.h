@@ -51,6 +51,9 @@ public:
 
 	UINT GetCount() const { return mCount; }
 
+	ID3D11RenderTargetView* GetRenderTargetView(UINT nIndex) const;
+	ID3D11DepthStencilView* GetDepthStencilView() const;
+
 	void SaveRTTexture(UINT index, std::wstring filename);
 
 	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
@@ -65,11 +68,13 @@ public:
 	bool IsDepthExist() const { return mDepthExist; }
 	D3D11_VIEWPORT& GetViewport() { return mViewport; }
 
+	static constexpr unsigned int MAX_COUNT = 4;
+
 protected:
 	friend class SSDX11Device;
-	SSDX11RenderTargetTexture2D* mRenderTargetArray[4]{ nullptr };
+	SSDX11RenderTargetTexture2D* mRenderTargetArray[MAX_COUNT]{ nullptr };
 	SSDepthRenderTargetTexture2D* mDepthTarget = nullptr;
-	ID3D11RenderTargetView** mRenderTargetViews{ nullptr };
+	ID3D11RenderTargetView* mRenderTargetViews[MAX_COUNT]{ nullptr };
 	
 	D3D11_VIEWPORT mViewport;
 	DXGI_FORMAT mFormat;

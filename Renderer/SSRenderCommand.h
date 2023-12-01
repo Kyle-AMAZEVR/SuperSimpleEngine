@@ -92,3 +92,18 @@ public:
 protected:
 	SSDX11Buffer* mBuffer;
 };
+
+class SSRenderCmdSetRenderTarget : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdSetRenderTarget(class SSDX11RenderTarget* inRT);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+private:
+	SSDX11RenderTarget* mRenderTarget;
+};
+
+class SSRenderCmdClearRenderTarget : public SSRenderCmdBase
+{
+public:
+
+};

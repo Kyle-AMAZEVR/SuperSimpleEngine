@@ -2,6 +2,7 @@
 #include "SSRenderCommand.h"
 #include "SSShader.h"
 #include "SSDX11Texture2D.h"
+#include "SSDX11RenderTarget.h"
 
 void SSRenderCmdSetVS::Execute(ID3D11DeviceContext * inDeviceContext)
 {
@@ -65,5 +66,34 @@ void SSRenderCmdCopyCBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
 	HR(inDeviceContext->Map(mBuffer->GetDX11BufferPointer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 	memcpy_s(mappedResource.pData, mBuffer->GetBufferSize(),mBuffer->GetBufferDataPtr(), mBuffer->GetBufferSize());
 	inDeviceContext->Unmap(mBuffer->GetDX11BufferPointer(), 0);
+}
+
+
+SSRenderCmdSetRenderTarget::SSRenderCmdSetRenderTarget(class SSDX11RenderTarget* inRT)
+	: mRenderTarget(inRT)
+{
+}
+
+void SSRenderCmdSetRenderTarget::Execute(ID3D11DeviceContext* inDeviceContext)
+{	
+	if (mRenderTarget)
+	{
+		ID3D11RenderTargetView* viewArray[SSDX11RenderTarget::MAX_COUNT]{ nullptr };
+		ID3D11DepthStencilView* depthStencilView{ nullptr };
+
+		const unsigned int nCount = mRenderTarget->GetCount();
+
+		for (auto i = 0u; i < nCount; ++i)
+		{
+			viewArray[i] = mRenderTarget->GetRenderTargetView(nCount);
+		}
+
+		if (mRenderTarget->IsDepthExist())
+		{
+			depthStencilView = mRenderTarget->GetDepthStencilView();
+		}
+
+		inDeviceContext->OMSetRenderTargets(nCount, viewArray, depthStencilView);
+	}
 }
 
