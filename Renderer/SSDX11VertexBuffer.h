@@ -22,6 +22,8 @@ public:
     virtual unsigned int GetVertexCount() const { return mVertexCount; }
     virtual unsigned int GetTotalSize() const { return mTotalSize; }
 
+    virtual BYTE* GetBufferDataPtr() override { return nullptr; }
+
 protected:
     template<class T>
     void InternalCreateVertexBuffer(const std::vector<T>& vertexData);

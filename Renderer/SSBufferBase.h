@@ -16,6 +16,8 @@ public:
     virtual UINT GetBufferIndex() { return mBufferIndex; }
     virtual UINT GetBufferSize() { return mBufferSize; }
     std::string GetBufferName() { return mBufferName; }
+
+    virtual BYTE* GetBufferDataPtr() = 0;
     virtual void* GetBufferPointer() = 0;
     virtual void* const* GetBufferPointerRef() = 0;
 protected:

@@ -83,3 +83,12 @@ protected:
 	SSDX11Buffer* mBuffer;
 	unsigned int mSlotIndex;
 };
+
+class SSRenderCmdCopyCBuffer : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdCopyCBuffer(SSDX11Buffer* ptrBuffer);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+protected:
+	SSDX11Buffer* mBuffer;
+};

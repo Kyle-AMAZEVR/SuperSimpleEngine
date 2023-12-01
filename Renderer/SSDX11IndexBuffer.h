@@ -16,6 +16,7 @@ public:
 
 	virtual void* GetBufferPointer() override;
 	virtual void* const* GetBufferPointerRef() override;
+	virtual BYTE* GetBufferDataPtr() override { return nullptr; }
 
 protected:
 	D3D11_BUFFER_DESC mBufferDescription;

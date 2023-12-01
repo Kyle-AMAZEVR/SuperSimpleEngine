@@ -32,6 +32,8 @@ public:
 	template<class T>
 	void StoreBufferData(const T& value);
 
+    virtual BYTE* GetBufferDataPtr() override { return mBufferData; }
+
 protected:
     BYTE* mBufferData = nullptr;
     std::vector<VariableInConstantBufferInfo> mVariableInfoArray;

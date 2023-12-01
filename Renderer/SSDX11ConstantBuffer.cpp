@@ -50,7 +50,7 @@ SSGenericConstantBuffer::SSGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     mBufferDescription.StructureByteStride = 0;
     mBufferDescription.ByteWidth = mBufferSize;
 
-    HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, mpBuffer.ReleaseAndGetAddressOf()));
+    HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, mpBuffer.GetAddressOf()));
 }
 
 SSGenericConstantBuffer::~SSGenericConstantBuffer()
@@ -76,7 +76,7 @@ void SSGenericConstantBuffer::SubmitDataToDevice(ID3D11DeviceContext* deviceCont
 	check(deviceContext);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-	deviceContext->Map(mpBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	HR(deviceContext->Map(mpBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
     memcpy_s(mappedResource.pData, mBufferSize, mBufferData, mBufferSize);
 	deviceContext->Unmap(mpBuffer.Get(), 0);
 }
