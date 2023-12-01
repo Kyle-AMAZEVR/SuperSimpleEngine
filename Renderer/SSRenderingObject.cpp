@@ -89,6 +89,12 @@ SSRenderingObject::~SSRenderingObject()
 	}
 }
 
+void SSRenderingObject::Draw(std::vector<class SSRenderCmdBase*>& inCmdList)
+{
+
+
+}
+
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 {	
 	// 

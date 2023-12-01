@@ -93,7 +93,17 @@ void SSRenderCmdSetRenderTarget::Execute(ID3D11DeviceContext* inDeviceContext)
 			depthStencilView = mRenderTarget->GetDepthStencilView();
 		}
 
-		inDeviceContext->OMSetRenderTargets(nCount, viewArray, depthStencilView);
+		inDeviceContext->OMSetRenderTargets(nCount, viewArray, depthStencilView); 
 	}
 }
 
+
+SSRenderCmdDrawIndexed::SSRenderCmdDrawIndexed(SSDX11IndexBuffer * inBuffer)
+	: mIndexBuffer(inBuffer)
+{
+}
+
+void SSRenderCmdDrawIndexed::Execute(ID3D11DeviceContext* inDeviceContext)
+{
+	
+}

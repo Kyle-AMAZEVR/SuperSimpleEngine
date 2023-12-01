@@ -7,7 +7,7 @@ public:
 	virtual void Execute(ID3D11DeviceContext*) = 0;
 	
 };
-
+// set current vertex shader
 class SSRenderCmdSetVS : public SSRenderCmdBase
 {
 public:
@@ -21,7 +21,7 @@ public:
 private:
 	SSDX11VertexShader* mVS;
 };
-
+// set current pixel shader
 class SSRenderCmdSetPS : public SSRenderCmdBase
 {
 public:
@@ -35,7 +35,7 @@ public:
 private:
 	SSDX11PixelShader* mPS;
 };
-
+// set vertex shader texture
 class SSRenderCmdSetVSTexture : public SSRenderCmdBase
 {
 public:
@@ -48,7 +48,7 @@ protected:
 	SSDX11Texture2D* mTex;
 	unsigned int mSlotIndex;
 };
-
+// set pixel shader texture
 class SSRenderCmdSetPSTexture : public SSRenderCmdBase
 {
 public:
@@ -102,8 +102,23 @@ private:
 	SSDX11RenderTarget* mRenderTarget;
 };
 
+class SSRenderCmdDrawIndexed : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdDrawIndexed(class SSDX11IndexBuffer* inBuffer);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+private:
+	SSDX11IndexBuffer* mIndexBuffer;
+};
+
 class SSRenderCmdClearRenderTarget : public SSRenderCmdBase
 {
 public:
 
+};
+
+class SSRenderCmdSetViewport : public SSRenderCmdBase
+{
+public:
+	
 };
