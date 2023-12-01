@@ -10,6 +10,11 @@ SSDX11GBuffer::SSDX11GBuffer(UINT width, UINT height, DXGI_FORMAT format)
 {	
 }
 
+SSDX11GBuffer::~SSDX11GBuffer()
+{
+	Destroy();
+}
+
 void SSDX11GBuffer::Destroy()
 {
 	for (UINT8 i = 0; i < static_cast<UINT8>(EGBufferType::Max); ++i)
@@ -19,8 +24,7 @@ void SSDX11GBuffer::Destroy()
 		mRenderTargetArray[i] = nullptr;
 	}
 	
-	mDepthTarget->Destroy();
-	
+	mDepthTarget->Destroy();	
 	delete mDepthTarget;
 	mDepthTarget = nullptr;
 

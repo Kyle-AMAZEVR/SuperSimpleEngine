@@ -19,6 +19,7 @@ class DX11RENDERER_API SSDX11GBuffer : public SSDX11RenderTarget
 {
 public:
 	SSDX11GBuffer(UINT width, UINT height, DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT);
+	virtual ~SSDX11GBuffer();
 
 	void Destroy();
 	

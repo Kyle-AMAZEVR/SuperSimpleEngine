@@ -98,6 +98,9 @@ void SSDX11Renderer::Shutdown()
 	SSSamplerManager::Get().Shutdown();
 	SSShaderManager::Get().Shutdown();
 	SSRenderingObjectManager::Get().Shutdown();
+
+	mGBuffer.reset();
+	mEquirectToCubemapRenderTarget.reset();
 }
 
 void SSDX11Renderer::TestCreateResources()
