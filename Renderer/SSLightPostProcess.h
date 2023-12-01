@@ -30,8 +30,8 @@ public:
 	
 
 protected:
-	std::shared_ptr<class SSVertexShader> mVertexShader;
-	std::shared_ptr<class SSPixelShader> mPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mPixelShader;
 
 	LightCBuffer mLightInfo;
 };

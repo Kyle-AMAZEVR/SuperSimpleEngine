@@ -13,14 +13,14 @@ public:
 	virtual void Initialize() override;
 	virtual void Shutdown() override;
 
-	std::shared_ptr<class SSVertexShader> GetVertexShader(SSName name);
-	std::shared_ptr<class SSPixelShader> GetPixelShader(SSName name);
+	std::shared_ptr<class SSDX11VertexShader> GetVertexShader(SSName name);
+	std::shared_ptr<class SSDX11PixelShader> GetPixelShader(SSName name);
 protected:
-	std::map<SSName, std::shared_ptr<SSVertexShader>> mVertexShaderMap;
-	std::map<SSName, std::shared_ptr<SSPixelShader>> mPixelShaderMap;
+	std::map<SSName, std::shared_ptr<SSDX11VertexShader>> mVertexShaderMap;
+	std::map<SSName, std::shared_ptr<SSDX11PixelShader>> mPixelShaderMap;
 
-	std::map<std::string_view, std::shared_ptr<SSVertexShader>> mVertexShaderMap2;
-    std::map<std::string_view, std::shared_ptr<SSPixelShader>> mPixelShaderMap2;
+	std::map<std::string_view, std::shared_ptr<SSDX11VertexShader>> mVertexShaderMap2;
+    std::map<std::string_view, std::shared_ptr<SSDX11PixelShader>> mPixelShaderMap2;
 };
 
 

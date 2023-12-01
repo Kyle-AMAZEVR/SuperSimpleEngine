@@ -8,15 +8,15 @@
 
 using namespace std;
 
-class SSVertexShader;
-class SSPixelShader;
+class SSDX11VertexShader;
+class SSDX11PixelShader;
 class SSDX11Texture2D;
 
 
 class DX11RENDERER_API SSMaterial : public SSRenderThreadResidentObject
 {
 public:	
-	SSMaterial(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps);
+	SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps);
 
 	virtual void SetCurrent();
 	virtual void ReleaseCurrent();
@@ -43,8 +43,8 @@ public:
 
 protected:	
 
-	std::shared_ptr<class SSVertexShader> mVS;
-	std::shared_ptr<class SSPixelShader> mPS;
+	std::shared_ptr<class SSDX11VertexShader> mVS;
+	std::shared_ptr<class SSDX11PixelShader> mPS;
 
 	//
 	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;

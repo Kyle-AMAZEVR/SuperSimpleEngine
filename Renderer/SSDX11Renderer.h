@@ -67,34 +67,34 @@ private:
 	std::shared_ptr<class SSScreenBlit> mScreenBlit;
 	// 	
 
-	std::shared_ptr<class SSVertexShader> mScreenBlitVertexShader;
-	std::shared_ptr<class SSPixelShader> mScreenBlitPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mScreenBlitVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mScreenBlitPixelShader;
 
-	std::shared_ptr<class SSVertexShader> mDeferredVertexShader;
-	std::shared_ptr<class SSPixelShader> mDeferredPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mDeferredVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mDeferredPixelShader;
 
-	std::shared_ptr<class SSVertexShader> mDeferredLightVertexShader;
-	std::shared_ptr<class SSPixelShader> mDeferredLightPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mDeferredLightVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mDeferredLightPixelShader;
 
 	std::shared_ptr<class SSTextureCube> mTestCubeTexture;
 
-	std::shared_ptr<class SSVertexShader> mCubemapVertexShader;
-	std::shared_ptr<class SSPixelShader> mCubemapPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mCubemapVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mCubemapPixelShader;
 
-	std::shared_ptr<class SSVertexShader> mEquirectToCubemapVertexShader;
-	std::shared_ptr<class SSPixelShader> mEquirectToCubemapPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mEquirectToCubemapVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mEquirectToCubemapPixelShader;
 
-	std::shared_ptr<class SSVertexShader> mCubemapConvolutionVertexShader;
-	std::shared_ptr<class SSPixelShader> mCubemapConvolutionPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mCubemapConvolutionVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mCubemapConvolutionPixelShader;
 
-	std::shared_ptr<class SSVertexShader> mPrefilterVertexShader;
-	std::shared_ptr<class SSPixelShader> mPrefilterPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mPrefilterVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mPrefilterPixelShader;
 
-	std::shared_ptr<class SSVertexShader> m2DLUTVertexShader;
-	std::shared_ptr<class SSPixelShader> m2DLUTPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> m2DLUTVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> m2DLUTPixelShader;
 
-	std::shared_ptr<class SSVertexShader> mTBNDebugVertexShader;
-	std::shared_ptr<class SSPixelShader> mTBNDebugPixelShader;
+	std::shared_ptr<class SSDX11VertexShader> mTBNDebugVertexShader;
+	std::shared_ptr<class SSDX11PixelShader> mTBNDebugPixelShader;
 
 	std::shared_ptr<class SSPBRSphere> mRustedIron;
 	std::shared_ptr<class SSPBRSphere> mTile;

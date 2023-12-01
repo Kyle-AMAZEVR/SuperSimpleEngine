@@ -21,8 +21,8 @@ public:
 
 	virtual bool				InitializeDevice(HWND windowHandle);
 
-	virtual void				SetVertexShader(class SSVertexShader* vs);
-	virtual void				SetPixelShader(class SSPixelShader* ps);
+	virtual void				SetVertexShader(class SSDX11VertexShader* vs);
+	virtual void				SetPixelShader(class SSDX11PixelShader* ps);
 	virtual void				ClearCurrentRenderTarget();	
 
 	virtual std::shared_ptr<class SSDX11VertexBuffer>	CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData);

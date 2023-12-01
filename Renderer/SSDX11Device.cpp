@@ -89,12 +89,12 @@ bool SSDX11Device::InitializeDevice(HWND windowHandle)
 
 
 
-void SSDX11Device::SetVertexShader(SSVertexShader* vs)
+void SSDX11Device::SetVertexShader(SSDX11VertexShader* vs)
 {
 	mDeviceContext->VSSetShader(vs->GetShader(), nullptr, 0);
 }
 
-void SSDX11Device::SetPixelShader(SSPixelShader* ps)
+void SSDX11Device::SetPixelShader(SSDX11PixelShader* ps)
 {
 	mDeviceContext->PSSetShader(ps->GetShader(), nullptr, 0);
 }

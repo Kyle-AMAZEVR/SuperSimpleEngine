@@ -12,8 +12,8 @@ public:
 	virtual void Draw(class SSDX11Device* deviceContext, SSDX11Texture2D* input0) override;
 
 protected:
-	std::shared_ptr<class SSVertexShader> mFXAAVertexShader = nullptr;
-	std::shared_ptr<class SSPixelShader> mFXAAPixelShader = nullptr;
+	std::shared_ptr<class SSDX11VertexShader> mFXAAVertexShader = nullptr;
+	std::shared_ptr<class SSDX11PixelShader> mFXAAPixelShader = nullptr;
 
 
 };

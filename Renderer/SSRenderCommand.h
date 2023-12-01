@@ -11,7 +11,7 @@ public:
 class SSRenderCmdSetVS : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetVS(class SSVertexShader* inVS)
+	SSRenderCmdSetVS(class SSDX11VertexShader* inVS)
 		:mVS(inVS)
 	{
 	}
@@ -19,13 +19,13 @@ public:
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
 private:
-	SSVertexShader* mVS;
+	SSDX11VertexShader* mVS;
 };
 
 class SSRenderCmdSetPS : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetPS(class SSPixelShader* inPS)
+	SSRenderCmdSetPS(class SSDX11PixelShader* inPS)
 		:mPS(inPS)
 	{
 	}
@@ -33,18 +33,18 @@ public:
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
 private:
-	SSPixelShader* mPS;
+	SSDX11PixelShader* mPS;
 };
 
 class SSRenderCmdSetVSTexture : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetVSTexture(class SSVertexShader* inVS, class SSDX11Texture2D* inTex, unsigned int slotIndex);
+	SSRenderCmdSetVSTexture(class SSDX11VertexShader* inVS, class SSDX11Texture2D* inTex, unsigned int slotIndex);
 
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
 protected:
-	SSVertexShader* mVS;
+	SSDX11VertexShader* mVS;
 	SSDX11Texture2D* mTex;
 	unsigned int mSlotIndex;
 };
@@ -52,12 +52,12 @@ protected:
 class SSRenderCmdSetPSTexture : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetPSTexture(class SSPixelShader* inPS, class SSDX11Texture2D* inTex, unsigned int slotIndex);
+	SSRenderCmdSetPSTexture(class SSDX11PixelShader* inPS, class SSDX11Texture2D* inTex, unsigned int slotIndex);
 
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
 protected:
-	SSPixelShader* mPS;
+	SSDX11PixelShader* mPS;
 	SSDX11Texture2D* mTex;
 	unsigned int mSlotIndex;
 };
@@ -65,10 +65,10 @@ protected:
 class SSRenderCmdSetVSCBuffer : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetVSCBuffer(SSVertexShader* inVS, class SSDX11Buffer* inBuffer, unsigned int slot);
+	SSRenderCmdSetVSCBuffer(SSDX11VertexShader* inVS, class SSDX11Buffer* inBuffer, unsigned int slot);
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 protected:
-	SSVertexShader* mVS;
+	SSDX11VertexShader* mVS;
 	SSDX11Buffer* mBuffer;
 	unsigned int mSlotIndex;
 };
@@ -76,10 +76,10 @@ protected:
 class SSRenderCmdSetPSCBuffer : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetPSCBuffer(SSPixelShader* inVS, class SSDX11Buffer* inBuffer, unsigned int slot);
+	SSRenderCmdSetPSCBuffer(SSDX11PixelShader* inVS, class SSDX11Buffer* inBuffer, unsigned int slot);
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 protected:
-	SSPixelShader* mPS;
+	SSDX11PixelShader* mPS;
 	SSDX11Buffer* mBuffer;
 	unsigned int mSlotIndex;
 };

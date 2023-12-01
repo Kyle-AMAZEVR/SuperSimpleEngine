@@ -20,7 +20,7 @@ void SSChangeRenderTargetCmd::Do(SSDX11Device* device)
 }
 
 
-SSDrawCommand::SSDrawCommand(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps, std::shared_ptr<SSObjectBase> object)
+SSDrawCommand::SSDrawCommand(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps, std::shared_ptr<SSObjectBase> object)
 	: mpVS(vs), mpPS(ps), mObject(object)
 {
 	mVertexShaderConstantBufferMap = mpVS->GetConstantBufferMap();

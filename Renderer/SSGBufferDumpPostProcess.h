@@ -23,8 +23,8 @@ public:
 	void ChangeNextDumpMode();
 
 protected:
-	std::shared_ptr<SSVertexShader> mVertexShader;
-	std::shared_ptr<SSPixelShader> mPixelShader;
+	std::shared_ptr<SSDX11VertexShader> mVertexShader;
+	std::shared_ptr<SSDX11PixelShader> mPixelShader;
 
 	EDumpMode mDumpMode = EDumpMode::EPositionDump;
 	//EDumpMode mDumpMode = EDumpMode::EMetalicDump;

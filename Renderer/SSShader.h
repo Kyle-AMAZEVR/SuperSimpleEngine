@@ -69,11 +69,11 @@ void SSShader::SetConstantBufferData(std::string bufferName, const T& data)
 
 
 // vertex shader
-class DX11RENDERER_API SSVertexShader : public SSShader
+class DX11RENDERER_API SSDX11VertexShader : public SSShader
 {
 public:
-    SSVertexShader() = default;
-	virtual ~SSVertexShader();	
+    SSDX11VertexShader() = default;
+	virtual ~SSDX11VertexShader();	
     virtual bool CompileFromFile(std::wstring filepath) override;
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
     ID3D11VertexShader* GetShader() { return mVertexShader; } 
@@ -96,7 +96,7 @@ protected:
 };
 
 template<class T>
-void SSVertexShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data)
+void SSDX11VertexShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data)
 {	
 	if (mConstantBufferMap.count(bufferName) > 0)
 	{
@@ -107,11 +107,11 @@ void SSVertexShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, s
 }
 
 // pixel shader
-class DX11RENDERER_API SSPixelShader : public SSShader
+class DX11RENDERER_API SSDX11PixelShader : public SSShader
 {
 public:
-    SSPixelShader() = default;
-	virtual ~SSPixelShader();	
+    SSDX11PixelShader() = default;
+	virtual ~SSDX11PixelShader();	
     virtual bool CompileFromFile(std::wstring filepath) override;
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
 
@@ -140,7 +140,7 @@ protected:
 };
 
 template<class T>
-void SSPixelShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data)
+void SSDX11PixelShader::SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data)
 {
 	if (mConstantBufferMap.count(bufferName) > 0)
 	{

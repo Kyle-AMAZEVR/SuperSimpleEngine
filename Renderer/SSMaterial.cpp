@@ -4,7 +4,7 @@
 #include "SSShader.h"
 #include "SSDX11Renderer.h"
 
-SSMaterial::SSMaterial(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps)
+SSMaterial::SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps)
 	: mVS(vs), mPS(ps)
 {
 	mVertexShaderConstantBufferMap = mVS->GetConstantBufferMap();

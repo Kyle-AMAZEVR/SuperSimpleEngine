@@ -48,7 +48,7 @@ void SSShaderManager::Initialize()
 
         if(filepath.find(".vs") != std::string_view::npos)
         {
-            std::shared_ptr<SSVertexShader> vs = std::make_shared<SSVertexShader>();
+            std::shared_ptr<SSDX11VertexShader> vs = std::make_shared<SSDX11VertexShader>();
             std::string cstrfilepath = filepath.data();
             std::wstring wfilepath;
             wfilepath.assign(cstrfilepath.begin(), cstrfilepath.end());
@@ -64,7 +64,7 @@ void SSShaderManager::Initialize()
         }
         else if(filepath.find(".ps") != std::string_view::npos)
         {
-            std::shared_ptr<SSPixelShader> ps = std::make_shared<SSPixelShader>();
+            std::shared_ptr<SSDX11PixelShader> ps = std::make_shared<SSDX11PixelShader>();
             std::string cstrfilepath = filepath.data();
             std::wstring wfilepath;
             wfilepath.assign(cstrfilepath.begin(), cstrfilepath.end());
@@ -90,7 +90,7 @@ void SSShaderManager::Initialize()
 
 		if (filename.find(".vs") != std::string::npos)
 		{
-			std::shared_ptr<SSVertexShader> vs = std::make_shared<SSVertexShader>();
+			std::shared_ptr<SSDX11VertexShader> vs = std::make_shared<SSDX11VertexShader>();
 
 			if (vs->CompileFromFile(filepath) == true)
 			{
@@ -103,7 +103,7 @@ void SSShaderManager::Initialize()
 		}
 		else if (filename.find(".ps") != std::string::npos)
 		{
-			std::shared_ptr<SSPixelShader> ps = std::make_shared<SSPixelShader>();
+			std::shared_ptr<SSDX11PixelShader> ps = std::make_shared<SSDX11PixelShader>();
 			if (ps->CompileFromFile(filepath) == true)
 			{
 				mPixelShaderMap[filename] = ps;
@@ -133,13 +133,13 @@ void SSShaderManager::Shutdown()
 }
 
 
-std::shared_ptr<SSVertexShader> SSShaderManager::GetVertexShader(SSName name)
+std::shared_ptr<SSDX11VertexShader> SSShaderManager::GetVertexShader(SSName name)
 {
 	check(mVertexShaderMap.count(name) > 0);
 	return mVertexShaderMap[name];
 }
 
-std::shared_ptr<SSPixelShader> SSShaderManager::GetPixelShader(SSName name)
+std::shared_ptr<SSDX11PixelShader> SSShaderManager::GetPixelShader(SSName name)
 {
 	check(mPixelShaderMap.count(name) > 0);
 	return mPixelShaderMap[name];

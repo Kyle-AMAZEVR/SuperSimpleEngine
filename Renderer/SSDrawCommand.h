@@ -6,8 +6,8 @@
 #include <functional>
 #include <map>
 
-class SSVertexShader;
-class SSPixelShader;
+class SSDX11VertexShader;
+class SSDX11PixelShader;
 class SSGameObject;
 class SSDX11Texture2D;
 class IRenderTarget;
@@ -43,7 +43,7 @@ class DX11RENDERER_API SSDrawCommand  : public SSDrawCmdBase
 {
 public:
 	//SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object);
-	SSDrawCommand(std::shared_ptr<SSVertexShader> vs, std::shared_ptr<SSPixelShader> ps, std::shared_ptr<SSObjectBase> object);
+	SSDrawCommand(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps, std::shared_ptr<SSObjectBase> object);
 
 	template<class T>
 	void StoreVSConstantBufferData(SSName name, const T& value);
@@ -62,8 +62,8 @@ public:
 	virtual void Do(SSDX11Device* deviceContext) override;
 
 protected:
-	std::shared_ptr<class SSVertexShader> mpVS = nullptr;
-	std::shared_ptr<class SSPixelShader> mpPS = nullptr;
+	std::shared_ptr<class SSDX11VertexShader> mpVS = nullptr;
+	std::shared_ptr<class SSDX11PixelShader> mpPS = nullptr;
 	class SSMaterial* mMaterial = nullptr;	
 
 	//

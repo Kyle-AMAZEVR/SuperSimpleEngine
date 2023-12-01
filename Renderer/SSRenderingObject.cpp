@@ -59,8 +59,8 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 		mIndexBuffer->SetIndexBufferData(mVertexData.IndexData);
 	}
 
-	shared_ptr<SSVertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);	
-	shared_ptr<SSPixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
+	shared_ptr<SSDX11VertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);	
+	shared_ptr<SSDX11PixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
 
 	mMaterial = new SSMaterial(vs, ps);
 }

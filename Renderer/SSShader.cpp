@@ -85,7 +85,7 @@ std::vector<std::string> SSShader::GetSamplerNames()
 #pragma endregion
 
 
-SSVertexShader::~SSVertexShader()
+SSDX11VertexShader::~SSDX11VertexShader()
 {
 	for (auto& kvp : mConstantBufferMap)
 	{
@@ -98,7 +98,7 @@ SSVertexShader::~SSVertexShader()
 	ReleaseCOM(mVertexShader);
 }
 
-void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection, const SSCompileContext& context)
+void SSDX11VertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection, const SSCompileContext& context)
 {
     auto* dxDevice = SSDX11Renderer::Get().GetDevice();
     
@@ -173,7 +173,7 @@ void SSVertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflection,
 	delete [] inputDescriptions;
 }
 
-bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileContext& compileContext)
+bool SSDX11VertexShader::CompileFromFile(std::wstring filepath, const SSCompileContext& compileContext)
 {
     ID3DBlob* errorMsg = nullptr;
 
@@ -207,7 +207,7 @@ bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileConte
     return true;
 }
 
- bool SSVertexShader::CompileFromFile(std::wstring filepath)
+ bool SSDX11VertexShader::CompileFromFile(std::wstring filepath)
  {
     ID3DBlob* errorMsg = nullptr;
 
@@ -244,7 +244,7 @@ bool SSVertexShader::CompileFromFile(std::wstring filepath, const SSCompileConte
  }
 
 
-void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
+void SSDX11VertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
 {
 	check(mTextureMap.count(name) > 0);
 	check(deviceContext != nullptr);	
@@ -254,7 +254,7 @@ void SSVertexShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string 
 	deviceContext->VSSetShaderResources(slotIndex, 1, texture->GetShaderResourceViewRef());
 }
 
-void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string name, ID3D11SamplerState* sampler)
+void SSDX11VertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string name, ID3D11SamplerState* sampler)
 {
 	UINT slotIndex = mSamplerMap[name];
 
@@ -263,7 +263,7 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 	deviceContext->VSSetSamplers(slotIndex, 1, &sampler);
 }
 
- void SSVertexShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
+ void SSDX11VertexShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
  { 	 
 	 auto* dxDeviceContext = SSDX11Renderer::Get().GetImmediateDeviceContext();
 	 
@@ -272,7 +272,7 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 
 #pragma region PixelShader
 
- SSPixelShader::~SSPixelShader() 
+ SSDX11PixelShader::~SSDX11PixelShader() 
  {
 	 for (auto& kvp : mConstantBufferMap)
 	 {
@@ -284,7 +284,7 @@ void SSVertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::string 
 	 ReleaseCOM(mPixelShader.PixelShaderDX11Ptr);
  }
 
-bool SSPixelShader::CompileFromFile(std::wstring filepath, const SSCompileContext& context)
+bool SSDX11PixelShader::CompileFromFile(std::wstring filepath, const SSCompileContext& context)
 {
     ID3D10Blob* errorMsg = nullptr;
 
@@ -321,7 +321,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath, const SSCompileContex
     return true;
 }
 
-bool SSPixelShader::CompileFromFile(std::wstring filepath)
+bool SSDX11PixelShader::CompileFromFile(std::wstring filepath)
 {    
     ID3D10Blob* errorMsg = nullptr;
 
@@ -348,7 +348,7 @@ bool SSPixelShader::CompileFromFile(std::wstring filepath)
 }
 
 
-void SSPixelShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
+void SSDX11PixelShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture)
 {
 	check(deviceContext != nullptr);
 
@@ -360,7 +360,7 @@ void SSPixelShader::SetTexture(ID3D11DeviceContext* deviceContext, std::string n
 	}
 }
 
-void SSPixelShader::SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name)
+void SSDX11PixelShader::SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name)
 {
 	check(deviceContext != nullptr);
 
@@ -374,7 +374,7 @@ void SSPixelShader::SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::st
 	}
 }
 
-void SSPixelShader::SetTextureAsNull(std::string name)
+void SSDX11PixelShader::SetTextureAsNull(std::string name)
 {
 	if (mTextureMap.count(name) > 0)
 	{
@@ -389,7 +389,7 @@ void SSPixelShader::SetTextureAsNull(std::string name)
 }
 
 
-void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
+void SSDX11PixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
 {
 	UINT slotIndex = mSamplerMap[name];
 
@@ -398,7 +398,7 @@ void SSPixelShader::SetSampler(std::string name, ID3D11SamplerState* sampler)
 	dxDeviceContext->PSSetSamplers(slotIndex, 1, &sampler);
 }
 
-void SSPixelShader::SetSampler(ID3D11DeviceContext* dxDeviceContext, std::string name, ID3D11SamplerState* sampler)
+void SSDX11PixelShader::SetSampler(ID3D11DeviceContext* dxDeviceContext, std::string name, ID3D11SamplerState* sampler)
 {
 	UINT slotIndex = mSamplerMap[name];	
 
