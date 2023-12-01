@@ -1,16 +1,22 @@
 #pragma once
 
 #include "SSObjectBase.h"
+#include "SSManagerBase.h"
 #include <map>
 
-class DX11RENDERER_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>
+class DX11RENDERER_API SSRenderingObjectManager : public Singleton<SSRenderingObjectManager>, public SSManagerBase
 {
 public:
 	SSRenderingObjectManager();
 
+	virtual void Initialize() override;
+	virtual void Shutdown() override;
+
 	void SetPendingObjects(std::map<UINT, SSObjectBase*> objectMap);
 
 	void UpdateObjects();
+
+	void DeleteAllObjects();
 	
 	const std::map<UINT, class SSRenderingObject*>& GetRenderingObjectMap() { return mRenderingObjectMap; }
 	

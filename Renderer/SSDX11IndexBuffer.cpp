@@ -18,6 +18,13 @@ void* const* SSDX11IndexBuffer::GetBufferPointerRef()
     return (void* const*)mpBuffer.GetAddressOf();
 }
 
+SSDX11IndexBuffer::~SSDX11IndexBuffer()
+{
+    if (mpBuffer)
+    {
+        mpBuffer.Reset();
+    }
+}
 
 void SSDX11IndexBuffer::SetIndexBufferData(const std::vector<UINT> indexData, D3D_PRIMITIVE_TOPOLOGY ePrimitiveType )
 {

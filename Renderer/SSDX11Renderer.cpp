@@ -96,7 +96,8 @@ void SSDX11Renderer::Shutdown()
 	SSDepthStencilStateManager::Get().Shutdown();
 	SSRasterizeStateManager::Get().Shutdown();
 	SSSamplerManager::Get().Shutdown();
-	SSShaderManager::Get().Shutdown();	
+	SSShaderManager::Get().Shutdown();
+	SSRenderingObjectManager::Get().Shutdown();
 }
 
 void SSDX11Renderer::TestCreateResources()

@@ -1,3 +1,5 @@
+#include "SSRenderingObjectManager.h"
+#include "SSRenderingObjectManager.h"
 
 
 #include "SSRenderingObjectManager.h"
@@ -6,6 +8,15 @@
 SSRenderingObjectManager::SSRenderingObjectManager()
 {
 	InitializeCriticalSection(&mCriticalSection);
+}
+
+void SSRenderingObjectManager::Initialize()
+{
+}
+
+void SSRenderingObjectManager::Shutdown()
+{
+	DeleteAllObjects();
 }
 
 // called from rendering thread
@@ -24,6 +35,20 @@ void SSRenderingObjectManager::UpdateObjects()
 	LeaveCriticalSection(&mCriticalSection);
 }
 
+void SSRenderingObjectManager::DeleteAllObjects()
+{
+	EnterCriticalSection(&mCriticalSection);
+
+	for (auto& [k, v] : mRenderingObjectMap)
+	{
+		delete mRenderingObjectMap[k];
+	}
+
+	mRenderingObjectMap.clear();
+
+	LeaveCriticalSection(&mCriticalSection);
+}
+
 // called from game thread
 void SSRenderingObjectManager::SetPendingObjects(std::map<UINT, SSObjectBase*> objectMap)
 {
@@ -31,3 +56,6 @@ void SSRenderingObjectManager::SetPendingObjects(std::map<UINT, SSObjectBase*> o
 	mPendingObjectMap = objectMap;
 	LeaveCriticalSection(&mCriticalSection);
 }
+
+
+

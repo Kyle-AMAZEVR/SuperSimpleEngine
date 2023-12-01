@@ -3,10 +3,10 @@
 #include "SSDX11VertexBuffer.h"
 
 SSDX11VertexBuffer::SSDX11VertexBuffer(ID3D11Buffer* ptrBuffer, unsigned int stride, unsigned int count)
-	: mpBuffer(ptrBuffer),
-	  mStride(stride),
-	mTotalSize(stride* count),
-	mVertexCount(count)
+	:	mpBuffer(ptrBuffer),
+		mStride(stride),
+		mTotalSize(stride* count),
+		mVertexCount(count)
 {	
 }
 
@@ -29,7 +29,6 @@ SSDX11VertexBuffer::~SSDX11VertexBuffer()
 {
 	if(mpBuffer)
 	{
-		mpBuffer->Release();
-		mpBuffer = nullptr;
+		mpBuffer.Reset();
 	}
 }
