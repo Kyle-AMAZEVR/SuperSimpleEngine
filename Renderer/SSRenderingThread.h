@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <deque>
+#include <atomic>
 
 class DX11RENDERER_API SSRenderingThread
 {
@@ -45,7 +46,7 @@ protected:
 
 	HANDLE mRenderingDoneEventHandle;
     HWND mWindowHandle;
-    bool bRequestExit = false;
+    std::atomic_bool bRequestExit = false;
 	LPCSTR mEventName;
 
 	class SSRenderer* mRenderer = nullptr;

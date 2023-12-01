@@ -18,5 +18,7 @@ void SSCubeScene::InitializeScene()
 
 void SSCubeScene::DestroyScene()
 {
-
+	mCube.reset();
+	mSphere.reset();
+	mPBRSphere.reset();
 }

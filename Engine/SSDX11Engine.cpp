@@ -74,6 +74,13 @@ void SSDX11Engine::Shutdown()
 		delete mRenderingThread;
 		mRenderingThread = nullptr;
 	}
+
+	if (mCurrentScene)
+	{
+		mCurrentScene->DestroyScene();
+		delete mCurrentScene;
+		mCurrentScene = nullptr;
+	}
 	
 	if(mRenderer)
 	{
