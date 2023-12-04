@@ -61,7 +61,7 @@ protected:
 	SSDX11Texture2D* mTex;
 	unsigned int mSlotIndex;
 };
-
+// set vertex shader constant buffer
 class SSRenderCmdSetVSCBuffer : public SSRenderCmdBase
 {
 public:
@@ -100,6 +100,12 @@ public:
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 private:
 	SSDX11RenderTarget* mRenderTarget;
+};
+
+class SSRenderCmdSetVertexBuffer : public SSRenderCmdBase
+{
+public:
+	
 };
 
 class SSRenderCmdDrawIndexed : public SSRenderCmdBase
