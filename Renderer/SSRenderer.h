@@ -14,10 +14,10 @@ public:
 	virtual void DrawScene() = 0;
 	virtual void PauseRendering() { mPaused = true; }
 	virtual void ResumeRendering() { mPaused = false; }
-	virtual void UpdateRenderingObjects() = 0;
-
-protected:	
-
+	virtual void UpdateRenderingObjects() = 0;			
+protected:
+	int mInitialWindowWidth = 0;
+	int mInitialWindowHeight = 0;
 	
 	bool mPaused = false;
 };

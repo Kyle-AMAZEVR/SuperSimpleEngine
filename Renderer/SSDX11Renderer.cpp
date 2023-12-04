@@ -46,6 +46,28 @@ SSDX11Renderer* SSDX11Renderer::GetPtr()
 	return mRendererInstance;
 }
 
+void SSDX11Renderer::SetWindowWidth(int inWidth)
+{
+	if (inWidth < 0)
+	{
+		mWindowWidth = 512;
+	}
+	else
+	{
+		mWindowWidth = inWidth;
+	}
+}
+void SSDX11Renderer::SetWindowHeight(int inHeight)
+{
+	if (inHeight < 0)
+	{
+		mWindowHeight = 512;
+	}
+	else
+	{
+		mWindowHeight = inHeight;
+	}
+}
 
 void SSDX11Renderer::Initialize(HWND windowHandle)
 {
@@ -58,17 +80,17 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	SSRasterizeStateManager::Get().Initialize();
 	SSSharedBufferCache::Get().Initialize();
 
-	mViewport = std::make_shared<SSDX11Viewport>(512,512);
-	mGBuffer = std::make_shared<SSDX11GBuffer>(1024, 768);
+	mViewport = std::make_shared<SSDX11Viewport>(mWindowWidth, mWindowHeight);
+	mGBuffer = std::make_shared<SSDX11GBuffer>(mWindowWidth, mWindowHeight);
 
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024, 1024);
 	mConvolutionRenderTarget = std::make_shared<SSCubemapRenderTarget>(512, 512);
 	mPrefilterRenderTarget = std::make_shared<SSPrefilterCubemapRenderTarget>(1024, 1024, 5);
 	m2DLUTRenderTarget = std::make_shared<class SSDX11RenderTarget>(512, 512, 1, false);
 
-	mFXAAPostProcess = std::make_shared<SSFXAAPostProcess>(1024, 768);
+	mFXAAPostProcess = std::make_shared<SSFXAAPostProcess>(mWindowWidth, mWindowHeight);
 	mGBufferDumpProcess = std::make_shared<SSGBufferDumpPostProcess>(512, 512);
-	mDeferredLightPostProcess = std::make_shared<SSLightPostProcess>(1024, 768);
+	mDeferredLightPostProcess = std::make_shared<SSLightPostProcess>(mWindowWidth, mWindowHeight);
 
 
 	if (SSFileHelper::DirectoryExists(L"./Prebaked") == false)
@@ -82,7 +104,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 
 	bInitialized = true;
 
-	mViewport->Resize(mDX11Device, 1200, 700);
+	mViewport->Resize(mDX11Device, mWindowWidth, mWindowHeight);
 }
 
 void SSDX11Renderer::UpdateRenderingObjects()

@@ -44,6 +44,9 @@ public:
 	
 	int Run();
 
+	int GetWindowWidth() const { return mWindowWidth; }
+	int GetWindowHeight() const { return mWindowHeight; }
+
 protected:
 	BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
 	WORD RegisterWindowClass(HINSTANCE hInstance);

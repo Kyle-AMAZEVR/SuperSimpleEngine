@@ -15,6 +15,9 @@ public:
 	virtual void OnWindowResize(int newWidth, int newHeight) override;
 	virtual void DrawScene() override;
 	virtual void UpdateRenderingObjects() override;
+
+	void SetWindowWidth(int inWidth);
+	void SetWindowHeight(int inHeight);
 	
 	static SSDX11Renderer& Get();
 	static SSDX11Renderer* GetPtr();	
@@ -42,6 +45,9 @@ protected:
 
 	void TestCompileShader();
 	void TestCreateResources();
+
+	int mWindowWidth = 0;
+	int mWindowHeight = 0;
 
 private:		
 	bool bInitialized = false;

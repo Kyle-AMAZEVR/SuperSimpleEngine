@@ -6,13 +6,14 @@
 void SSCubeScene::InitializeScene()
 {
 	mCube = std::make_shared<SSCube>();
-	mCube->SetPositionX(10);
+	mCube->SetPositionX(30);
 
 	mSphere = std::make_shared<SSSphere>(static_cast<UINT>(20),static_cast<UINT>(20), 10.0f);
-	mSphere->SetPositionX(10);
+	mSphere->SetPositionX(30);
 	mSphere->SetPositionY( 10);
 
 	mPBRSphere = std::make_shared<SSPBRSphere>();
+	mPBRSphere->SetPositionX(40);
 	mPBRSphere->SetPositionY(-10);
 }
 

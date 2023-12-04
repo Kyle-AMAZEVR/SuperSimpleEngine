@@ -8,6 +8,7 @@
 #include "SSSharedRenderData.h"
 #include "SSGameWindow.h"
 #include "SSRenderingThread.h"
+#include "SSCameraManager.h"
 
 bool SSDX11Engine::bInitialized = false;
 
@@ -104,6 +105,8 @@ void SSDX11Engine::OnWindowResize(int newWidth, int newHeight)
 		{
 			mRenderer->OnWindowResize(newWidth, newHeight);
 		}
+
+		SSCameraManager::Get().SetCurrentCameraAspectRatio(static_cast<float>(newWidth) / static_cast<float>(newHeight));
 	}
 }
 
@@ -112,6 +115,9 @@ void SSDX11Engine::EngineStart()
 {
 	// create renderer
 	mRenderer = new SSDX11Renderer();
+
+	mRenderer->SetWindowWidth(SSGameWindow::GetPtr()->GetWindowWidth());
+	mRenderer->SetWindowHeight(SSGameWindow::GetPtr()->GetWindowHeight());
 
 	// 
 	mRenderingThread = new SSRenderingThread(mRenderer);

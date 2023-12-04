@@ -47,7 +47,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
 
-	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow,512,512);    
+	SSGameWindow* GameWindow = new SSAppWindow(hInstance, nCmdShow,1024,768);    
 
 	check(SSGameWindow::GetPtr() != nullptr);
 
