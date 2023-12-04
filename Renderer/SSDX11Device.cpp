@@ -169,7 +169,48 @@ void	SSDX11Device::SetPSConstantBufferData()
 
 
 std::shared_ptr<SSDX11Viewport> SSDX11Device::CreateViewport(unsigned int inWidth, unsigned int inHeight)
-{
+{	
+	UINT msaaQuality;
+	HR(mDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &msaaQuality));
+
+	check(inWidth > 0 && inHeight > 0);
+	
+	// Release the old views, as they hold references to the buffers we
+	// will be destroying.  Also release the old depth/stencil buffer.
+	
+	ID3D11RenderTargetView* RenderTargetView{};
+	ID3D11Texture2D*	DepthStencilBuffer{};
+	ID3D11DepthStencilView* DepthStencilView{};
+
+	// Resize the swap chain and recreate the render target view.
+	HR(mSwapChain->ResizeBuffers(0, inWidth, inHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
+	ID3D11Texture2D* backBuffer;
+	HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+	HR(mDevice->CreateRenderTargetView(backBuffer, 0, &RenderTargetView));
+	ReleaseCOM(backBuffer);
+
+	// Create the depth/stencil buffer and view.
+
+	D3D11_TEXTURE2D_DESC depthStencilDesc;
+
+	depthStencilDesc.Width = inWidth;
+	depthStencilDesc.Height = inHeight;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	// Use 4X MSAA? --must match swap chain MSAA values.
+	depthStencilDesc.SampleDesc.Count = 4;
+	depthStencilDesc.SampleDesc.Quality = msaaQuality - 1;
+
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
+
+	HR(mDevice->CreateTexture2D(&depthStencilDesc, 0, &DepthStencilBuffer));
+	HR(mDevice->CreateDepthStencilView(DepthStencilBuffer, 0, &DepthStencilView));
+
 	return std::make_shared<SSDX11Viewport>(inWidth, inHeight);
 }
 
