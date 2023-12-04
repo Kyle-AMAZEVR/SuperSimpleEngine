@@ -1,11 +1,10 @@
-
 #include "SSDX11Device.h"
 #include <iostream>
-
 #include "SSDX11RenderTarget.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSDX11IndexBuffer.h"
 #include "SSShader.h"
+#include "SSCameraManager.h"
 
 bool SSDX11Device::CreateDevice()
 {
@@ -167,67 +166,16 @@ void	SSDX11Device::SetPSConstantBufferData()
 	
 }
 
-
-std::shared_ptr<SSDX11Viewport> SSDX11Device::CreateViewport(unsigned int inWidth, unsigned int inHeight)
+void SSDX11Device::ClearDefaultRenderTargetView(float color[4])
 {	
-	UINT msaaQuality;
-	HR(mDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &msaaQuality));
-
-	check(inWidth > 0 && inHeight > 0);
-	
-	// Release the old views, as they hold references to the buffers we
-	// will be destroying.  Also release the old depth/stencil buffer.
-	
-	ID3D11RenderTargetView* RenderTargetView{};
-	ID3D11Texture2D*	DepthStencilBuffer{};
-	ID3D11DepthStencilView* DepthStencilView{};
-
-	// Resize the swap chain and recreate the render target view.
-	HR(mSwapChain->ResizeBuffers(0, inWidth, inHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
-	ID3D11Texture2D* backBuffer;
-	HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
-	HR(mDevice->CreateRenderTargetView(backBuffer, 0, &RenderTargetView));
-	ReleaseCOM(backBuffer);
-
-	// Create the depth/stencil buffer and view.
-
-	D3D11_TEXTURE2D_DESC depthStencilDesc;
-
-	depthStencilDesc.Width = inWidth;
-	depthStencilDesc.Height = inHeight;
-	depthStencilDesc.MipLevels = 1;
-	depthStencilDesc.ArraySize = 1;
-	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-	// Use 4X MSAA? --must match swap chain MSAA values.
-	depthStencilDesc.SampleDesc.Count = 4;
-	depthStencilDesc.SampleDesc.Quality = msaaQuality - 1;
-
-	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	depthStencilDesc.CPUAccessFlags = 0;
-	depthStencilDesc.MiscFlags = 0;
-
-	HR(mDevice->CreateTexture2D(&depthStencilDesc, 0, &DepthStencilBuffer));
-	HR(mDevice->CreateDepthStencilView(DepthStencilBuffer, 0, &DepthStencilView));
-
-	return std::make_shared<SSDX11Viewport>(inWidth, inHeight);
+	mDeviceContext->ClearRenderTargetView(mRenderTargetView, color);
 }
 
-void SSDX11Device::ClearRenderTargetView(ID3D11RenderTargetView* rtView, float color[4])
-{
-	mDeviceContext->ClearRenderTargetView(rtView, color);
-}
+void SSDX11Device::SetDefaultRenderTargetAsCurrent()
+{	
+	mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
 
-void SSDX11Device::SetCurrentRenderTarget(ID3D11RenderTargetView* rtView, ID3D11DepthStencilView* depthStencilView)
-{
-	ID3D11RenderTargetView* rtViews[]{rtView};
-	mDeviceContext->OMSetRenderTargets(1, rtViews, depthStencilView);
-}
-
-void SSDX11Device::SetCurrentRenderTargets(ID3D11RenderTargetView** rtView, ID3D11DepthStencilView* depthStencilView)
-{
-
+	mDeviceContext->RSSetViewports(1, &mScreenViewport);
 }
 
 void SSDX11Device::Present()
@@ -246,10 +194,21 @@ void SSDX11Device::Present()
 	}
 }
 
+void SSDX11Device::ResizeRenderTarget(int inWidth, int inHeight)
+{
+	mScreenViewport.TopLeftX = 0;
+	mScreenViewport.TopLeftY = 0;
+	mScreenViewport.MaxDepth = 1;
+	mScreenViewport.MinDepth = 0;
+	mScreenViewport.Width = inWidth;
+	mScreenViewport.Height = inHeight;
+	
+	CreateDefaultRenderTarget(inWidth, inHeight);
+}
 
 bool SSDX11Device::CreateSwapChain(HWND windowHandle)
 {
-	HR(mDevice->CheckMultisampleQualityLevels(mSwapChainFormat, 4, &m4xMSAAQuality));
+	HR(mDevice->CheckMultisampleQualityLevels(mSwapChainFormat, mSampleCount, &m4xMSAAQuality));
 
 	HR(mDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&mDebug));
 
@@ -280,8 +239,8 @@ bool SSDX11Device::CreateSwapChain(HWND windowHandle)
 		sd.Width = mBufferWidth;
 		sd.Height = mBufferHeight;
 		sd.Format = mSwapChainFormat;
-		sd.SampleDesc.Count = 4;
-		sd.SampleDesc.Quality = m4xMSAAQuality - 1;
+		sd.SampleDesc.Count = mSampleCount;
+		sd.SampleDesc.Quality = m4xMSAAQuality -1;
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount = 2;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -298,6 +257,65 @@ bool SSDX11Device::CreateSwapChain(HWND windowHandle)
 	ReleaseCOM(dxgiDevice);
 	ReleaseCOM(dxgiAdaptor);
 	ReleaseCOM(dxgiFactory);
+
+	return true;
+}
+
+bool SSDX11Device::CreateDefaultRenderTarget(int inWidth, int inHeight)
+{
+	check(inWidth > 0 && inHeight > 0);
+
+	// Release the old views, as they hold references to the buffers we
+	// will be destroying.  Also release the old depth/stencil buffer.
+	if (mRenderTargetView)
+	{
+		mRenderTargetView->Release();
+		mRenderTargetView = nullptr;
+	}
+
+	if (mDepthStencilBuffer)
+	{
+		mDepthStencilBuffer->Release();
+		mDepthStencilBuffer = nullptr;
+	}
+
+	if (mDepthStencilView)
+	{
+		mDepthStencilView->Release();
+		mDepthStencilView = nullptr;
+	}
+
+	// Resize the swap chain and recreate the render target view.
+	HR(mSwapChain->ResizeBuffers(0, inWidth, inHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
+	ID3D11Texture2D* backBuffer;
+	HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+	HR(mDevice->CreateRenderTargetView(backBuffer, 0, &mRenderTargetView));
+	ReleaseCOM(backBuffer);
+
+	// Create the depth/stencil buffer and view.
+
+	D3D11_TEXTURE2D_DESC depthStencilDesc{};
+	depthStencilDesc.Width = inWidth;
+	depthStencilDesc.Height = inHeight;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	// Use 4X MSAA? --must match swap chain MSAA values.
+	depthStencilDesc.SampleDesc.Count = mSampleCount;
+	depthStencilDesc.SampleDesc.Quality = m4xMSAAQuality - 1;
+
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
+
+	HR(mDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
+	HR(mDevice->CreateDepthStencilView(mDepthStencilBuffer, 0, &mDepthStencilView));
+
+	SetDefaultRenderTargetAsCurrent();
+	
+	SSCameraManager::Get().SetCurrentCameraAspectRatio(static_cast<float>(inWidth) / static_cast<float>(inHeight));
 
 	return true;
 }

@@ -33,7 +33,6 @@ public:
 
 protected:
 	void DrawCubeScene();
-	void DrawSponzaScene();
 	void DrawSkybox();
 	void DrawDummyScene();	
 	

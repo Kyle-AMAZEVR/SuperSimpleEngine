@@ -27,7 +27,6 @@ public:
 
 	virtual std::shared_ptr<class SSDX11VertexBuffer>	CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData);
 	virtual std::shared_ptr<class SSDX11IndexBuffer>	CreateIndexBuffer(std::vector<unsigned int>& inData);
-	virtual std::shared_ptr<class SSDX11Viewport>		CreateViewport(unsigned int inWidth, unsigned int inHeight);
 
 
 	virtual void				SetVSConstantBufferData();
@@ -35,12 +34,14 @@ public:
 
 	virtual void				SetCurrentRenderTarget(class SSViewport* viewport);	
 
-	void						ClearRenderTargetView(ID3D11RenderTargetView* rtView, float color[4]);
-	void						SetCurrentRenderTarget(ID3D11RenderTargetView* rtView, ID3D11DepthStencilView* depthStencilView);
-	void						SetCurrentRenderTargets(ID3D11RenderTargetView** rtView, ID3D11DepthStencilView* depthStencilView);
+	void						ClearDefaultRenderTargetView(float color[4]);
+	void						SetDefaultRenderTargetAsCurrent();
+	
 	virtual void				Present();
+	void						ResizeRenderTarget(int inWidth, int inHeight);
 protected:
-	bool						CreateSwapChain(HWND windowHandle);	
+	bool						CreateSwapChain(HWND windowHandle);
+	bool						CreateDefaultRenderTarget(int inWidth, int inHeight);
 
 protected:
 	virtual bool				CreateDevice();	
@@ -49,15 +50,25 @@ protected:
 	ComPtr<ID3D11Device>		mDevice;
 	ComPtr<IDXGISwapChain>		mSwapChain;
 	
-	std::vector<SSAdapterInfo> mAdapterInfos;
-	std::unique_ptr<class SSDX11Viewport> mViewport;
+	std::vector<SSAdapterInfo> mAdapterInfos;	
 	ID3D11Debug* mDebug = nullptr;
 
 	int mBufferWidth = 1920;
 	int mBufferHeight = 1080;
+	//
 	HWND mWindowHandle;
+	//
 	UINT m4xMSAAQuality = 0;
+	UINT mSampleCount = 4;
+	
+	// default screen render target releated
+	ID3D11RenderTargetView* mRenderTargetView{};
+	ID3D11Texture2D* mDepthStencilBuffer{};
+	ID3D11DepthStencilView* mDepthStencilView{};
+	D3D11_VIEWPORT mScreenViewport;
+
 	DXGI_FORMAT mSwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+
 
 	std::vector<class SSRenderCmdBase*> mRenderCommands;
 };

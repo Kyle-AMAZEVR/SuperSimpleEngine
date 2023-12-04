@@ -105,6 +105,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	bInitialized = true;
 
 	mViewport->Resize(mDX11Device, mWindowWidth, mWindowHeight);
+	//mDX11Device->ResizeRenderTarget(mWindowWidth, mWindowHeight);
 }
 
 void SSDX11Renderer::UpdateRenderingObjects()
@@ -169,6 +170,10 @@ void SSDX11Renderer::DrawDummyScene()
 	mViewport->SetCurrentRenderTarget(mDX11Device);
 	mViewport->Clear(mDX11Device);
 
+	/*mDX11Device->SetDefaultRenderTargetAsCurrent();
+	float tmpColor[4]{ 1, 0, 0, 1 };
+	mDX11Device->ClearDefaultRenderTargetView(tmpColor);
+	*/
 	mDX11Device->Present();
 }
 
@@ -298,6 +303,10 @@ void SSDX11Renderer::DrawCubeScene()
 	mViewport->Clear(mDX11Device);
 	mViewport->SetCurrentRenderTarget(mDX11Device);
 
+	/*float ClearColor[4]{1,0,0,1};
+	mDX11Device->SetDefaultRenderTargetAsCurrent();
+	mDX11Device->ClearDefaultRenderTargetView(ClearColor);	
+	*/
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 	
 	if (false)
@@ -315,114 +324,6 @@ void SSDX11Renderer::DrawCubeScene()
 }
 
 
-
-void SSDX11Renderer::DrawSponzaScene()
-{
-	if (bInitialized == false)
-	{
-		return;
-	}
-
-	if (mPaused)
-	{
-		return;
-	}
-
-	if(mDX11Device == nullptr)
-	{
-		return;
-	}
-
-	// @equirect to cube
-	// @start
-	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
-	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
-
-	static bool bEquidirectToCubeDrawn = false;
-	static bool bConvolutionDrawn = false;
-	static bool bPrefilterDrawn = false;
-	static bool bLUTCreated = false;
-
-	if (bEquidirectToCubeDrawn == false)
-	{
-		if (TryLoadEnvCubemap(L"./Prebaked/EnvCubemap.dds") == false)
-		{
-			CreateEnvCubemap();
-		}
-		bEquidirectToCubeDrawn = true;
-	}
-
-	if (bConvolutionDrawn == false)
-	{
-		if (TryLoadEnvCubemapConvolution(L"./Prebaked/EnvConvolution.dds") == false)
-		{
-			CreateEnvCubemapConvolution();
-		}
-		bConvolutionDrawn = true;
-	}
-	if (bPrefilterDrawn == false)
-	{
-		if (TryLoadEnvCubemapPrefilter(L"./Prebaked/EnvPrefilter.dds") == false)
-		{
-			CreateEnvCubemapPrefilter();
-		}
-		bPrefilterDrawn = true;
-	}
-
-	if (bLUTCreated == false)
-	{
-		if (TryLoad2DLUTTexture() == false)
-		{
-			Create2DLUTTexture();
-		}
-		bLUTCreated = true;
-	}
-
-	// @end
-
-	auto* deviceContext = GetImmediateDeviceContext();
-	check(deviceContext);
-	SSRasterizeStateManager::Get().SetToDefault(deviceContext);
-
-	// @draw cubemap to gbuffer
-	// @start
-	mGBuffer->Clear(mDX11Device);
-	mGBuffer->SetCurrentRenderTarget(mDX11Device);
-
-	DrawSkybox();
-
-	mGBufferDumpProcess->Draw(mDX11Device, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
-
-	mDeferredLightPostProcess->Draw(
-		mDX11Device,
-		mGBuffer->GetPositionOutput(),
-		mGBuffer->GetColorOutput(),
-		mGBuffer->GetNormalOutput(),
-		m2DLUTTexture.get(),
-		mEnvCubemapConvolution.get(),
-		mEnvCubemapPrefilter.get());
-
-    mFXAAPostProcess->Draw(mDX11Device, mDeferredLightPostProcess->GetOutput(0));
-
-	mViewport->Clear(mDX11Device);
-	mViewport->SetCurrentRenderTarget(mDX11Device);
-
-	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
-
-	if (bGbufferDump)
-	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mGBufferDumpProcess->GetOutput(0));
-	}
-	else
-	{
-		blitDrawCmd.SetPSTexture("sampleTexture", mFXAAPostProcess->GetOutput(0));
-	}
-
-	blitDrawCmd.Do(mDX11Device);
-
-
-	mDX11Device->Present();
-}
 
 
 void SSDX11Renderer::TestCompileShader()
@@ -476,6 +377,7 @@ void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 void SSDX11Renderer::Resize(int newWidth,int newHeight)
 {
 	mViewport->Resize(mDX11Device, newWidth, newHeight);
+	//mDX11Device->ResizeRenderTarget(newWidth, newHeight);
 	mGBuffer->Resize(newWidth, newHeight);
 	mFXAAPostProcess->OnResize(newWidth, newHeight);
 	mGBufferDumpProcess->OnResize(newWidth, newHeight);
