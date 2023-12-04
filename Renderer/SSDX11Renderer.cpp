@@ -58,7 +58,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	SSRasterizeStateManager::Get().Initialize();
 	SSSharedBufferCache::Get().Initialize();
 
-	mViewport = std::make_shared<SSDX11Viewport>();
+	mViewport = std::make_shared<SSDX11Viewport>(512,512);
 	mGBuffer = std::make_shared<SSDX11GBuffer>(1024, 768);
 
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024, 1024);

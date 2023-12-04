@@ -29,8 +29,8 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 
-SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow)
-	: InstanceHandle(_hInstance)
+SSGameWindow::SSGameWindow(HINSTANCE _hInstance, int nCmdShow, int nWidth, int nHeight)
+	: InstanceHandle(_hInstance), mWindowWidth(nWidth), mWindowHeight(nHeight)
 {
 	check(mInstance == nullptr);
 
@@ -184,10 +184,9 @@ void SSGameWindow::HandleMessage()
 }
 
 BOOL SSGameWindow::InitInstance(HINSTANCE hInstance, int nCmdShow)
-{
-	
+{	
 	WindowHandle = CreateWindowW(szWindowClass, L"SuperSimple", WS_OVERLAPPEDWINDOW | WS_BORDER,
-		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+		CW_USEDEFAULT, 0, mWindowWidth, mWindowHeight, nullptr, nullptr, hInstance, nullptr);
 
 	if (!WindowHandle)
 	{

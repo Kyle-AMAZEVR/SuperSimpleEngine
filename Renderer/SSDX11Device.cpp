@@ -168,21 +168,9 @@ void	SSDX11Device::SetPSConstantBufferData()
 }
 
 
-
-void SSDX11Device::ResizeViewport(unsigned int newWidth, unsigned int newHeight)
+std::shared_ptr<SSDX11Viewport> SSDX11Device::CreateViewport(unsigned int inWidth, unsigned int inHeight)
 {
-	if (mBufferWidth != newWidth || mBufferHeight != newHeight)
-	{
-		if (mViewport)
-		{
-			mViewport->Resize(this, newWidth, newHeight);
-		}
-	}
-}
-
-void SSDX11Device::ClearViewport()
-{
-
+	return std::make_shared<SSDX11Viewport>(inWidth, inHeight);
 }
 
 void SSDX11Device::ClearRenderTargetView(ID3D11RenderTargetView* rtView, float color[4])

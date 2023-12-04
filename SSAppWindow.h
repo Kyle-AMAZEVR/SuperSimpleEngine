@@ -7,7 +7,7 @@
 class SSAppWindow : public SSGameWindow
 {
 public:
-	SSAppWindow(HINSTANCE hInstance, int nCmdShow);
+	SSAppWindow(HINSTANCE hInstance, int nCmdShow, int nWidth, int nHeight);
 	void OnPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 	void OnDestroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 	void OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;

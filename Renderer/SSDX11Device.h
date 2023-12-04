@@ -27,13 +27,11 @@ public:
 
 	virtual std::shared_ptr<class SSDX11VertexBuffer>	CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData);
 	virtual std::shared_ptr<class SSDX11IndexBuffer>	CreateIndexBuffer(std::vector<unsigned int>& inData);
+	virtual std::shared_ptr<class SSDX11Viewport>		CreateViewport(unsigned int inWidth, unsigned int inHeight);
 
 
 	virtual void				SetVSConstantBufferData();
 	virtual void				SetPSConstantBufferData();
-
-	virtual void				ResizeViewport(unsigned int width, unsigned int height);
-	virtual void				ClearViewport();
 
 	virtual void				SetCurrentRenderTarget(class SSViewport* viewport);	
 
@@ -48,8 +46,8 @@ protected:
 	virtual bool				CreateDevice();	
 
 	ComPtr<ID3D11DeviceContext> mDeviceContext;
-	ComPtr<ID3D11Device> mDevice;
-	ComPtr<IDXGISwapChain> mSwapChain;
+	ComPtr<ID3D11Device>		mDevice;
+	ComPtr<IDXGISwapChain>		mSwapChain;
 	
 	std::vector<SSAdapterInfo> mAdapterInfos;
 	std::unique_ptr<class SSDX11Viewport> mViewport;

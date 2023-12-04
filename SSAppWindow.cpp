@@ -3,8 +3,8 @@
 #include "SSEngineBase.h"
 #include "SSRenderingThread.h"
 
-SSAppWindow::SSAppWindow(HINSTANCE hInstance, int nCmdShow)
-	: SSGameWindow(hInstance, nCmdShow)
+SSAppWindow::SSAppWindow(HINSTANCE hInstance, int nCmdShow, int nWidth, int nHeight)
+	: SSGameWindow(hInstance, nCmdShow, nWidth, nHeight)
 {
 	
 }
@@ -22,8 +22,8 @@ void SSAppWindow::OnSize(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	auto width = static_cast<int>(LOWORD(lParam));
 	auto height = static_cast<int>(HIWORD(lParam));	
 	
-	windowWidth = width;
-	windowHeight = height;	
+	mWindowWidth = width;
+	mWindowHeight = height;	
 }
 
 void SSAppWindow::OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -34,7 +34,7 @@ void SSAppWindow::OnExitSizeMove(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			GEngine->GetRenderingThread()->ExecuteInRenderingThread([this]()
 			{
-				GEngine->OnWindowResize(windowWidth, windowHeight);
+				GEngine->OnWindowResize(mWindowWidth, mWindowHeight);
 				GEngine->GetRenderingThread()->ResumeRendering();
 				mPauseRendering = false;
 			});

@@ -8,7 +8,7 @@
 class GAMEMODULE_API SSGameWindow
 {
 public:
-	SSGameWindow(HINSTANCE hInstance, int nCmdShow);
+	SSGameWindow(HINSTANCE hInstance, int nCmdShow, int nWidth, int nHeight);
 
 	void HandleMessage();
 
@@ -66,7 +66,7 @@ protected:
 	HINSTANCE InstanceHandle;
 	HWND WindowHandle;
 
-	int windowWidth = 1920;
-	int windowHeight = 1080;
+	int mWindowWidth = 1920;
+	int mWindowHeight = 1080;
 	
 };

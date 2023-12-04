@@ -3,6 +3,34 @@
 #include "SSDX11Viewport.h"
 #include "SSCameraManager.h"
 
+SSDX11Viewport::SSDX11Viewport(unsigned int inWidth, unsigned int inHeight)
+{
+	mWidth = inWidth;
+	mHeight = inHeight;
+
+	mScreenViewport.TopLeftX = 0;
+	mScreenViewport.TopLeftY = 0;
+	mScreenViewport.Width = static_cast<float>(inWidth);
+	mScreenViewport.Height = static_cast<float>(inHeight);
+	mScreenViewport.MinDepth = 0.0f;
+	mScreenViewport.MaxDepth = 1.0f;
+
+	mDepthStencilDesc.Width = mWidth;
+	mDepthStencilDesc.Height = mHeight;
+	mDepthStencilDesc.MipLevels = 1;
+	mDepthStencilDesc.ArraySize = 1;
+	mDepthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	// Use 4X MSAA? --must match swap chain MSAA values.
+	mDepthStencilDesc.SampleDesc.Count = 4;
+	mDepthStencilDesc.SampleDesc.Quality = 0;
+
+	mDepthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	mDepthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	mDepthStencilDesc.CPUAccessFlags = 0;
+	mDepthStencilDesc.MiscFlags = 0;
+}
+
 void SSDX11Viewport::Clear(SSDX11Device* device)
 {
 	float Color[4]{ 1, 0, 0, 1.0f };
@@ -12,8 +40,6 @@ void SSDX11Viewport::Clear(SSDX11Device* device)
 	DX11Device->GetDeviceContext()->ClearRenderTargetView(mRenderTargetView.Get(), Color);
 	DX11Device->GetDeviceContext()->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);	
 }
-
-
 
 void SSDX11Viewport::SetCurrentRenderTarget(SSDX11Device* device)
 {
@@ -34,7 +60,6 @@ void SSDX11Viewport::SetCurrentRenderTarget(SSDX11Device* device)
 
 	dx11Device->GetDeviceContext()->RSSetViewports(1, &mScreenViewport);
 }
-
 
 void SSDX11Viewport::Resize(SSDX11Device* device, UINT newWidth, UINT newHeight)
 {
@@ -73,21 +98,21 @@ void SSDX11Viewport::Resize(SSDX11Device* device, UINT newWidth, UINT newHeight)
 	// Create the depth/stencil buffer and view.
 
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
-	
-	depthStencilDesc.Width     = mWidth;
-	depthStencilDesc.Height    = mHeight;
+
+	depthStencilDesc.Width = mWidth;
+	depthStencilDesc.Height = mHeight;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.ArraySize = 1;
-	depthStencilDesc.Format    = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// Use 4X MSAA? --must match swap chain MSAA values.
-    depthStencilDesc.SampleDesc.Count   = 4;
-    depthStencilDesc.SampleDesc.Quality = msaaQuality - 1;
+	depthStencilDesc.SampleDesc.Count = 4;
+	depthStencilDesc.SampleDesc.Quality = msaaQuality - 1;
 
-	depthStencilDesc.Usage          = D3D11_USAGE_DEFAULT;
-	depthStencilDesc.BindFlags      = D3D11_BIND_DEPTH_STENCIL;
-	depthStencilDesc.CPUAccessFlags = 0; 
-	depthStencilDesc.MiscFlags      = 0;
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;	
 
 	HR(dxDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
 	HR(dxDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), 0, &mDepthStencilView));
