@@ -110,41 +110,7 @@ void SSDX11Renderer::TestCreateResources()
 	mRenderTargetCube = std::make_shared<SSRenderTargetCube>();
 	mTestCubeTexture = std::make_shared<SSTextureCube>();
 
-	mCubemapSphere = std::make_shared<SSCubeMapRenderingSphere>();
-	/*mTestSphere2 = std::make_shared<SSSphere>(25, 25, 10.0f);
-	mTestSphere2->SetPosition(0, 20, 20);
-	mTestSphere2->SetMetalicValue(0.f);
-	mTestSphere2->SetRoughnessValue(1.f);
-
-	mRustedIron = std::make_shared<SSPBRSphere>(
-		deviceContext,
-		"./Resource/Tex/rustediron/rustediron2_basecolor.dds",
-		"./Resource/Tex/rustediron/rustediron2_normal.dds",
-		"./Resource/Tex/rustediron/rustediron2_metallic.dds",
-		"./Resource/Tex/rustediron/rustediron2_roughness.dds"
-		);
-
-	mTile = std::make_shared<SSPBRSphere>(
-		deviceContext,
-		"./Resource/Tex/tile/Tiles32_col.dds",
-		"./Resource/Tex/tile/Tiles32_nrm.dds",
-		"./Resource/Tex/tile/Tiles32_disp.dds",
-		"./Resource/Tex/tile/Tiles32_rgh.dds"
-		);
-
-	mMetalGrid = std::make_shared<SSPBRSphere>(
-		deviceContext,
-		"./Resource/Tex/metalgrid/metalgrid4_basecolor.dds",
-		"./Resource/Tex/metalgrid/metalgrid4_normal-dx.dds",
-		"./Resource/Tex/metalgrid/metalgrid4_metallic.dds",
-		"./Resource/Tex/metalgrid/metalgrid4_roughness.dds"
-		);
-
-
-	mRustedIron->SetPosition(0, 20, 0);
-	mTile->SetPosition(20, 20, 20);
-	mMetalGrid->SetPosition(40, 20, 40);
-	*/
+	mCubemapSphere = std::make_shared<SSCubeMapRenderingSphere>();	
 
 	mRenderTargetCube->SetScale(1,1,1);
 
@@ -294,9 +260,7 @@ void SSDX11Renderer::DrawCubeScene()
 	for (auto [k, v] : objects)
 	{
 		v->Draw(mDX11Device->GetDeviceContext());
-	}
-
-	//mGBufferDumpProcess->Draw(deviceContext, mGBuffer->GetPositionOutput(), mGBuffer->GetColorOutput(), mGBuffer->GetNormalOutput());
+	}	
 
 	mDeferredLightPostProcess->Draw(
 		mDX11Device,
@@ -483,10 +447,7 @@ void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 	{	
 		check(newWidth > 0 && newHeight > 0);
 
-		if (mViewport)
-		{
-			mViewport->Resize(mDX11Device, newWidth, newHeight);
-		}
+		this->Resize(newWidth, newHeight);
 	}
 }
 
@@ -494,7 +455,6 @@ void SSDX11Renderer::Resize(int newWidth,int newHeight)
 {
 	mViewport->Resize(mDX11Device, newWidth, newHeight);
 	mGBuffer->Resize(newWidth, newHeight);
-
 	mFXAAPostProcess->OnResize(newWidth, newHeight);
 	mGBufferDumpProcess->OnResize(newWidth, newHeight);
 	mDeferredLightPostProcess->OnResize(newWidth, newHeight);

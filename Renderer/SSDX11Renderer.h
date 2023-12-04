@@ -17,8 +17,7 @@ public:
 	virtual void UpdateRenderingObjects() override;
 	
 	static SSDX11Renderer& Get();
-	static SSDX11Renderer* GetPtr();
-	
+	static SSDX11Renderer* GetPtr();	
 
 	void AppendRenderCommand(class SSDrawCmdBase* cmd);
 	void FlushRenderCommands();
@@ -33,7 +32,7 @@ protected:
 	void DrawCubeScene();
 	void DrawSponzaScene();
 	void DrawSkybox();
-	void DrawDummyScene();
+	void DrawDummyScene();	
 	
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
 

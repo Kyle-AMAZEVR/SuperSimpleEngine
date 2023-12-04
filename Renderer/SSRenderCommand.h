@@ -114,7 +114,7 @@ private:
 class SSRenderCmdClearRenderTarget : public SSRenderCmdBase
 {
 public:
-
+	
 };
 
 class SSRenderCmdSetViewport : public SSRenderCmdBase
