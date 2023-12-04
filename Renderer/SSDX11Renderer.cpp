@@ -23,7 +23,6 @@
 #include "SSRenderingObject.h"
 #include "SSSharedBufferCache.h"
 #include "SSCustomRenderThreadObject.h"
-#include "SSDX11Viewport.h"
 #include "SSMathHelper.h"
 #include "SSCameraManager.h"
 #include <iostream>

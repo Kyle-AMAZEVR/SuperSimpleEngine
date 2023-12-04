@@ -1,7 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "SSDX11Viewport.h"
+#include "wrl/client.h"
+using Microsoft::WRL::ComPtr;
 
 struct SSAdapterInfo
 {
