@@ -168,13 +168,13 @@ void	SSDX11Device::SetPSConstantBufferData()
 
 void SSDX11Device::ClearDefaultRenderTargetView(float color[4])
 {	
-	mDeviceContext->ClearRenderTargetView(mRenderTargetView, color);
+	mDeviceContext->ClearRenderTargetView(mRenderTargetView, color);	
+	mDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 void SSDX11Device::SetDefaultRenderTargetAsCurrent()
 {	
 	mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
-
 	mDeviceContext->RSSetViewports(1, &mScreenViewport);
 }
 

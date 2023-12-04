@@ -79,8 +79,7 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	SSDepthStencilStateManager::Get().Initialize();
 	SSRasterizeStateManager::Get().Initialize();
 	SSSharedBufferCache::Get().Initialize();
-
-	mViewport = std::make_shared<SSDX11Viewport>(mWindowWidth, mWindowHeight);
+		
 	mGBuffer = std::make_shared<SSDX11GBuffer>(mWindowWidth, mWindowHeight);
 
 	mEquirectToCubemapRenderTarget = std::make_shared<SSCubemapRenderTarget>(1024, 1024);
@@ -103,9 +102,8 @@ void SSDX11Renderer::Initialize(HWND windowHandle)
 	TestCreateResources();
 
 	bInitialized = true;
-
-	mViewport->Resize(mDX11Device, mWindowWidth, mWindowHeight);
-	//mDX11Device->ResizeRenderTarget(mWindowWidth, mWindowHeight);
+		
+	mDX11Device->ResizeRenderTarget(mWindowWidth, mWindowHeight);
 }
 
 void SSDX11Renderer::UpdateRenderingObjects()
@@ -166,14 +164,11 @@ void SSDX11Renderer::DrawDummyScene()
 	{
 		return;
 	}
-
-	mViewport->SetCurrentRenderTarget(mDX11Device);
-	mViewport->Clear(mDX11Device);
-
-	/*mDX11Device->SetDefaultRenderTargetAsCurrent();
+	
+	mDX11Device->SetDefaultRenderTargetAsCurrent();
 	float tmpColor[4]{ 1, 0, 0, 1 };
 	mDX11Device->ClearDefaultRenderTargetView(tmpColor);
-	*/
+	
 	mDX11Device->Present();
 }
 
@@ -300,13 +295,10 @@ void SSDX11Renderer::DrawCubeScene()
 
 	mFXAAPostProcess->Draw(mDX11Device, mDeferredLightPostProcess->GetOutput(0));
 	
-	mViewport->Clear(mDX11Device);
-	mViewport->SetCurrentRenderTarget(mDX11Device);
-
-	/*float ClearColor[4]{1,0,0,1};
-	mDX11Device->SetDefaultRenderTargetAsCurrent();
-	mDX11Device->ClearDefaultRenderTargetView(ClearColor);	
-	*/
+	float ClearColor[4]{1,0,0,1};
+	mDX11Device->ClearDefaultRenderTargetView(ClearColor);
+	mDX11Device->SetDefaultRenderTargetAsCurrent();	
+	
 	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
 	
 	if (false)
@@ -375,9 +367,8 @@ void SSDX11Renderer::OnWindowResize(int newWidth, int newHeight)
 }
 
 void SSDX11Renderer::Resize(int newWidth,int newHeight)
-{
-	mViewport->Resize(mDX11Device, newWidth, newHeight);
-	//mDX11Device->ResizeRenderTarget(newWidth, newHeight);
+{	
+	mDX11Device->ResizeRenderTarget(newWidth, newHeight);
 	mGBuffer->Resize(newWidth, newHeight);
 	mFXAAPostProcess->OnResize(newWidth, newHeight);
 	mGBufferDumpProcess->OnResize(newWidth, newHeight);
