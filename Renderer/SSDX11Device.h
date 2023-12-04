@@ -21,18 +21,8 @@ public:
 
 	virtual bool				InitializeDevice(HWND windowHandle);
 
-	virtual void				SetVertexShader(class SSDX11VertexShader* vs);
-	virtual void				SetPixelShader(class SSDX11PixelShader* ps);
-	virtual void				ClearCurrentRenderTarget();	
-
 	virtual std::shared_ptr<class SSDX11VertexBuffer>	CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData);
 	virtual std::shared_ptr<class SSDX11IndexBuffer>	CreateIndexBuffer(std::vector<unsigned int>& inData);
-
-
-	virtual void				SetVSConstantBufferData();
-	virtual void				SetPSConstantBufferData();
-
-	virtual void				SetCurrentRenderTarget(class SSViewport* viewport);	
 
 	void						ClearDefaultRenderTargetView(float color[4]);
 	void						SetDefaultRenderTargetAsCurrent();

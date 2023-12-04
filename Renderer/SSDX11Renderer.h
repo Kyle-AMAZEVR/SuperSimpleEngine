@@ -55,9 +55,7 @@ private:
 private:
 	SSDX11Device* mDX11Device;	
 
-	ID3D11SamplerState* mDefaultSamplerState = nullptr;
-
-	std::vector<SSAdapterInfo> mAdapterInfos;
+	ID3D11SamplerState* mDefaultSamplerState = nullptr;	
 
 	std::shared_ptr<class SSMaterial> mTestMaterial;
 	std::shared_ptr<class SSMaterial> mTBNDebugMaterial;

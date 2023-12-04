@@ -86,27 +86,6 @@ bool SSDX11Device::InitializeDevice(HWND windowHandle)
 }
 
 
-
-
-void SSDX11Device::SetVertexShader(SSDX11VertexShader* vs)
-{
-	mDeviceContext->VSSetShader(vs->GetShader(), nullptr, 0);
-}
-
-void SSDX11Device::SetPixelShader(SSDX11PixelShader* ps)
-{
-	mDeviceContext->PSSetShader(ps->GetShader(), nullptr, 0);
-}
-
-void SSDX11Device::ClearCurrentRenderTarget()
-{
-}
-
-void SSDX11Device::SetCurrentRenderTarget(SSViewport* viewport)
-{
-	
-}
-
 std::shared_ptr<SSDX11VertexBuffer> SSDX11Device::CreateVertexBuffer(unsigned int stride, unsigned int count, void* ptrData)
 {
 	D3D11_BUFFER_DESC bufferDesc{};
@@ -156,15 +135,6 @@ std::shared_ptr<SSDX11IndexBuffer> SSDX11Device::CreateIndexBuffer(std::vector<u
 	return std::move(Result);
 }
 
-void	SSDX11Device::SetVSConstantBufferData()
-{
-	
-}
-
-void	SSDX11Device::SetPSConstantBufferData()
-{
-	
-}
 
 void SSDX11Device::ClearDefaultRenderTargetView(float color[4])
 {	
