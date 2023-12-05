@@ -26,22 +26,14 @@ public:
 	 */
 	void ToggleGBufferDumpMode();	
 
-	ID3D11Device* GetDevice() const;
-	ID3D11DeviceContext* GetImmediateDeviceContext() const;	
-	inline IDXGISwapChain* GetSwapChain() const;
-	
 	void Run() override;
 
 protected:
 
 	static SSDX11Engine* mInstance;
 
-	
-
 private:
-
-    HWND mWindowHandle;
-    UINT m4xMSAAQuality;
+    HWND mWindowHandle;    
 
     static bool bInitialized;
 

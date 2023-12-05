@@ -27,6 +27,7 @@ public:
 
 	DXGI_FORMAT SwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 
+
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetImmediateDeviceContext();
 	IDXGISwapChain* GetSwapChain();

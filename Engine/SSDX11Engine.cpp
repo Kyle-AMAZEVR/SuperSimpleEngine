@@ -34,21 +34,6 @@ SSDX11Engine* SSDX11Engine::GetPtr()
 	return mInstance;
 }
 
-ID3D11Device* SSDX11Engine::GetDevice() const
-{
-	return mRenderer->GetDevice();
-}
-
-ID3D11DeviceContext* SSDX11Engine::GetImmediateDeviceContext() const
-{
-	return mRenderer->GetImmediateDeviceContext();
-}
-
-inline IDXGISwapChain* SSDX11Engine::GetSwapChain() const
-{
-	return mRenderer->GetSwapChain();
-}
-
 void SSDX11Engine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;	
