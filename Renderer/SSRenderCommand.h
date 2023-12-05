@@ -101,11 +101,23 @@ public:
 private:
 	SSDX11RenderTarget* mRenderTarget;
 };
-
+// set vertex buffer
 class SSRenderCmdSetVertexBuffer : public SSRenderCmdBase
 {
 public:
-	
+	SSRenderCmdSetVertexBuffer(class SSDX11VertexBuffer* inVB);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+private:
+	SSDX11VertexBuffer* mVertexBuffer;
+};
+// set index buffer
+class SSRenderCmdSetIndexBuffer : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdSetIndexBuffer(class SSDX11IndexBuffer* inIB);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext)override;
+private:
+	SSDX11IndexBuffer* mIndexBuffer;
 };
 
 class SSRenderCmdDrawIndexed : public SSRenderCmdBase

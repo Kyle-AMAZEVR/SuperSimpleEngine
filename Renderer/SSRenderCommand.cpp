@@ -3,6 +3,8 @@
 #include "SSShader.h"
 #include "SSDX11Texture2D.h"
 #include "SSDX11RenderTarget.h"
+#include "SSDX11VertexBuffer.h"
+#include "SSDX11IndexBuffer.h"
 
 void SSRenderCmdSetVS::Execute(ID3D11DeviceContext * inDeviceContext)
 {
@@ -106,4 +108,26 @@ SSRenderCmdDrawIndexed::SSRenderCmdDrawIndexed(SSDX11IndexBuffer * inBuffer)
 void SSRenderCmdDrawIndexed::Execute(ID3D11DeviceContext* inDeviceContext)
 {
 	
+}
+
+SSRenderCmdSetVertexBuffer::SSRenderCmdSetVertexBuffer(SSDX11VertexBuffer* inVB)
+	:mVertexBuffer(inVB)
+{
+}
+
+void SSRenderCmdSetVertexBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
+{	
+	auto stride = mVertexBuffer->GetStride();
+	UINT offset = 0;
+	inDeviceContext->IASetVertexBuffers(0, 1, (ID3D11Buffer* const*)mVertexBuffer->GetBufferPointerRef(), &stride, &offset);
+}
+
+SSRenderCmdSetIndexBuffer::SSRenderCmdSetIndexBuffer(SSDX11IndexBuffer* inIB)
+	: mIndexBuffer(inIB)
+{
+}
+
+void SSRenderCmdSetIndexBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
+{
+	inDeviceContext->IASetIndexBuffer((ID3D11Buffer*)mIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 }

@@ -23,8 +23,7 @@ void SSCubemapRenderTarget::InternalCreate()
 {
 	for(int i = 0; i < static_cast<int>(ECubemapFace::MAX); ++i)
 	{
-		mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT);
-		//mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
+		mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, DXGI_FORMAT_R16G16B16A16_FLOAT);		
 	}
 
 	mViewport.TopLeftX = mViewport.TopLeftY = 0;
