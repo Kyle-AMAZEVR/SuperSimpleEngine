@@ -8,7 +8,7 @@
 class SSDX11Device;
 using Microsoft::WRL::ComPtr;
 
-class DX11RENDERER_API SSDX11RenderTargetTexture2D : public SSDX11Texture2D
+class SSDX11RenderTargetTexture2D : public SSDX11Texture2D
 {
 public:	
 	SSDX11RenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
@@ -28,7 +28,7 @@ protected:
 	bool mGenerateMips = false;	
 };
 
-class DX11RENDERER_API SSDepthRenderTargetTexture2D : public SSDX11Texture2D
+class SSDepthRenderTargetTexture2D : public SSDX11Texture2D
 {
 public:
 	SSDepthRenderTargetTexture2D(const UINT width, const UINT height,  DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
@@ -43,7 +43,7 @@ protected:
 	ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
 };
 
-class DX11RENDERER_API SSDX11RenderTarget : public IRenderTarget
+class SSDX11RenderTarget : public IRenderTarget
 {
 public:
 	SSDX11RenderTarget(UINT width, UINT height, UINT count, bool bDepthExist = true, DXGI_FORMAT eFormat = DXGI_FORMAT_R16G16B16A16_FLOAT, DXGI_FORMAT eDepthFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);

@@ -13,7 +13,7 @@ class SSDX11PixelShader;
 class SSDX11Texture2D;
 
 
-class DX11RENDERER_API SSMaterial : public SSRenderThreadResidentObject
+class SSMaterial : public SSRenderThreadResidentObject
 {
 public:	
 	SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps);

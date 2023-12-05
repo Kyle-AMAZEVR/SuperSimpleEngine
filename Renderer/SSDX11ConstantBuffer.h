@@ -18,7 +18,7 @@ struct VariableInConstantBufferInfo
     std::string Name;
 };
 
-class DX11RENDERER_API SSGenericConstantBuffer : public SSDX11Buffer
+class SSGenericConstantBuffer : public SSDX11Buffer
 {
 public:
     SSGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);

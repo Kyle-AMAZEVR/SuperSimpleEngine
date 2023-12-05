@@ -34,6 +34,7 @@ void SSScreenBlit::Draw(ID3D11DeviceContext* deviceContext)
 	UINT offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, (ID3D11Buffer* const*) mScreenVB->GetBufferPointerRef(), &stride, &offset);
+	
 	deviceContext->IASetIndexBuffer((ID3D11Buffer*) mScreenIB->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
 
 	deviceContext->DrawIndexed(mScreenIB->GetIndexCount(), 0, 0);

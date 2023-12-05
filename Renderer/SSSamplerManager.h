@@ -5,7 +5,7 @@
 #include "Singleton.h"
 #include "SSManagerBase.h"
 
-class DX11RENDERER_API SSSamplerManager : public Singleton<SSSamplerManager>, public SSManagerBase
+class SSSamplerManager : public Singleton<SSSamplerManager>, public SSManagerBase
 {
 public:
 	virtual void Initialize() override;

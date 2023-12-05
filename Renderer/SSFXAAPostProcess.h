@@ -4,7 +4,7 @@
 
 class SSDX11Texture2D;
 //
-class DX11RENDERER_API SSFXAAPostProcess : public SSDX11PostProcess
+class SSFXAAPostProcess : public SSDX11PostProcess
 {
 public:
 	SSFXAAPostProcess(UINT width, UINT height);

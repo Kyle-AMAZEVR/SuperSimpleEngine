@@ -2,7 +2,7 @@
 
 
 
-class DX11RENDERER_API SSRenderThreadResidentObject
+class SSRenderThreadResidentObject
 {
 public:
 	SSRenderThreadResidentObject();

@@ -6,7 +6,7 @@
 class SSDX11Texture2D;
 class SSDX11Device;
 
-class DX11RENDERER_API SSDX11PostProcess
+class SSDX11PostProcess
 {
 public:	
 	SSDX11PostProcess(UINT width , UINT height, UINT rtCount=1, bool bDepthExist =false, bool bFixed =false, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);

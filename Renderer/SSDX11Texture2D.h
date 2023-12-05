@@ -8,7 +8,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DX11RENDERER_API SSDX11Texture2D : public SSTexture2DBase
+class SSDX11Texture2D : public SSTexture2DBase
 {
 public:	
 	virtual ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView.Get(); }

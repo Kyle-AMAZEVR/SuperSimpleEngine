@@ -6,7 +6,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DX11RENDERER_API SSDX11Buffer : public SSBufferBase
+class SSDX11Buffer : public SSBufferBase
 {
 public:  
     virtual void* const* GetBufferPointerRef() override;

@@ -3,7 +3,7 @@
 #include "SSRenderThreadObject.h"
 
 
-class DX11RENDERER_API SSScreenBlit : public SSRenderThreadObject
+class SSScreenBlit : public SSRenderThreadObject
 {
 public:
 	SSScreenBlit();

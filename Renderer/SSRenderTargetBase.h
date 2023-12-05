@@ -2,7 +2,7 @@
 
 
 
-class DX11RENDERER_API IRenderTarget
+class IRenderTarget
 {
 public:
 	virtual unsigned int GetRenderTargetWidth() const = 0;

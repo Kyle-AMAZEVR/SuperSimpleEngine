@@ -13,14 +13,14 @@ class SSDX11Texture2D;
 class IRenderTarget;
 
 
-class DX11RENDERER_API SSDrawCmdBase
+class SSDrawCmdBase
 {
 public :	
 	virtual void Do(SSDX11Device* deviceContext) = 0;
 };
 
 
-class DX11RENDERER_API SSChangeRenderTargetCmd : public SSDrawCmdBase
+class SSChangeRenderTargetCmd : public SSDrawCmdBase
 {
 public:
 	SSChangeRenderTargetCmd(IRenderTarget* renderTarget);
@@ -30,7 +30,7 @@ protected:
 	IRenderTarget* mRenderTarget = nullptr;
 };
 
-class DX11RENDERER_API SSDepthStateChangeCmd: public SSDrawCmdBase
+class SSDepthStateChangeCmd: public SSDrawCmdBase
 {
 public:
 	SSDepthStateChangeCmd();
@@ -39,7 +39,7 @@ protected:
 };
 
 
-class DX11RENDERER_API SSDrawCommand  : public SSDrawCmdBase
+class SSDrawCommand  : public SSDrawCmdBase
 {
 public:
 	//SSDrawCommand(SSVertexShader* vs, SSPixelShader* ps, std::shared_ptr<SSObjectBase> object);

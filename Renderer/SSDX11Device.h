@@ -13,7 +13,7 @@ struct SSAdapterInfo
 class SSVertexBuffer;
 class SSDX11IndexBuffer;
 
-class DX11RENDERER_API SSDX11Device 
+class SSDX11Device 
 {
 public:
 	ID3D11Device*				GetDevice()const;

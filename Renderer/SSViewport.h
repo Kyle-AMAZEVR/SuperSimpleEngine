@@ -1,7 +1,7 @@
 #pragma once
 
 
-class DX11RENDERER_API SSViewport
+class SSViewport
 {
 public:
 	virtual void Resize(class SSDX11Device* device, unsigned int width, unsigned int height) = 0;

@@ -3,7 +3,7 @@
 #include "SSDX11Texture2D.h"
 #include <vector>
 
-class DX11RENDERER_API SSTextureCube : public SSDX11Texture2D
+class SSTextureCube : public SSDX11Texture2D
 {
 public:
 	

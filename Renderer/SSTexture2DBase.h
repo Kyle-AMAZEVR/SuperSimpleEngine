@@ -3,7 +3,7 @@
 #include <string>
 #include "SSRenderThreadResidentObject.h"
 
-class DX11RENDERER_API SSTexture2DBase : public SSRenderThreadResidentObject
+class SSTexture2DBase : public SSRenderThreadResidentObject
 {
 public:
 	unsigned int GetWidth() const { return mWidth; }
