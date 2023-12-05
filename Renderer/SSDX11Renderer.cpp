@@ -119,6 +119,7 @@ void SSDX11Renderer::Shutdown()
 	SSSamplerManager::Get().Shutdown();
 	SSShaderManager::Get().Shutdown();
 	SSRenderingObjectManager::Get().Shutdown();
+	SSSharedBufferCache::Get().Shutdown();
 
 	mGBuffer.reset();
 	mEquirectToCubemapRenderTarget.reset();

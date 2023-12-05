@@ -40,13 +40,22 @@ shared_ptr<SSDX11IndexBuffer> SSSharedBufferCache::GetScreenIndexBuffer()
 	return mScreenBlitIndexBuffer;
 }
 
-void SSSharedBufferCache::InitializeCube()
+void SSSharedBufferCache::Shutdown()
 {
-	mCubeIndexBuffer = std::make_shared<SSDX11IndexBuffer>();
-	mCubeIndexBuffer->SetIndexBufferData(SSSharedRenderData::Get().GetCubeIndexData());
+	mCubeIndexBuffer.reset();
+	mScreenBlitIndexBuffer.reset();
+	mScreenBlitVertexBuffer.reset();
+	mSphereVertexBuffer.reset();
+	mCubeVertexBuffer.reset();	
+}
 
-	mCubeVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
-	mCubeVertexBuffer->SetVertexBufferData(SSSharedRenderData::Get().GetCubeVertexData());
+void SSSharedBufferCache::InitializeCube()
+{	
+	std::vector<unsigned int>& IndexData = SSSharedRenderData::Get().GetCubeIndexData();
+	mCubeIndexBuffer = SSDX11Renderer::GetDX11Device()->CreateIndexBuffer(IndexData);
+		
+	std::vector<VT_PositionNormalTexcoordTangent>& VertexData = SSSharedRenderData::Get().GetCubeVertexData();
+	mCubeVertexBuffer = SSDX11Renderer::GetDX11Device()->CreateVertexBuffer(sizeof(VT_PositionNormalTexcoordTangent), VertexData.size(), VertexData.data());
 }
 
 

@@ -11,6 +11,7 @@ class SSSharedBufferCache : public Singleton<SSSharedBufferCache>
 {
 public:
 	void Initialize();
+	void Shutdown();
 
 	shared_ptr<class SSDX11VertexBuffer> GetCubeVertexBuffer();
 	shared_ptr<class SSDX11IndexBuffer> GetCubeIndexBuffer();	
