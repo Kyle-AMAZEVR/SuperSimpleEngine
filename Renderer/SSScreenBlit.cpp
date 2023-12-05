@@ -7,6 +7,7 @@
 #include "SSDX11IndexBuffer.h"
 #include "SSSharedBufferCache.h"
 #include "SSSharedRenderData.h"
+#include "SSRenderCommand.h"
 
 SSScreenBlit::SSScreenBlit()
 {
@@ -20,6 +21,7 @@ SSScreenBlit::SSScreenBlit()
 
 	mScreenVB = SSSharedBufferCache::Get().GetScreenBlitVertexBuffer();
 	mScreenIB = SSSharedBufferCache::Get().GetScreenIndexBuffer();
+
 }
 
 void SSScreenBlit::Destroy()

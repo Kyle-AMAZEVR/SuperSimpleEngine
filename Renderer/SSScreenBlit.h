@@ -13,4 +13,6 @@ public:
 protected:		
 	std::shared_ptr<class SSDX11VertexBuffer> mScreenVB;
 	std::shared_ptr<class SSDX11IndexBuffer> mScreenIB;
+
+	std::vector<class SSRenderCmdBase*> mCommands;
 };

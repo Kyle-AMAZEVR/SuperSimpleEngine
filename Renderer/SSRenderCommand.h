@@ -105,28 +105,28 @@ private:
 class SSRenderCmdSetVertexBuffer : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetVertexBuffer(class SSDX11VertexBuffer* inVB);
+	SSRenderCmdSetVertexBuffer(std::shared_ptr<class SSDX11VertexBuffer> inVB);
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 private:
-	SSDX11VertexBuffer* mVertexBuffer;
+	std::shared_ptr<SSDX11VertexBuffer> mVertexBuffer;
 };
 // set index buffer
 class SSRenderCmdSetIndexBuffer : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetIndexBuffer(class SSDX11IndexBuffer* inIB);
+	SSRenderCmdSetIndexBuffer(class std::shared_ptr<class SSDX11IndexBuffer> inIB);
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext)override;
 private:
-	SSDX11IndexBuffer* mIndexBuffer;
+	std::shared_ptr<SSDX11IndexBuffer> mIndexBuffer;
 };
 
 class SSRenderCmdDrawIndexed : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdDrawIndexed(class SSDX11IndexBuffer* inBuffer);
+	SSRenderCmdDrawIndexed(class std::shared_ptr<SSDX11IndexBuffer> inBuffer);
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 private:
-	SSDX11IndexBuffer* mIndexBuffer;
+	std::shared_ptr<SSDX11IndexBuffer> mIndexBuffer;
 };
 
 class SSRenderCmdClearRenderTarget : public SSRenderCmdBase
