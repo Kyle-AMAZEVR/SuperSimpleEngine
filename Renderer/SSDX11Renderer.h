@@ -27,6 +27,7 @@ public:
 
 	DXGI_FORMAT SwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 
+	static SSDX11Device* GetDX11Device() { return mDX11Device; }
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetImmediateDeviceContext();
@@ -54,7 +55,7 @@ private:
 	bool bGbufferDump = false;
 
 private:
-	SSDX11Device* mDX11Device;	
+	static SSDX11Device* mDX11Device;	
 
 	ID3D11SamplerState* mDefaultSamplerState = nullptr;	
 

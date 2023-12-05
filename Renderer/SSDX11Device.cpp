@@ -130,7 +130,7 @@ std::shared_ptr<SSDX11IndexBuffer> SSDX11Device::CreateIndexBuffer(std::vector<u
 
 	HR(mDevice->CreateBuffer(&bufferDesc, &indexSubresourceData, &ptrBuffer));
 
-	std::shared_ptr<SSDX11IndexBuffer> Result = make_shared<SSDX11IndexBuffer>(ptrBuffer);
+	std::shared_ptr<SSDX11IndexBuffer> Result = make_shared<SSDX11IndexBuffer>(ptrBuffer, inData.size());
 
 	return std::move(Result);
 }

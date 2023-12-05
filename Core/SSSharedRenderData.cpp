@@ -13,12 +13,12 @@ void SSSharedRenderData::Initialize()
 	CreateScreenBlitVertexData();
 }
 
-std::vector<VT_PositionNormalTexcoordTangent> SSSharedRenderData::GetCubeVertexData()
+std::vector<VT_PositionNormalTexcoordTangent>& SSSharedRenderData::GetCubeVertexData()
 {
 	return mCubeVertexData;
 }
 
-std::vector<VT_PositionNormalTexcoordTangent> SSSharedRenderData::GetSphereVertexData()
+std::vector<VT_PositionNormalTexcoordTangent>& SSSharedRenderData::GetSphereVertexData()
 {
 	return mSphereVertexData;
 }

@@ -28,6 +28,7 @@
 #include <iostream>
 
 SSDX11Renderer* SSDX11Renderer::mRendererInstance = nullptr;
+SSDX11Device* SSDX11Renderer::mDX11Device = nullptr;
 
 SSDX11Renderer::SSDX11Renderer()	
 {

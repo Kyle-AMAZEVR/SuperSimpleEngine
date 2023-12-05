@@ -11,11 +11,11 @@ class CORE_API SSSharedRenderData : public Singleton<SSSharedRenderData>
 public:
 	void Initialize();
 
-	std::vector<VT_PositionNormalTexcoordTangent> GetCubeVertexData();
-	std::vector<VT_PositionNormalTexcoordTangent> GetSphereVertexData();
-	std::vector<UINT> GetCubeIndexData() { return mCubeIndexData; }
-	std::vector<VT_PositionTexcoord> GetScreenBlitVertexData() { return mScreenBlitVertexData; }
-	std::vector<UINT> GetScreenBlitIndexData() {return mScreenBlitIndexData;}
+	std::vector<VT_PositionNormalTexcoordTangent>& GetCubeVertexData();
+	std::vector<VT_PositionNormalTexcoordTangent>& GetSphereVertexData();
+	std::vector<UINT>& GetCubeIndexData() { return mCubeIndexData; }
+	std::vector<VT_PositionTexcoord>& GetScreenBlitVertexData() { return mScreenBlitVertexData; }
+	std::vector<UINT>& GetScreenBlitIndexData() {return mScreenBlitIndexData;}
 	
 protected:
 	void CreateCubeVertexData();

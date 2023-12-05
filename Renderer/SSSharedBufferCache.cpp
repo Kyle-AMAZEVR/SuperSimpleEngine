@@ -52,16 +52,16 @@ void SSSharedBufferCache::InitializeCube()
 
 void SSSharedBufferCache::InitializeSphere()
 {
-	mSphereVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
-	mSphereVertexBuffer->SetVertexBufferData(SSSharedRenderData::Get().GetSphereVertexData());
+	std::vector<VT_PositionNormalTexcoordTangent>& VertexData = SSSharedRenderData::Get().GetSphereVertexData();
+	mSphereVertexBuffer = SSDX11Renderer::GetDX11Device()->CreateVertexBuffer(sizeof(VT_PositionNormalTexcoordTangent), VertexData.size(), VertexData.data());
 }
 
 
 void SSSharedBufferCache::InitializeScreenBlit()
 {
-	mScreenBlitIndexBuffer = std::make_shared<SSDX11IndexBuffer>();
-	mScreenBlitVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
+	std::vector<VT_PositionTexcoord>& VertexData = SSSharedRenderData::Get().GetScreenBlitVertexData();
+	mScreenBlitVertexBuffer = SSDX11Renderer::GetDX11Device()->CreateVertexBuffer(sizeof(VT_PositionTexcoord), VertexData.size(), VertexData.data());
 
-	mScreenBlitVertexBuffer->SetVertexBufferData(SSSharedRenderData::Get().GetScreenBlitVertexData());
-	mScreenBlitIndexBuffer->SetIndexBufferData(SSSharedRenderData::Get().GetScreenBlitIndexData());
+	std::vector<UINT>& IndexData = SSSharedRenderData::Get().GetScreenBlitIndexData();
+	mScreenBlitIndexBuffer = SSDX11Renderer::GetDX11Device()->CreateIndexBuffer(IndexData);
 }

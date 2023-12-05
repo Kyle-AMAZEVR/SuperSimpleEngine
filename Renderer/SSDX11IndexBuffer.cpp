@@ -2,10 +2,10 @@
 #include "SSDX11Renderer.h"
 #include "SSDX11IndexBuffer.h"
 
-SSDX11IndexBuffer::SSDX11IndexBuffer(ID3D11Buffer* ptrBuffer)
+SSDX11IndexBuffer::SSDX11IndexBuffer(ID3D11Buffer* ptrBuffer, unsigned int nIndexCount)
     : mpBuffer(ptrBuffer)
 {
-
+    mIndexCount = nIndexCount;
 }
 
 void* SSDX11IndexBuffer::GetBufferPointer()
