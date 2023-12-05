@@ -22,7 +22,7 @@ SSDX11IndexBuffer::~SSDX11IndexBuffer()
 {
     if (mpBuffer)
     {
-        mpBuffer.Reset();
+        check(0 == mpBuffer.Reset());
     }
 }
 
