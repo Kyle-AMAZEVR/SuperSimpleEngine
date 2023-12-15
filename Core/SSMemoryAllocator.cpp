@@ -4,8 +4,8 @@
 
 bool SSBitSet::IsSet(const unsigned char InIndex) const
 {
-	unsigned int Shifted = mBit << InIndex;
-	return Shifted & 0b10000000'00000000'00000000'00000000;
+	unsigned int Shifted = mBit >> InIndex;
+	return Shifted & 0b00000000'00000000'00000000'00000001;
 }
 
 inline void SSBitSet::Set(const unsigned char InIndex)
@@ -22,13 +22,19 @@ inline void SSBitSet::UnSet(const unsigned char InIndex)
 
 inline bool SSBitSet::IsAllSet() const
 {
-	unsigned int MaxValue = -1;
+	unsigned int MaxValue = 0;
+	MaxValue -= 1;
 	return mBit == MaxValue;
 }
 
 inline bool SSBitSet::IsAnySet() const
 {
 	return mBit > 0;
+}
+
+inline void SSBitSet::SetFirstUnSetBit()
+{
+	Set(GetZeroesOnRight(~mBit));
 }
 
 std::ostream& operator<<(std::ostream& os, const SSBitSet& InBitSet)
@@ -68,17 +74,3 @@ unsigned char SSBitSet::GetFirstUnsetBit() const
 	return GetZeroesOnRight(~mBit);
 }
 
-SSFixedMemoryAllocator::SSFixedMemoryAllocator(const int AllocationSize, const int TotalSize)
-	: mAllocationSize(AllocationSize), mTotalSize(TotalSize)
-{
-	mCount = mTotalSize / mAllocationSize;
-
-	MemoryPool = std::malloc(TotalSize);
-
-
-}
-
-void* SSFixedMemoryAllocator::GetFreeMemory()
-{
-	return nullptr;
-}
