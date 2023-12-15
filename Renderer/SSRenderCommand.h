@@ -11,7 +11,7 @@ public:
 class SSRenderCmdSetVS : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetVS(class SSDX11VertexShader* inVS)
+	SSRenderCmdSetVS(std::shared_ptr<class SSDX11VertexShader> inVS)
 		:mVS(inVS)
 	{
 	}
@@ -19,7 +19,7 @@ public:
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
 private:
-	SSDX11VertexShader* mVS;
+	std::shared_ptr<SSDX11VertexShader> mVS;
 };
 // set current pixel shader
 class SSRenderCmdSetPS : public SSRenderCmdBase

@@ -25,6 +25,7 @@
 #include "SSCustomRenderThreadObject.h"
 #include "SSMathHelper.h"
 #include "SSCameraManager.h"
+#include "SSRenderCommand.h"
 #include <iostream>
 
 SSDX11Renderer* SSDX11Renderer::mRendererInstance = nullptr;
@@ -139,16 +140,16 @@ void SSDX11Renderer::TestCreateResources()
 	mTestCubeTexture->LoadFromDDSFile(L"./Resource/Tex/grasscube1024.dds");
 }
 
-void SSDX11Renderer::AppendRenderCommand(SSDrawCmdBase* cmd)
+void SSDX11Renderer::AppendRenderCommand(SSRenderCmdBase* cmd)
 {
 	mRenderCommandList.push_back(cmd);
 }
 
 void SSDX11Renderer::FlushRenderCommands()
 {
-	for(SSDrawCmdBase* cmd : mRenderCommandList)
+	for(SSRenderCmdBase* cmd : mRenderCommandList)
 	{
-		cmd->Do(mDX11Device);
+		cmd->Execute(mDX11Device->GetDeviceContext());
 	}
 
 	mRenderCommandList.clear();
@@ -202,7 +203,7 @@ IDXGISwapChain* SSDX11Renderer::GetSwapChain()
 	return nullptr;
 }
 
-void SSDX11Renderer::DrawCubeScene()
+void SSDX11Renderer::DrawObject()
 {
 	if (bInitialized == false)
 	{
@@ -214,11 +215,53 @@ void SSDX11Renderer::DrawCubeScene()
 		return;
 	}
 
+	static bool bEquidirectToCubeDrawn = false;
 
-	// @equirect to cube
-	// @start
-	XMFLOAT3 origin = XMFLOAT3(0, 0, 0);
-	auto proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(90.0f), 1.0f, 0.1f, 10.0f);
+	if (bEquidirectToCubeDrawn == false)
+	{
+		if (TryLoadEnvCubemap(L"./Prebaked/EnvCubemap.dds") == false)
+		{
+			CreateEnvCubemap();
+		}
+		bEquidirectToCubeDrawn = true;
+	}
+
+	mGBuffer->Clear(mDX11Device);
+	mGBuffer->SetCurrentRenderTarget(mDX11Device);
+	
+	DrawSkybox();
+
+	// draw game objects
+	auto& objects = SSRenderingObjectManager::Get().GetRenderingObjectMap();
+	for (auto [k, v] : objects)
+	{
+		v->Draw(mDX11Device->GetDeviceContext());
+	}
+	
+	float ClearColor[4]{ 1,0,0,1 };
+	mDX11Device->ClearDefaultRenderTargetView(ClearColor);
+	mDX11Device->SetDefaultRenderTargetAsCurrent();
+
+	SSDrawCommand blitDrawCmd{ mScreenBlitVertexShader, mScreenBlitPixelShader, mScreenBlit };
+	
+	blitDrawCmd.SetPSTexture("sampleTexture", mGBuffer->GetColorOutput());
+
+	blitDrawCmd.Do(mDX11Device);
+
+	mDX11Device->Present();
+}
+
+void SSDX11Renderer::DrawCubeScene()
+{
+	if (bInitialized == false)
+	{
+		return;
+	}
+
+	if (mPaused)
+	{
+		return;
+	}
 
 	static bool bEquidirectToCubeDrawn = false;
 	static bool bConvolutionDrawn = false;
@@ -589,9 +632,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {	
-	DrawCubeScene();
-	//DrawSponzaScene();
-	//DrawDummyScene();
+	//DrawCubeScene();
+	DrawObject();
 }
 
 void SSDX11Renderer::DrawSkybox()

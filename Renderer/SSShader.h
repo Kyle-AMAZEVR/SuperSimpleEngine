@@ -87,12 +87,13 @@ public:
 	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) override;	
 	
 	virtual void SetSampler(std::string name, ID3D11SamplerState* sampler) override;
+
+	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }
 protected:	
     void CreateInputLayout(ID3D11ShaderReflection* shaderReflection, const SSCompileContext& context);
     ID3D11VertexShader* mVertexShader = nullptr;
     ID3D11InputLayout* mInputLayout = nullptr;
-
-
+	D3D_PRIMITIVE_TOPOLOGY mPrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 };
 
 template<class T>

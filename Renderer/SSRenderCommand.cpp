@@ -8,6 +8,9 @@
 
 void SSRenderCmdSetVS::Execute(ID3D11DeviceContext * inDeviceContext)
 {
+	D3D_PRIMITIVE_TOPOLOGY PrimitiveType = mVS->GetPrimitiveType();
+	inDeviceContext->IAGetPrimitiveTopology(&PrimitiveType);
+	inDeviceContext->IASetInputLayout(mVS->GetInputLayout());
 	inDeviceContext->VSSetShader(mVS->GetShader(), nullptr, 0);
 }
 

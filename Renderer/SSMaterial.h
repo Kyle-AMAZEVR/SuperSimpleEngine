@@ -18,7 +18,10 @@ class SSMaterial : public SSRenderThreadResidentObject
 public:	
 	SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps);
 
+	virtual void SetAsCurrent(SSDX11Renderer* InRenderer);
+
 	virtual void SetCurrent();
+
 	virtual void ReleaseCurrent();
 
 	template<class T>
@@ -29,7 +32,6 @@ public:
 	void SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
 	void SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
 	
-
 	template<class T>
 	void SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 

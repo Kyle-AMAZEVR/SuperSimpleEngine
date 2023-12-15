@@ -12,5 +12,6 @@ protected:
 	class std::shared_ptr<class SSCube> mCube = nullptr;
 	class std::shared_ptr<class SSSphere> mSphere = nullptr;
 	class std::shared_ptr<class SSPBRSphere> mPBRSphere = nullptr;
+	
 };
 

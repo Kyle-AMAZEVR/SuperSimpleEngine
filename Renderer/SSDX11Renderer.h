@@ -22,7 +22,7 @@ public:
 	static SSDX11Renderer& Get();
 	static SSDX11Renderer* GetPtr();	
 
-	void AppendRenderCommand(class SSDrawCmdBase* cmd);
+	void AppendRenderCommand(class SSRenderCmdBase* cmd);
 	void FlushRenderCommands();
 
 	DXGI_FORMAT SwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -35,12 +35,13 @@ public:
 
 protected:
 	void DrawCubeScene();
+	void DrawObject();
 	void DrawSkybox();
 	void DrawDummyScene();	
 	
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
 
-	std::vector<class SSDrawCmdBase*> mRenderCommandList;
+	std::vector<class SSRenderCmdBase*> mRenderCommandList;
 
 	static SSDX11Renderer* mRendererInstance;
 

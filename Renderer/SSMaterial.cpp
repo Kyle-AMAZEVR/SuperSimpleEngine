@@ -3,6 +3,7 @@
 #include "SSMaterial.h"
 #include "SSShader.h"
 #include "SSDX11Renderer.h"
+#include "SSRenderCommand.h"
 
 SSMaterial::SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps)
 	: mVS(vs), mPS(ps)
@@ -11,6 +12,10 @@ SSMaterial::SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<S
 	mPixelShaderConstantBufferMap = mPS->GetConstantBufferMap();
 }
 
+void SSMaterial::SetAsCurrent(SSDX11Renderer* InRenderer) 
+{
+	InRenderer->AppendRenderCommand(new SSRenderCmdSetVS(mVS));
+}
 
 void SSMaterial::SetCurrent()
 {
@@ -23,10 +28,10 @@ void SSMaterial::SetCurrent()
 	deviceContext->IASetPrimitiveTopology(mPrimitiveType);
 
 	// @ set vertex, pixel shader
-
 	deviceContext->VSSetShader(mVS->GetShader(), nullptr, 0);
+	
+	// @
 	deviceContext->PSSetShader(mPS->GetShader(), nullptr, 0);
-
 }
 
 

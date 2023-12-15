@@ -20,6 +20,11 @@ struct MVP
 	float value;
 };
 
+ struct alignas(16) CbufferUnsingedInt
+ {
+	 unsigned int Value;
+ };
+
  struct alignas(16) CbufferInvScreenSize
  {
 	 XMFLOAT2 InvScreenSize;
