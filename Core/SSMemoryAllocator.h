@@ -12,18 +12,14 @@ public:
 	}
 
 	static inline unsigned char GetZeroesOnRight(unsigned int);
-
 	inline bool IsSet(const unsigned char InIndex) const;
 	inline void Set(const unsigned char InIndex);
 	inline void UnSet(const unsigned char InIndex);
 	inline bool IsAllSet() const;
 	inline bool IsAnySet() const;
-	inline unsigned char GetZeroesOnRight() const;
-	
+	inline unsigned char GetZeroesOnRight() const;	
 	inline unsigned char GetFirstUnsetBit() const;
-
-	inline void SetFirstUnSetBit();
-	
+	inline void SetFirstUnSetBit();	
 	
 	CORE_API friend std::ostream& operator<<(std::ostream& os, const SSBitSet& InBitSet);
 
@@ -113,7 +109,7 @@ float SSFixedMemoryAllocator<TAllocSize>::GetOccupiedRate()
 	return static_cast<float>(mAllocatedCount) / mTotalCount;
 }
 
-class CORE_API SSMemoryAllocator4 : public SSFixedMemoryAllocator<64>
+class CORE_API SSMemoryAllocator4 : public SSFixedMemoryAllocator<4>
 {
 
 };

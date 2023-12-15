@@ -6,6 +6,20 @@
 
 using namespace std::chrono_literals;
 
+class FourByteClass
+{
+public:
+	FourByteClass(unsigned int InMember) : mMember(InMember)
+	{
+		std::cout << "FourByteClass() Constructor"<<mMember << std::endl;
+	}
+	~FourByteClass()
+	{
+		std::cout << "~FourByteClass() Destructor"<<mMember << std::endl;
+	}
+	unsigned int mMember = 0;
+};
+
 int main()
 {
 	SSBitSet Test{};
@@ -20,22 +34,24 @@ int main()
 
 	SSMemoryAllocator4 TestAllocator{};
 
-	void* PtrList[1024] = { nullptr };
+	FourByteClass* PtrList[1024] = { nullptr };
 
 	int CurrentIndex = 0;
 
 	while (1)
 	{
-		std::this_thread::sleep_for(100ms);
+		std::this_thread::sleep_for(200ms);
 
 		if (std::rand() % 2 == 0)
 		{
-			PtrList[CurrentIndex++] = TestAllocator.GetFreeMemory();
-			std::cout << "Allocated : \t"<< CurrentIndex << std::endl;
+			void* Address = TestAllocator.GetFreeMemory();
+			PtrList[CurrentIndex] = new (Address) FourByteClass(std::rand() % 1024);
+			std::cout << "Allocated : \t"<< CurrentIndex++ << std::endl;
 		}
 		else if (CurrentIndex > 0)
-		{			
-			TestAllocator.FreeMemory(PtrList[--CurrentIndex]);
+		{
+			PtrList[--CurrentIndex]->~FourByteClass();
+			TestAllocator.FreeMemory(PtrList[CurrentIndex]);
 			std::cout << "DeAllocated : \t" << CurrentIndex << std::endl;
 		}
 	}
