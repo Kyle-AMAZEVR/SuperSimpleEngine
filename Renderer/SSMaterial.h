@@ -18,7 +18,10 @@ class SSMaterial : public SSRenderThreadResidentObject
 public:	
 	SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps);
 
-	virtual void SetAsCurrent(SSDX11Renderer* InRenderer);
+	// 
+	void SetAsCurrent(SSDX11Renderer* InRenderer);
+	void SetPSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture);
+	void SetVSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture);
 
 	virtual void SetCurrent();
 

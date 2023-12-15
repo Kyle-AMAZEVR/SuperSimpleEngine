@@ -34,7 +34,7 @@ include_directories("Core")
 
 
 
-add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp SSApplication.cpp DXWindow.rc)
+add_executable(SuperSimpleEngine resource.h targetver.h SSAppWindow.h SSAppWindow.cpp SSApplication.cpp DXWindow.rc "Console/main.cpp")
 
 if(WIN32)
 	set_target_properties(SuperSimpleEngine PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")	
@@ -54,5 +54,19 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Resource DESTINATION ${CMAKE_CURRENT_BINAR
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lib/bin DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
+## console app ##
+file(GLOB SOURCES "Console/*.cpp")
+file(GLOB HEADERS "Console/*.h")
+
+add_executable(ConsoleApp Console/main.cpp)
+
+target_include_directories(ConsoleApp PUBLIC "Core" "Engine")
+
+target_link_libraries(ConsoleApp PRIVATE Core)
+
+target_compile_options(ConsoleApp PRIVATE /GR-)
+
+set_target_properties(ConsoleApp PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:console")	
+set_target_properties(ConsoleApp PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:console")
 
 ###########################################################

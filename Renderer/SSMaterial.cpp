@@ -15,6 +15,17 @@ SSMaterial::SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<S
 void SSMaterial::SetAsCurrent(SSDX11Renderer* InRenderer) 
 {
 	InRenderer->AppendRenderCommand(new SSRenderCmdSetVS(mVS));
+	//InRenderer->AppendRenderCommand(new SSRenderCmdSetPS(mPS));
+}
+
+void SSMaterial::SetPSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture)
+{
+	//InRenderer->AppendRenderCommand(new SSRenderCmdSetPSTexture());
+}
+
+void SSMaterial::SetVSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture)
+{
+
 }
 
 void SSMaterial::SetCurrent()
