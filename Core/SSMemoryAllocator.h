@@ -1,6 +1,7 @@
 
 #pragma once
 #include "SSCore.h"
+#include "Singleton.h"
 #include <iostream>
 
 class CORE_API SSBitSet
@@ -32,27 +33,28 @@ class SSFixedMemoryAllocator
 {
 public:
 	SSFixedMemoryAllocator();
-	~SSFixedMemoryAllocator();
+	~SSFixedMemoryAllocator();	
 
 	void* GetFreeMemory();
 	bool  FreeMemory(void* InAddress);
 	float GetOccupiedRate();
-private:	
 
+private:
 	UINT64		mStartAddress;
 	int			mAllocationSize = TAllocSize;
 	int			mTotalCount = 0;
 	int			mAllocatedCount = 0;
 	void*		mMemoryPool;
-	SSBitSet	mBitSetBucket[1024]; // 4byte * 1024 
+	static const int	mBucketSize = 1024;
+	SSBitSet	mBitSetBucket[mBucketSize]; // 4byte * 1024 
 };
 
 template<unsigned int TAllocSize>
 SSFixedMemoryAllocator<TAllocSize>::SSFixedMemoryAllocator()
 {
-	mMemoryPool = std::malloc(1024 * TAllocSize);
-	mTotalCount = 1024 * 32;
-	mStartAddress = (UINT64)mMemoryPool;
+	mMemoryPool		= std::malloc(mBucketSize * 32 * TAllocSize);
+	mTotalCount		= mBucketSize * 32;
+	mStartAddress	= (UINT64)mMemoryPool;
 }
 
 template<unsigned int TAllocSize>
@@ -64,7 +66,7 @@ SSFixedMemoryAllocator<TAllocSize>::~SSFixedMemoryAllocator()
 template<unsigned int TAllocSize>
 void* SSFixedMemoryAllocator<TAllocSize>::GetFreeMemory()
 {
-	for (int i = 0; i < 1024; ++i)
+	for (int i = 0; i < mBucketSize; ++i)
 	{
 		if (!mBitSetBucket[i].IsAllSet())
 		{
@@ -73,6 +75,7 @@ void* SSFixedMemoryAllocator<TAllocSize>::GetFreeMemory()
 			check(!mBitSetBucket[i].IsSet(j));
 
 			mBitSetBucket[i].Set(j);
+
 			mAllocatedCount++;
 
 			void* ResultAddress = reinterpret_cast<void*>(reinterpret_cast<unsigned char*>(mMemoryPool) + ((32 * TAllocSize) * i + (TAllocSize * j)));
@@ -91,7 +94,9 @@ template<unsigned int TAllocSize>
 bool SSFixedMemoryAllocator<TAllocSize>::FreeMemory(void* InAddress)
 {
 	UINT64 TempAddress			= (UINT64)InAddress;
+
 	unsigned int BucketIndex	= (TempAddress - mStartAddress) / (32 * TAllocSize);
+
 	unsigned int BitIndex		= ((TempAddress - mStartAddress) % (32 * TAllocSize)) / TAllocSize;
 
 	check(mBitSetBucket[BucketIndex].IsSet(BitIndex));
@@ -111,5 +116,36 @@ float SSFixedMemoryAllocator<TAllocSize>::GetOccupiedRate()
 
 class CORE_API SSMemoryAllocator4 : public SSFixedMemoryAllocator<4>
 {
+};
 
+class CORE_API SSMemoryAllocator8 : public SSFixedMemoryAllocator<8>
+{
+};
+
+class CORE_API SSMemoryAllocator16 : public SSFixedMemoryAllocator<16>
+{
+};
+
+class CORE_API SSMemoryAllocator32 : public SSFixedMemoryAllocator<32>
+{
+};
+
+class CORE_API SSMemoryAllocator64 : public SSFixedMemoryAllocator<64>
+{
+};
+
+class CORE_API SSMemoryAllocator128 : public SSFixedMemoryAllocator<128>
+{
+};
+
+class CORE_API SSMemoryManager : public Singleton<SSMemoryManager>
+{
+public:
+	void* Alloc(size_t Size);
+	void  DeAlloc(void* InAddress, int SizeHint = -1);
+protected:
+	SSMemoryAllocator4	mFourBytesAllocator;
+	SSMemoryAllocator8	mEightBytesAllocator;
+	SSMemoryAllocator16 mSixteenBytesAllocator;
+	SSMemoryAllocator32 mThirtyTwoBytesAllocator;
 };

@@ -74,3 +74,38 @@ unsigned char SSBitSet::GetFirstUnsetBit() const
 	return GetZeroesOnRight(~mBit);
 }
 
+void SSMemoryManager::DeAlloc(void* InAddress, int InSizeHint)
+{
+	if (InSizeHint == -1)
+	{
+
+	}
+	else
+	{
+
+	}
+}
+
+void* SSMemoryManager::Alloc(size_t InSize)
+{
+	if (InSize == 4)
+	{
+		return mFourBytesAllocator.GetFreeMemory();
+	}
+	else if (InSize == 8)
+	{
+		return mEightBytesAllocator.GetFreeMemory();
+	}
+	else if (InSize == 16)
+	{
+		return mSixteenBytesAllocator.GetFreeMemory();
+	}
+	else if (InSize == 32)
+	{
+		return mThirtyTwoBytesAllocator.GetFreeMemory();
+	}
+
+	check(false);
+
+	return nullptr;
+}

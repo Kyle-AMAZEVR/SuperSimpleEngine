@@ -632,8 +632,8 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 void SSDX11Renderer::DrawScene()
 {	
-	//DrawCubeScene();
-	DrawObject();
+	DrawCubeScene();
+	//DrawObject();
 }
 
 void SSDX11Renderer::DrawSkybox()

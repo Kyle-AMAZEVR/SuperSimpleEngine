@@ -17,6 +17,18 @@ public:
 	{
 		std::cout << "~FourByteClass() Destructor"<<mMember << std::endl;
 	}
+
+	void* operator new(size_t size)
+	{
+		void* PtrMemory = SSMemoryManager::Get().Alloc(size);
+		return PtrMemory;
+	}
+
+	void operator delete(void* InAddress)
+	{
+
+	}
+
 	unsigned int mMember = 0;
 };
 
@@ -32,7 +44,11 @@ int main()
 	
 	std::cout<< result <<std::endl;
 
-	SSMemoryAllocator4 TestAllocator{};
+	FourByteClass* ptrFourBytes = new FourByteClass{ 10 };
+
+	std::cout << ptrFourBytes->mMember << std::endl;
+
+	/*SSMemoryAllocator4 TestAllocator{};
 
 	FourByteClass* PtrList[1024] = { nullptr };
 
@@ -63,6 +79,7 @@ int main()
 	std::cout << *Hello << std::endl;	
 
 	TestAllocator.FreeMemory(Hello);
+	*/
 
 	return 0;
 }
