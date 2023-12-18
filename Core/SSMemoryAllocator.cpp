@@ -56,7 +56,7 @@ inline unsigned char SSBitSet::GetZeroesOnRight(unsigned int InBitValue)
 }
 
 unsigned char SSBitSet::GetZeroesOnRight() const
-{	
+{
 	// https://graphics.stanford.edu/~seander/bithacks.html
 	unsigned int c = mBit;  // your input number
 	int r;           // result goes here
@@ -73,6 +73,7 @@ unsigned char SSBitSet::GetFirstUnsetBit() const
 {
 	return GetZeroesOnRight(~mBit);
 }
+
 
 void SSMemoryManager::DeAlloc(void* InAddress, int InSizeHint)
 {
@@ -100,6 +101,10 @@ void* SSMemoryManager::Alloc(size_t InSize)
 	{
 		return mSixteenBytesAllocator.GetFreeMemory();
 	}
+	else if (InSize == 24)
+	{
+		return mTwentyFourBytesAllocator.GetFreeMemory();
+	}
 	else if (InSize == 32)
 	{
 		return mThirtyTwoBytesAllocator.GetFreeMemory();
@@ -107,5 +112,10 @@ void* SSMemoryManager::Alloc(size_t InSize)
 
 	check(false);
 
+	return nullptr;
+}
+
+void* SSAlignedMemoryAllocator::GetFreeMemory(size_t size)
+{
 	return nullptr;
 }

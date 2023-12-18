@@ -3,8 +3,22 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "Test.h"
 
 using namespace std::chrono_literals;
+
+void* operator new(size_t size)
+{
+	void* PtrMemory = SSMemoryManager::Get().Alloc(size);
+	return PtrMemory;
+}
+
+template<class T>
+class TSizeofClass
+{
+public:
+	static constexpr int Size = sizeof(T);
+};
 
 class FourByteClass
 {
@@ -20,33 +34,34 @@ public:
 
 	void* operator new(size_t size)
 	{
-		void* PtrMemory = SSMemoryManager::Get().Alloc(size);
+		void* PtrMemory = SSMemoryManager::Get().Alloc(TSizeofClass<FourByteClass>::Size);
 		return PtrMemory;
 	}
 
 	void operator delete(void* InAddress)
 	{
-
+		SSMemoryManager::Get().DeAlloc(InAddress, TSizeofClass<FourByteClass>::Size);
 	}
 
 	unsigned int mMember = 0;
 };
 
+
+
 int main()
 {
+	
 	SSBitSet Test{};
 
-	Test.Set(0);
+	auto UnsetBitPos = Test.GetFirstUnsetBit();
 
-	std::cout << Test << std::endl;
+	std::cout << UnsetBitPos << std::endl;
 
-	unsigned char result = Test.GetFirstUnsetBit();
-	
-	std::cout<< result <<std::endl;
+	SSBitSet Test2{ 0b1111'0000'1111'0000'1111'0000'1111'0000 };
 
-	FourByteClass* ptrFourBytes = new FourByteClass{ 10 };
+	bool HasUnset = Test2.HasUnset(5);
 
-	std::cout << ptrFourBytes->mMember << std::endl;
+	std::cout << HasUnset << std::endl;
 
 	/*SSMemoryAllocator4 TestAllocator{};
 

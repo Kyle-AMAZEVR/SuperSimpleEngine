@@ -12,6 +12,11 @@ public:
 	{
 	}
 
+	SSBitSet(unsigned int InValue)
+		: mBit(InValue) 
+	{
+	}
+
 	static inline unsigned char GetZeroesOnRight(unsigned int);
 	inline bool IsSet(const unsigned char InIndex) const;
 	inline void Set(const unsigned char InIndex);
@@ -20,13 +25,16 @@ public:
 	inline bool IsAnySet() const;
 	inline unsigned char GetZeroesOnRight() const;	
 	inline unsigned char GetFirstUnsetBit() const;
-	inline void SetFirstUnSetBit();	
+	
+	inline void SetFirstUnSetBit();
 	
 	CORE_API friend std::ostream& operator<<(std::ostream& os, const SSBitSet& InBitSet);
 
 private:
 	unsigned int mBit;
 };
+
+
 
 template<unsigned int TAllocSize>
 class SSFixedMemoryAllocator
@@ -126,6 +134,9 @@ class CORE_API SSMemoryAllocator16 : public SSFixedMemoryAllocator<16>
 {
 };
 
+class CORE_API SSMemoryAllocator24 : public SSFixedMemoryAllocator<24>
+{};
+
 class CORE_API SSMemoryAllocator32 : public SSFixedMemoryAllocator<32>
 {
 };
@@ -138,6 +149,21 @@ class CORE_API SSMemoryAllocator128 : public SSFixedMemoryAllocator<128>
 {
 };
 
+// 8byte aligned 
+class CORE_API SSAlignedMemoryAllocator
+{
+public:
+	void* GetFreeMemory(size_t size);
+
+private:
+	UINT64		mStartAddress;	
+	int			mTotalCount = 0;
+	int			mAllocatedCount = 0;
+	void*		mMemoryPool;
+	static const int	mBucketSize = 1024;
+	SSBitSet	mBitSetBucket[mBucketSize]; // 4byte * 1024 
+};
+
 class CORE_API SSMemoryManager : public Singleton<SSMemoryManager>
 {
 public:
@@ -147,5 +173,6 @@ protected:
 	SSMemoryAllocator4	mFourBytesAllocator;
 	SSMemoryAllocator8	mEightBytesAllocator;
 	SSMemoryAllocator16 mSixteenBytesAllocator;
+	SSMemoryAllocator24 mTwentyFourBytesAllocator;
 	SSMemoryAllocator32 mThirtyTwoBytesAllocator;
 };
