@@ -9,6 +9,9 @@ public:
 
 	float GetDeltaTime() const;
 
+	void Start();
+	void Stop();
+
 	void Tick();
 
 protected:

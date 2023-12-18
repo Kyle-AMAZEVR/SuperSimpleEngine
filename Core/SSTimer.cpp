@@ -13,6 +13,16 @@ SSGameTimer::SSGameTimer()
 	PrevTime = li.QuadPart;
 }
 
+void SSGameTimer::Start()
+{
+	Tick();
+}
+
+void SSGameTimer::Stop()
+{
+	Tick();
+}
+
 void SSGameTimer::Tick()
 {
 	LARGE_INTEGER Now;

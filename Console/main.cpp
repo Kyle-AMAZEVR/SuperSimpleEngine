@@ -3,6 +3,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <deque>
 #include "Test.h"
 #include "SSTimer.h"
 
@@ -30,16 +31,19 @@ public:
 
 	
 	unsigned int mMember = 0;
+	unsigned int mMember2 = 0;
 };
 
 
 
 int main()
 {
-	SSMemoryAllocator4 TestAllocator{};
+	SSMemoryAllocator8 TestAllocator{};
 	SSGameTimer TestTimer;
 	{
 		FourByteClass* PtrList[8192] = { nullptr };
+
+		std::deque<FourByteClass*> PtrDeque;
 
 		int CurrentIndex = 0;
 
@@ -50,13 +54,14 @@ int main()
 			if (std::rand() % 2 == 0)
 			{
 				void* Address = TestAllocator.GetFreeMemory();
-				PtrList[CurrentIndex] = new (Address) FourByteClass(std::rand() % 1024);
-				CurrentIndex++;
+				PtrDeque.push_back(new (Address) FourByteClass(std::rand() % 1024));				
 			}
-			else if (CurrentIndex > 0)
+			else if (PtrDeque.size() > 0)
 			{
-				PtrList[--CurrentIndex]->~FourByteClass();
-				TestAllocator.FreeMemory(PtrList[CurrentIndex]);
+				FourByteClass* Ptr = PtrDeque.front();
+				Ptr->~FourByteClass();
+				TestAllocator.FreeMemory(Ptr);
+				PtrDeque.pop_front();
 			}
 		}
 		TestTimer.Tick();
@@ -65,9 +70,8 @@ int main()
 	}
 	
 	{
-		FourByteClass* PtrList[8192] = { nullptr };
+		std::deque<FourByteClass*> PtrDeque;
 
-		int CurrentIndex = 0;
 
 		TestTimer.Tick();
 
@@ -75,12 +79,14 @@ int main()
 		{
 			if (std::rand() % 2 == 0)
 			{				
-				PtrList[CurrentIndex] = new FourByteClass(std::rand() % 1024);
-				CurrentIndex++;
+				PtrDeque.push_back(new FourByteClass(std::rand() % 1024));
+				//CurrentIndex++;
 			}
-			else if (CurrentIndex > 0)
+			else if (PtrDeque.size() > 0)
 			{
-				delete PtrList[--CurrentIndex];
+				FourByteClass* Ptr = PtrDeque.front();
+				delete Ptr;
+				PtrDeque.pop_front();
 			}
 		}
 
