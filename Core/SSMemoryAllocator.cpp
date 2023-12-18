@@ -117,5 +117,7 @@ void* SSMemoryManager::Alloc(size_t InSize)
 
 void* SSAlignedMemoryAllocator::GetFreeMemory(size_t size)
 {
+	check(size == 16|| size ==32 || size==64 || size==128 || size==256)
+
 	return nullptr;
 }

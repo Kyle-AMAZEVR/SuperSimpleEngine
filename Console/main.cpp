@@ -4,14 +4,10 @@
 #include <thread>
 #include <chrono>
 #include "Test.h"
+#include "SSTimer.h"
 
 using namespace std::chrono_literals;
 
-void* operator new(size_t size)
-{
-	void* PtrMemory = SSMemoryManager::Get().Alloc(size);
-	return PtrMemory;
-}
 
 template<class T>
 class TSizeofClass
@@ -25,24 +21,14 @@ class FourByteClass
 public:
 	FourByteClass(unsigned int InMember) : mMember(InMember)
 	{
-		std::cout << "FourByteClass() Constructor"<<mMember << std::endl;
+		//std::cout << "FourByteClass() Constructor"<<mMember << std::endl;
 	}
 	~FourByteClass()
 	{
-		std::cout << "~FourByteClass() Destructor"<<mMember << std::endl;
+		//std::cout << "~FourByteClass() Destructor"<<mMember << std::endl;
 	}
 
-	void* operator new(size_t size)
-	{
-		void* PtrMemory = SSMemoryManager::Get().Alloc(TSizeofClass<FourByteClass>::Size);
-		return PtrMemory;
-	}
-
-	void operator delete(void* InAddress)
-	{
-		SSMemoryManager::Get().DeAlloc(InAddress, TSizeofClass<FourByteClass>::Size);
-	}
-
+	
 	unsigned int mMember = 0;
 };
 
@@ -50,51 +36,61 @@ public:
 
 int main()
 {
-	
-	SSBitSet Test{};
-
-	auto UnsetBitPos = Test.GetFirstUnsetBit();
-
-	std::cout << UnsetBitPos << std::endl;
-
-	SSBitSet Test2{ 0b1111'0000'1111'0000'1111'0000'1111'0000 };
-
-	bool HasUnset = Test2.HasUnset(5);
-
-	std::cout << HasUnset << std::endl;
-
-	/*SSMemoryAllocator4 TestAllocator{};
-
-	FourByteClass* PtrList[1024] = { nullptr };
-
-	int CurrentIndex = 0;
-
-	while (1)
+	SSMemoryAllocator4 TestAllocator{};
+	SSGameTimer TestTimer;
 	{
-		std::this_thread::sleep_for(200ms);
+		FourByteClass* PtrList[8192] = { nullptr };
 
-		if (std::rand() % 2 == 0)
+		int CurrentIndex = 0;
+
+		TestTimer.Tick();
+
+		for (int i = 0; i < 10000000; ++i)
 		{
-			void* Address = TestAllocator.GetFreeMemory();
-			PtrList[CurrentIndex] = new (Address) FourByteClass(std::rand() % 1024);
-			std::cout << "Allocated : \t"<< CurrentIndex++ << std::endl;
+			if (std::rand() % 2 == 0)
+			{
+				void* Address = TestAllocator.GetFreeMemory();
+				PtrList[CurrentIndex] = new (Address) FourByteClass(std::rand() % 1024);
+				CurrentIndex++;
+			}
+			else if (CurrentIndex > 0)
+			{
+				PtrList[--CurrentIndex]->~FourByteClass();
+				TestAllocator.FreeMemory(PtrList[CurrentIndex]);
+			}
 		}
-		else if (CurrentIndex > 0)
+		TestTimer.Tick();
+
+		std::cout << "Took " << TestTimer.GetDeltaTime() << std::endl;
+	}
+	
+	{
+		FourByteClass* PtrList[8192] = { nullptr };
+
+		int CurrentIndex = 0;
+
+		TestTimer.Tick();
+
+		for (int i = 0; i < 10000000; ++i)
 		{
-			PtrList[--CurrentIndex]->~FourByteClass();
-			TestAllocator.FreeMemory(PtrList[CurrentIndex]);
-			std::cout << "DeAllocated : \t" << CurrentIndex << std::endl;
+			if (std::rand() % 2 == 0)
+			{				
+				PtrList[CurrentIndex] = new FourByteClass(std::rand() % 1024);
+				CurrentIndex++;
+			}
+			else if (CurrentIndex > 0)
+			{
+				delete PtrList[--CurrentIndex];
+			}
 		}
+
+		TestTimer.Tick();
+
+		std::cout << "Took " << TestTimer.GetDeltaTime() << std::endl;
 	}
 
-	unsigned int* Hello = (unsigned int*)TestAllocator.GetFreeMemory();
-
-	*Hello = 4;
-
-	std::cout << *Hello << std::endl;	
-
-	TestAllocator.FreeMemory(Hello);
-	*/
+	char a;
+	std::cin >> a;
 
 	return 0;
 }

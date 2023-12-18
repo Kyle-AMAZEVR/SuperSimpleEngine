@@ -53,7 +53,7 @@ private:
 	int			mTotalCount = 0;
 	int			mAllocatedCount = 0;
 	void*		mMemoryPool;
-	static const int	mBucketSize = 1024;
+	static const int	mBucketSize = 8192;
 	SSBitSet	mBitSetBucket[mBucketSize]; // 4byte * 1024 
 };
 
@@ -149,19 +149,22 @@ class CORE_API SSMemoryAllocator128 : public SSFixedMemoryAllocator<128>
 {
 };
 
-// 8byte aligned 
+class SSAlignendMemAddress
+{
+public:
+	unsigned int StartOffset;
+	unsigned int Size;
+};
+
+// poor mem allocator
 class CORE_API SSAlignedMemoryAllocator
 {
 public:
 	void* GetFreeMemory(size_t size);
 
 private:
-	UINT64		mStartAddress;	
-	int			mTotalCount = 0;
-	int			mAllocatedCount = 0;
-	void*		mMemoryPool;
-	static const int	mBucketSize = 1024;
-	SSBitSet	mBitSetBucket[mBucketSize]; // 4byte * 1024 
+
+
 };
 
 class CORE_API SSMemoryManager : public Singleton<SSMemoryManager>
