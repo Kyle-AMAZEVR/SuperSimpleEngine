@@ -6,6 +6,7 @@
 #include "SSName.h"
 #include "wrl/client.h"
 #include <map>
+#include <string_view>
 
 using namespace std;
 using Microsoft::WRL::ComPtr;

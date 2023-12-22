@@ -77,9 +77,9 @@ unsigned char SSBitSet::GetFirstUnsetBit() const
 
 void SSMemoryManager::DeAlloc(void* InAddress, int InSizeHint)
 {
-	if (InSizeHint == -1)
+	if (InSizeHint == 4)
 	{
-
+		mFourBytesAllocator.FreeMemory(InAddress);
 	}
 	else
 	{

@@ -5,6 +5,7 @@
 #include "SSDX11RenderTarget.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSDX11IndexBuffer.h"
+#include "SSMemoryAllocator.h"
 
 void SSRenderCmdSetVS::Execute(ID3D11DeviceContext * inDeviceContext)
 {
@@ -12,6 +13,16 @@ void SSRenderCmdSetVS::Execute(ID3D11DeviceContext * inDeviceContext)
 	inDeviceContext->IAGetPrimitiveTopology(&PrimitiveType);
 	inDeviceContext->IASetInputLayout(mVS->GetInputLayout());
 	inDeviceContext->VSSetShader(mVS->GetShader(), nullptr, 0);
+}
+
+void* SSRenderCmdSetVS::operator new(size_t size)
+{
+	return SSMemoryManager::Get().Alloc(size);
+}
+
+void SSRenderCmdSetVS::operator delete(void* Ptr)
+{
+	SSMemoryManager::Get().DeAlloc(Ptr, sizeof(SSRenderCmdSetVS));
 }
 
 void SSRenderCmdSetPS::Execute(ID3D11DeviceContext* inDeviceContext)

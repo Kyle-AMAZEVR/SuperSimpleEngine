@@ -18,6 +18,10 @@ public:
 
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
+	void* operator new (size_t size);
+
+	void operator delete(void* Ptr);
+
 private:
 	std::shared_ptr<SSDX11VertexShader> mVS;
 };

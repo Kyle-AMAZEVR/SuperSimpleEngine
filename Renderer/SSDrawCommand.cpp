@@ -27,8 +27,6 @@ SSDrawCommand::SSDrawCommand(std::shared_ptr<SSDX11VertexShader> vs, std::shared
 	mPixelShaderConstantBufferMap = mpPS->GetConstantBufferMap();
 }
 
-
-
 void SSDrawCommand::Do(SSDX11Device* device)
 {
 	check(mpVS != nullptr);

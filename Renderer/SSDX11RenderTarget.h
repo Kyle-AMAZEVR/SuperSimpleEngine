@@ -10,13 +10,24 @@ using Microsoft::WRL::ComPtr;
 
 class SSDX11RenderTargetTexture2D : public SSDX11Texture2D
 {
+	friend class SSDX11Device;
 public:	
-	SSDX11RenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount=5);
+	SSDX11RenderTargetTexture2D(
+		ID3D11Texture2D* InTexture, 
+		ID3D11ShaderResourceView* InSRV, 
+		ID3D11RenderTargetView* InRTArray[10],
+		const UINT width, 
+		const UINT height, 
+		DXGI_FORMAT eFormat, 
+		bool bGeneratedMips = false, 
+		UINT maxMipCount = 5);
+
 	virtual ~SSDX11RenderTargetTexture2D();
 	virtual void Resize(const UINT newWidth, const UINT newHeight);	
 	virtual void SaveAsDDSFile(std::wstring filename);	
 	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip].Get(); }
 	virtual void Clear(ID3D11DeviceContext* deviceContext);
+
 	void Destroy();
 	UINT GetMipLevels() const { return mMipLevels; }
 

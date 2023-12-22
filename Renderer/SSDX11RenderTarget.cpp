@@ -6,14 +6,22 @@
 #include "DirectXTex.h"
 #include "SSDX11Device.h"
 
-SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGenerateMips, UINT maxMipCount)
+SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(
+	ID3D11Texture2D* InTexture,
+	ID3D11ShaderResourceView* InSRV,
+	ID3D11RenderTargetView* InRTArray[10],
+	const UINT width,
+	const UINT height,
+	DXGI_FORMAT eFormat,
+	bool bGeneratedMips,
+	UINT maxMipCount)
 {
 	mWidth = width;
 	mHeight = height;
 	mTextureFormat = eFormat;
-	mGenerateMips = bGenerateMips;
+	mGenerateMips = bGeneratedMips;
 
-	if (bGenerateMips)
+	if (bGeneratedMips)
 	{
 		check(mWidth == mHeight);
 
@@ -21,15 +29,20 @@ SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(const UINT width, const
 		check(bPowerOfTwo);
 
 		mMipLevels = maxMipCount;
-		InternalCreate(width, height, eFormat, mMipLevels);
 	}
 	else
 	{
-		mMipLevels = 1;
-		InternalCreate(width, height, eFormat, 1);
+		mMipLevels = 1;		
+	}
+
+	mTexturePtr = InTexture;
+	mShaderResourceView = InSRV;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		mRenderTargetView[i] = InRTArray[i];
 	}
 }
-
 
 void SSDX11RenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format, const UINT mipLevels)
 {
@@ -105,8 +118,7 @@ void SSDX11RenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeig
 
 	if (mWidth != newWidth || mHeight != newHeight)
 	{
-		Destroy();
-		InternalCreate(newWidth, newHeight, mTextureFormat, 1);
+		SSDX11Renderer::GetDX11Device()->ResizeRenderTargetTexture2D(this, newWidth, newHeight);
 	}
 }
 
@@ -288,7 +300,11 @@ SSDX11RenderTarget::SSDX11RenderTarget(UINT width, UINT height, UINT count, bool
 
 	for (UINT i = 0; i < mCount; ++i)
 	{
-		mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, mFormat);		
+		// mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, mFormat);	
+		
+		mRenderTargetArray[i] = SSDX11Renderer::Get().GetDX11Device()->CreateRenderTargetTexture2D(mWidth, mHeight, mFormat);
+
+		// mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, mFormat);
 	}
 
 	mDepthExist = bDepthExist;

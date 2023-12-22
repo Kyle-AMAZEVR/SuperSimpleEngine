@@ -657,4 +657,10 @@ void SSDX11Renderer::DrawSkybox()
     SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 }
 
+void SSDX11Renderer::CreateSkyBoxDrawCommands()
+{
+	AppendRenderCommand(new SSRenderCmdSetVS(mCubemapVertexShader)); // 
+
+}
+
 

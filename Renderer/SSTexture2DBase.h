@@ -16,6 +16,7 @@ public:
 	virtual bool LoadFromHDRFile(std::wstring filename, bool bSRGB = false)=0;
 
 protected:
+	
 	unsigned int mWidth;
 	unsigned int mHeight;
 	unsigned int mMipLevels = 1;

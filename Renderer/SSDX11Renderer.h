@@ -38,6 +38,8 @@ protected:
 	void DrawObject();
 	void DrawSkybox();
 	void DrawDummyScene();	
+
+	void CreateSkyBoxDrawCommands();
 	
 	std::shared_ptr<class SSViewport> mViewport = nullptr;
 

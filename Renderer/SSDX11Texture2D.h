@@ -30,6 +30,8 @@ public:
 	virtual bool LoadFromTGAFile( std::wstring filename, bool bSRGB = false) override;
 	virtual bool LoadFromHDRFile( std::wstring filename, bool bSRGB = false) override;
 
+	DXGI_FORMAT GetTextureFormat() const { return mTextureFormat; }
+
 protected:
 	bool LoadInternal(const DirectX::TexMetadata& metaData, const DirectX::ScratchImage& image, bool bsrgb);
 
