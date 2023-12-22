@@ -28,6 +28,10 @@ public:
 	class SSDX11RenderTargetTexture2D*					CreateRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips = false, UINT maxMipCount = 1);
 	void												ResizeRenderTargetTexture2D(SSDX11RenderTargetTexture2D* InRT2D, const UINT InWidth, const UINT InHeight);
 
+	class SSDepthRenderTargetTexture2D*					CreateDepthRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
+
+
+
 	void						ClearDefaultRenderTargetView(float color[4]);
 	void						SetDefaultRenderTargetAsCurrent();
 	

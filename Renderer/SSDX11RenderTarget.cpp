@@ -44,52 +44,6 @@ SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(
 	}
 }
 
-void SSDX11RenderTargetTexture2D::InternalCreate(const UINT width, const UINT height, DXGI_FORMAT format, const UINT mipLevels)
-{
-	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
-	textureDesc.Width = mWidth = width;
-	textureDesc.Height = mHeight = height;
-	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-	if (mGenerateMips)
-	{
-		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-		textureDesc.MipLevels = mipLevels;
-	}
-	else
-	{
-		textureDesc.MiscFlags = 0;
-		textureDesc.MipLevels = 1;
-	}
-	textureDesc.Usage = D3D11_USAGE_DEFAULT;
-	textureDesc.SampleDesc.Count = 1;
-	
-	textureDesc.ArraySize = 1;
-	textureDesc.CPUAccessFlags = 0;
-	textureDesc.Format = mTextureFormat = format;
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&textureDesc, nullptr, &mTexturePtr));
-
-	for (UINT i = 0; i < mipLevels; ++i)
-	{
-		D3D11_RENDER_TARGET_VIEW_DESC renderTargetDesc;
-		ZeroMemory(&renderTargetDesc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
-		renderTargetDesc.Format = textureDesc.Format;
-		renderTargetDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		renderTargetDesc.Texture2D.MipSlice = i;
-
-		HR(SSDX11Renderer::Get().GetDevice()->CreateRenderTargetView(mTexturePtr.Get(), &renderTargetDesc, mRenderTargetView[i].ReleaseAndGetAddressOf()));
-	}
-	
-	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
-	ZeroMemory(&shaderResourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-	
-	shaderResourceViewDesc.Format = textureDesc.Format;
-	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-	shaderResourceViewDesc.Texture2D.MipLevels = mipLevels;
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &shaderResourceViewDesc, &mShaderResourceView));
-}
 
 SSDX11RenderTargetTexture2D::~SSDX11RenderTargetTexture2D()
 {
@@ -236,6 +190,20 @@ SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(const UINT width, con
 	InternalCreate(width, height, eFormat);
 }
 
+SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(
+	const UINT InWidth, 
+	const UINT InHeight, 
+	DXGI_FORMAT InFormat, 
+	ID3D11Texture2D* InTexture, 
+	ID3D11DepthStencilView* InDepthStencilView)
+{
+	mWidth = InWidth;
+	mHeight = InHeight;
+	mTextureFormat = InFormat;
+	mTexturePtr = InTexture;
+	mDepthStencilView = InDepthStencilView;
+}
+
 void SSDepthRenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 {
 	check(deviceContext);
@@ -299,12 +267,8 @@ SSDX11RenderTarget::SSDX11RenderTarget(UINT width, UINT height, UINT count, bool
 	check(mCount <= 4);
 
 	for (UINT i = 0; i < mCount; ++i)
-	{
-		// mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, mFormat);	
-		
-		mRenderTargetArray[i] = SSDX11Renderer::Get().GetDX11Device()->CreateRenderTargetTexture2D(mWidth, mHeight, mFormat);
-
-		// mRenderTargetArray[i] = new SSDX11RenderTargetTexture2D(mWidth, mHeight, mFormat);
+	{		
+		mRenderTargetArray[i] = SSDX11Renderer::Get().GetDX11Device()->CreateRenderTargetTexture2D(mWidth, mHeight, mFormat);	
 	}
 
 	mDepthExist = bDepthExist;

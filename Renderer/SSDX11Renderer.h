@@ -147,3 +147,5 @@ private:
 	void Create2DLUTTexture();
 	void Resize(int width, int height);
 };
+
+inline SSDX11Device* GetDX11Device() { return SSDX11Renderer::Get().GetDX11Device(); }

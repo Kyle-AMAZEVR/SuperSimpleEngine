@@ -34,8 +34,7 @@ public:
 protected:
 	friend class SSGBuffer;
 
-	ComPtr<ID3D11RenderTargetView> mRenderTargetView[10]{ nullptr };
-	void InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format, const UINT mipLevels);
+	ComPtr<ID3D11RenderTargetView> mRenderTargetView[10]{ nullptr };	
 	bool mGenerateMips = false;	
 };
 
@@ -43,6 +42,7 @@ class SSDepthRenderTargetTexture2D : public SSDX11Texture2D
 {
 public:
 	SSDepthRenderTargetTexture2D(const UINT width, const UINT height,  DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
+	SSDepthRenderTargetTexture2D(const UINT InWidth, const UINT InHeight, DXGI_FORMAT InFormat, ID3D11Texture2D* InTexture, ID3D11DepthStencilView* InDepthStencilView);
 	virtual ~SSDepthRenderTargetTexture2D();
 	virtual void Resize(const UINT newWidth, const UINT newHeight);
 	ID3D11DepthStencilView* GetDepthStencilView() { return mDepthStencilView.Get(); }

@@ -305,8 +305,8 @@ void SSDX11Device::ResizeRenderTarget(int inWidth, int inHeight)
 	mScreenViewport.TopLeftY = 0;
 	mScreenViewport.MaxDepth = 1;
 	mScreenViewport.MinDepth = 0;
-	mScreenViewport.Width = inWidth;
-	mScreenViewport.Height = inHeight;
+	mScreenViewport.Width = static_cast<float>(inWidth);
+	mScreenViewport.Height = static_cast<float>(inHeight);
 	
 	CreateDefaultRenderTarget(inWidth, inHeight);
 }
@@ -423,4 +423,38 @@ bool SSDX11Device::CreateDefaultRenderTarget(int inWidth, int inHeight)
 	SSCameraManager::Get().SetCurrentCameraAspectRatio(static_cast<float>(inWidth) / static_cast<float>(inHeight));
 
 	return true;
+}
+
+SSDepthRenderTargetTexture2D* SSDX11Device::CreateDepthRenderTargetTexture2D(const UINT InWidth, const UINT InHeight, DXGI_FORMAT eFormat)
+{
+	D3D11_TEXTURE2D_DESC depthStencilDesc{};
+	ID3D11Texture2D* DepthTexture = nullptr;
+
+	depthStencilDesc.Width = InWidth;
+	depthStencilDesc.Height = InHeight;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = eFormat;
+
+	// Use 4X MSAA? --must match swap chain MSAA values.
+	depthStencilDesc.SampleDesc.Count = 1;
+	depthStencilDesc.SampleDesc.Quality = 0;
+
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
+
+	HR(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, &DepthTexture));
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{};
+	ID3D11DepthStencilView* DepthStencilView = nullptr;
+
+	depthStencilViewDesc.Format = eFormat;
+	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+	HR(mDevice->CreateDepthStencilView(DepthTexture, &depthStencilViewDesc, &DepthStencilView));
+
+	return new SSDepthRenderTargetTexture2D(InWidth, InHeight, eFormat, DepthTexture, DepthStencilView);
 }
