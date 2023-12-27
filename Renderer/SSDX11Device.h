@@ -29,7 +29,7 @@ public:
 	void												ResizeRenderTargetTexture2D(SSDX11RenderTargetTexture2D* InRT2D, const UINT InWidth, const UINT InHeight);
 
 	class SSDepthRenderTargetTexture2D*					CreateDepthRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
-
+	void												ResizeDepthRenderTargetTexture2D(SSDepthRenderTargetTexture2D* InDepthRT, const UINT InWidth, const UINT InHeight);
 
 
 	void						ClearDefaultRenderTargetView(float color[4]);
@@ -43,6 +43,9 @@ protected:
 
 	std::tuple<ID3D11Texture2D*, ID3D11ShaderResourceView*, std::vector<ID3D11RenderTargetView*>>
 	InternalCreateRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, UINT maxMipCount = 1);
+
+	std::tuple<ID3D11Texture2D*, ID3D11DepthStencilView*>
+	InternalCreateDepthRenderTarget(const UINT InWidth, const UINT InHeight, DXGI_FORMAT eFormat);
 
 protected:
 	virtual bool				CreateDevice();	

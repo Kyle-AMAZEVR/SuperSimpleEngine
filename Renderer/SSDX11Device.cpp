@@ -109,7 +109,7 @@ std::shared_ptr<SSDX11VertexBuffer> SSDX11Device::CreateVertexBuffer(unsigned in
 
 	std::shared_ptr<SSDX11VertexBuffer> Result = make_shared<SSDX11VertexBuffer>(PtrBuffer, stride, count);
 
-	return std::move(Result);
+	return Result;
 }
 
 std::shared_ptr<SSDX11IndexBuffer> SSDX11Device::CreateIndexBuffer(std::vector<unsigned int>& inData)
@@ -133,7 +133,7 @@ std::shared_ptr<SSDX11IndexBuffer> SSDX11Device::CreateIndexBuffer(std::vector<u
 
 	std::shared_ptr<SSDX11IndexBuffer> Result = make_shared<SSDX11IndexBuffer>(ptrBuffer, inData.size());
 
-	return std::move(Result);
+	return Result;
 }
 
 SSDX11RenderTargetTexture2D* SSDX11Device::CreateRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips, UINT maxMipCount)
@@ -429,4 +429,49 @@ SSDepthRenderTargetTexture2D* SSDX11Device::CreateDepthRenderTargetTexture2D(con
 	HR(mDevice->CreateDepthStencilView(DepthTexture, &depthStencilViewDesc, &DepthStencilView));
 
 	return new SSDepthRenderTargetTexture2D(InWidth, InHeight, eFormat, DepthTexture, DepthStencilView);
+}
+
+std::tuple<ID3D11Texture2D*, ID3D11DepthStencilView*>
+SSDX11Device::InternalCreateDepthRenderTarget(const UINT InWidth, const UINT InHeight, DXGI_FORMAT eFormat)
+{
+	D3D11_TEXTURE2D_DESC depthStencilDesc{};
+	ID3D11Texture2D* DepthTexture = nullptr;
+
+	depthStencilDesc.Width = InWidth;
+	depthStencilDesc.Height = InHeight;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = eFormat;
+
+	// Use 4X MSAA? --must match swap chain MSAA values.
+	depthStencilDesc.SampleDesc.Count = 1;
+	depthStencilDesc.SampleDesc.Quality = 0;
+
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
+
+	HR(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, &DepthTexture));
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{};
+	ID3D11DepthStencilView* DepthStencilView = nullptr;
+
+	depthStencilViewDesc.Format = eFormat;
+	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+	HR(mDevice->CreateDepthStencilView(DepthTexture, &depthStencilViewDesc, &DepthStencilView));
+
+	return std::tuple<ID3D11Texture2D*, ID3D11DepthStencilView*>(DepthTexture, DepthStencilView);
+}
+
+void SSDX11Device::ResizeDepthRenderTargetTexture2D(SSDepthRenderTargetTexture2D* InDepthRT, const UINT InWidth, const UINT InHeight)
+{
+	InDepthRT->Destroy();
+
+	auto Result = InternalCreateDepthRenderTarget(InWidth, InHeight, InDepthRT->GetTextureFormat());
+
+	InDepthRT->mTexturePtr = std::get<0>(Result);
+	InDepthRT->mDepthStencilView = std::get<1>(Result);
 }

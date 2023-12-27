@@ -75,7 +75,7 @@ void SSDX11RenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeig
 
 	if (mWidth != newWidth || mHeight != newHeight)
 	{
-		SSDX11Renderer::GetDX11Device()->ResizeRenderTargetTexture2D(this, newWidth, newHeight);
+		GetDX11Device()->ResizeRenderTargetTexture2D(this, newWidth, newHeight);
 	}
 }
 
@@ -184,15 +184,6 @@ void SSDX11RenderTargetTexture2D::SaveAsDDSFile(std::wstring filename)
 }
 ///////////////////////////
 
-SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat)		
-{
-	mWidth = width;
-	mHeight = height;
-	mTextureFormat = eFormat;
-	
-	InternalCreate(width, height, eFormat);
-}
-
 SSDepthRenderTargetTexture2D::SSDepthRenderTargetTexture2D(
 	const UINT InWidth, 
 	const UINT InHeight, 
@@ -271,14 +262,14 @@ SSDX11RenderTarget::SSDX11RenderTarget(UINT width, UINT height, UINT count, bool
 
 	for (UINT i = 0; i < mCount; ++i)
 	{		
-		mRenderTargetArray[i] = SSDX11Renderer::Get().GetDX11Device()->CreateRenderTargetTexture2D(mWidth, mHeight, mFormat);	
+		mRenderTargetArray[i] = GetDX11Device()->CreateRenderTargetTexture2D(mWidth, mHeight, mFormat);	
 	}
 
 	mDepthExist = bDepthExist;
 
 	if (mDepthExist)
 	{
-		mDepthTarget = new SSDepthRenderTargetTexture2D(mWidth, mHeight);
+		mDepthTarget = GetDX11Device()->CreateDepthRenderTargetTexture2D(mWidth, mHeight);
 	}
 
 	// Set the viewport transform.
