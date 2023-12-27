@@ -9,7 +9,7 @@
 SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(
 	ID3D11Texture2D* InTexture,
 	ID3D11ShaderResourceView* InSRV,
-	ID3D11RenderTargetView* InRTArray[10],
+	std::vector<ID3D11RenderTargetView*>& InRTArray,
 	const UINT width,
 	const UINT height,
 	DXGI_FORMAT eFormat,
@@ -38,9 +38,12 @@ SSDX11RenderTargetTexture2D::SSDX11RenderTargetTexture2D(
 	mTexturePtr = InTexture;
 	mShaderResourceView = InSRV;
 
-	for (int i = 0; i < 10; ++i)
+	mRenderTargetView.resize(mMipLevels);
+
+	for (unsigned int i = 0; i < mMipLevels; ++i)
 	{
 		mRenderTargetView[i] = InRTArray[i];
+		mRenderTargetView[i]->AddRef();
 	}
 }
 
@@ -58,8 +61,8 @@ void SSDX11RenderTargetTexture2D::Destroy()
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{
-		mRenderTargetView[i].Reset();		
-	}
+		mRenderTargetView[i]->Release();
+	}	
 }
 
 void SSDX11RenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
@@ -85,7 +88,7 @@ void SSDX11RenderTargetTexture2D::Clear(ID3D11DeviceContext* deviceContext)
 
 	for (UINT i = 0; i < mMipLevels; ++i)
 	{
-		deviceContext->ClearRenderTargetView(mRenderTargetView[i].Get(), Color);
+		deviceContext->ClearRenderTargetView(mRenderTargetView[i], Color);
 	}
 }
 

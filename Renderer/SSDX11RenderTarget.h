@@ -15,7 +15,7 @@ public:
 	SSDX11RenderTargetTexture2D(
 		ID3D11Texture2D* InTexture, 
 		ID3D11ShaderResourceView* InSRV, 
-		ID3D11RenderTargetView* InRTArray[10],
+		std::vector<ID3D11RenderTargetView*>& InRTArray,
 		const UINT width, 
 		const UINT height, 
 		DXGI_FORMAT eFormat, 
@@ -25,7 +25,7 @@ public:
 	virtual ~SSDX11RenderTargetTexture2D();
 	virtual void Resize(const UINT newWidth, const UINT newHeight);	
 	virtual void SaveAsDDSFile(std::wstring filename);	
-	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip].Get(); }
+	ID3D11RenderTargetView* GetRenderTargetView(UINT mip = 0) { return mRenderTargetView[mip]; }
 	virtual void Clear(ID3D11DeviceContext* deviceContext);
 
 	void Destroy();
@@ -34,7 +34,7 @@ public:
 protected:
 	friend class SSGBuffer;
 
-	ComPtr<ID3D11RenderTargetView> mRenderTargetView[10]{ nullptr };	
+	std::vector<ID3D11RenderTargetView*> mRenderTargetView { nullptr };
 	bool mGenerateMips = false;	
 };
 

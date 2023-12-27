@@ -41,8 +41,13 @@ protected:
 	bool						CreateSwapChain(HWND windowHandle);
 	bool						CreateDefaultRenderTarget(int inWidth, int inHeight);
 
+	std::tuple<ID3D11Texture2D*, ID3D11ShaderResourceView*, std::vector<ID3D11RenderTargetView*>>
+	InternalCreateRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, UINT maxMipCount = 1);
+
 protected:
 	virtual bool				CreateDevice();	
+
+	
 
 	ComPtr<ID3D11DeviceContext> mDeviceContext;
 	ComPtr<ID3D11Device>		mDevice;

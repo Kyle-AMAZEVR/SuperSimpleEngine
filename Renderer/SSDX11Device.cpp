@@ -138,61 +138,17 @@ std::shared_ptr<SSDX11IndexBuffer> SSDX11Device::CreateIndexBuffer(std::vector<u
 
 SSDX11RenderTargetTexture2D* SSDX11Device::CreateRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat, bool bGeneratedMips, UINT maxMipCount)
 {
-	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
+	auto Tuple = InternalCreateRenderTargetTexture2D(width, height, eFormat, maxMipCount);
 
-	ID3D11Texture2D* TexturePtr = nullptr;
-	ID3D11RenderTargetView* RenderTargetView[10]{nullptr};
-	ID3D11ShaderResourceView* ShaderResourceView = nullptr;
-	
-	textureDesc.Width = width;
-	textureDesc.Height = height;
-	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-	if (bGeneratedMips)
-	{
-		check(width==height);
-
-		bool bPowerOfTwo = !(width == 0) && !(width & (width - 1));
-		check(bPowerOfTwo);
-
-		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-		textureDesc.MipLevels = maxMipCount;
-	}
-	else
-	{
-		textureDesc.MiscFlags = 0;
-		textureDesc.MipLevels = 1;
-	}
-	textureDesc.Usage = D3D11_USAGE_DEFAULT;
-	textureDesc.SampleDesc.Count = 1;
-
-	textureDesc.ArraySize = 1;
-	textureDesc.CPUAccessFlags = 0;
-	textureDesc.Format = eFormat;
-
-	HR(mDevice->CreateTexture2D(&textureDesc, nullptr, &TexturePtr));
-
-	for (UINT i = 0; i < maxMipCount; ++i)
-	{
-		D3D11_RENDER_TARGET_VIEW_DESC renderTargetDesc;
-		ZeroMemory(&renderTargetDesc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
-		renderTargetDesc.Format = textureDesc.Format;
-		renderTargetDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		renderTargetDesc.Texture2D.MipSlice = i;
-
-		HR(mDevice->CreateRenderTargetView(TexturePtr, &renderTargetDesc, &RenderTargetView[i]));
-	}
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
-	ZeroMemory(&shaderResourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-
-	shaderResourceViewDesc.Format = textureDesc.Format;
-	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-	shaderResourceViewDesc.Texture2D.MipLevels = maxMipCount;
-
-	HR(mDevice->CreateShaderResourceView(TexturePtr, &shaderResourceViewDesc, &ShaderResourceView));
-
-	SSDX11RenderTargetTexture2D* Result = new SSDX11RenderTargetTexture2D(TexturePtr, ShaderResourceView, RenderTargetView, width, height, eFormat, bGeneratedMips, maxMipCount);
+	SSDX11RenderTargetTexture2D* Result = new SSDX11RenderTargetTexture2D(
+		std::get<0>(Tuple),
+		std::get<1>(Tuple),
+		std::get<2>(Tuple),
+		width, 
+		height, 
+		eFormat, 
+		bGeneratedMips, 
+		maxMipCount);
 	
 	return Result;
 }
@@ -200,14 +156,35 @@ SSDX11RenderTargetTexture2D* SSDX11Device::CreateRenderTargetTexture2D(const UIN
 void SSDX11Device::ResizeRenderTargetTexture2D(SSDX11RenderTargetTexture2D* InRT2D, const UINT InWidth, const UINT InHeight)
 {
 	InRT2D->Destroy();
+	
+	auto Result = InternalCreateRenderTargetTexture2D(InWidth, InHeight, InRT2D->GetTextureFormat(), InRT2D->GetMipLevels());
+	
+	InRT2D->mTexturePtr = std::get<0>(Result);
+	InRT2D->mShaderResourceView = std::get<1>(Result);
+	std::vector<ID3D11RenderTargetView*> RenderTargetViewArray = std::get<2>(Result);
+	
+	for (int i = 0; i < InRT2D->GetMipLevels(); i++)
+	{
+		InRT2D->mRenderTargetView[i] = RenderTargetViewArray[i];
+		InRT2D->mRenderTargetView[i]->AddRef();
+	}
 
-	const UINT Mips = InRT2D->GetMipLevels();
-	const DXGI_FORMAT Format = InRT2D->GetTextureFormat();
+	InRT2D->mWidth = InWidth;
+	InRT2D->mHeight = InHeight;
+}
+
+std::tuple<ID3D11Texture2D*, ID3D11ShaderResourceView*, std::vector<ID3D11RenderTargetView*>>
+SSDX11Device::InternalCreateRenderTargetTexture2D(const UINT InWidth, const UINT InHeight, DXGI_FORMAT eFormat, UINT maxMipCount)
+{	
+	const UINT Mips = maxMipCount;
+
+	check(Mips > 0);
+
+	const DXGI_FORMAT Format = eFormat;
 
 	D3D11_TEXTURE2D_DESC textureDesc{ 0 };
 
-	ID3D11Texture2D* TexturePtr = nullptr;
-	ID3D11RenderTargetView* RenderTargetView[10]{ nullptr };
+	ID3D11Texture2D* TexturePtr = nullptr;	
 	ID3D11ShaderResourceView* ShaderResourceView = nullptr;
 
 	textureDesc.Width = InWidth;
@@ -228,6 +205,10 @@ void SSDX11Device::ResizeRenderTargetTexture2D(SSDX11RenderTargetTexture2D* InRT
 		textureDesc.MiscFlags = 0;
 		textureDesc.MipLevels = 1;
 	}
+
+	std::vector<ID3D11RenderTargetView*> RenderTargetView;
+	RenderTargetView.resize(Mips);
+
 	textureDesc.Usage = D3D11_USAGE_DEFAULT;
 	textureDesc.SampleDesc.Count = 1;
 
@@ -258,16 +239,7 @@ void SSDX11Device::ResizeRenderTargetTexture2D(SSDX11RenderTargetTexture2D* InRT
 
 	HR(mDevice->CreateShaderResourceView(TexturePtr, &shaderResourceViewDesc, &ShaderResourceView));
 
-	InRT2D->mTexturePtr = TexturePtr;
-	InRT2D->mShaderResourceView = ShaderResourceView;
-	
-	for (int i = 0; i < 10; i++)
-	{
-		InRT2D->mRenderTargetView[i] = RenderTargetView[i];
-	}
-
-	InRT2D->mWidth = InWidth;
-	InRT2D->mHeight = InHeight;
+	return std::tuple<ID3D11Texture2D*, ID3D11ShaderResourceView*, std::vector<ID3D11RenderTargetView*>>{TexturePtr, ShaderResourceView, RenderTargetView};
 }
 
 
