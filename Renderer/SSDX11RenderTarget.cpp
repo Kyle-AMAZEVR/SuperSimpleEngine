@@ -217,42 +217,9 @@ void SSDepthRenderTargetTexture2D::Destroy()
 }
 
 void SSDepthRenderTargetTexture2D::Resize(const UINT newWidth, const UINT newHeight)
-{
-	Destroy();
-	InternalCreate(newWidth, newHeight, mTextureFormat);
+{	
+	GetDX11Device()->ResizeDepthRenderTargetTexture2D(this, newWidth, newHeight);
 }
-
-void SSDepthRenderTargetTexture2D::InternalCreate(const UINT newWidth, const UINT height, DXGI_FORMAT format)
-{
-	D3D11_TEXTURE2D_DESC depthStencilDesc;
-
-	depthStencilDesc.Width = mWidth = newWidth;
-	depthStencilDesc.Height = mHeight =height;
-	depthStencilDesc.MipLevels = 1;
-	depthStencilDesc.ArraySize = 1;
-	depthStencilDesc.Format = format;
-
-	// Use 4X MSAA? --must match swap chain MSAA values.
-	depthStencilDesc.SampleDesc.Count = 1;
-	depthStencilDesc.SampleDesc.Quality = 0;
-
-	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	depthStencilDesc.CPUAccessFlags = 0;
-	depthStencilDesc.MiscFlags = 0;	
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &mTexturePtr));
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{ 0 };	
-
-	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	depthStencilViewDesc.Texture2D.MipSlice = 0;
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateDepthStencilView(mTexturePtr.Get(), &depthStencilViewDesc, &mDepthStencilView));
-}
-
-
 
 SSDX11RenderTarget::SSDX11RenderTarget(UINT width, UINT height, UINT count, bool bDepthExist, DXGI_FORMAT eFormat, DXGI_FORMAT eDepthFormat)
 	: mWidth(width), mHeight(height), mFormat(eFormat), mCount(count)

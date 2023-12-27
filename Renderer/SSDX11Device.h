@@ -32,11 +32,14 @@ public:
 	void												ResizeDepthRenderTargetTexture2D(SSDepthRenderTargetTexture2D* InDepthRT, const UINT InWidth, const UINT InHeight);
 
 
-	void						ClearDefaultRenderTargetView(float color[4]);
-	void						SetDefaultRenderTargetAsCurrent();
+	void												ClearDefaultRenderTargetView(float color[4]);
+	void												SetDefaultRenderTargetAsCurrent();
 	
-	virtual void				Present();
-	void						ResizeRenderTarget(int inWidth, int inHeight);
+	virtual void										Present();
+	void												ResizeRenderTarget(int inWidth, int inHeight);
+
+
+
 protected:
 	bool						CreateSwapChain(HWND windowHandle);
 	bool						CreateDefaultRenderTarget(int inWidth, int inHeight);

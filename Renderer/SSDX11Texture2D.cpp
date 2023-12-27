@@ -5,6 +5,11 @@
 #include "SSDX11Renderer.h"
 #include "SSDX11RenderTarget.h"
 
+SSDX11Texture2D::~SSDX11Texture2D()
+{
+	mTexturePtr.Reset();
+	mShaderResourceView.Reset();
+}
 
 bool SSDX11Texture2D::LoadFromHDRFile(std::wstring filename, bool bsrgb)
 {

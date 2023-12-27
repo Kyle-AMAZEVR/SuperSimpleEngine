@@ -11,6 +11,7 @@ using Microsoft::WRL::ComPtr;
 class SSDX11Texture2D : public SSTexture2DBase
 {
 public:	
+	virtual ~SSDX11Texture2D();
 	virtual ID3D11ShaderResourceView* GetShaderResourceView() { return mShaderResourceView.Get(); }
 	virtual ID3D11ShaderResourceView* const* GetShaderResourceViewRef() { return mShaderResourceView.GetAddressOf(); }
 	
