@@ -97,7 +97,7 @@ void SSCubemapRenderTarget::Copy2DRenderTargetToCubemap(ID3D11DeviceContext* dev
 	}
 	
 	//	
-	deviceContext->GenerateMips(mShaderResourceView.Get());
+	deviceContext->GenerateMips(mShaderResourceView.Get());	
 }
 
 SSCubemapRenderTarget::~SSCubemapRenderTarget()
@@ -110,14 +110,6 @@ SSCubemapRenderTarget::~SSCubemapRenderTarget()
 		delete mRenderTargetArray[i];
 	}
 }
-
-
-SSDX11RenderTargetTexture2D* SSCubemapRenderTarget::GetRenderTargetTexture(ECubemapFace eFace)
-{
-	return mRenderTargetArray[static_cast<int>(eFace)];
-}
-
-
 
 SSPrefilterCubemapRenderTarget::SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount, DXGI_FORMAT format)	
 	: SSCubemapRenderTarget()

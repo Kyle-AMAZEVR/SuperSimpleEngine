@@ -475,3 +475,34 @@ void SSDX11Device::ResizeDepthRenderTargetTexture2D(SSDepthRenderTargetTexture2D
 	InDepthRT->mTexturePtr = std::get<0>(Result);
 	InDepthRT->mDepthStencilView = std::get<1>(Result);
 }
+
+
+
+void SSDX11Device::SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget)
+{
+	const int RTCount = InRenderTarget->GetCount();
+
+	D3D11_VIEWPORT Viewport = InRenderTarget->GetViewport();
+
+	ID3D11RenderTargetView* RenderTargets[4]{ nullptr };
+
+	for (UINT i = 0; i < InRenderTarget->GetCount(); ++i)
+	{
+		RenderTargets[i] = InRenderTarget->GetRenderTargetView(i);
+	}
+
+	if (InRenderTarget->IsDepthExist())
+	{
+		ID3D11DepthStencilView* depthStencil = InRenderTarget->GetDepthStencilView();
+
+		mDeviceContext->OMSetRenderTargets(RTCount, RenderTargets, depthStencil);
+
+		this->GetDeviceContext()->RSSetViewports(1, &(InRenderTarget->GetViewport()));
+	}
+	else
+	{
+		mDeviceContext->OMSetRenderTargets(RTCount, RenderTargets, nullptr);
+
+		mDeviceContext->RSSetViewports(1, &(InRenderTarget->GetViewport()));
+	}
+}

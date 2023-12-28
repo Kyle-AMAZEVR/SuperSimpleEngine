@@ -12,6 +12,7 @@ struct SSAdapterInfo
 
 class SSVertexBuffer;
 class SSDX11IndexBuffer;
+class SSDX11RenderTarget;
 
 class SSDX11Device 
 {
@@ -31,6 +32,9 @@ public:
 	class SSDepthRenderTargetTexture2D*					CreateDepthRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
 	void												ResizeDepthRenderTargetTexture2D(SSDepthRenderTargetTexture2D* InDepthRT, const UINT InWidth, const UINT InHeight);
 
+
+	void	SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget);
+	
 
 	void												ClearDefaultRenderTargetView(float color[4]);
 	void												SetDefaultRenderTargetAsCurrent();

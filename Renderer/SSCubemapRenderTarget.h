@@ -37,8 +37,6 @@ public:
 
 	void ClearFace(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
 
-	class SSDX11RenderTargetTexture2D* GetRenderTargetTexture(ECubemapFace eFace);	
-
 	// @IRenderTarget Interface
 	virtual UINT GetRenderTargetWidth() const override { return mWidth; }
 	virtual UINT GetRenderTargetHeight() const override { return mHeight; }
