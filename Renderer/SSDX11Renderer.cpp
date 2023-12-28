@@ -308,6 +308,7 @@ void SSDX11Renderer::DrawCubeScene()
 		if (TryLoad2DLUTTexture() == false)
 		{
 			Create2DLUTTexture();
+			m2DLUTTexture = SSDX11Texture2D::CreateFromDDSFile(L"./Prebaked/2DLUT.dds");
 		}
 		bLUTCreated = true;
 	}
@@ -431,6 +432,7 @@ void SSDX11Renderer::Create2DLUTTexture()
 	blitDrawCmd.Do(mDX11Device);
 
 	m2DLUTRenderTarget->SaveRTTexture(0, L"./Prebaked/2DLUT.dds");
+
 }
 
 void SSDX11Renderer::CreateEnvCubemapConvolution()

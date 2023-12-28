@@ -78,7 +78,7 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* dev
 	description.Format = mTextureFormat;
 
 	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
-
+	
 	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
 	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 	resourceViewDesc.Format = description.Format;
@@ -87,7 +87,7 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* dev
 	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
 
 	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
-	//	
+
 	
 	for (UINT face = 0; face < 6; ++face)
 	{
@@ -97,6 +97,7 @@ void SSCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* dev
 		deviceContext->CopySubresourceRegion(mTexturePtr.Get(), dstSubresource, 0, 0, 0, mRenderTargetArray[face]->GetTextureResource(), srcSubresource, nullptr);
 	}
 	
+	//	
 	deviceContext->GenerateMips(mShaderResourceView.Get());
 }
 
@@ -151,7 +152,7 @@ void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceCon
 	description.CPUAccessFlags = 0;
 	description.Format = mTextureFormat;
 
-	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));	
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
 	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
