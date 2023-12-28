@@ -102,9 +102,15 @@ void SSCubemapRenderTarget::Copy2DRenderTargetToCubemap(ID3D11DeviceContext* dev
 
 SSCubemapRenderTarget::~SSCubemapRenderTarget()
 {
-	mShaderResourceView->Release();
+	if (mShaderResourceView)
+	{
+		mShaderResourceView.Reset();
+	}
 	
-	ReleaseCOM(mTexturePtr);
+	if(mTexturePtr)
+	{
+		mTexturePtr.Reset();
+	}
 	for (UINT i = 0; i < 6; ++i)
 	{
 		mRenderTargetArray[i]->Destroy();

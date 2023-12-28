@@ -48,8 +48,8 @@ void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 		ID3D11ShaderReflectionConstantBuffer* constantBuffer = shaderReflection->GetConstantBufferByIndex(i);
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
-
-		mConstantBufferMap[bufferDesc.Name] = new SSDX11ConstantBuffer(constantBuffer, i);
+		
+		mConstantBufferMap[bufferDesc.Name] = GetDX11Device()->CreateConstantBuffer(bufferDesc.Size, i, bufferDesc.Name);
 	}
 	// @ end
 

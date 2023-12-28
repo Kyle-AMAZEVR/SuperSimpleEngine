@@ -4,10 +4,15 @@
 #include "SSShader.h"
 
 // trigger compile
-SSDX11ConstantBuffer::SSDX11ConstantBuffer(ID3D11Buffer * InBuffer, UINT InSlotIndex)    
+SSDX11ConstantBuffer::SSDX11ConstantBuffer(ID3D11Buffer* InBuffer, UINT InSlotIndex, UINT InSize, std::string InName)
 {
     mpBuffer = InBuffer;
     mBufferSlotIndex = InSlotIndex;
+    mBufferSize = InSize;
+    mBufferName = InName;
+
+    // alloc
+    mBufferData = new BYTE[mBufferSize]{ 0 };
 }
 
 SSDX11ConstantBuffer::SSDX11ConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index)

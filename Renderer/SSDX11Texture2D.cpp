@@ -7,8 +7,14 @@
 
 SSDX11Texture2D::~SSDX11Texture2D()
 {
-	mTexturePtr.Reset();
-	mShaderResourceView.Reset();
+	if (mTexturePtr)
+	{
+		mTexturePtr.Reset();
+	}
+	if (mShaderResourceView)
+	{
+		mShaderResourceView.Reset();
+	}
 }
 
 bool SSDX11Texture2D::LoadFromHDRFile(std::wstring filename, bool bsrgb)

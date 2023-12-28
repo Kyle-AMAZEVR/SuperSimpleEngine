@@ -23,7 +23,7 @@ class SSDX11ConstantBuffer : public SSDX11Buffer
 public:
     SSDX11ConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);
 
-    SSDX11ConstantBuffer(ID3D11Buffer* InBuffer, UINT InSlotIndex);
+    SSDX11ConstantBuffer(ID3D11Buffer* InBuffer, UINT InSlotIndex, UINT InSize, std::string InName);
 
     virtual ~SSDX11ConstantBuffer() override;
     

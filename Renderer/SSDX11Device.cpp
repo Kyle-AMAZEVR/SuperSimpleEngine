@@ -506,7 +506,7 @@ void SSDX11Device::SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget)
 	}
 }
 
-SSDX11ConstantBuffer* SSDX11Device::CreateConstantBuffer(const UINT InBufferSize)
+SSDX11ConstantBuffer* SSDX11Device::CreateConstantBuffer(const UINT InBufferSize, const UINT InSlotIndex, std::string InName)
 {
 	D3D11_BUFFER_DESC BufferDesc{};
 
@@ -521,7 +521,7 @@ SSDX11ConstantBuffer* SSDX11Device::CreateConstantBuffer(const UINT InBufferSize
 	ID3D11Buffer* BufferPtr = nullptr;
 	HR(mDevice->CreateBuffer(&BufferDesc, nullptr, &BufferPtr));
 
-	return nullptr;
+	return new SSDX11ConstantBuffer(BufferPtr, InSlotIndex, InBufferSize, InName);
 }
 
 void SSDX11Device::SetConstantBufferData(SSDX11ConstantBuffer* InBuffer, BYTE* PtrData, int InSize)
