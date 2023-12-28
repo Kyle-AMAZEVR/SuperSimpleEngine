@@ -31,6 +31,32 @@ void SSCubemapRenderTarget::InternalCreate()
 	mViewport.Height = static_cast<float>(mHeight);
 	mViewport.MinDepth = 0;
 	mViewport.MaxDepth = 1.0f;
+
+	// create cube map texture
+	D3D11_TEXTURE2D_DESC description;
+	description.Width = mWidth;
+	description.Height = mHeight;
+	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+	description.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE | D3D11_RESOURCE_MISC_GENERATE_MIPS;
+	description.Usage = D3D11_USAGE_DEFAULT;
+	description.SampleDesc.Count = 1;
+	description.SampleDesc.Quality = 0;
+	description.MipLevels = mMipLevels;
+	description.ArraySize = 6;
+	description.CPUAccessFlags = 0;
+	description.Format = mTextureFormat;
+
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
+	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	resourceViewDesc.Format = description.Format;
+	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	resourceViewDesc.TextureCube.MostDetailedMip = 0;
+	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
+
+	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
+
 }
 
 void SSCubemapRenderTarget::Clear(ID3D11DeviceContext* deviceContext)
@@ -60,35 +86,8 @@ void SSCubemapRenderTarget::SetCurrentRTAs(ID3D11DeviceContext* deviceContext, E
 }
 
 
-void SSCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext)
-{
-	check(deviceContext != nullptr);
-
-	D3D11_TEXTURE2D_DESC description;
-	description.Width = mWidth;
-	description.Height = mHeight;
-	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-	description.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE | D3D11_RESOURCE_MISC_GENERATE_MIPS;
-	description.Usage = D3D11_USAGE_DEFAULT;
-	description.SampleDesc.Count = 1;
-	description.SampleDesc.Quality = 0;
-	description.MipLevels = mMipLevels ;
-	description.ArraySize = 6;
-	description.CPUAccessFlags = 0;
-	description.Format = mTextureFormat;
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
-	
-	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
-	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-	resourceViewDesc.Format = description.Format;
-	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-	resourceViewDesc.TextureCube.MostDetailedMip = 0;
-	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
-
-	
+void SSCubemapRenderTarget::Copy2DRenderTargetToCubemap(ID3D11DeviceContext* deviceContext)
+{	
 	for (UINT face = 0; face < 6; ++face)
 	{
 		auto dstSubresource = D3D11CalcSubresource(0, face, mMipLevels);
@@ -137,32 +136,8 @@ SSPrefilterCubemapRenderTarget::SSPrefilterCubemapRenderTarget(UINT width, UINT 
 	InternalCreate();
 }
 
-void SSPrefilterCubemapRenderTarget::CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext)
-{
-	D3D11_TEXTURE2D_DESC description;
-	description.Width = mWidth;
-	description.Height = mHeight;
-	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-	description.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE | D3D11_RESOURCE_MISC_GENERATE_MIPS;
-	description.Usage = D3D11_USAGE_DEFAULT;
-	description.SampleDesc.Count = 1;
-	description.SampleDesc.Quality = 0;
-	description.MipLevels = mMipLevels;
-	description.ArraySize = 6;
-	description.CPUAccessFlags = 0;
-	description.Format = mTextureFormat;
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));	
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
-	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-	resourceViewDesc.Format = description.Format;
-	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-	resourceViewDesc.TextureCube.MostDetailedMip = 0;
-	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
-
-	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
-
+void SSPrefilterCubemapRenderTarget::Copy2DRenderTargetToCubemap(ID3D11DeviceContext* deviceContext)
+{	
 	//
 	for (UINT mipLevel = 0; mipLevel < mMipLevels; ++mipLevel)
 	{
@@ -206,6 +181,31 @@ void SSPrefilterCubemapRenderTarget::InternalCreate()
 	mViewport.Height = static_cast<float>(mHeight);
 	mViewport.MinDepth = 0;
 	mViewport.MaxDepth = 1.0f;
+
+	D3D11_TEXTURE2D_DESC description;
+	description.Width = mWidth;
+	description.Height = mHeight;
+	description.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+	description.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE | D3D11_RESOURCE_MISC_GENERATE_MIPS;
+	description.Usage = D3D11_USAGE_DEFAULT;
+	description.SampleDesc.Count = 1;
+	description.SampleDesc.Quality = 0;
+	description.MipLevels = mMipLevels;
+	description.ArraySize = 6;
+	description.CPUAccessFlags = 0;
+	description.Format = mTextureFormat;
+
+	HR(SSDX11Renderer::Get().GetDevice()->CreateTexture2D(&description, nullptr, &mTexturePtr));
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
+	ZeroMemory(&resourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	resourceViewDesc.Format = description.Format;
+	resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	resourceViewDesc.TextureCube.MostDetailedMip = 0;
+	resourceViewDesc.TextureCube.MipLevels = mMipLevels;
+
+	HR(SSDX11Renderer::Get().GetDevice()->CreateShaderResourceView(mTexturePtr.Get(), &resourceViewDesc, &mShaderResourceView));
+
 }
 
 // @ save as cubemap 

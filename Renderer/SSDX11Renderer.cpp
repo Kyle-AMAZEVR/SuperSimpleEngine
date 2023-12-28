@@ -481,7 +481,7 @@ void SSDX11Renderer::CreateEnvCubemapConvolution()
 
 		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
-		mConvolutionRenderTarget->CreateCubemapShaderResource(deviceContext);
+		mConvolutionRenderTarget->Copy2DRenderTargetToCubemap(deviceContext);
 
 		mEnvCubemapConvolution = mConvolutionRenderTarget;
 
@@ -544,7 +544,7 @@ void SSDX11Renderer::CreateEnvCubemapPrefilter()
 		}
 		SSRasterizeStateManager::Get().SetToDefault(GetImmediateDeviceContext());
 
-		mPrefilterRenderTarget->CreateCubemapShaderResource(deviceContext);
+		mPrefilterRenderTarget->Copy2DRenderTargetToCubemap(deviceContext);
 
 		mEnvCubemapPrefilter = mPrefilterRenderTarget;
 
@@ -622,7 +622,7 @@ void SSDX11Renderer::CreateEnvCubemap()
 
 		SSRasterizeStateManager::Get().SetToDefault(deviceContext);
 
-		mEquirectToCubemapRenderTarget->CreateCubemapShaderResource(deviceContext);
+		mEquirectToCubemapRenderTarget->Copy2DRenderTargetToCubemap(deviceContext);
 
 		mEquirectToCubemapRenderTarget->SaveAsCubemapDDSFile(L"./Prebaked/EnvCubemap.dds");
 

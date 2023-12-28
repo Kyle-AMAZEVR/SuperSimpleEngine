@@ -19,6 +19,8 @@ enum ECubemapFace
 
 
 // @cubemap rt 
+// create 6 2d rendertargets +x/-x, +y/-y, +z/-z
+
 class SSCubemapRenderTarget : public IRenderTarget, public SSTextureCube
 {
 public:
@@ -31,7 +33,7 @@ public:
 	virtual void SaveFaceAsDDSFile(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
 	virtual void SaveFaceOfMipAsDDSFile(ID3D11DeviceContext* deviceContext, ECubemapFace eFace, UINT mip = 0);
 
-	virtual void CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext);
+	virtual void Copy2DRenderTargetToCubemap(ID3D11DeviceContext* deviceContext);
 
 	void ClearFace(ID3D11DeviceContext* deviceContext, ECubemapFace eFace);
 
@@ -62,7 +64,7 @@ class SSPrefilterCubemapRenderTarget : public SSCubemapRenderTarget
 {
 public:
 	SSPrefilterCubemapRenderTarget(UINT width, UINT height, UINT maxMipCount = 1, DXGI_FORMAT format = DXGI_FORMAT_R16G16B16A16_FLOAT);
-	virtual void CreateCubemapShaderResource(ID3D11DeviceContext* deviceContext) override;	
+	virtual void Copy2DRenderTargetToCubemap(ID3D11DeviceContext* deviceContext) override;	
 	void SetCurrentRTAs(ID3D11DeviceContext* deviceContext, ECubemapFace eFace, UINT mip);
 	
 protected:
