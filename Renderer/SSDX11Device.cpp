@@ -6,6 +6,7 @@
 #include "SSDX11IndexBuffer.h"
 #include "SSShader.h"
 #include "SSCameraManager.h"
+#include <filesystem>
 
 bool SSDX11Device::CreateDevice()
 {
@@ -534,4 +535,51 @@ void SSDX11Device::SetConstantBufferData(SSDX11ConstantBuffer* InBuffer, BYTE* P
 	memcpy_s(mappedResource.pData, InSize, PtrData, InSize);
 
 	mDeviceContext->Unmap(Buffer, 0);
+}
+
+SSDX11PixelShader* SSDX11Device::CompilePixelShaderFromFile(std::wstring& Path)
+{
+	ID3D10Blob* errorMsg = nullptr;
+	ID3DBlob* ShaderBlob = nullptr;
+	ID3D11PixelShader* PixelShader = nullptr;
+
+	check(std::filesystem::exists(Path));
+
+	std::vector<D3D_SHADER_MACRO> macros;
+
+	// null terminate , otherwise crashes
+	macros.push_back({ nullptr,nullptr });
+
+	D3DCompileFromFile(Path.c_str(), macros.data(), nullptr, "PSMain", "ps_5_0", 0, 0, &ShaderBlob, &errorMsg);
+
+	if (errorMsg != nullptr)
+	{
+		PrintCompileError(errorMsg);
+		return nullptr;
+	}
+	
+	HR(mDevice->CreatePixelShader(ShaderBlob->GetBufferPointer(), ShaderBlob->GetBufferSize(), nullptr, &PixelShader));
+
+	// @constant buffer reflection
+	ID3D11ShaderReflection* PixelShaderReflection = nullptr;
+	HR(D3DReflect(ShaderBlob->GetBufferPointer(), ShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&PixelShaderReflection));
+	
+	return nullptr;
+}
+
+void SSDX11Device::PrintCompileError(ID3DBlob* errorMessage)
+{
+	auto buffSize = errorMessage->GetBufferSize();
+
+	const char* errorMsgPtr = (const char*)errorMessage->GetBufferPointer();
+
+	char* compileErrBuffer = new char[buffSize + 1];
+
+	strcpy_s(compileErrBuffer, buffSize, errorMsgPtr);
+
+	OutputDebugStringA("============= Shader Compile Error =============\n");
+	OutputDebugStringA(compileErrBuffer);
+	OutputDebugStringA("============= Shader Compile Error =============\n");
+
+	delete[] compileErrBuffer;
 }

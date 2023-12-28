@@ -119,10 +119,7 @@ public:
     virtual bool CompileFromFile(std::wstring filepath) override;
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) override;
 
-	ID3D11PixelShader* GetShader()
-	{
-		return mPixelShader.PixelShaderDX11Ptr;
-	}	
+	ID3D11PixelShader* GetShader()	{return mPixelShader;}
 
 	template<class T>
 	void SetConstantBufferData(ID3D11DeviceContext* deviceContext, std::string bufferName, const T& data);
@@ -134,13 +131,7 @@ public:
 	virtual void SetSampler(ID3D11DeviceContext* device, std::string name, ID3D11SamplerState* sampler) override;
 protected:
 
-	union PixelShaderPtr
-	{
-		void* PixelShaderVoidPtr;
-		ID3D11PixelShader* PixelShaderDX11Ptr;
-	} ;
-
-	PixelShaderPtr mPixelShader;
+	ID3D11PixelShader* mPixelShader;
 };
 
 template<class T>

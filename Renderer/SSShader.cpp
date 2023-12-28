@@ -290,7 +290,7 @@ void SSDX11VertexShader::SetSampler(ID3D11DeviceContext* deviceContext, std::str
 			// kvp.second->Destroy();
 		 }
 	 }
-	 ReleaseCOM(mPixelShader.PixelShaderDX11Ptr);
+	 ReleaseCOM(mPixelShader);
  }
 
 bool SSDX11PixelShader::CompileFromFile(std::wstring filepath, const SSCompileContext& context)
@@ -319,7 +319,8 @@ bool SSDX11PixelShader::CompileFromFile(std::wstring filepath, const SSCompileCo
     }
 
     auto* dxDevice = SSDX11Renderer::Get().GetDevice();
-    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader.PixelShaderDX11Ptr));
+
+    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
 
     // @constant buffer reflection
     ID3D11ShaderReflection* pixelShaderReflection = nullptr;
@@ -345,7 +346,7 @@ bool SSDX11PixelShader::CompileFromFile(std::wstring filepath)
     }
 
     auto* dxDevice = SSDX11Renderer::Get().GetDevice();
-    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader.PixelShaderDX11Ptr));
+    HR(dxDevice->CreatePixelShader(mShaderBuffer->GetBufferPointer(), mShaderBuffer->GetBufferSize(), nullptr, &mPixelShader));
 
 	// @constant buffer reflection
 	ID3D11ShaderReflection* pixelShaderReflection = nullptr;

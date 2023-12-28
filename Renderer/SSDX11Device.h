@@ -36,6 +36,8 @@ public:
 	void												SetConstantBufferData(SSDX11ConstantBuffer* InBuffer, BYTE* PtrData, int InSize);
 
 	void												SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget);
+
+	class SSDX11PixelShader*							CompilePixelShaderFromFile(std::wstring& Path);
 	
 
 	void												ClearDefaultRenderTargetView(float color[4]);
@@ -59,7 +61,7 @@ protected:
 protected:
 	virtual bool				CreateDevice();	
 
-	
+	void						PrintCompileError(ID3DBlob* errorMessage);
 
 	ComPtr<ID3D11DeviceContext> mDeviceContext;
 	ComPtr<ID3D11Device>		mDevice;
