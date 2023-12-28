@@ -46,14 +46,17 @@ public:
 	void SetPrimitiveType(D3D_PRIMITIVE_TOPOLOGY ePrimitiveType) { mPrimitiveType = ePrimitiveType; }
 	D3D_PRIMITIVE_TOPOLOGY GetPrimitiveType() const { return mPrimitiveType; }	
 
+	std::shared_ptr<class SSDX11VertexShader> GetVS() const { return mVS; }
+	std::shared_ptr<class SSDX11PixelShader> GetPS() const { return mPS; }
+
 protected:	
 
 	std::shared_ptr<class SSDX11VertexShader> mVS;
 	std::shared_ptr<class SSDX11PixelShader> mPS;
 
 	//
-	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;
-	std::map<SSName, class SSGenericConstantBuffer*> mPixelShaderConstantBufferMap;
+	std::map<SSName, class SSDX11ConstantBuffer*> mVertexShaderConstantBufferMap;
+	std::map<SSName, class SSDX11ConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
 	std::map<std::string, class SSDX11Texture2D*> mPixelShaderTextureMap;

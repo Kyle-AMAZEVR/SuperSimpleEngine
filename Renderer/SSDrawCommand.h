@@ -67,8 +67,8 @@ protected:
 	class SSMaterial* mMaterial = nullptr;	
 
 	//
-	std::map<SSName, class SSGenericConstantBuffer*> mVertexShaderConstantBufferMap;
-	std::map<SSName, class SSGenericConstantBuffer*> mPixelShaderConstantBufferMap;
+	std::map<SSName, class SSDX11ConstantBuffer*> mVertexShaderConstantBufferMap;
+	std::map<SSName, class SSDX11ConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
 	std::map<std::string, class SSDX11Texture2D*> mPixelShaderTextureMap;

@@ -102,7 +102,8 @@ void SSCubemapRenderTarget::Copy2DRenderTargetToCubemap(ID3D11DeviceContext* dev
 
 SSCubemapRenderTarget::~SSCubemapRenderTarget()
 {
-	ReleaseCOM(mShaderResourceView);
+	mShaderResourceView->Release();
+	
 	ReleaseCOM(mTexturePtr);
 	for (UINT i = 0; i < 6; ++i)
 	{

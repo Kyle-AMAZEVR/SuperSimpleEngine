@@ -49,7 +49,7 @@ void SSShader::ReflectCompiledShader(ID3D11ShaderReflection* shaderReflection)
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
 
-		mConstantBufferMap[bufferDesc.Name] = new SSGenericConstantBuffer(constantBuffer, i);
+		mConstantBufferMap[bufferDesc.Name] = new SSDX11ConstantBuffer(constantBuffer, i);
 	}
 	// @ end
 
@@ -81,6 +81,15 @@ std::vector<std::string> SSShader::GetSamplerNames()
 }
 
 
+int SSShader::GetConstantBufferIndex(const std::string& InName)
+{
+	if (mConstantBufferMap.contains(InName))
+	{
+		return mConstantBufferMap[InName]->GetBufferIndex();
+	}
+
+	return -1;
+}
 
 #pragma endregion
 
@@ -114,7 +123,7 @@ void SSDX11VertexShader::CreateInputLayout(ID3D11ShaderReflection* shaderReflect
 		D3D11_SHADER_BUFFER_DESC bufferDesc;
 		constantBuffer->GetDesc(&bufferDesc);
 
-		mConstantBufferMap[bufferDesc.Name] = new SSGenericConstantBuffer(constantBuffer, i);
+		mConstantBufferMap[bufferDesc.Name] = new SSDX11ConstantBuffer(constantBuffer, i);
 	}
 
 	// @input layout creation

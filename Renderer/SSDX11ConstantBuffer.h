@@ -18,11 +18,11 @@ struct VariableInConstantBufferInfo
     std::string Name;
 };
 
-class SSGenericConstantBuffer : public SSDX11Buffer
+class SSDX11ConstantBuffer : public SSDX11Buffer
 {
 public:
-    SSGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);
-    virtual ~SSGenericConstantBuffer() override;
+    SSDX11ConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);
+    virtual ~SSDX11ConstantBuffer() override;
     
     template<class T>
     void SetBufferData(ID3D11DeviceContext* deviceContext, const T& value);
@@ -46,7 +46,7 @@ protected:
 
 
 template<class T>
-void SSGenericConstantBuffer::SetBufferData(ID3D11DeviceContext* deviceContext, const T& value)
+void SSDX11ConstantBuffer::SetBufferData(ID3D11DeviceContext* deviceContext, const T& value)
 {
 	StoreBufferData<T>(value);
 
@@ -54,7 +54,7 @@ void SSGenericConstantBuffer::SetBufferData(ID3D11DeviceContext* deviceContext, 
 }
 
 template<class T>
-void SSGenericConstantBuffer::StoreBufferData(const T& value)
+void SSDX11ConstantBuffer::StoreBufferData(const T& value)
 {
 	check(mpBuffer != nullptr);
 

@@ -38,13 +38,15 @@ public:
 
 	std::vector<std::string> GetSamplerNames();
 
-	inline std::map<SSName, SSGenericConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
+	inline std::map<SSName, SSDX11ConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
 
 	ID3DBlob* GetCompiledShader() { return mShaderBuffer.Get(); }
 
     virtual bool CompileFromFile(std::wstring filepath) { return true; }
 
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) {return true;}
+
+	int GetConstantBufferIndex(const std::string& InName);
 protected:
 	
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
@@ -54,7 +56,7 @@ protected:
 	ComPtr<ID3DBlob> mShaderBuffer = nullptr;
 
     //std::map<std::string, SSGenericConstantBuffer*> mConstantBufferMap;
-	std::map<SSName, SSGenericConstantBuffer*> mConstantBufferMap;
+	std::map<SSName, SSDX11ConstantBuffer*> mConstantBufferMap;
 	std::map<std::string, UINT> mTextureMap;
 	std::map<std::string, UINT> mSamplerMap;
 };

@@ -6,11 +6,11 @@
 #include "SSDX11IndexBuffer.h"
 #include "SSShaderManager.h"
 #include "SSFreqUsedNames.h"
-
 #include "SSMaterial.h"
 #include "SSTextureManager.h"
 #include "SSSamplerManager.h"
 #include "SSCameraManager.h"
+#include "SSRenderCommand.h"
 
 SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	: mpObject(pObject)
@@ -87,9 +87,17 @@ SSRenderingObject::~SSRenderingObject()
 	}
 }
 
-void SSRenderingObject::Draw(std::vector<class SSRenderCmdBase*>& inCmdList)
+void SSRenderingObject::Draw(std::vector<class SSRenderCmdBase*>& InCmdList)
 {
+	shared_ptr<SSDX11VertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);
+	shared_ptr<SSDX11PixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
+	
+	InCmdList.push_back(new SSRenderCmdSetVS(vs));
+	//InCmdList.push_back(new SSRenderCmdSetPS(ps));
+	InCmdList.push_back(new SSRenderCmdSetVertexBuffer(mVertexBuffer));
+	InCmdList.push_back(new SSRenderCmdSetIndexBuffer(mIndexBuffer));
 
+	
 
 }
 

@@ -6,7 +6,7 @@
 // trigger compile
 
 
-SSGenericConstantBuffer::SSGenericConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index)
+SSDX11ConstantBuffer::SSDX11ConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index)
 {
     mBufferIndex = index;
 
@@ -53,7 +53,7 @@ SSGenericConstantBuffer::SSGenericConstantBuffer(ID3D11ShaderReflectionConstantB
     HR(SSDX11Renderer::Get().GetDevice()->CreateBuffer(&mBufferDescription, nullptr, mpBuffer.GetAddressOf()));
 }
 
-SSGenericConstantBuffer::~SSGenericConstantBuffer()
+SSDX11ConstantBuffer::~SSDX11ConstantBuffer()
 {
     if(mBufferData != nullptr)
     {
@@ -62,7 +62,7 @@ SSGenericConstantBuffer::~SSGenericConstantBuffer()
     }
 }
 
-void SSGenericConstantBuffer::StoreBufferProxyData(const SSConatantBufferData& data)
+void SSDX11ConstantBuffer::StoreBufferProxyData(const SSConatantBufferData& data)
 {   
     check(mpBuffer != nullptr);
     
@@ -71,7 +71,7 @@ void SSGenericConstantBuffer::StoreBufferProxyData(const SSConatantBufferData& d
     memcpy_s(mBufferData, mBufferSize, data.GetData(), mBufferSize);
 }
 
-void SSGenericConstantBuffer::SubmitDataToDevice(ID3D11DeviceContext* deviceContext)
+void SSDX11ConstantBuffer::SubmitDataToDevice(ID3D11DeviceContext* deviceContext)
 { 	
 	check(deviceContext);
 
