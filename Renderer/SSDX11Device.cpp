@@ -476,8 +476,6 @@ void SSDX11Device::ResizeDepthRenderTargetTexture2D(SSDepthRenderTargetTexture2D
 	InDepthRT->mDepthStencilView = std::get<1>(Result);
 }
 
-
-
 void SSDX11Device::SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget)
 {
 	const int RTCount = InRenderTarget->GetCount();
@@ -505,4 +503,35 @@ void SSDX11Device::SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget)
 
 		mDeviceContext->RSSetViewports(1, &(InRenderTarget->GetViewport()));
 	}
+}
+
+SSDX11ConstantBuffer* SSDX11Device::CreateConstantBuffer(const UINT InBufferSize)
+{
+	D3D11_BUFFER_DESC BufferDesc{};
+
+	// now create constant buffer
+	BufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	BufferDesc.MiscFlags = 0;
+	BufferDesc.StructureByteStride = 0;
+	BufferDesc.ByteWidth = InBufferSize;
+	
+	ID3D11Buffer* BufferPtr = nullptr;
+	HR(mDevice->CreateBuffer(&BufferDesc, nullptr, &BufferPtr));
+
+	return nullptr;
+}
+
+void SSDX11Device::SetConstantBufferData(SSDX11ConstantBuffer* InBuffer, BYTE* PtrData, int InSize)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource{};
+	
+	ID3D11Buffer* Buffer = InBuffer->GetDX11BufferPointer();
+
+	HR(mDeviceContext->Map(Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+	memcpy_s(mappedResource.pData, InSize, PtrData, InSize);
+
+	mDeviceContext->Unmap(Buffer, 0);
 }

@@ -32,8 +32,10 @@ public:
 	class SSDepthRenderTargetTexture2D*					CreateDepthRenderTargetTexture2D(const UINT width, const UINT height, DXGI_FORMAT eFormat = DXGI_FORMAT_D24_UNORM_S8_UINT);
 	void												ResizeDepthRenderTargetTexture2D(SSDepthRenderTargetTexture2D* InDepthRT, const UINT InWidth, const UINT InHeight);
 
+	class SSDX11ConstantBuffer*							CreateConstantBuffer(const UINT InBufferSize);
+	void												SetConstantBufferData(SSDX11ConstantBuffer* InBuffer, BYTE* PtrData, int InSize);
 
-	void	SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget);
+	void												SetCurrentRenderTarget(SSDX11RenderTarget* InRenderTarget);
 	
 
 	void												ClearDefaultRenderTargetView(float color[4]);

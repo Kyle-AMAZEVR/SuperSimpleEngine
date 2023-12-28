@@ -13,7 +13,7 @@ class SSBufferBase : public SSRenderThreadResidentObject
 public:
     SSBufferBase();
 
-    virtual UINT GetBufferIndex() { return mBufferIndex; }
+    virtual UINT GetBufferIndex() { return mBufferSlotIndex; }
     virtual UINT GetBufferSize() { return mBufferSize; }
     std::string GetBufferName() { return mBufferName; }
 
@@ -23,9 +23,8 @@ public:
 protected:
     virtual ~SSBufferBase();
 
-    UINT mBufferIndex = 0;
+    UINT mBufferSlotIndex = 0;
     UINT mBufferSize = 0;
-
     std::string mBufferName;
 };
 

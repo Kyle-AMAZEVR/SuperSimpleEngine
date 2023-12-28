@@ -4,21 +4,26 @@
 #include "SSShader.h"
 
 // trigger compile
-
+SSDX11ConstantBuffer::SSDX11ConstantBuffer(ID3D11Buffer * InBuffer, UINT InSlotIndex)    
+{
+    mpBuffer = InBuffer;
+    mBufferSlotIndex = InSlotIndex;
+}
 
 SSDX11ConstantBuffer::SSDX11ConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index)
 {
-    mBufferIndex = index;
+    mBufferSlotIndex = index;
 
     check(constantBuffer != nullptr);
 
-    D3D11_SHADER_BUFFER_DESC bufferDesc;
-    constantBuffer->GetDesc(&bufferDesc);
+    D3D11_SHADER_BUFFER_DESC BufferDesc;
+    constantBuffer->GetDesc(&BufferDesc);
 
-	mBufferSize = bufferDesc.Size;
+	mBufferSize = BufferDesc.Size;
+    mBufferName = BufferDesc.Name;
     
     // 
-    for(unsigned int i = 0; i < bufferDesc.Variables; ++i)
+    for(unsigned int i = 0; i < BufferDesc.Variables; ++i)
     {
         ID3D11ShaderReflectionVariable* variableReflection = constantBuffer->GetVariableByIndex(i);
         D3D11_SHADER_VARIABLE_DESC variableDesc;

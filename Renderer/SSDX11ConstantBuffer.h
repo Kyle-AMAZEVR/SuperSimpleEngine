@@ -22,6 +22,9 @@ class SSDX11ConstantBuffer : public SSDX11Buffer
 {
 public:
     SSDX11ConstantBuffer(ID3D11ShaderReflectionConstantBuffer* constantBuffer, UINT index);
+
+    SSDX11ConstantBuffer(ID3D11Buffer* InBuffer, UINT InSlotIndex);
+
     virtual ~SSDX11ConstantBuffer() override;
     
     template<class T>
@@ -36,7 +39,7 @@ public:
 
 protected:
     BYTE* mBufferData = nullptr;
-    std::vector<VariableInConstantBufferInfo> mVariableInfoArray;
+    std::vector<VariableInConstantBufferInfo> mVariableInfoArray;    
 
 	friend class SSDrawCommand;
 	friend class SSMaterial;
