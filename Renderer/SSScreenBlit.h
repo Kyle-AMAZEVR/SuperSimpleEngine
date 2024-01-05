@@ -1,14 +1,12 @@
 #pragma once
 
-#include "SSRenderThreadObject.h"
+#include "SSObjectBase.h"
 
-
-class SSScreenBlit : public SSRenderThreadObject
+class SSScreenBlit : public SSObjectBase
 {
 public:
 	SSScreenBlit();
-	virtual void Draw(ID3D11DeviceContext* deviceContext);
-	virtual void Destroy() override;
+	virtual void Draw(ID3D11DeviceContext* deviceContext);	
 
 protected:		
 	std::shared_ptr<class SSDX11VertexBuffer> mScreenVB;

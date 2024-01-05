@@ -1,10 +1,9 @@
 #pragma once
 
-
-#include "SSRenderThreadObject.h"
+#include "SSObjectBase.h"
 #include <memory>
 
-class SSRenderTargetCube : public SSRenderThreadObject
+class SSRenderTargetCube : public SSObjectBase
 {
 public:
 	SSRenderTargetCube();
@@ -14,7 +13,7 @@ protected:
 	std::shared_ptr<class SSDX11IndexBuffer> mIB;
 };
 
-class SSCubeMapRenderingSphere : public SSRenderThreadObject
+class SSCubeMapRenderingSphere : public SSObjectBase
 {
 public:
     SSCubeMapRenderingSphere();

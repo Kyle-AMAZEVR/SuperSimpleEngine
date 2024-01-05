@@ -10,11 +10,6 @@ SSDX11VertexBuffer::SSDX11VertexBuffer(ID3D11Buffer* ptrBuffer, unsigned int str
 {	
 }
 
-SSDX11VertexBuffer::SSDX11VertexBuffer() 
-	: mBufferDescription{}
-{
-}
-
 void* SSDX11VertexBuffer::GetBufferPointer()
 {
 	return (void*) mpBuffer.Get();

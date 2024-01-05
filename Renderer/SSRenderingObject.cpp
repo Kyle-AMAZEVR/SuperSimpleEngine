@@ -1,6 +1,6 @@
 
 #include "SSRendererModulePCH.h"
-
+#include "SSObjectBase.h"
 #include "SSRenderingObject.h"
 #include "SSDX11VertexBuffer.h"
 #include "SSDX11IndexBuffer.h"

@@ -8,7 +8,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class SSBufferBase : public SSRenderThreadResidentObject
+class SSBufferBase
 {
 public:
     SSBufferBase();

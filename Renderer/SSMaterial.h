@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SSRenderThreadObject.h"
+
 #include "SSName.h"
 #include "SSVertexTypes.h"
 #include "SSConatantBufferData.h"
@@ -13,7 +13,7 @@ class SSDX11PixelShader;
 class SSDX11Texture2D;
 
 
-class SSMaterial : public SSRenderThreadResidentObject
+class SSMaterial
 {
 public:	
 	SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps);

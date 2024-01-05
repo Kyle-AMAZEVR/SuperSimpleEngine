@@ -1,7 +1,7 @@
 
 #include "SSRendererModulePCH.h"
 #include "SSDX11ConstantBuffer.h"
-#include "SSRenderThreadObject.h"
+#include "SSObjectBase.h"
 #include "SSName.h"
 #include <functional>
 #include <map>

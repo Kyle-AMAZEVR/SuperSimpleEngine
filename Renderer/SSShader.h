@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SSRendererModulePCH.h"
-#include "SSRenderThreadObject.h"
 #include "SSDX11ConstantBuffer.h"
 #include "SSName.h"
 #include "wrl/client.h"
@@ -19,7 +18,7 @@ public:
 };
 
 //class ENGINE_API SSShader : public SSRenderThreadObject
-class SSShader :  public SSRenderThreadResidentObject
+class SSShader
 {
 public:
 	virtual ~SSShader(){}

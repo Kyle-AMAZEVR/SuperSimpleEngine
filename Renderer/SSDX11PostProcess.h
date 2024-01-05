@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SSRenderThreadObject.h"
+
 #include "SSDX11RenderTarget.h"
 
 class SSDX11Texture2D;

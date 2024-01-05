@@ -1,9 +1,9 @@
 #pragma once
 
 #include <DirectXTex.h>
-#include "SSRenderThreadObject.h"
 #include <wrl/internal.h>
 #include <wrl/client.h>
+#include <memory>
 #include "SSTexture2DBase.h"
 
 using Microsoft::WRL::ComPtr;
