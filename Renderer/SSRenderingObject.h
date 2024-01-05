@@ -13,16 +13,6 @@ public:
 	virtual void Draw(ID3D11DeviceContext* deviceContext);
 	virtual void Draw(std::vector<class SSRenderCmdBase*>& inCmdList);
 	
-	void SetPSTexture(SSName name, SSName textureName);
-	void SetVSTexture(SSName name, SSName textureName);
-
-	void SetVSConstantBufferData(SSName name, class SSConatantBufferData&& buffer);
-	void SetPSConstantBufferData(SSName name, class SSConatantBufferData&& buffer);
-
-	void SetVSConstantBufferData(SSName name, const SSConatantBufferData& buffer);
-	void SetPSConstantBufferData(SSName name, const SSConatantBufferData& buffer);
-		
-	
 protected:
 	SSObjectBase* mpObject = nullptr;
 

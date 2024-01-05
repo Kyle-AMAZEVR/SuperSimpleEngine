@@ -135,33 +135,3 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 
 	mMaterial->ReleaseCurrent();
 }
-
-void SSRenderingObject::SetPSTexture(SSName name, SSName textureName)
-{
-	mRenderData.PSTextureMap[name] = textureName;
-}
-
-void SSRenderingObject::SetVSTexture(SSName name, SSName textureName)
-{
-	mRenderData.VSTextureMap[name] = textureName;
-}
-
-void SSRenderingObject::SetVSConstantBufferData(SSName name, class SSConatantBufferData&& buffer)
-{
-	mRenderData.VSConstantBufferMap[name] = std::move(buffer);
-}
-
-void SSRenderingObject::SetPSConstantBufferData(SSName name, class SSConatantBufferData&& buffer)
-{
-	mRenderData.PSConstantBufferMap[name] = std::move(buffer);
-}
-
-void SSRenderingObject::SetVSConstantBufferData(SSName name, const SSConatantBufferData& buffer)
-{
-	mRenderData.VSConstantBufferMap[name] = buffer;
-}
-
-void SSRenderingObject::SetPSConstantBufferData(SSName name, const SSConatantBufferData& buffer)
-{
-	mRenderData.PSConstantBufferMap[name] = buffer;
-}
