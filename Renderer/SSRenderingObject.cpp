@@ -22,9 +22,8 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	
 	// setup index data
 	if(mVertexData.bHasIndexData)
-	{
-		mIndexBuffer = std::make_shared<SSDX11IndexBuffer>();
-		mIndexBuffer->SetIndexBufferData(mVertexData.IndexData);
+	{	
+		mIndexBuffer = GetDX11Device()->CreateIndexBuffer(mVertexData.IndexData);
 	}
 
 	shared_ptr<SSDX11VertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);	
