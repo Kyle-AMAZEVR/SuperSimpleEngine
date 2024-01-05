@@ -24,7 +24,6 @@ void SSSphere::CreateVertexData()
 	mVertexData.Stride = VertexData.Stride;
 	mVertexData.DataPtr = VertexData.DataPtr;
 
-	mVertexData.VertexType = EVertexType::VT_PNTT;
 }
 
 void SSSphere::CreateRenderData()

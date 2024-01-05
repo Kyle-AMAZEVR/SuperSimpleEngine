@@ -39,9 +39,7 @@ public:
 	unsigned int Count	= 0;
 	void* DataPtr = nullptr;
 	
-    std::vector<unsigned int> IndexData;
-	// vertex type
-	EVertexType VertexType = EVertexType::VT_PNT;
+    std::vector<unsigned int> IndexData;	
 	D3D_PRIMITIVE_TOPOLOGY PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	bool bHasIndexData = false;
 };

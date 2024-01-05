@@ -60,11 +60,6 @@ const SSMeshRenderData& SSObjectBase::GetRenderData()
 	return mRenderData;
 }
 
-const SSInstanceData& SSObjectBase::GetInstancedData()
-{
-    return mInstanceData;
-}
-
 XMMATRIX SSObjectBase::GetModelTransform()
 {
 	return XMMatrixScaling(mScale.x, mScale.y, mScale.z) * XMMatrixRotationY(mYaw) * XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);

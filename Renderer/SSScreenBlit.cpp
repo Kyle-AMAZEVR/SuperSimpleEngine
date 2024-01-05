@@ -21,7 +21,6 @@ SSScreenBlit::SSScreenBlit()
 
 	mVertexData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mVertexData.bHasIndexData = true;
-	mVertexData.VertexType = EVertexType::VT_PT;
 	mVertexData.IndexData = SSSharedRenderData::Get().GetScreenBlitIndexData();
 
 	mScreenVB = SSSharedBufferCache::Get().GetScreenBlitVertexBuffer();
