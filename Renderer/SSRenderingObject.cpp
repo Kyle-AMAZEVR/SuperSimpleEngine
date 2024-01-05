@@ -60,12 +60,9 @@ void SSRenderingObject::Draw(std::vector<class SSRenderCmdBase*>& InCmdList)
 	shared_ptr<SSDX11PixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
 	
 	InCmdList.push_back(new SSRenderCmdSetVS(vs));
-	//InCmdList.push_back(new SSRenderCmdSetPS(ps));
+	InCmdList.push_back(new SSRenderCmdSetPS(ps));
 	InCmdList.push_back(new SSRenderCmdSetVertexBuffer(mVertexBuffer));
 	InCmdList.push_back(new SSRenderCmdSetIndexBuffer(mIndexBuffer));
-
-	
-
 }
 
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)

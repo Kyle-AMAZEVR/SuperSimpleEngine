@@ -29,7 +29,7 @@ private:
 class SSRenderCmdSetPS : public SSRenderCmdBase
 {
 public:
-	SSRenderCmdSetPS(class SSDX11PixelShader* inPS)
+	SSRenderCmdSetPS(std::shared_ptr<class SSDX11PixelShader> inPS)
 		:mPS(inPS)
 	{
 	}
@@ -37,7 +37,7 @@ public:
 	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
 
 private:
-	SSDX11PixelShader* mPS;
+	std::shared_ptr<SSDX11PixelShader> mPS;
 };
 // set vertex shader texture
 class SSRenderCmdSetVSTexture : public SSRenderCmdBase

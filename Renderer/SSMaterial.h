@@ -33,11 +33,9 @@ public:
 	void SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
 
 	void SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
+
 	void SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
 	
-	template<class T>
-	void SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
-
 	void SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture);
 	void SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture);
 
@@ -72,7 +70,8 @@ void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSN
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
-		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);
+		mVertexShaderConstantBufferMap[name]->SetBufferData((void*) &value, sizeof(T));
+
 		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
 		
 		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
@@ -84,29 +83,12 @@ void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSN
 }
 
 template<class T>
-void SSMaterial::SetVSConstantBufferDataChecked(ID3D11DeviceContext* deviceContext, SSName name, const T& value)
-{
-	if (mVertexShaderConstantBufferMap.count(name) > 0)
-	{
-		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);
-		mVertexShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
-
-		UINT bufferIndex = mVertexShaderConstantBufferMap[name]->GetBufferIndex();
-
-		deviceContext->VSSetConstantBuffers(bufferIndex, 1, (ID3D11Buffer* const*)mVertexShaderConstantBufferMap[name]->GetBufferPointerRef());
-	}
-	else
-	{
-		check(false);
-	}
-}
-
-template<class T>
 void SSMaterial::SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{
-		mPixelShaderConstantBufferMap[name]->StoreBufferData(value);
+		mPixelShaderConstantBufferMap[name]->SetBufferData((void*)&value, sizeof(T));
+
 		mPixelShaderConstantBufferMap[name]->SubmitDataToDevice(deviceContext);
 
 		UINT bufferIndex = mPixelShaderConstantBufferMap[name]->GetBufferIndex();

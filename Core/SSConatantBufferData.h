@@ -29,8 +29,8 @@ public:
 protected:
 
 	void FreeBufferData();	
-	BYTE* mpBufferData = nullptr;
-	int mBufferSize = 0;
+	BYTE*	mpBufferData = nullptr;
+	int		mBufferSize = 0;
 };
 
 

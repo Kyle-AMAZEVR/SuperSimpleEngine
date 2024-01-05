@@ -72,13 +72,22 @@ SSDX11ConstantBuffer::~SSDX11ConstantBuffer()
     }
 }
 
-void SSDX11ConstantBuffer::StoreBufferProxyData(const SSConatantBufferData& data)
+void SSDX11ConstantBuffer::SetBufferData(const SSConatantBufferData& data)
 {   
     check(mpBuffer != nullptr);
     
     check(data.GetBufferSize() == mBufferSize);
 
     memcpy_s(mBufferData, mBufferSize, data.GetData(), mBufferSize);
+}
+
+void SSDX11ConstantBuffer::SetBufferData(void* InDataPtr, unsigned int InDataLength)
+{
+    check(mpBuffer != nullptr);    
+
+    check(mBufferSize == InDataLength);
+
+    memcpy_s(mBufferData, mBufferSize, InDataPtr, mBufferSize);
 }
 
 void SSDX11ConstantBuffer::SubmitDataToDevice(ID3D11DeviceContext* deviceContext)

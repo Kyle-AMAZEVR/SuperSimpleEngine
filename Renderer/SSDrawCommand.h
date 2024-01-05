@@ -85,7 +85,7 @@ void SSDrawCommand::StoreVSConstantBufferData(SSName name, const T& value)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
-		mVertexShaderConstantBufferMap[name]->StoreBufferData(value);		
+		mVertexShaderConstantBufferMap[name]->SetBufferData((void*) &value, sizeof(T));
 	}
 }
 
@@ -94,6 +94,6 @@ void SSDrawCommand::StorePSConstantBufferData(SSName name, const T& value)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{
-		mPixelShaderConstantBufferMap[name]->StoreBufferData(value);		
+		mPixelShaderConstantBufferMap[name]->SetBufferData((void*)&value, sizeof(T));
 	}
 }

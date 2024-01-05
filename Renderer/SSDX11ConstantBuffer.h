@@ -26,14 +26,10 @@ public:
     SSDX11ConstantBuffer(ID3D11Buffer* InBuffer, UINT InSlotIndex, UINT InSize, std::string InName);
 
     virtual ~SSDX11ConstantBuffer() override;
-    
-    template<class T>
-    void SetBufferData(ID3D11DeviceContext* deviceContext, const T& value);
+        
+    void SetBufferData(const SSConatantBufferData& data);
 
-    void StoreBufferProxyData(const SSConatantBufferData& data);
-
-	template<class T>
-	void StoreBufferData(const T& value);
+    void SetBufferData(void* InDataPtr, unsigned int InDataLength);
 
     virtual BYTE* GetBufferDataPtr() override { return mBufferData; }
 
@@ -46,24 +42,4 @@ protected:
 
     virtual void SubmitDataToDevice(ID3D11DeviceContext* deviceContext) override;
 };
-
-
-template<class T>
-void SSDX11ConstantBuffer::SetBufferData(ID3D11DeviceContext* deviceContext, const T& value)
-{
-	StoreBufferData<T>(value);
-
-    SubmitDataToDevice(deviceContext);
-}
-
-template<class T>
-void SSDX11ConstantBuffer::StoreBufferData(const T& value)
-{
-	check(mpBuffer != nullptr);
-
-	UINT valueSize = sizeof(value);
-	check(valueSize == mBufferSize);
-	
-	memcpy_s(mBufferData, mBufferSize, &value, mBufferSize);
-}
 
