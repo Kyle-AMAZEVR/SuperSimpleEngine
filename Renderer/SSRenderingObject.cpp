@@ -18,40 +18,23 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	mRenderData = pObject->GetRenderData();
 	mVertexData = pObject->GetVertexData();
 	
-	mVertexBuffer = std::make_shared<SSDX11VertexBuffer>();
+	//mVertexBuffer = std::make_shared<SSDX11VertexBuffer>();	
 
 	// setup vertex data
 	switch(mVertexData.VertexType)
     {
         case EVertexType::VT_PNT:
-            mVertexBuffer->SetVertexBufferData(mVertexData.PNT_VertexData);
+			mVertexBuffer = GetDX11Device()->CreateVertexBuffer(sizeof(VT_PositionNormalTexcoord), mVertexData.PNT_VertexData.size(), mVertexData.PNT_VertexData.data());
             break;
         case EVertexType::VT_PNTT:
-            mVertexBuffer->SetVertexBufferData(mVertexData.PNTT_VertexData);
+			//
+			mVertexBuffer = GetDX11Device()->CreateVertexBuffer(sizeof(VT_PositionNormalTexcoordTangent), mVertexData.PNTT_VertexData.size(), mVertexData.PNTT_VertexData.data());            
             break;
         case EVertexType::VT_PT:
             mVertexBuffer->SetVertexBufferData(mVertexData.PT_VertexData);
             break;
     }
-	// setup instance data
-	if(mVertexData.bHasInstancedData)
-    {
-        mInstancedVertexBuffer = std::make_shared<SSDX11InstancedVertexBuffer>();
-
-        switch(mVertexData.InstanceData.InstanceDataType)
-        {
-            case EInstanceDataType::IDT_FLOAT2:
-                mInstancedVertexBuffer->SetInstanceVertexBufferData(mVertexData.InstanceData.Float2InstancedData);
-                break;
-            case EInstanceDataType::IDT_FLOAT3:
-                mInstancedVertexBuffer->SetInstanceVertexBufferData(mVertexData.InstanceData.Float3InstancedData);
-                break;
-            case EInstanceDataType::IDT_FLOAT4:
-                mInstancedVertexBuffer->SetInstanceVertexBufferData(mVertexData.InstanceData.Float4InstancedData);
-                break;
-        }
-    }
-
+	
 	// setup index data
 	if(mVertexData.bHasIndexData)
 	{
@@ -106,22 +89,12 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	// 
 	mMaterial->SetCurrent();
 
-	//
-	if(mVertexData.bHasInstancedData == false)
-    {
-	    UINT stride[1]{mVertexBuffer->GetStride()};
-        UINT offset[1]{0};
-        ID3D11Buffer* buffer[1]{(ID3D11Buffer*)mVertexBuffer->GetBufferPointer()};
-        // set vertex buffer
-        deviceContext->IASetVertexBuffers(0, 1, buffer, stride, offset);
-    }
-	else
-    {
-	    UINT stride[2]{mVertexBuffer->GetStride(), mInstancedVertexBuffer->GetStride()};
-	    UINT offset[2]{0,0};
-		ID3D11Buffer* buffer[2] {(ID3D11Buffer*)mVertexBuffer->GetBufferPointer(), (ID3D11Buffer*)mInstancedVertexBuffer->GetBufferPointer()};
-	    deviceContext->IASetVertexBuffers(0, 2, buffer, stride, offset);
-    }
+	//	    
+	UINT stride[1]{mVertexBuffer->GetStride()};
+    UINT offset[1]{0};
+    ID3D11Buffer* buffer[1]{(ID3D11Buffer*)mVertexBuffer->GetBufferPointer()};
+    // set vertex buffer
+    deviceContext->IASetVertexBuffers(0, 1, buffer, stride, offset);    
 
 	if (mVertexData.bHasIndexData)
 	{
@@ -171,29 +144,13 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	
 	// if have index buffer
 	if(mVertexData.bHasIndexData)
-	{
-	    if(mVertexData.bHasInstancedData)
-        {
-	        //deviceContext->DrawIndexedInstanced();
-        }
-	    else
-        {
-            deviceContext->DrawIndexed(mIndexBuffer->GetIndexCount(), 0, 0);
-        }
+	{	   
+        deviceContext->DrawIndexed(mIndexBuffer->GetIndexCount(), 0, 0);       
 	}
 	else
-	{
-	    if(mVertexData.bHasInstancedData)
-        {
-	        //deviceContext->DrawInstanced()
-        }
-	    else
-        {
-            deviceContext->Draw(mVertexBuffer->GetVertexCount(), 0);
-        }
+	{	    
+        deviceContext->Draw(mVertexBuffer->GetVertexCount(), 0);        
 	}
-
-
 
 	mMaterial->ReleaseCurrent();
 }

@@ -42,8 +42,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HWND ConsoleHWND = GetConsoleWindow();
     ShowWindow(ConsoleHWND, SW_HIDE);
         
-    AllocConsole();
-    freopen("CONOUT$", "w", stdout);
+    //AllocConsole();
+    //freopen("CONOUT$", "w", stdout);
 
 	SSEngineBase::MainThreadId = GetCurrentThreadId();
 

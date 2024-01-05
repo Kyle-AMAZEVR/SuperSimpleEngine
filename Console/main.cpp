@@ -35,6 +35,18 @@ public:
 };
 
 
+class FVirtualClass
+{
+public:
+	virtual void Printinfo();
+};
+
+class FEmptyClass
+{
+
+};
+
+
 
 int main()
 {

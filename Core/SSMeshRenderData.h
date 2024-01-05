@@ -31,22 +31,19 @@ enum class EVertexType : unsigned char
 	VT_PT, //
 };
 
-// 
+
 struct SSMeshVertexData
 {
 public:
 	std::vector<VT_PositionTexcoord> PT_VertexData;
 	std::vector<VT_PositionNormalTexcoord> PNT_VertexData;
 	std::vector<VT_PositionNormalTexcoordTangent> PNTT_VertexData;
-    std::vector<unsigned int> IndexData;
-
-	SSInstanceData InstanceData;
+    std::vector<unsigned int> IndexData;	
 
 	// vertex type
 	EVertexType VertexType = EVertexType::VT_PNT;
 	D3D_PRIMITIVE_TOPOLOGY PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	bool bHasIndexData = false;
-	bool bHasInstancedData = false;
 };
 
 
