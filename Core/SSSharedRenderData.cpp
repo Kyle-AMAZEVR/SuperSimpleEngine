@@ -13,16 +13,35 @@ void SSSharedRenderData::Initialize()
 	CreateScreenBlitVertexData();
 }
 
-std::vector<VT_PositionNormalTexcoordTangent>& SSSharedRenderData::GetCubeVertexData()
+SSSimpleVertexData SSSharedRenderData::GetCubeVertexData()
 {
-	return mCubeVertexData;
+	SSSimpleVertexData Result{};
+	Result.Count = mCubeVertexData.size();
+	Result.DataPtr = mCubeVertexData.data();
+	Result.Stride = sizeof(VT_PositionNormalTexcoordTangent);
+
+	return Result;
 }
 
-std::vector<VT_PositionNormalTexcoordTangent>& SSSharedRenderData::GetSphereVertexData()
+SSSimpleVertexData SSSharedRenderData::GetSphereVertexData()
 {
-	return mSphereVertexData;
+	SSSimpleVertexData Result{};
+	Result.Count = mSphereVertexData.size();
+	Result.DataPtr = mSphereVertexData.data();
+	Result.Stride = sizeof(VT_PositionNormalTexcoordTangent);
+
+	return Result;
 }
 
+SSSimpleVertexData SSSharedRenderData::GetScreenBlitVertexData()
+{
+	SSSimpleVertexData Result{};
+	Result.Count = mScreenBlitVertexData.size();
+	Result.Stride = sizeof(VT_PositionTexcoord);
+	Result.DataPtr = mScreenBlitVertexData.data();
+
+	return Result;
+}
 void SSSharedRenderData::CreateCubeVertexData()
 {
 	mCubeVertexData = std::vector<VT_PositionNormalTexcoordTangent>

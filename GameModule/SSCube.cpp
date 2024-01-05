@@ -42,9 +42,12 @@ void SSCube::CreateRenderData()
 void SSCube::CreateVertexData()
 {		
 	mVertexData.IndexData = SSSharedRenderData::Get().GetCubeIndexData();
+	mVertexData.bHasIndexData = true;
 	mVertexData.VertexType = EVertexType::VT_PNTT;
-	mVertexData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mVertexData.bHasIndexData = true;	
-	mVertexData.PNTT_VertexData = SSSharedRenderData::Get().GetCubeVertexData();
+	mVertexData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
+	SSSimpleVertexData Data = SSSharedRenderData::Get().GetCubeVertexData();
+	mVertexData.Stride = Data.Stride;
+	mVertexData.Count = Data.Count;
+	mVertexData.DataPtr = Data.DataPtr;
 }
 

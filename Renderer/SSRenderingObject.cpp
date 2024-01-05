@@ -18,22 +18,7 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	mRenderData = pObject->GetRenderData();
 	mVertexData = pObject->GetVertexData();
 	
-	//mVertexBuffer = std::make_shared<SSDX11VertexBuffer>();	
-
-	// setup vertex data
-	switch(mVertexData.VertexType)
-    {
-        case EVertexType::VT_PNT:
-			mVertexBuffer = GetDX11Device()->CreateVertexBuffer(sizeof(VT_PositionNormalTexcoord), mVertexData.PNT_VertexData.size(), mVertexData.PNT_VertexData.data());
-            break;
-        case EVertexType::VT_PNTT:
-			//
-			mVertexBuffer = GetDX11Device()->CreateVertexBuffer(sizeof(VT_PositionNormalTexcoordTangent), mVertexData.PNTT_VertexData.size(), mVertexData.PNTT_VertexData.data());            
-            break;
-        case EVertexType::VT_PT:
-            mVertexBuffer->SetVertexBufferData(mVertexData.PT_VertexData);
-            break;
-    }
+	mVertexBuffer = GetDX11Device()->CreateVertexBuffer(mVertexData.Stride, mVertexData.Count, mVertexData.DataPtr);
 	
 	// setup index data
 	if(mVertexData.bHasIndexData)

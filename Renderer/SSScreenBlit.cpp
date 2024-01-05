@@ -13,7 +13,12 @@ SSScreenBlit::SSScreenBlit()
 {
 	mVisible = false;
 
-	mVertexData.PT_VertexData = SSSharedRenderData::Get().GetScreenBlitVertexData();
+	SSSimpleVertexData VertexData = SSSharedRenderData::Get().GetScreenBlitVertexData();
+
+	mVertexData.Count = VertexData.Count;
+	mVertexData.Stride = VertexData.Stride;
+	mVertexData.DataPtr = VertexData.DataPtr;
+
 	mVertexData.PrimitiveType = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mVertexData.bHasIndexData = true;
 	mVertexData.VertexType = EVertexType::VT_PT;

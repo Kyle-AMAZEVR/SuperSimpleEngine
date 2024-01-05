@@ -5,16 +5,23 @@
 #include "SSVertexTypes.h"
 #include <vector>
 
+struct CORE_API SSSimpleVertexData
+{
+	unsigned int Count = 0;
+	unsigned int Stride = 0;
+	void* DataPtr = nullptr;
+};
 
 class CORE_API SSSharedRenderData : public Singleton<SSSharedRenderData>
 {
 public:
 	void Initialize();
 
-	std::vector<VT_PositionNormalTexcoordTangent>& GetCubeVertexData();
-	std::vector<VT_PositionNormalTexcoordTangent>& GetSphereVertexData();
-	std::vector<UINT>& GetCubeIndexData() { return mCubeIndexData; }
-	std::vector<VT_PositionTexcoord>& GetScreenBlitVertexData() { return mScreenBlitVertexData; }
+	SSSimpleVertexData GetCubeVertexData();	
+	SSSimpleVertexData GetSphereVertexData();
+	SSSimpleVertexData GetScreenBlitVertexData();
+	
+	std::vector<UINT>& GetCubeIndexData() { return mCubeIndexData; }	
 	std::vector<UINT>& GetScreenBlitIndexData() {return mScreenBlitIndexData;}
 	
 protected:

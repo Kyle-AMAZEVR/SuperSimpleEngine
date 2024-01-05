@@ -19,7 +19,11 @@ SSSphere::SSSphere(UINT sector, UINT stack, float radius)
 void SSSphere::CreateVertexData()
 {
 	mVertexData.bHasIndexData = false;
-    mVertexData.PNTT_VertexData = SSSharedRenderData::Get().GetSphereVertexData();
+    SSSimpleVertexData VertexData  = SSSharedRenderData::Get().GetSphereVertexData();
+	mVertexData.Count = VertexData.Count;
+	mVertexData.Stride = VertexData.Stride;
+	mVertexData.DataPtr = VertexData.DataPtr;
+
 	mVertexData.VertexType = EVertexType::VT_PNTT;
 }
 

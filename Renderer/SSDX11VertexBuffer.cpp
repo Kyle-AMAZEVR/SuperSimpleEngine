@@ -29,6 +29,6 @@ SSDX11VertexBuffer::~SSDX11VertexBuffer()
 {
 	if(mpBuffer)
 	{
-		check(0 == mpBuffer.Reset());
+		mpBuffer.Reset();
 	}
 }
