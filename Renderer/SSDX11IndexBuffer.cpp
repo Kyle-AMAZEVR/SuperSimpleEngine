@@ -6,6 +6,7 @@ SSDX11IndexBuffer::SSDX11IndexBuffer(ID3D11Buffer* ptrBuffer, unsigned int nInde
     : mpBuffer(ptrBuffer)
 {
     mIndexCount = nIndexCount;
+    ZeroMemory(&mBufferDescription, sizeof(mBufferDescription));
 }
 
 void* SSDX11IndexBuffer::GetBufferPointer()

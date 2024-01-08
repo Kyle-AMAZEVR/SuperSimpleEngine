@@ -18,7 +18,7 @@ public:
     
 protected:
 
-	D3D11_BUFFER_DESC mBufferDescription;
+    D3D11_BUFFER_DESC mBufferDescription{};
     ComPtr<ID3D11Buffer> mpBuffer = nullptr;
 };
 
