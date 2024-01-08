@@ -133,6 +133,15 @@ private:
 	std::shared_ptr<SSDX11IndexBuffer> mIndexBuffer;
 };
 
+class SSRenderCmdDrawWithoutIndex :public SSRenderCmdBase
+{
+public:
+	SSRenderCmdDrawWithoutIndex(unsigned int InVertexCount);
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+private:
+	unsigned int mVertexCount = 0;
+};
+
 class SSRenderCmdClearRenderTarget : public SSRenderCmdBase
 {
 public:

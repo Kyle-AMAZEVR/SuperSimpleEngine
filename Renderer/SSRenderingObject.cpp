@@ -31,6 +31,8 @@ SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	shared_ptr<SSDX11PixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
 
 	mMaterial = new SSMaterial(vs, ps);
+
+	CreateRenderCmdList();
 }
 
 
@@ -61,23 +63,38 @@ void SSRenderingObject::CreateRenderCmdList()
 	shared_ptr<SSDX11PixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
 	
 	RenderCmdList.push_back(new SSRenderCmdSetVS(vs));
-	RenderCmdList.push_back(new SSRenderCmdSetPS(ps));
+	RenderCmdList.push_back(new SSRenderCmdSetPS(ps));	
 	RenderCmdList.push_back(new SSRenderCmdSetVertexBuffer(mVertexBuffer));
-	RenderCmdList.push_back(new SSRenderCmdSetIndexBuffer(mIndexBuffer));
-		
+
+	if (mVertexData.bHasIndexData)
+	{
+		RenderCmdList.push_back(new SSRenderCmdSetIndexBuffer(mIndexBuffer));
+	}
 
 	// set vertex shader constants
 	for (auto& [k, v] : mRenderData.VSConstantBufferMap)
 	{		
 		const int SlotIndex = vs->GetConstantBufferSlotIndex(k);
-		RenderCmdList.push_back(new SSRenderCmdSetVSCBuffer(vs.get(), vs->GetConstantBuffer(k), SlotIndex));
+		if (SlotIndex != -1)
+		{
+			SSDX11ConstantBuffer* ConstantBuffer = vs->GetConstantBuffer(k);
+			ConstantBuffer->SetBufferData(v);			
+			RenderCmdList.push_back(new SSRenderCmdCopyCBuffer(ConstantBuffer));
+			RenderCmdList.push_back(new SSRenderCmdSetVSCBuffer(vs.get(), vs->GetConstantBuffer(k), SlotIndex));
+		}
 	}
 
 	// set pixel shader constants
 	for (auto& [k, v] : mRenderData.PSConstantBufferMap)
 	{		
 		const int SlotIndex = ps->GetConstantBufferSlotIndex(k);
-		RenderCmdList.push_back(new SSRenderCmdSetPSCBuffer(ps.get(), ps->GetConstantBuffer(k), SlotIndex));
+		if (SlotIndex != -1)
+		{
+			SSDX11ConstantBuffer* ConstantBuffer = ps->GetConstantBuffer(k);
+			ConstantBuffer->SetBufferData(v);
+			RenderCmdList.push_back(new SSRenderCmdCopyCBuffer(ConstantBuffer));
+			RenderCmdList.push_back(new SSRenderCmdSetPSCBuffer(ps.get(), ps->GetConstantBuffer(k), SlotIndex));
+		}
 	}	
 
 	// @ set pixel shader texture
@@ -103,12 +120,40 @@ void SSRenderingObject::CreateRenderCmdList()
 	}
 	else
 	{
-
+		RenderCmdList.push_back(new SSRenderCmdDrawWithoutIndex(mVertexBuffer->GetVertexCount()));
 	}
 }
 
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 {	
+	/*shared_ptr<SSDX11VertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);
+	shared_ptr<SSDX11PixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
+
+	SSDX11ConstantBuffer* ModelCBuffer = vs->GetConstantBuffer(ModelName.ToString());
+	XMMATRIX ModelMatrix = XMMatrixTranspose(mpObject->GetModelTransform());
+	ModelCBuffer->SetBufferData((void*)&ModelMatrix, sizeof(XMMATRIX));
+	ModelCBuffer->SubmitDataToDevice(deviceContext);
+	deviceContext->VSSetConstantBuffers(ModelCBuffer->GetBufferIndex(), 1, (ID3D11Buffer* const*)ModelCBuffer->GetBufferPointerRef());
+
+	SSDX11ConstantBuffer* ViewCBuffer = vs->GetConstantBuffer(ViewName.ToString());
+	XMMATRIX ViewMatrix = XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraView());
+	ViewCBuffer->SetBufferData((void*)&ModelMatrix, sizeof(XMMATRIX));
+	ViewCBuffer->SubmitDataToDevice(deviceContext);
+	deviceContext->VSSetConstantBuffers(ViewCBuffer->GetBufferIndex(), 1, (ID3D11Buffer* const*)ViewCBuffer->GetBufferPointerRef());
+
+	SSDX11ConstantBuffer* ProjCBuffer = vs->GetConstantBuffer(ProjName.ToString());
+	XMMATRIX ProjMatrix = XMMatrixTranspose(SSCameraManager::Get().GetCurrentCameraProj());
+	ProjCBuffer->SetBufferData((void*)&ProjMatrix, sizeof(XMMATRIX));
+	ProjCBuffer->SubmitDataToDevice(deviceContext);
+	deviceContext->VSSetConstantBuffers(ProjCBuffer->GetBufferIndex(), 1, (ID3D11Buffer* const*)ProjCBuffer->GetBufferPointerRef());
+
+	for (auto* Cmd : RenderCmdList)
+	{
+		Cmd->Execute(deviceContext);
+	}
+
+	return;
+	*/
 	// 
 	mMaterial->SetCurrent();
 
@@ -176,4 +221,5 @@ void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)
 	}
 
 	mMaterial->ReleaseCurrent();
+	
 }

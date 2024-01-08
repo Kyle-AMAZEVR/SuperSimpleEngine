@@ -58,7 +58,7 @@ SSRenderCmdSetVSCBuffer::SSRenderCmdSetVSCBuffer(SSDX11VertexShader* inVS, class
 
 void SSRenderCmdSetVSCBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
 {
-	inDeviceContext->VSSetConstantBuffers(mSlotIndex, 1, (ID3D11Buffer* const*) mBuffer->GetBufferPointer());
+	inDeviceContext->VSSetConstantBuffers(mSlotIndex, 1, (ID3D11Buffer* const*) mBuffer->GetBufferPointerRef());
 }
 
 SSRenderCmdSetPSCBuffer::SSRenderCmdSetPSCBuffer(SSDX11PixelShader* inPS, class SSDX11Buffer* inBuffer, unsigned int slot)
@@ -68,7 +68,7 @@ SSRenderCmdSetPSCBuffer::SSRenderCmdSetPSCBuffer(SSDX11PixelShader* inPS, class 
 
 void SSRenderCmdSetPSCBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
 {
-	inDeviceContext->PSSetConstantBuffers(mSlotIndex, 1, (ID3D11Buffer* const*)mBuffer->GetBufferPointer());
+	inDeviceContext->PSSetConstantBuffers(mSlotIndex, 1, (ID3D11Buffer* const*)mBuffer->GetBufferPointerRef());
 }
 
 SSRenderCmdCopyCBuffer::SSRenderCmdCopyCBuffer(SSDX11Buffer* ptrBuffer)
@@ -145,4 +145,14 @@ SSRenderCmdSetIndexBuffer::SSRenderCmdSetIndexBuffer(std::shared_ptr<SSDX11Index
 void SSRenderCmdSetIndexBuffer::Execute(ID3D11DeviceContext* inDeviceContext)
 {
 	inDeviceContext->IASetIndexBuffer((ID3D11Buffer*)mIndexBuffer->GetBufferPointer(), DXGI_FORMAT_R32_UINT, 0);
+}
+
+SSRenderCmdDrawWithoutIndex::SSRenderCmdDrawWithoutIndex(unsigned int InVertexCount)
+	:mVertexCount(InVertexCount)
+{
+}
+
+void SSRenderCmdDrawWithoutIndex::Execute(ID3D11DeviceContext* inDeviceContext)
+{
+	inDeviceContext->Draw(mVertexCount, 0);
 }
