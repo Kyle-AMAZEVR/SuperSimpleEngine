@@ -1,5 +1,5 @@
 #pragma once
-
+#include "SSGameModule.h"
 #include "SSObjectBase.h"
 #include <map>
 
@@ -13,13 +13,14 @@ public:
 	static SSGameObjectManager& Get();
 	static SSGameObjectManager* GetPtr();
 
-	std::map<UINT, SSObjectBase*> GetGameObjectMap() { return mGameObjectMap; }
+	std::map<UINT, SSObjectBase*>& GetGameObjectMap() { return mGameObjectMap; }
 
 	UINT IssueObjectId() { return mNextObjectId++; }
 protected:	
 	friend class SSGameObject;
 	
 	UINT mNextObjectId = 1;
+
 	std::map<UINT, SSObjectBase*> mGameObjectMap;
 	static SSGameObjectManager* mInstance;
 };

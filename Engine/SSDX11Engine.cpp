@@ -70,6 +70,7 @@ void SSDX11Engine::Shutdown()
 	
 	if(mRenderer)
 	{
+		delete mRenderer;
 		mRenderer = nullptr;
 	}
 

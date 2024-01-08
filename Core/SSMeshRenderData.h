@@ -44,8 +44,6 @@ public:
 	bool bHasIndexData = false;
 };
 
-
-
 // per instance 
 struct SSMeshRenderData
 {

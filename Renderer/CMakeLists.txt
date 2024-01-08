@@ -25,6 +25,7 @@ include_directories("../Core")
 include_directories("../RenderCore")
 include_directories("../HeaderOnly")
 include_directories("../lib/bin")
+include_directories("../GameModule")
 
 add_library(DX11Renderer SHARED ${SOURCES} ${HEADERS})
 
@@ -37,7 +38,8 @@ $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
 $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>
 Core
-simdjson)
+simdjson
+GameModule)
 
 
 target_precompile_headers(DX11Renderer PRIVATE "SSRendererModulePCH.h")

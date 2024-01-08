@@ -11,8 +11,7 @@ public:
 
 	virtual void Destroy() {}	
 	virtual void Draw(ID3D11DeviceContext* deviceContext) {}
-	virtual void Draw(ID3D11DeviceContext* deviceContext, class SSMaterial* material) {}
-
+	
 	virtual const SSMeshRenderData& GetRenderData();
 	virtual const SSMeshVertexData& GetVertexData();
 	virtual std::vector<SSMeshElementRenderData> GetMeshElementRenderData();
