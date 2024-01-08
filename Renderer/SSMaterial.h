@@ -18,23 +18,19 @@ class SSMaterial
 public:	
 	SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps);
 
-	// 
-	void SetAsCurrent(SSDX11Renderer* InRenderer);
-	void SetPSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture);
-	void SetVSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture);
-
 	virtual void SetCurrent();
 
 	virtual void ReleaseCurrent();
 
 	template<class T>
-	void SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
+	void SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, std::string name, const T& value);
+
 	template<class T>
-	void SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value);
+	void SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, std::string name, const T& value);
 
-	void SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
+	void SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, std::string name, const SSConatantBufferData& buffer);
 
-	void SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& buffer);
+	void SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, std::string name, const SSConatantBufferData& buffer);
 	
 	void SetPSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture);
 	void SetVSTexture(ID3D11DeviceContext* deviceContext, std::string name, SSDX11Texture2D* texture);
@@ -53,8 +49,8 @@ protected:
 	std::shared_ptr<class SSDX11PixelShader> mPS;
 
 	//
-	std::map<SSName, class SSDX11ConstantBuffer*> mVertexShaderConstantBufferMap;
-	std::map<SSName, class SSDX11ConstantBuffer*> mPixelShaderConstantBufferMap;
+	std::map<std::string, class SSDX11ConstantBuffer*> mVertexShaderConstantBufferMap;
+	std::map<std::string, class SSDX11ConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
 	std::map<std::string, class SSDX11Texture2D*> mPixelShaderTextureMap;
@@ -66,7 +62,7 @@ protected:
 
 
 template<class T>
-void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value)
+void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, std::string name, const T& value)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
@@ -83,7 +79,7 @@ void SSMaterial::SetVSConstantBufferData(ID3D11DeviceContext* deviceContext, SSN
 }
 
 template<class T>
-void SSMaterial::SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, SSName name, const T& value)
+void SSMaterial::SetPSConstantBufferData(ID3D11DeviceContext* deviceContext, std::string name, const T& value)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{

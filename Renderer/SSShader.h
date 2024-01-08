@@ -26,7 +26,7 @@ public:
     template<class T>
     void SetConstantBufferData(std::string bufferName, const T& data);	
 
-    virtual ID3D11Buffer* GetConstantBuffer(std::string bufferName);
+    virtual SSDX11ConstantBuffer* GetConstantBuffer(std::string bufferName) ;
 
 	virtual void SetTexture(ID3D11DeviceContext* deviceContext, std::string name, class SSDX11Texture2D* textrue ){}	
 	virtual void SetTextureAsNull(ID3D11DeviceContext* deviceContext, std::string name){}
@@ -37,7 +37,7 @@ public:
 
 	std::vector<std::string> GetSamplerNames();
 
-	inline std::map<SSName, SSDX11ConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
+	inline std::map<std::string, SSDX11ConstantBuffer*> GetConstantBufferMap() { return mConstantBufferMap; }
 
 	ID3DBlob* GetCompiledShader() { return mShaderBuffer.Get(); }
 
@@ -45,7 +45,11 @@ public:
 
     virtual bool CompileFromFile(std::wstring filepath, const SSCompileContext& context) {return true;}
 
-	int GetConstantBufferIndex(const std::string& InName);
+	int GetConstantBufferSlotIndex(const std::string& InName);
+
+	virtual int GetTextureSlotIndex(const std::string& InName);
+
+	virtual int GetSamplerSlotIndex(const std::string& InName);
 protected:
 	
 	virtual void ReflectCompiledShader(ID3D11ShaderReflection* reflection);
@@ -55,7 +59,7 @@ protected:
 	ComPtr<ID3DBlob> mShaderBuffer = nullptr;
 
     //std::map<std::string, SSGenericConstantBuffer*> mConstantBufferMap;
-	std::map<SSName, SSDX11ConstantBuffer*> mConstantBufferMap;
+	std::map<std::string, SSDX11ConstantBuffer*> mConstantBufferMap;
 	std::map<std::string, UINT> mTextureMap;
 	std::map<std::string, UINT> mSamplerMap;
 };

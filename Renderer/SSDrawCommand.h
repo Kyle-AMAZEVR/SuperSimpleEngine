@@ -46,10 +46,10 @@ public:
 	SSDrawCommand(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<SSDX11PixelShader> ps, std::shared_ptr<SSObjectBase> object);
 
 	template<class T>
-	void StoreVSConstantBufferData(SSName name, const T& value);
+	void StoreVSConstantBufferData(std::string name, const T& value);
 
 	template<class T>
-	void StorePSConstantBufferData(SSName name, const T& value);
+	void StorePSConstantBufferData(std::string name, const T& value);
 
 	void SetPSTexture(std::string name, SSDX11Texture2D* texture);
 
@@ -67,8 +67,8 @@ protected:
 	class SSMaterial* mMaterial = nullptr;	
 
 	//
-	std::map<SSName, class SSDX11ConstantBuffer*> mVertexShaderConstantBufferMap;
-	std::map<SSName, class SSDX11ConstantBuffer*> mPixelShaderConstantBufferMap;
+	std::map<std::string, class SSDX11ConstantBuffer*> mVertexShaderConstantBufferMap;
+	std::map<std::string, class SSDX11ConstantBuffer*> mPixelShaderConstantBufferMap;
 
 	//
 	std::map<std::string, class SSDX11Texture2D*> mPixelShaderTextureMap;
@@ -81,7 +81,7 @@ protected:
 };
 
 template<class T>
-void SSDrawCommand::StoreVSConstantBufferData(SSName name, const T& value)
+void SSDrawCommand::StoreVSConstantBufferData(std::string name, const T& value)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
@@ -90,7 +90,7 @@ void SSDrawCommand::StoreVSConstantBufferData(SSName name, const T& value)
 }
 
 template<class T>
-void SSDrawCommand::StorePSConstantBufferData(SSName name, const T& value)
+void SSDrawCommand::StorePSConstantBufferData(std::string name, const T& value)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{

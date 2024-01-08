@@ -12,22 +12,6 @@ SSMaterial::SSMaterial(std::shared_ptr<SSDX11VertexShader> vs, std::shared_ptr<S
 	mPixelShaderConstantBufferMap = mPS->GetConstantBufferMap();
 }
 
-void SSMaterial::SetAsCurrent(SSDX11Renderer* InRenderer) 
-{
-	InRenderer->AppendRenderCommand(new SSRenderCmdSetVS(mVS));
-	//InRenderer->AppendRenderCommand(new SSRenderCmdSetPS(mPS));
-}
-
-void SSMaterial::SetPSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture)
-{
-	//InRenderer->AppendRenderCommand(new SSRenderCmdSetPSTexture());
-}
-
-void SSMaterial::SetVSTexture(SSDX11Renderer* InRenderer, std::string name, SSDX11Texture2D* texture)
-{
-
-}
-
 void SSMaterial::SetCurrent()
 {
 	ID3D11DeviceContext* deviceContext = SSDX11Renderer::Get().GetImmediateDeviceContext();
@@ -72,7 +56,7 @@ void SSMaterial::ReleaseCurrent()
 	}
 }
 
-void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& data)
+void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, std::string name, const SSConatantBufferData& data)
 {
 	if (mVertexShaderConstantBufferMap.count(name) > 0)
 	{
@@ -92,7 +76,7 @@ void SSMaterial::SetVSConstantBufferProxyData(ID3D11DeviceContext* deviceContext
 	}
 }
 
-void SSMaterial::SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, SSName name, const SSConatantBufferData& data)
+void SSMaterial::SetPSConstantBufferProxyData(ID3D11DeviceContext* deviceContext, std::string name, const SSConatantBufferData& data)
 {
 	if (mPixelShaderConstantBufferMap.count(name) > 0)
 	{

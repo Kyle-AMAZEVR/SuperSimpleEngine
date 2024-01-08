@@ -25,11 +25,11 @@ void SSShader::PrintCompileError(ID3DBlob* errorMessage)
 	delete[] compileErrBuffer;
 }
 
-ID3D11Buffer* SSShader::GetConstantBuffer(std::string bufferName)
+SSDX11ConstantBuffer* SSShader::GetConstantBuffer(std::string bufferName)
 {
     if(mConstantBufferMap.count(bufferName) > 0)
     {
-        return (ID3D11Buffer*) mConstantBufferMap[bufferName]->GetBufferPointer();
+        return mConstantBufferMap[bufferName];
     }
 
     return nullptr;
@@ -81,7 +81,7 @@ std::vector<std::string> SSShader::GetSamplerNames()
 }
 
 
-int SSShader::GetConstantBufferIndex(const std::string& InName)
+int SSShader::GetConstantBufferSlotIndex(const std::string& InName)
 {
 	if (mConstantBufferMap.contains(InName))
 	{
@@ -90,6 +90,28 @@ int SSShader::GetConstantBufferIndex(const std::string& InName)
 
 	return -1;
 }
+
+
+int SSShader::GetTextureSlotIndex(const std::string& InName)
+{
+	if (mTextureMap.contains(InName))
+	{
+		return mTextureMap[InName];
+	}
+
+	return -1;
+}
+
+int SSShader::GetSamplerSlotIndex(const std::string& InName)
+{
+	if (mSamplerMap.contains(InName))
+	{
+		return mSamplerMap[InName];
+	}
+
+	return -1;
+}
+
 
 #pragma endregion
 

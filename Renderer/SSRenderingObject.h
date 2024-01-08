@@ -11,9 +11,11 @@ public:
 	
 	virtual ~SSRenderingObject();
 	virtual void Draw(ID3D11DeviceContext* deviceContext);
-	virtual void Draw(std::vector<class SSRenderCmdBase*>& inCmdList);
-	
+
 protected:
+	virtual void CreateRenderCmdList();
+	std::vector<class SSRenderCmdBase*> RenderCmdList;
+
 	SSObjectBase* mpObject = nullptr;
 
 	SSMeshRenderData mRenderData;
@@ -22,5 +24,9 @@ protected:
 	std::shared_ptr<class SSDX11VertexBuffer> mVertexBuffer = nullptr;
 	std::shared_ptr<class SSDX11InstancedVertexBuffer> mInstancedVertexBuffer = nullptr;
 	std::shared_ptr<class SSDX11IndexBuffer> mIndexBuffer = nullptr;
+
+	std::shared_ptr<class SSDX11VertexShader> mVS = nullptr;
+	std::shared_ptr<class SSDX11PixelShader> mPS = nullptr;
+
 	class SSMaterial* mMaterial = nullptr;
 };

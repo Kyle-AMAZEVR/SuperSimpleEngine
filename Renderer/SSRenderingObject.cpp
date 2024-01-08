@@ -11,6 +11,7 @@
 #include "SSSamplerManager.h"
 #include "SSCameraManager.h"
 #include "SSRenderCommand.h"
+#include "SSShader.h"
 
 SSRenderingObject::SSRenderingObject(SSObjectBase* pObject)
 	: mpObject(pObject)
@@ -54,15 +55,56 @@ SSRenderingObject::~SSRenderingObject()
 	}
 }
 
-void SSRenderingObject::Draw(std::vector<class SSRenderCmdBase*>& InCmdList)
+void SSRenderingObject::CreateRenderCmdList()
 {
 	shared_ptr<SSDX11VertexShader> vs = SSShaderManager::Get().GetVertexShader(mRenderData.VertexShaderName);
 	shared_ptr<SSDX11PixelShader> ps = SSShaderManager::Get().GetPixelShader(mRenderData.PixelShaderName);
 	
-	InCmdList.push_back(new SSRenderCmdSetVS(vs));
-	InCmdList.push_back(new SSRenderCmdSetPS(ps));
-	InCmdList.push_back(new SSRenderCmdSetVertexBuffer(mVertexBuffer));
-	InCmdList.push_back(new SSRenderCmdSetIndexBuffer(mIndexBuffer));
+	RenderCmdList.push_back(new SSRenderCmdSetVS(vs));
+	RenderCmdList.push_back(new SSRenderCmdSetPS(ps));
+	RenderCmdList.push_back(new SSRenderCmdSetVertexBuffer(mVertexBuffer));
+	RenderCmdList.push_back(new SSRenderCmdSetIndexBuffer(mIndexBuffer));
+		
+
+	// set vertex shader constants
+	for (auto& [k, v] : mRenderData.VSConstantBufferMap)
+	{		
+		const int SlotIndex = vs->GetConstantBufferSlotIndex(k);
+		RenderCmdList.push_back(new SSRenderCmdSetVSCBuffer(vs.get(), vs->GetConstantBuffer(k), SlotIndex));
+	}
+
+	// set pixel shader constants
+	for (auto& [k, v] : mRenderData.PSConstantBufferMap)
+	{		
+		const int SlotIndex = ps->GetConstantBufferSlotIndex(k);
+		RenderCmdList.push_back(new SSRenderCmdSetPSCBuffer(ps.get(), ps->GetConstantBuffer(k), SlotIndex));
+	}	
+
+	// @ set pixel shader texture
+	for (auto& [name, texture] : mRenderData.PSTextureMap)
+	{
+		const int SlotIndex = ps->GetTextureSlotIndex(name);
+		shared_ptr<SSDX11Texture2D> resource = SSTextureManager::Get().LoadTexture2D(GetDX11Device()->GetDeviceContext(), texture);
+		RenderCmdList.push_back(new SSRenderCmdSetPSTexture(ps.get(), resource.get(), SlotIndex));
+	}
+
+	// @ set vertex shader texture 
+	for (auto& [name, texture] : mRenderData.VSTextureMap)
+	{
+		const int SlotIndex = vs->GetTextureSlotIndex(name);
+		shared_ptr<SSDX11Texture2D> resource = SSTextureManager::Get().LoadTexture2D(GetDX11Device()->GetDeviceContext(), texture);
+		RenderCmdList.push_back(new SSRenderCmdSetVSTexture(vs.get(), resource.get(), SlotIndex));
+	}
+
+	if (mVertexData.bHasIndexData)
+	{
+		//
+		RenderCmdList.push_back(new SSRenderCmdDrawIndexed(mIndexBuffer));
+	}
+	else
+	{
+
+	}
 }
 
 void SSRenderingObject::Draw(ID3D11DeviceContext* deviceContext)

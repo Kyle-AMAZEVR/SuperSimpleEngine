@@ -50,10 +50,8 @@ public:
 struct SSMeshRenderData
 {
 public:
-	//
 	SSName VertexShaderName;
 	SSName PixelShaderName;
-
 	//
 	std::map<SSName, SSConatantBufferData> VSConstantBufferMap;
 	std::map<SSName, SSConatantBufferData> PSConstantBufferMap;
