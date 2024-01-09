@@ -5,6 +5,7 @@ class SSRenderCmdBase
 {
 public:
 	virtual void Execute(ID3D11DeviceContext*) = 0;
+	virtual ~SSRenderCmdBase();
 	
 };
 // set current vertex shader
@@ -160,6 +161,7 @@ public:
 protected:
 	D3D11_DEPTH_STENCIL_DESC mDepthStencilDesc{};
 };
+
 
 class SSRenderCmdSetViewport : public SSRenderCmdBase
 {

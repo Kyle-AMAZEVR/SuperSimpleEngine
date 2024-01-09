@@ -7,6 +7,10 @@
 #include "SSDX11IndexBuffer.h"
 #include "SSMemoryAllocator.h"
 
+SSRenderCmdBase::~SSRenderCmdBase()
+{	
+}
+
 void SSRenderCmdSetVS::Execute(ID3D11DeviceContext * inDeviceContext)
 {
 	D3D_PRIMITIVE_TOPOLOGY PrimitiveType = mVS->GetPrimitiveType();
@@ -14,6 +18,7 @@ void SSRenderCmdSetVS::Execute(ID3D11DeviceContext * inDeviceContext)
 	inDeviceContext->IASetInputLayout(mVS->GetInputLayout());
 	inDeviceContext->VSSetShader(mVS->GetShader(), nullptr, 0);
 }
+
 
 void* SSRenderCmdSetVS::operator new(size_t size)
 {

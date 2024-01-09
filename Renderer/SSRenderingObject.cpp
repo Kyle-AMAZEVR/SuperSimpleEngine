@@ -51,7 +51,10 @@ SSRenderingObject::~SSRenderingObject()
 		mMaterial = nullptr;
 	}	
 
-	RenderCmdList.clear();
+	for (auto* Cmd : RenderCmdList)
+	{
+		delete Cmd;
+	}	
 }
 
 void SSRenderingObject::CreateRenderCmdList()
