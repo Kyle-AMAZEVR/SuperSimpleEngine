@@ -36,8 +36,7 @@ protected:
 	static SSRenderingThread* mRenderingThread;
 
 	// renderer
-	class SSDX11Renderer* mRenderer = nullptr;
-	class SSGameScene* mCurrentScene = nullptr;
+	class SSDX11Renderer* mRenderer = nullptr;	
 
 	int mBufferWidth = 1024;
 	int mBufferHeight = 768;

@@ -23,3 +23,20 @@ void SSCubeScene::DestroyScene()
 	mSphere.reset();
 	mPBRSphere.reset();
 }
+
+
+void SSCubeScene::Tick(float DeltaSeconds)
+{
+	Elapsed += DeltaSeconds;
+
+	if (Elapsed > 3)
+	{
+		Elapsed = 0;
+
+		mCube.reset();
+
+		mCube = std::make_shared<SSCube>();
+
+		mCube->SetPositionX(std::rand() % 50 + 30);
+	}
+}

@@ -5,6 +5,7 @@
 #include "Windows.h"
 #include "SSGameWindow.h"
 #include "SSCameraManager.h"
+#include "SSCubeScene.h"
 
 SSGameThread::SSGameThread(DWORD gameThreadId)
 {
@@ -28,6 +29,9 @@ void SSGameThread::Start(DWORD gameThreadId)
 {	
 	mGameThreadId = gameThreadId;
 	mGameThreadDoneEventHandle = CreateEvent(nullptr, false, false, "GameThreadEventHandle");
+
+	mCurrentGameScene = new SSCubeScene();
+	mCurrentGameScene->InitializeScene();
 }
 
 void SSGameThread::Tick()
@@ -52,6 +56,11 @@ void SSGameThread::Tick()
     mGameThreadTimer.Tick();
 
 	SSCameraManager::Get().UpdateCurrentCamera();
+
+	if (mCurrentGameScene)
+	{
+		mCurrentGameScene->Tick(mGameThreadTimer.GetDeltaTime());
+	}
 
 	SSGameObjectManager::GetPtr()->Tick(mGameThreadTimer.GetDeltaTime());
 

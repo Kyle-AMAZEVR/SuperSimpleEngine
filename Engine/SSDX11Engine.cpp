@@ -37,10 +37,7 @@ SSDX11Engine* SSDX11Engine::GetPtr()
 void SSDX11Engine::Initialize(HWND windowHandle)
 {
     mWindowHandle = windowHandle;	
-
-	mCurrentScene = new SSCubeScene();
-	mCurrentScene->InitializeScene();
-	
+		
 	bInitialized = true;
 }
 
@@ -61,20 +58,11 @@ void SSDX11Engine::Shutdown()
 		mRenderingThread = nullptr;
 	}
 
-	if (mCurrentScene)
-	{
-		mCurrentScene->DestroyScene();
-		delete mCurrentScene;
-		mCurrentScene = nullptr;
-	}
-
 	if(mGameThread)
 	{
 		delete mGameThread;
 		mGameThread = nullptr;
-	}
-
-	
+	}	
 }
 
 void SSDX11Engine::OnWindowResize(int newWidth, int newHeight)
@@ -123,7 +111,7 @@ void SSDX11Engine::Run()
 	while (!bRequestExit)
 	{	
 		// wait for rendering thread
-		mRenderingThread->WaitForRenderingThread(100);
+		mRenderingThread->WaitForRenderingThread(100);		
 
 		// tick
 		mGameThread->Tick();
