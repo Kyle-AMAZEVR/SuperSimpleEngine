@@ -67,12 +67,6 @@ void SSDX11Engine::Shutdown()
 		delete mCurrentScene;
 		mCurrentScene = nullptr;
 	}
-	
-	if(mRenderer)
-	{
-		delete mRenderer;
-		mRenderer = nullptr;
-	}
 
 	if(mGameThread)
 	{

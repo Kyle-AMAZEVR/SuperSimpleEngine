@@ -9,7 +9,7 @@ class DX11RENDERER_API SSDX11Renderer : public SSRenderer
 {
 public:
 	SSDX11Renderer();	
-
+	virtual ~SSDX11Renderer(){}
 	virtual void Initialize(HWND windowHandle) override;
 	virtual void Shutdown() override;
 	virtual void OnWindowResize(int newWidth, int newHeight) override;
@@ -133,7 +133,7 @@ private:
 	std::shared_ptr<class SSGBufferDumpPostProcess> mGBufferDumpProcess;
 	std::shared_ptr<class SSDX11PostProcess> mDeferredLightPostProcess;
 
-	std::shared_ptr<class SSText3D> mText3D;
+	
 
 private:
 	bool TryLoadEnvCubemap(std::wstring filepath);
