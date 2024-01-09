@@ -49,7 +49,9 @@ SSRenderingObject::~SSRenderingObject()
 	{
 		delete mMaterial;
 		mMaterial = nullptr;
-	}
+	}	
+
+	RenderCmdList.clear();
 }
 
 void SSRenderingObject::CreateRenderCmdList()

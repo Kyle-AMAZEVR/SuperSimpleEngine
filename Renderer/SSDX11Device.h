@@ -10,6 +10,8 @@ struct SSAdapterInfo
 	IDXGIAdapter* AdapterPointer = nullptr;
 };
 
+
+
 class SSVertexBuffer;
 class SSDX11IndexBuffer;
 class SSDX11RenderTarget;
@@ -43,10 +45,12 @@ public:
 	void												ClearDefaultRenderTargetView(float color[4]);
 	void												SetDefaultRenderTargetAsCurrent();
 	
+	ID3D11RasterizerState*								CreateRaterizeState(const D3D11_RASTERIZER_DESC& InRasterizeDesc);
+
+	ID3D11DepthStencilState*							CreateDepthStencilState(const D3D11_DEPTH_STENCIL_DESC& InDepthStencilDesc);
+
 	virtual void										Present();
 	void												ResizeRenderTarget(int inWidth, int inHeight);
-
-
 
 protected:
 	bool						CreateSwapChain(HWND windowHandle);
@@ -68,7 +72,7 @@ protected:
 	ComPtr<IDXGISwapChain>		mSwapChain;
 	
 	std::vector<SSAdapterInfo> mAdapterInfos;	
-	ID3D11Debug* mDebug = nullptr;
+	ID3D11Debug* mDebug = nullptr;	
 
 	int mBufferWidth = 1920;
 	int mBufferHeight = 1080;
@@ -82,10 +86,12 @@ protected:
 	ID3D11RenderTargetView* mRenderTargetView{};
 	ID3D11Texture2D* mDepthStencilBuffer{};
 	ID3D11DepthStencilView* mDepthStencilView{};
-	D3D11_VIEWPORT mScreenViewport;
+	D3D11_VIEWPORT mScreenViewport;	
 
 	DXGI_FORMAT mSwapChainFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 
-
 	std::vector<class SSRenderCmdBase*> mRenderCommands;
+
+	std::map<D3D11_DEPTH_STENCIL_DESC, ID3D11DepthStencilState*> mDepthStencilStateMap;
+	std::map<D3D11_RASTERIZER_DESC, ID3D11RasterizerState*> mRasterizeStateMap;
 };

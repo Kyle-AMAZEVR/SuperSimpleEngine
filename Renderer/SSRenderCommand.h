@@ -148,6 +148,19 @@ public:
 	
 };
 
+class SSRenderCmdSetDepthStencilState : public SSRenderCmdBase
+{
+public:
+	SSRenderCmdSetDepthStencilState(const D3D11_DEPTH_STENCIL_DESC& InDesc)
+		: mDepthStencilDesc(InDesc)
+	{
+	}
+
+	virtual void Execute(ID3D11DeviceContext* inDeviceContext) override;
+protected:
+	D3D11_DEPTH_STENCIL_DESC mDepthStencilDesc{};
+};
+
 class SSRenderCmdSetViewport : public SSRenderCmdBase
 {
 public:

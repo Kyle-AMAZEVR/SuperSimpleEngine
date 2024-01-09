@@ -156,3 +156,9 @@ void SSRenderCmdDrawWithoutIndex::Execute(ID3D11DeviceContext* inDeviceContext)
 {
 	inDeviceContext->Draw(mVertexCount, 0);
 }
+
+
+void SSRenderCmdSetDepthStencilState::Execute(ID3D11DeviceContext* inDeviceContext)
+{
+	//inDeviceContext->OMSetDepthStencilState();
+}
