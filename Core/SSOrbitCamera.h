@@ -9,6 +9,10 @@ public:
 	SSOrbitCamera();
 
 protected:	
+	virtual void UpdateViewMatrix() override;
+	virtual void UpdateProjMatrix() override;
+	virtual void UpdateRotationMatrix() override;
+
 	float mDistance = 50.f;
 	float mAzimuth = 10.f;
 	float mAltitude = 10.f;
