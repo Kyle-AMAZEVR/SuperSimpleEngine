@@ -107,7 +107,7 @@ bool SSObjMesh::ImportObjFile(const std::string& FilePath, const std::string& Mt
 			{
 				char buffer[256]{'\0'};
 
-				sscanf(Line.c_str(), "usemtl %s", buffer);
+				sscanf_s(Line.c_str(), "usemtl %s", buffer, 256);
 
 				if(mMeshSectionList.size() == 0)
 				{
@@ -328,34 +328,34 @@ bool SSObjMesh::ParseMtlFile(const std::string& filepath)
 			if (Line.size() > 0)
 			{
 				char buffer[256] {0};
-
-				if (sscanf(Line.c_str(), "newmtl %s", buffer) > 0)
+								
+				if (sscanf_s(Line.c_str(), "newmtl %s", buffer, 256) > 0)
 				{
 					newMaterial = new SSObjMeshMaterial();
 					newMaterial->mMaterialName = buffer;
 					newMtlStarted = true;
 				}
-				else if (sscanf(Line.c_str(), "map_Ka %s", buffer) > 0)
+				else if (sscanf_s(Line.c_str(), "map_Ka %s", buffer, 256) > 0)
 				{
 					check(newMaterial != nullptr);
 					newMaterial->mMetalicMap = buffer;
 				}
-				else if (sscanf(Line.c_str(), "map_Kd %s", buffer) > 0)
+				else if (sscanf_s(Line.c_str(), "map_Kd %s", buffer, 256) > 0)
 				{
 					check(newMaterial != nullptr);
 					newMaterial->mDiffuseMap = buffer;
 				}
-				else if (sscanf(Line.c_str(), "bump %s", buffer) > 0)
+				else if (sscanf_s(Line.c_str(), "bump %s", buffer, 256) > 0)
 				{
 					check(newMaterial != nullptr);
 					newMaterial->mNormalMap = buffer;
 				}
-				else if (sscanf(Line.c_str(), "map_Ns %s", buffer) > 0)
+				else if (sscanf_s(Line.c_str(), "map_Ns %s", buffer, 256) > 0)
 				{
 					check(newMaterial != nullptr);
 					newMaterial->mRoughnessMap = buffer;
 				}
-				else if(sscanf(Line.c_str(), "map_d %s", buffer) > 0)
+				else if(sscanf_s(Line.c_str(), "map_d %s", buffer, 256) > 0)
 				{
 					check(newMaterial != nullptr);
 					newMaterial->mMaskMap = buffer;

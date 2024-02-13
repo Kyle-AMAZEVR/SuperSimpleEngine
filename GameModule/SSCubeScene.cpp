@@ -37,6 +37,6 @@ void SSCubeScene::Tick(float DeltaSeconds)
 
 		mCube = std::make_shared<SSCube>();
 
-		mCube->SetPositionX(std::rand() % 30 + 30);
+		mCube->SetPositionX(static_cast<float>(std::rand() % 30 + 30));
 	}
 }

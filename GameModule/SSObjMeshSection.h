@@ -18,6 +18,7 @@ public:
 	{	
 	}
 
+
 	void SetEndIndex(UINT endIndex) { mEndIndex = endIndex; }
 protected:
 	friend class SSObjMesh;

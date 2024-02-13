@@ -27,10 +27,9 @@ public:
 	
 	std::string mMaskMap;
 
-	friend SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
-	friend SerializeReader& operator >> (SerializeReader& Archive, SSObjMeshMaterial& Value);
+	
 };
 
 
-SerializeWriter& operator << (SerializeWriter& Archive, const class SSObjMeshMaterial& Value);
+
 SerializeReader& operator >> (SerializeReader& Archive, SSObjMeshMaterial& Value);
