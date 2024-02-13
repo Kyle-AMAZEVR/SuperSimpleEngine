@@ -13,9 +13,12 @@ file(GLOB SOURCES "./*.cpp")
 file(GLOB HEADERS "./*.h")
 
 include_directories("../HeaderOnly")
-
+include_directories("../lib/simdjson")
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
+
+
+target_link_libraries(Core simdjson)
 
 target_compile_definitions(Core PRIVATE CORE_EXPORTS)
 target_compile_definitions(Core PUBLIC CORE_IMPORTS)
