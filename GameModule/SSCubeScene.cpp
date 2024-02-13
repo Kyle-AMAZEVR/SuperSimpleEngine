@@ -2,6 +2,7 @@
 #include "SSCube.h"
 #include "SSSphere.h"
 #include "SSCubeScene.h"
+#include "SSGLTF.h"
 
 void SSCubeScene::InitializeScene()
 {
@@ -15,6 +16,8 @@ void SSCubeScene::InitializeScene()
 	mPBRSphere = std::make_shared<SSPBRSphere>();
 	mPBRSphere->SetPositionX(40);
 	mPBRSphere->SetPositionY(-10);
+
+	SSGLTF_V2::LoadGLTFFile("./Resource/GLTF/DamagedHelmet/glTF/DamagedHelmet.gltf");
 }
 
 void SSCubeScene::DestroyScene()
