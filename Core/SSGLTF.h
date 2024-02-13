@@ -85,8 +85,7 @@ namespace GLTF {
         GLTF::AttributeType Type;
         int Count;
         GLTF::ComponentType ComponentType;
-
-
+        std::string Name;
     };
 
     class CORE_API Primitive
@@ -149,6 +148,7 @@ namespace GLTF {
     protected:
         std::vector<std::string> Images;
         std::vector<Accessor> Accessors;
+        std::vector<BufferView> BufferViews;
     };
 };
 

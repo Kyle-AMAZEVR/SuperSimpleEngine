@@ -15,23 +15,24 @@ namespace GLTF {
 			auto TypeString = JsonObject["type"].get_string();
 
 			Accessor AccessorObject{};
-			AccessorObject.BufferView = static_cast<int>(JsonObject["bufferView"].get_int64());
+			AccessorObject.BufferView = static_cast<int>(JsonObject["bufferView"].get_int64().take_value());
 			AccessorObject.ComponentType = static_cast<ComponentType>(JsonObject["componentType"].get_int64().take_value());
-			AccessorObject.Count = static_cast<int>(JsonObject["count"].get_int64());
+			AccessorObject.Count = static_cast<int>(JsonObject["count"].get_int64().take_value());
+			AccessorObject.Name = JsonObject["name"].get_string().take_value();
 
 			Result.Accessors.push_back(AccessorObject);
 		}
 
-		for (auto BufferView : GLTFJson["bufferViews"].get_array())
+		for (auto Element : GLTFJson["bufferViews"].get_array())
 		{
-			auto JsonObject = BufferView.get_object();
+			auto JsonObject = Element.get_object();
 
-			auto A = JsonObject["buffer"].get_int64();
-			auto B = JsonObject["byteLength"].get_int64();
-			auto C = JsonObject["byteOffset"].get_int64();
-			auto D = JsonObject["target"].get_int64();
-
-
+			BufferView View{};
+			View.Buffer = JsonObject["buffer"].get_int64().take_value();
+			View.ByteLength = JsonObject["byteLength"].get_int64().take_value();
+			View.ByteOffset =  JsonObject["byteOffset"].get_int64().take_value();
+			View.Target = JsonObject["target"].get_int64().take_value();
+			View.Name = JsonObject["name"].get_string().take_value();
 		}
 
 		for (auto Image : GLTFJson["images"].get_array())
