@@ -43,48 +43,112 @@ namespace GLTF {
         MASK_MODE,
         BLEND_MODE,
     };
+
+    class CORE_API Buffer
+    {
+    public:
+        int ByteLength;
+        int Type;
+        int Uri;
+    };
+
+    class CORE_API BufferView
+    {
+    public:
+        int Buffer;
+        int ByteLength;
+        int ByteOffset;
+        int Target;
+        std::string Name;
+        int ByteStride;
+    };
+
+
+    class CORE_API MinMax
+    {
+
+    };
+
+    class CORE_API Attributes
+    {
+    public:
+        int Normal;
+        int Position;
+        int TexCoord0;
+    };
+
+    class CORE_API Accessor
+    {
+    public:
+        int BufferView;
+        int ByteOffset;
+        GLTF::AttributeType Type;
+        int Count;
+        GLTF::ComponentType ComponentType;
+
+
+    };
+
+    class CORE_API Primitive
+    {
+    public:
+        int Mode;
+        std::map<std::string, int> Attributes;
+        int Indices;
+        int Material;
+    };
+
+    class CORE_API EmissiveTexture 
+    {
+    public:
+        int Index;
+    };
+
+    class CORE_API NormalTexture
+    {
+    public:
+        int Index;
+    };
+
+    class CORE_API OcclusionTexture
+    {
+    public:
+        int Index;
+    };
+
+    class CORE_API BaseColorTexture 
+    {
+    public:
+        int Index;
+    };
+
+    class CORE_API MetallicRoughnessTexture
+    {
+    public:
+        int Index;
+    };
+
+    class CORE_API Material
+    {
+    public:
+        
+    };
+
+    class CORE_API Mesh
+    {
+    public:
+        std::string Name;
+        std::vector<Primitive> Primitives;
+    };
+
+    class CORE_API SSGLTF_V2
+    {
+    public:
+
+        static SSGLTF_V2 LoadGLTFFile(const std::string& InPath);
+
+    protected:
+        std::vector<std::string> Images;
+    };
 };
 
-class CORE_API SSGLTFBufferView
-{
-public:
-    int Buffer;
-    int ByteLength;
-    int ByteOffset;
-    int Target;
-    std::string Name;
-    int ByteStride;
-};
-
-
-class CORE_API MinMax
-{
-
-};
-
-class CORE_API Attributes
-{
-public:
-    int Normal;
-    int Position;
-    int TexCoord0;
-};
-
-class CORE_API SSGLTFAccessor
-{
-public:
-	int BufferView;
-	int ByteOffset;
-    GLTF::AttributeType Type;
-	int Count;
-    GLTF::ComponentType ComponentType;
-
-
-};
-
-class CORE_API SSGLTF_V2
-{
-public:
-
-    static SSGLTF_V2 LoadGLTFFile(const std::string& InPath);
-};

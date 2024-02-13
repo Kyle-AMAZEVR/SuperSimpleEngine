@@ -17,7 +17,7 @@ void SSCubeScene::InitializeScene()
 	mPBRSphere->SetPositionX(40);
 	mPBRSphere->SetPositionY(-10);
 
-	SSGLTF_V2::LoadGLTFFile("./Resource/GLTF/DamagedHelmet/glTF/DamagedHelmet.gltf");
+	GLTF::SSGLTF_V2::LoadGLTFFile("./Resource/GLTF/DamagedHelmet/glTF/DamagedHelmet.gltf");
 }
 
 void SSCubeScene::DestroyScene()
