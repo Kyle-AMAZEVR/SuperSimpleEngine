@@ -144,11 +144,11 @@ namespace GLTF {
     class CORE_API SSGLTF_V2
     {
     public:
-
         static SSGLTF_V2 LoadGLTFFile(const std::string& InPath);
 
     protected:
         std::vector<std::string> Images;
+        std::vector<Accessor> Accessors;
     };
 };
 

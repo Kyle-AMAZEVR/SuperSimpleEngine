@@ -7,14 +7,19 @@ namespace GLTF {
 		simdjson::dom::parser Parser;
 		simdjson::dom::element GLTFJson = Parser.load(InPath);
 
-		for (auto Accessor : GLTFJson["accessors"].get_array())
-		{
-			auto JsonObject = Accessor.get_object();
+		SSGLTF_V2 Result{};
 
-			auto A = JsonObject["bufferView"].get_int64();
-			auto B = JsonObject["componentType"].get_int64();
-			auto C = JsonObject["count"].get_int64();
-			auto D = JsonObject["type"].get_string();
+		for (auto Element : GLTFJson["accessors"].get_array())
+		{
+			auto JsonObject = Element.get_object();
+			auto TypeString = JsonObject["type"].get_string();
+
+			Accessor AccessorObject{};
+			AccessorObject.BufferView = static_cast<int>(JsonObject["bufferView"].get_int64());
+			AccessorObject.ComponentType = static_cast<ComponentType>(JsonObject["componentType"].get_int64().take_value());
+			AccessorObject.Count = static_cast<int>(JsonObject["count"].get_int64());
+
+			Result.Accessors.push_back(AccessorObject);
 		}
 
 		for (auto BufferView : GLTFJson["bufferViews"].get_array())
@@ -25,6 +30,8 @@ namespace GLTF {
 			auto B = JsonObject["byteLength"].get_int64();
 			auto C = JsonObject["byteOffset"].get_int64();
 			auto D = JsonObject["target"].get_int64();
+
+
 		}
 
 		for (auto Image : GLTFJson["images"].get_array())
@@ -36,6 +43,6 @@ namespace GLTF {
 
 
 
-		return SSGLTF_V2{};
+		return Result;
 	}
 }
