@@ -1,5 +1,6 @@
 #include "SSGLTF.h"
 #include "simdjson.h"
+#include "simdjson/error.h"
 
 namespace GLTF {
 	SSGLTF_V2 SSGLTF_V2::LoadGLTFFile(const std::string& InPath)
@@ -17,8 +18,12 @@ namespace GLTF {
 			Accessor AccessorObject{};
 			AccessorObject.BufferView = static_cast<int>(JsonObject["bufferView"].get_int64().take_value());
 			AccessorObject.ComponentType = static_cast<ComponentType>(JsonObject["componentType"].get_int64().take_value());
-			AccessorObject.Count = static_cast<int>(JsonObject["count"].get_int64().take_value());			
-			//AccessorObject.Name = JsonObject["name"].get_string().value();
+			AccessorObject.Count = static_cast<int>(JsonObject["count"].get_int64().take_value());
+			
+			if (JsonObject["name"].get_string().error() == simdjson::error_code::SUCCESS)
+			{
+				AccessorObject.Name = JsonObject["name"].get_string().value();
+			}
 			Result.Accessors.push_back(AccessorObject);
 		}
 
@@ -31,7 +36,10 @@ namespace GLTF {
 			View.ByteLength = JsonObject["byteLength"].get_int64().take_value();
 			View.ByteOffset =  JsonObject["byteOffset"].get_int64().take_value();
 			View.Target = JsonObject["target"].get_int64().take_value();
-			//View.Name = JsonObject["name"].get_string().take_value();
+			if (JsonObject["name"].get_string().error() == simdjson::error_code::SUCCESS)
+			{
+				View.Name = JsonObject["name"].get_string().take_value();
+			}
 		}
 
 		for (auto Image : GLTFJson["images"].get_array())
