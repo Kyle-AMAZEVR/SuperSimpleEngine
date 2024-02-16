@@ -20,7 +20,7 @@ message(STATUS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory("Renderer")
 add_subdirectory("Core")
-add_subdirectory("lib/simdjson")
+#add_subdirectory("lib/simdjson")
 add_subdirectory("Engine")
 add_subdirectory("GameModule")
 
@@ -42,7 +42,10 @@ if(WIN32)
 endif(WIN32)
 
 
-target_link_libraries(SuperSimpleEngine PRIVATE Engine)
+target_link_libraries(SuperSimpleEngine PRIVATE Engine
+$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/Debug/simdjson.lib>
+$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/Release/simdjson.lib>
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/RelWithDebInfo/simdjson.lib>)
 
 target_compile_options(SuperSimpleEngine PRIVATE /GR-)
 

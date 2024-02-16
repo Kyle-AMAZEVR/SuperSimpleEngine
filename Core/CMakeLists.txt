@@ -13,12 +13,15 @@ file(GLOB SOURCES "./*.cpp")
 file(GLOB HEADERS "./*.h")
 
 include_directories("../HeaderOnly")
-include_directories("../lib/simdjson")
+include_directories("../lib/simdjson/include")
 
 add_library(Core SHARED ${SOURCES} ${HEADERS})
 
 
-target_link_libraries(Core simdjson)
+target_link_libraries(Core 
+$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/Debug/simdjson.lib>
+$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/Release/simdjson.lib>
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/RelWithDebInfo/simdjson.lib>)
 
 target_compile_definitions(Core PRIVATE CORE_EXPORTS)
 target_compile_definitions(Core PUBLIC CORE_IMPORTS)

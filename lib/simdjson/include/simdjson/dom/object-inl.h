@@ -1,22 +1,25 @@
-#ifndef SIMDJSON_INLINE_OBJECT_H
-#define SIMDJSON_INLINE_OBJECT_H
+#ifndef SIMDJSON_OBJECT_INL_H
+#define SIMDJSON_OBJECT_INL_H
 
-#include "simdjson/dom/element.h"
+#include "simdjson/dom/base.h"
 #include "simdjson/dom/object.h"
-#include "simdjson/portability.h"
+#include "simdjson/dom/document.h"
+
+#include "simdjson/dom/element-inl.h"
+#include "simdjson/error-inl.h"
+
 #include <cstring>
-#include <string>
 
 namespace simdjson {
 
 //
 // simdjson_result<dom::object> inline implementation
 //
-simdjson_really_inline simdjson_result<dom::object>::simdjson_result() noexcept
+simdjson_inline simdjson_result<dom::object>::simdjson_result() noexcept
     : internal::simdjson_result_base<dom::object>() {}
-simdjson_really_inline simdjson_result<dom::object>::simdjson_result(dom::object value) noexcept
+simdjson_inline simdjson_result<dom::object>::simdjson_result(dom::object value) noexcept
     : internal::simdjson_result_base<dom::object>(std::forward<dom::object>(value)) {}
-simdjson_really_inline simdjson_result<dom::object>::simdjson_result(error_code error) noexcept
+simdjson_inline simdjson_result<dom::object>::simdjson_result(error_code error) noexcept
     : internal::simdjson_result_base<dom::object>(error) {}
 
 inline simdjson_result<dom::element> simdjson_result<dom::object>::operator[](std::string_view key) const noexcept {
@@ -62,15 +65,18 @@ namespace dom {
 //
 // object inline implementation
 //
-simdjson_really_inline object::object() noexcept : tape{} {}
-simdjson_really_inline object::object(const internal::tape_ref &_tape) noexcept : tape{_tape} { }
+simdjson_inline object::object() noexcept : tape{} {}
+simdjson_inline object::object(const internal::tape_ref &_tape) noexcept : tape{_tape} { }
 inline object::iterator object::begin() const noexcept {
+  SIMDJSON_DEVELOPMENT_ASSERT(tape.usable()); // https://github.com/simdjson/simdjson/issues/1914
   return internal::tape_ref(tape.doc, tape.json_index + 1);
 }
 inline object::iterator object::end() const noexcept {
+  SIMDJSON_DEVELOPMENT_ASSERT(tape.usable()); // https://github.com/simdjson/simdjson/issues/1914
   return internal::tape_ref(tape.doc, tape.after_element() - 1);
 }
 inline size_t object::size() const noexcept {
+  SIMDJSON_DEVELOPMENT_ASSERT(tape.usable()); // https://github.com/simdjson/simdjson/issues/1914
   return tape.scope_count();
 }
 
@@ -81,6 +87,7 @@ inline simdjson_result<element> object::operator[](const char *key) const noexce
   return at_key(key);
 }
 inline simdjson_result<element> object::at_pointer(std::string_view json_pointer) const noexcept {
+  SIMDJSON_DEVELOPMENT_ASSERT(tape.usable()); // https://github.com/simdjson/simdjson/issues/1914
   if(json_pointer.empty()) { // an empty string means that we return the current node
       return element(this->tape); // copy the current node
   } else if(json_pointer[0] != '/') { // otherwise there is an error
@@ -149,7 +156,7 @@ inline simdjson_result<element> object::at_key_case_insensitive(std::string_view
 //
 // object::iterator inline implementation
 //
-simdjson_really_inline object::iterator::iterator(const internal::tape_ref &_tape) noexcept : tape{_tape} { }
+simdjson_inline object::iterator::iterator(const internal::tape_ref &_tape) noexcept : tape{_tape} { }
 inline const key_value_pair object::iterator::operator*() const noexcept {
   return key_value_pair(key(), value());
 }
@@ -236,46 +243,7 @@ inline bool object::iterator::key_equals_case_insensitive(std::string_view o) co
 inline key_value_pair::key_value_pair(std::string_view _key, element _value) noexcept :
   key(_key), value(_value) {}
 
-inline std::ostream& operator<<(std::ostream& out, const object &value) {
-  return out << minify<object>(value);
-}
-inline std::ostream& operator<<(std::ostream& out, const key_value_pair &value) {
-  return out << minify<key_value_pair>(value);
-}
-
 } // namespace dom
-
-template<>
-inline std::ostream& minifier<dom::object>::print(std::ostream& out) {
-  out << '{';
-  auto pair = value.begin();
-  auto end = value.end();
-  if (pair != end) {
-    out << minify<dom::key_value_pair>(*pair);
-    for (++pair; pair != end; ++pair) {
-      out << "," << minify<dom::key_value_pair>(*pair);
-    }
-  }
-  return out << '}';
-}
-
-template<>
-inline std::ostream& minifier<dom::key_value_pair>::print(std::ostream& out) {
-  return out << '"' << internal::escape_json_string(value.key) << "\":" << value.value;
-}
-
-#if SIMDJSON_EXCEPTIONS
-
-template<>
-inline std::ostream& minifier<simdjson_result<dom::object>>::print(std::ostream& out) {
-  if (value.error()) { throw simdjson_error(value.error()); }
-  return out << minify<dom::object>(value.first);
-}
-
-inline std::ostream& operator<<(std::ostream& out, const simdjson_result<dom::object> &value) noexcept(false) {
-  return out << minify<simdjson_result<dom::object>>(value);
-}
-#endif // SIMDJSON_EXCEPTIONS
 
 } // namespace simdjson
 
@@ -288,4 +256,4 @@ static_assert(std::ranges::sized_range<simdjson::simdjson_result<simdjson::dom::
 #endif // SIMDJSON_EXCEPTIONS
 #endif // defined(__cpp_lib_ranges)
 
-#endif // SIMDJSON_INLINE_OBJECT_H
+#endif // SIMDJSON_OBJECT_INL_H

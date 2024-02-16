@@ -20,7 +20,7 @@ file(GLOB HEADERS "./*.h")
 include_directories("../lib/DirectXMath/Include")
 include_directories("../lib/DirectXTex/DirectXTex")
 include_directories("../lib/freetype/include")
-include_directories("../lib/simdjson")
+include_directories("../lib/simdjson/include")
 include_directories("../Core")
 include_directories("../RenderCore")
 include_directories("../HeaderOnly")
@@ -37,8 +37,10 @@ $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/directxtex/RelWithDebInfo
 $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Debug/freetyped.lib>
 $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/Release/freetype.lib>
 $<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/freetype/RelWithDebInfo/freetype.lib>
+$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/Debug/simdjson.lib>
+$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/Release/simdjson.lib>
+$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/lib/bin/simdjson/RelWithDebInfo/simdjson.lib>
 Core
-simdjson
 GameModule)
 
 

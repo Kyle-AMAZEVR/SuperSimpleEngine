@@ -1,18 +1,12 @@
 #ifndef SIMDJSON_DOM_OBJECT_H
 #define SIMDJSON_DOM_OBJECT_H
 
-#include "simdjson/common_defs.h"
-#include "simdjson/error.h"
+#include "simdjson/dom/base.h"
+#include "simdjson/dom/element.h"
 #include "simdjson/internal/tape_ref.h"
-#include "simdjson/minify.h"
-#include <ostream>
 
 namespace simdjson {
 namespace dom {
-
-class document;
-class element;
-class key_value_pair;
 
 /**
  * JSON object.
@@ -20,17 +14,20 @@ class key_value_pair;
 class object {
 public:
   /** Create a new, invalid object */
-  simdjson_really_inline object() noexcept;
+  simdjson_inline object() noexcept;
 
   class iterator {
   public:
-    using value_type = key_value_pair;
+    using value_type = const key_value_pair;
     using difference_type = std::ptrdiff_t;
+    using pointer = void;
+    using reference = value_type;
+    using iterator_category = std::forward_iterator_tag;
 
     /**
      * Get the actual key/value pair
      */
-    inline const value_type operator*() const noexcept;
+    inline reference operator*() const noexcept;
     /**
      * Get the next key/value pair.
      *
@@ -90,7 +87,7 @@ public:
     iterator(const iterator&) noexcept = default;
     iterator& operator=(const iterator&) noexcept = default;
   private:
-    simdjson_really_inline iterator(const internal::tape_ref &tape) noexcept;
+    simdjson_inline iterator(const internal::tape_ref &tape) noexcept;
 
     internal::tape_ref tape;
 
@@ -121,8 +118,8 @@ public:
    * The key will be matched against **unescaped** JSON:
    *
    *   dom::parser parser;
-   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\n"].get<uint64_t>().first == 1
-   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\\n"].get<uint64_t>().error() == NO_SUCH_FIELD
+   *   int64_t(parser.parse(R"({ "a\n": 1 })"_padded)["a\n"]) == 1
+   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\\n"].get_uint64().error() == NO_SUCH_FIELD
    *
    * This function has linear-time complexity: the keys are checked one by one.
    *
@@ -138,8 +135,8 @@ public:
    * The key will be matched against **unescaped** JSON:
    *
    *   dom::parser parser;
-   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\n"].get<uint64_t>().first == 1
-   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\\n"].get<uint64_t>().error() == NO_SUCH_FIELD
+   *   int64_t(parser.parse(R"({ "a\n": 1 })"_padded)["a\n"]) == 1
+   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\\n"].get_uint64().error() == NO_SUCH_FIELD
    *
    * This function has linear-time complexity: the keys are checked one by one.
    *
@@ -180,8 +177,8 @@ public:
    * The key will be matched against **unescaped** JSON:
    *
    *   dom::parser parser;
-   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\n"].get<uint64_t>().first == 1
-   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\\n"].get<uint64_t>().error() == NO_SUCH_FIELD
+   *   int64_t(parser.parse(R"({ "a\n": 1 })"_padded)["a\n"]) == 1
+   *   parser.parse(R"({ "a\n": 1 })"_padded)["a\\n"].get_uint64().error() == NO_SUCH_FIELD
    *
    * This function has linear-time complexity: the keys are checked one by one.
    *
@@ -204,14 +201,14 @@ public:
   inline simdjson_result<element> at_key_case_insensitive(std::string_view key) const noexcept;
 
 private:
-  simdjson_really_inline object(const internal::tape_ref &tape) noexcept;
+  simdjson_inline object(const internal::tape_ref &tape) noexcept;
 
   internal::tape_ref tape;
 
   friend class element;
   friend struct simdjson_result<element>;
   template<typename T>
-  friend class simdjson::minifier;
+  friend class simdjson::internal::string_builder;
 };
 
 /**
@@ -225,30 +222,9 @@ public:
   element value;
 
 private:
-  simdjson_really_inline key_value_pair(std::string_view _key, element _value) noexcept;
+  simdjson_inline key_value_pair(std::string_view _key, element _value) noexcept;
   friend class object;
 };
-
-/**
- * Print JSON to an output stream.
- *
- * By default, the value will be printed minified.
- *
- * @param out The output stream.
- * @param value The value to print.
- * @throw if there is an error with the underlying output stream. simdjson itself will not throw.
- */
-inline std::ostream& operator<<(std::ostream& out, const object &value);
-/**
- * Print JSON to an output stream.
- *
- * By default, the value will be printed minified.
- *
- * @param out The output stream.
- * @param value The value to print.
- * @throw if there is an error with the underlying output stream. simdjson itself will not throw.
- */
-inline std::ostream& operator<<(std::ostream& out, const key_value_pair &value);
 
 } // namespace dom
 
@@ -256,9 +232,9 @@ inline std::ostream& operator<<(std::ostream& out, const key_value_pair &value);
 template<>
 struct simdjson_result<dom::object> : public internal::simdjson_result_base<dom::object> {
 public:
-  simdjson_really_inline simdjson_result() noexcept; ///< @private
-  simdjson_really_inline simdjson_result(dom::object value) noexcept; ///< @private
-  simdjson_really_inline simdjson_result(error_code error) noexcept; ///< @private
+  simdjson_inline simdjson_result() noexcept; ///< @private
+  simdjson_inline simdjson_result(dom::object value) noexcept; ///< @private
+  simdjson_inline simdjson_result(error_code error) noexcept; ///< @private
 
   inline simdjson_result<dom::element> operator[](std::string_view key) const noexcept;
   inline simdjson_result<dom::element> operator[](const char *key) const noexcept;
@@ -272,21 +248,6 @@ public:
   inline size_t size() const noexcept(false);
 #endif // SIMDJSON_EXCEPTIONS
 };
-
-#if SIMDJSON_EXCEPTIONS
-/**
- * Print JSON to an output stream.
- *
- * By default, the value will be printed minified.
- *
- * @param out The output stream.
- * @param value The value to print.
- * @throw simdjson_error if the result being printed has an error. If there is an error with the
- *        underlying output stream, that error will be propagated (simdjson_error will not be
- *        thrown).
- */
-inline std::ostream& operator<<(std::ostream& out, const simdjson_result<dom::object> &value) noexcept(false);
-#endif // SIMDJSON_EXCEPTIONS
 
 } // namespace simdjson
 

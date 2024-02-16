@@ -1,9 +1,9 @@
 #ifndef SIMDJSON_DOCUMENT_STREAM_H
 #define SIMDJSON_DOCUMENT_STREAM_H
 
-#include "simdjson/common_defs.h"
+#include "simdjson/dom/base.h"
 #include "simdjson/dom/parser.h"
-#include "simdjson/error.h"
+
 #ifdef SIMDJSON_THREADS_ENABLED
 #include <thread>
 #include <mutex>
@@ -13,7 +13,6 @@
 namespace simdjson {
 namespace dom {
 
-
 #ifdef SIMDJSON_THREADS_ENABLED
 /** @private Custom worker class **/
 struct stage1_worker {
@@ -22,13 +21,13 @@ struct stage1_worker {
   stage1_worker(stage1_worker&&) = delete;
   stage1_worker operator=(const stage1_worker&) = delete;
   ~stage1_worker();
-  /** 
+  /**
    * We only start the thread when it is needed, not at object construction, this may throw.
-   * You should only call this once. 
+   * You should only call this once.
    **/
   void start_thread();
-  /** 
-   * Start a stage 1 job. You should first call 'run', then 'finish'. 
+  /**
+   * Start a stage 1 job. You should first call 'run', then 'finish'.
    * You must call start_thread once before.
    */
   void run(document_stream * ds, dom::parser * stage1, size_t next_batch_start);
@@ -37,10 +36,10 @@ struct stage1_worker {
 
 private:
 
-  /** 
+  /**
    * Normally, we would never stop the thread. But we do in the destructor.
-   * This function is only safe assuming that you are not waiting for results. You 
-   * should have called run, then finish, and be done. 
+   * This function is only safe assuming that you are not waiting for results. You
+   * should have called run, then finish, and be done.
    **/
   void stop_thread();
 
@@ -49,8 +48,8 @@ private:
   dom::parser * stage1_thread_parser{};
   size_t _next_batch_start{};
   document_stream * owner{};
-  /** 
-   * We have two state variables. This could be streamlined to one variable in the future but 
+  /**
+   * We have two state variables. This could be streamlined to one variable in the future but
    * we use two for clarity.
    */
   bool has_work{false};
@@ -80,35 +79,68 @@ public:
    *  error = parser.parse_many(json).get(docs);
    *  ```
    */
-  simdjson_really_inline document_stream() noexcept;
+  simdjson_inline document_stream() noexcept;
   /** Move one document_stream to another. */
-  simdjson_really_inline document_stream(document_stream &&other) noexcept = default;
+  simdjson_inline document_stream(document_stream &&other) noexcept = default;
   /** Move one document_stream to another. */
-  simdjson_really_inline document_stream &operator=(document_stream &&other) noexcept = default;
+  simdjson_inline document_stream &operator=(document_stream &&other) noexcept = default;
 
-  simdjson_really_inline ~document_stream() noexcept;
-
+  simdjson_inline ~document_stream() noexcept;
+  /**
+   * Returns the input size in bytes.
+   */
+  inline size_t size_in_bytes() const noexcept;
+  /**
+   * After iterating through the stream, this method
+   * returns the number of bytes that were not parsed at the end
+   * of the stream. If truncated_bytes() differs from zero,
+   * then the input was truncated maybe because incomplete JSON
+   * documents were found at the end of the stream. You
+   * may need to process the bytes in the interval [size_in_bytes()-truncated_bytes(), size_in_bytes()).
+   *
+   * You should only call truncated_bytes() after streaming through all
+   * documents, like so:
+   *
+   *   document_stream stream = parser.parse_many(json,window);
+   *   for(auto doc : stream) {
+   *      // do something with doc
+   *   }
+   *   size_t truncated = stream.truncated_bytes();
+   *
+   */
+  inline size_t truncated_bytes() const noexcept;
   /**
    * An iterator through a forward-only stream of documents.
    */
   class iterator {
   public:
+    using value_type = simdjson_result<element>;
+    using reference  = value_type;
+
+    using difference_type   = std::ptrdiff_t;
+
+    using iterator_category = std::input_iterator_tag;
+
+    /**
+     * Default constructor.
+     */
+    simdjson_inline iterator() noexcept;
     /**
      * Get the current document (or error).
      */
-    simdjson_really_inline simdjson_result<element> operator*() noexcept;
+    simdjson_inline reference operator*() noexcept;
     /**
-     * Advance to the next document.
+     * Advance to the next document (prefix).
      */
     inline iterator& operator++() noexcept;
     /**
      * Check if we're at the end yet.
      * @param other the end iterator to compare to.
      */
-    simdjson_really_inline bool operator!=(const iterator &other) const noexcept;
+    simdjson_inline bool operator!=(const iterator &other) const noexcept;
     /**
      * @private
-     * 
+     *
      * Gives the current index in the input document in bytes.
      *
      *   document_stream stream = parser.parse_many(json,window);
@@ -116,15 +148,15 @@ public:
      *      auto doc = *i;
      *      size_t index = i.current_index();
      *   }
-     * 
+     *
      * This function (current_index()) is experimental and the usage
      * may change in future versions of simdjson: we find the API somewhat
-     * awkward and we would like to offer something friendlier.  
+     * awkward and we would like to offer something friendlier.
      */
-     simdjson_really_inline size_t current_index() const noexcept;
+     simdjson_inline size_t current_index() const noexcept;
     /**
      * @private
-     * 
+     *
      * Gives a view of the current document.
      *
      *   document_stream stream = parser.parse_many(json,window);
@@ -132,21 +164,21 @@ public:
      *      auto doc = *i;
      *      std::string_view v = i->source();
      *   }
-     * 
+     *
      * The returned string_view instance is simply a map to the (unparsed)
      * source string: it may thus include white-space characters and all manner
      * of padding.
-     * 
+     *
      * This function (source()) is experimental and the usage
      * may change in future versions of simdjson: we find the API somewhat
-     * awkward and we would like to offer something friendlier.  
+     * awkward and we would like to offer something friendlier.
      */
-     simdjson_really_inline std::string_view source() const noexcept;
+     simdjson_inline std::string_view source() const noexcept;
 
   private:
-    simdjson_really_inline iterator(document_stream &s, bool finished) noexcept;
+    simdjson_inline iterator(document_stream *s, bool finished) noexcept;
     /** The document_stream we're iterating through. */
-    document_stream& stream;
+    document_stream* stream;
     /** Whether we're finished or not. */
     bool finished;
     friend class document_stream;
@@ -155,11 +187,11 @@ public:
   /**
    * Start iterating the documents in the stream.
    */
-  simdjson_really_inline iterator begin() noexcept;
+  simdjson_inline iterator begin() noexcept;
   /**
    * The end of the stream, for iterator comparison purposes.
    */
-  simdjson_really_inline iterator end() noexcept;
+  simdjson_inline iterator end() noexcept;
 
 private:
 
@@ -169,13 +201,13 @@ private:
   /**
    * Construct a document_stream. Does not allocate or parse anything until the iterator is
    * used.
-   * 
+   *
    * @param parser is a reference to the parser instance used to generate this document_stream
    * @param buf is the raw byte buffer we need to process
    * @param len is the length of the raw byte buffer in bytes
    * @param batch_size is the size of the windows (must be strictly greater or equal to the largest JSON document)
    */
-  simdjson_really_inline document_stream(
+  simdjson_inline document_stream(
     dom::parser &parser,
     const uint8_t *buf,
     size_t len,
@@ -192,8 +224,7 @@ private:
    * Parse the next document found in the buffer previously given to document_stream.
    *
    * The content should be a valid JSON document encoded as UTF-8. If there is a
-   * UTF-8 BOM, the caller is responsible for omitting it, UTF-8 BOM are
-   * discouraged.
+   * UTF-8 BOM, the parser skips it.
    *
    * You do NOT need to pre-allocate a parser.  This function takes care of
    * pre-allocating a capacity defined by the batch_size defined when creating the
@@ -234,10 +265,9 @@ private:
   error_code error;
   size_t batch_start{0};
   size_t doc_index{};
-
 #ifdef SIMDJSON_THREADS_ENABLED
   /** Indicates whether we use threads. Note that this needs to be a constant during the execution of the parsing. */
-  bool use_thread; 
+  bool use_thread;
 
   inline void load_from_stage1_thread() noexcept;
 
@@ -270,18 +300,20 @@ private:
 template<>
 struct simdjson_result<dom::document_stream> : public internal::simdjson_result_base<dom::document_stream> {
 public:
-  simdjson_really_inline simdjson_result() noexcept; ///< @private
-  simdjson_really_inline simdjson_result(error_code error) noexcept; ///< @private
-  simdjson_really_inline simdjson_result(dom::document_stream &&value) noexcept; ///< @private
+  simdjson_inline simdjson_result() noexcept; ///< @private
+  simdjson_inline simdjson_result(error_code error) noexcept; ///< @private
+  simdjson_inline simdjson_result(dom::document_stream &&value) noexcept; ///< @private
 
 #if SIMDJSON_EXCEPTIONS
-  simdjson_really_inline dom::document_stream::iterator begin() noexcept(false);
-  simdjson_really_inline dom::document_stream::iterator end() noexcept(false);
+  simdjson_inline dom::document_stream::iterator begin() noexcept(false);
+  simdjson_inline dom::document_stream::iterator end() noexcept(false);
 #else // SIMDJSON_EXCEPTIONS
+#ifndef SIMDJSON_DISABLE_DEPRECATED_API
   [[deprecated("parse_many() and load_many() may return errors. Use document_stream stream; error = parser.parse_many().get(doc); instead.")]]
-  simdjson_really_inline dom::document_stream::iterator begin() noexcept;
+  simdjson_inline dom::document_stream::iterator begin() noexcept;
   [[deprecated("parse_many() and load_many() may return errors. Use document_stream stream; error = parser.parse_many().get(doc); instead.")]]
-  simdjson_really_inline dom::document_stream::iterator end() noexcept;
+  simdjson_inline dom::document_stream::iterator end() noexcept;
+#endif // SIMDJSON_DISABLE_DEPRECATED_API
 #endif // SIMDJSON_EXCEPTIONS
 }; // struct simdjson_result<dom::document_stream>
 

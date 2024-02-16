@@ -1,15 +1,12 @@
 #ifndef SIMDJSON_DOM_DOCUMENT_H
 #define SIMDJSON_DOM_DOCUMENT_H
 
-#include "simdjson/common_defs.h"
-#include "simdjson/minify.h"
+#include "simdjson/dom/base.h"
+
 #include <memory>
-#include <ostream>
 
 namespace simdjson {
 namespace dom {
-
-class element;
 
 /**
  * A parsed JSON document.
@@ -64,11 +61,27 @@ public:
    * Should be at least byte_capacity.
    */
   std::unique_ptr<uint8_t[]> string_buf{};
+  /** @private Allocate memory to support
+   * input JSON documents of up to len bytes.
+   *
+   * When calling this function, you lose
+   * all the data.
+   *
+   * The memory allocation is strict: you
+   * can you use this function to increase
+   * or lower the amount of allocated memory.
+   * Passsing zero clears the memory.
+   */
+  error_code allocate(size_t len) noexcept;
+  /** @private Capacity in bytes, in terms
+   * of how many bytes of input JSON we can
+   * support.
+   */
+  size_t capacity() const noexcept;
+
 
 private:
-  inline error_code allocate(size_t len) noexcept;
-  template<typename T>
-  friend class simdjson::minifier;
+  size_t allocated_capacity{0};
   friend class parser;
 }; // class document
 

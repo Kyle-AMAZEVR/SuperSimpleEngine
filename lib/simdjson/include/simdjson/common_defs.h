@@ -2,9 +2,25 @@
 #define SIMDJSON_COMMON_DEFS_H
 
 #include <cassert>
+#include "simdjson/compiler_check.h"
 #include "simdjson/portability.h"
 
 namespace simdjson {
+namespace internal {
+/**
+ * @private
+ * Our own implementation of the C++17 to_chars function.
+ * Defined in src/to_chars
+ */
+char *to_chars(char *first, const char *last, double value);
+/**
+ * @private
+ * A number parsing routine.
+ * Defined in src/from_chars
+ */
+double from_chars(const char *first) noexcept;
+double from_chars(const char *first, const char* end) noexcept;
+}
 
 #ifndef SIMDJSON_EXCEPTIONS
 #if __cpp_exceptions
@@ -13,26 +29,6 @@ namespace simdjson {
 #define SIMDJSON_EXCEPTIONS 0
 #endif
 #endif
-
-/** The maximum document size supported by simdjson. */
-constexpr size_t SIMDJSON_MAXSIZE_BYTES = 0xFFFFFFFF;
-
-/**
- * The amount of padding needed in a buffer to parse JSON.
- *
- * the input buf should be readable up to buf + SIMDJSON_PADDING
- * this is a stopgap; there should be a better description of the
- * main loop and its behavior that abstracts over this
- * See https://github.com/lemire/simdjson/issues/174
- */
-constexpr size_t SIMDJSON_PADDING = 32;
-
-/**
- * By default, simdjson supports this many nested objects and arrays.
- *
- * This is the default for parser::max_depth().
- */
-constexpr size_t DEFAULT_MAX_DEPTH = 1024;
 
 } // namespace simdjson
 
@@ -53,13 +49,13 @@ constexpr size_t DEFAULT_MAX_DEPTH = 1024;
 
 #define SIMDJSON_ISALIGNED_N(ptr, n) (((uintptr_t)(ptr) & ((n)-1)) == 0)
 
-#if defined(SIMDJSON_REGULAR_VISUAL_STUDIO)
+#if SIMDJSON_REGULAR_VISUAL_STUDIO
 
   #define simdjson_really_inline __forceinline
   #define simdjson_never_inline __declspec(noinline)
 
-  #define SIMDJSON_UNUSED
-  #define SIMDJSON_WARN_UNUSED
+  #define simdjson_unused
+  #define simdjson_warn_unused
 
   #ifndef simdjson_likely
   #define simdjson_likely(x) x
@@ -85,15 +81,19 @@ constexpr size_t DEFAULT_MAX_DEPTH = 1024;
   #endif
 
   #define SIMDJSON_DISABLE_DEPRECATED_WARNING SIMDJSON_DISABLE_VS_WARNING(4996)
+  #define SIMDJSON_DISABLE_STRICT_OVERFLOW_WARNING
   #define SIMDJSON_POP_DISABLE_WARNINGS __pragma(warning( pop ))
+
+  #define SIMDJSON_PUSH_DISABLE_UNUSED_WARNINGS
+  #define SIMDJSON_POP_DISABLE_UNUSED_WARNINGS
 
 #else // SIMDJSON_REGULAR_VISUAL_STUDIO
 
   #define simdjson_really_inline inline __attribute__((always_inline))
   #define simdjson_never_inline inline __attribute__((noinline))
 
-  #define SIMDJSON_UNUSED __attribute__((unused))
-  #define SIMDJSON_WARN_UNUSED __attribute__((warn_unused_result))
+  #define simdjson_unused __attribute__((unused))
+  #define simdjson_warn_unused __attribute__((warn_unused_result))
 
   #ifndef simdjson_likely
   #define simdjson_likely(x) __builtin_expect(!!(x), 1)
@@ -104,6 +104,9 @@ constexpr size_t DEFAULT_MAX_DEPTH = 1024;
 
   #define SIMDJSON_PUSH_DISABLE_WARNINGS _Pragma("GCC diagnostic push")
   // gcc doesn't seem to disable all warnings with all and extra, add warnings here as necessary
+  // We do it separately for clang since it has different warnings.
+  #ifdef __clang__
+  // clang is missing -Wmaybe-uninitialized.
   #define SIMDJSON_PUSH_DISABLE_ALL_WARNINGS SIMDJSON_PUSH_DISABLE_WARNINGS \
     SIMDJSON_DISABLE_GCC_WARNING(-Weffc++) \
     SIMDJSON_DISABLE_GCC_WARNING(-Wall) \
@@ -116,31 +119,93 @@ constexpr size_t DEFAULT_MAX_DEPTH = 1024;
     SIMDJSON_DISABLE_GCC_WARNING(-Wshadow) \
     SIMDJSON_DISABLE_GCC_WARNING(-Wunused-parameter) \
     SIMDJSON_DISABLE_GCC_WARNING(-Wunused-variable)
+  #else // __clang__
+  #define SIMDJSON_PUSH_DISABLE_ALL_WARNINGS SIMDJSON_PUSH_DISABLE_WARNINGS \
+    SIMDJSON_DISABLE_GCC_WARNING(-Weffc++) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wall) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wconversion) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wextra) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wattributes) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wimplicit-fallthrough) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wnon-virtual-dtor) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wreturn-type) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wshadow) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wunused-parameter) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wunused-variable) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wmaybe-uninitialized) \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wformat-security)
+  #endif // __clang__
+
   #define SIMDJSON_PRAGMA(P) _Pragma(#P)
   #define SIMDJSON_DISABLE_GCC_WARNING(WARNING) SIMDJSON_PRAGMA(GCC diagnostic ignored #WARNING)
-  #if defined(SIMDJSON_CLANG_VISUAL_STUDIO)
+  #if SIMDJSON_CLANG_VISUAL_STUDIO
   #define SIMDJSON_DISABLE_UNDESIRED_WARNINGS SIMDJSON_DISABLE_GCC_WARNING(-Wmicrosoft-include)
   #else
   #define SIMDJSON_DISABLE_UNDESIRED_WARNINGS
   #endif
   #define SIMDJSON_DISABLE_DEPRECATED_WARNING SIMDJSON_DISABLE_GCC_WARNING(-Wdeprecated-declarations)
+  #define SIMDJSON_DISABLE_STRICT_OVERFLOW_WARNING SIMDJSON_DISABLE_GCC_WARNING(-Wstrict-overflow)
   #define SIMDJSON_POP_DISABLE_WARNINGS _Pragma("GCC diagnostic pop")
+
+  #define SIMDJSON_PUSH_DISABLE_UNUSED_WARNINGS SIMDJSON_PUSH_DISABLE_WARNINGS \
+    SIMDJSON_DISABLE_GCC_WARNING(-Wunused)
+  #define SIMDJSON_POP_DISABLE_UNUSED_WARNINGS SIMDJSON_POP_DISABLE_WARNINGS
 
 
 
 #endif // MSC_VER
 
-#if defined(SIMDJSON_VISUAL_STUDIO)
+#if defined(simdjson_inline)
+  // Prefer the user's definition of simdjson_inline; don't define it ourselves.
+#elif defined(__GNUC__) && !defined(__OPTIMIZE__)
+  // If optimizations are disabled, forcing inlining can lead to significant
+  // code bloat and high compile times. Don't use simdjson_really_inline for
+  // unoptimized builds.
+  #define simdjson_inline inline
+#else
+  // Force inlining for most simdjson functions.
+  #define simdjson_inline simdjson_really_inline
+#endif
+
+#if SIMDJSON_VISUAL_STUDIO
     /**
+     * Windows users need to do some extra work when building
+     * or using a dynamic library (DLL). When building, we need
+     * to set SIMDJSON_DLLIMPORTEXPORT to __declspec(dllexport).
+     * When *using* the DLL, the user needs to set
+     * SIMDJSON_DLLIMPORTEXPORT __declspec(dllimport).
+     *
+     * Static libraries not need require such work.
+     *
      * It does not matter here whether you are using
      * the regular visual studio or clang under visual
-     * studio.
+     * studio, you still need to handle these issues.
+     *
+     * Non-Windows systems do not have this complexity.
      */
-    #if SIMDJSON_USING_LIBRARY
+    #if SIMDJSON_BUILDING_WINDOWS_DYNAMIC_LIBRARY
+    // We set SIMDJSON_BUILDING_WINDOWS_DYNAMIC_LIBRARY when we build a DLL under Windows.
+    // It should never happen that both SIMDJSON_BUILDING_WINDOWS_DYNAMIC_LIBRARY and
+    // SIMDJSON_USING_WINDOWS_DYNAMIC_LIBRARY are set.
+    #define SIMDJSON_DLLIMPORTEXPORT __declspec(dllexport)
+    #elif SIMDJSON_USING_WINDOWS_DYNAMIC_LIBRARY
+    // Windows user who call a dynamic library should set SIMDJSON_USING_WINDOWS_DYNAMIC_LIBRARY to 1.
     #define SIMDJSON_DLLIMPORTEXPORT __declspec(dllimport)
     #else
-    #define SIMDJSON_DLLIMPORTEXPORT __declspec(dllexport)
+    // We assume by default static linkage
+    #define SIMDJSON_DLLIMPORTEXPORT
     #endif
+
+/**
+ * Workaround for the vcpkg package manager. Only vcpkg should
+ * ever touch the next line. The SIMDJSON_USING_LIBRARY macro is otherwise unused.
+ */
+#if SIMDJSON_USING_LIBRARY
+#define SIMDJSON_DLLIMPORTEXPORT __declspec(dllimport)
+#endif
+/**
+ * End of workaround for the vcpkg package manager.
+ */
 #else
     #define SIMDJSON_DLLIMPORTEXPORT
 #endif
@@ -148,6 +213,7 @@ constexpr size_t DEFAULT_MAX_DEPTH = 1024;
 // C++17 requires string_view.
 #if SIMDJSON_CPLUSPLUS17
 #define SIMDJSON_HAS_STRING_VIEW
+#include <string_view> // by the standard, this has to be safe.
 #endif
 
 // This macro (__cpp_lib_string_view) has to be defined
@@ -169,7 +235,7 @@ constexpr size_t DEFAULT_MAX_DEPTH = 1024;
 // now it is safe to trigger the include
 #include <string_view> // though the file is there, it does not follow that we got the implementation
 #if defined(_LIBCPP_STRING_VIEW)
-// Ah! So we under libc++ which under its Library Fundamentals Technical Specification, which preceeded C++17,
+// Ah! So we under libc++ which under its Library Fundamentals Technical Specification, which preceded C++17,
 // included string_view.
 // This means that we have string_view *even though* we may not have C++17.
 #define SIMDJSON_HAS_STRING_VIEW
@@ -196,53 +262,82 @@ namespace std {
 #endif // SIMDJSON_HAS_STRING_VIEW
 #undef SIMDJSON_HAS_STRING_VIEW // We are not going to need this macro anymore.
 
+/// If EXPR is an error, returns it.
+#define SIMDJSON_TRY(EXPR) { auto _err = (EXPR); if (_err) { return _err; } }
 
+// Unless the programmer has already set SIMDJSON_DEVELOPMENT_CHECKS,
+// we want to set it under debug builds. We detect a debug build
+// under Visual Studio when the _DEBUG macro is set. Under the other
+// compilers, we use the fact that they define __OPTIMIZE__ whenever
+// they allow optimizations.
+// It is possible that this could miss some cases where SIMDJSON_DEVELOPMENT_CHECKS
+// is helpful, but the programmer can set the macro SIMDJSON_DEVELOPMENT_CHECKS.
+// It could also wrongly set SIMDJSON_DEVELOPMENT_CHECKS (e.g., if the programmer
+// sets _DEBUG in a release build under Visual Studio, or if some compiler fails to
+// set the __OPTIMIZE__ macro).
+#ifndef SIMDJSON_DEVELOPMENT_CHECKS
+#ifdef _MSC_VER
+// Visual Studio seems to set _DEBUG for debug builds.
+#ifdef _DEBUG
+#define SIMDJSON_DEVELOPMENT_CHECKS 1
+#endif // _DEBUG
+#else // _MSC_VER
+// All other compilers appear to set __OPTIMIZE__ to a positive integer
+// when the compiler is optimizing.
+#ifndef __OPTIMIZE__
+#define SIMDJSON_DEVELOPMENT_CHECKS 1
+#endif // __OPTIMIZE__
+#endif // _MSC_VER
+#endif // SIMDJSON_DEVELOPMENT_CHECKS
 
+// The SIMDJSON_CHECK_EOF macro is a feature flag for the "don't require padding"
+// feature.
 
+#if SIMDJSON_CPLUSPLUS17
+// if we have C++, then fallthrough is a default attribute
+# define simdjson_fallthrough [[fallthrough]]
+// check if we have __attribute__ support
+#elif defined(__has_attribute)
+// check if we have the __fallthrough__ attribute
+#if __has_attribute(__fallthrough__)
+// we are good to go:
+# define simdjson_fallthrough                    __attribute__((__fallthrough__))
+#endif // __has_attribute(__fallthrough__)
+#endif // SIMDJSON_CPLUSPLUS17
+// on some systems, we simply do not have support for fallthrough, so use a default:
+#ifndef simdjson_fallthrough
+# define simdjson_fallthrough do {} while (0)  /* fallthrough */
+#endif // simdjson_fallthrough
 
-/**
- * We may fall back on the system's number parsing, and we want
- * to be able to call a locale-insensitive number parser. It unfortunately
- * means that we need to load up locale headers.
- * The locale.h header is generally available:
- */
-#include <locale.h>
-/**
- * Determining whether we should import xlocale.h or not is 
- * a bit of a nightmare. Visual Studio and recent recent GLIBC (GCC) do not need it. 
- * However, FreeBSD and Apple platforms will need it.
- * And we would want to cover as many platforms as possible.
- */
+#if SIMDJSON_DEVELOPMENT_CHECKS
+#define SIMDJSON_DEVELOPMENT_ASSERT(expr) do { assert ((expr)); } while (0)
+#else
+#define SIMDJSON_DEVELOPMENT_ASSERT(expr) do { } while (0)
+#endif
+
+#ifndef SIMDJSON_UTF8VALIDATION
+#define SIMDJSON_UTF8VALIDATION 1
+#endif
+
 #ifdef __has_include
-// This is the easy case: we have __has_include and can check whether
-// xlocale is available. If so, we load it up.
-#if __has_include(<xlocale.h>)
-#include <xlocale.h>
-#endif // __has_include
-#else // We do not have __has_include
-// Here we do not have __has_include
-// We first check for __GLIBC__
-#ifdef __GLIBC__ // If we have __GLIBC__ then we should have features.h which should help.
-// Note that having __GLIBC__ does not imply that we are compiling against glibc. But
-// we hope that any platform that defines __GLIBC__ will mimick glibc.
-#include <features.h>
-// Check whether we have an old GLIBC.
-#if !((__GLIBC__ > 2) || ((__GLIBC__ == 2) && (__GLIBC_MINOR__ > 25)))
-#include <xlocale.h> // Old glibc needs xlocale, otherwise xlocale is unavailable.
-#endif // !((__GLIBC__ > 2) || ((__GLIBC__ == 2) && (__GLIBC_MINOR__ > 25)))
-#else // __GLIBC__
-// Ok. So we do not have __GLIBC__
-// We assume that everything that is not GLIBC and not on old freebsd or windows
-// needs xlocale.
-// It is likely that recent FreeBSD and Apple platforms load xlocale.h next:
-#if !(defined(_WIN32) || (__FreeBSD_version < 1000010))
-#include <xlocale.h> // Will always happen under apple.
-#endif // 
-#endif //  __GLIBC__
-#endif // __has_include
-/**
- * End of the crazy locale headers.
- */
+// How do we detect that a compiler supports vbmi2?
+// For sure if the following header is found, we are ok?
+#if __has_include(<avx512vbmi2intrin.h>)
+#define SIMDJSON_COMPILER_SUPPORTS_VBMI2 1
+#endif
+#endif
 
+#ifdef _MSC_VER
+#if _MSC_VER >= 1920
+// Visual Studio 2019 and up support VBMI2 under x64 even if the header
+// avx512vbmi2intrin.h is not found.
+#define SIMDJSON_COMPILER_SUPPORTS_VBMI2 1
+#endif
+#endif
+
+// By default, we allow AVX512.
+#ifndef SIMDJSON_AVX512_ALLOWED
+#define SIMDJSON_AVX512_ALLOWED 1
+#endif
 
 #endif // SIMDJSON_COMMON_DEFS_H

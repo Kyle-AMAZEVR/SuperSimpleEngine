@@ -1,17 +1,11 @@
 #ifndef SIMDJSON_DOM_ARRAY_H
 #define SIMDJSON_DOM_ARRAY_H
 
-#include "simdjson/common_defs.h"
-#include "simdjson/error.h"
+#include "simdjson/dom/base.h"
 #include "simdjson/internal/tape_ref.h"
-#include "simdjson/minify.h"
-#include <ostream>
 
 namespace simdjson {
 namespace dom {
-
-class document;
-class element;
 
 /**
  * JSON array.
@@ -19,22 +13,24 @@ class element;
 class array {
 public:
   /** Create a new, invalid array */
-  simdjson_really_inline array() noexcept;
+  simdjson_inline array() noexcept;
 
   class iterator {
   public:
     using value_type = element;
     using difference_type = std::ptrdiff_t;
+    using pointer = void;
+    using reference = value_type;
+    using iterator_category = std::forward_iterator_tag;
 
     /**
      * Get the actual value
      */
-    inline value_type operator*() const noexcept;
+    inline reference operator*() const noexcept;
     /**
      * Get the next value.
      *
      * Part of the std::iterator interface.
-     *
      */
     inline iterator& operator++() noexcept;
     /**
@@ -60,7 +56,7 @@ public:
     iterator(const iterator&) noexcept = default;
     iterator& operator=(const iterator&) noexcept = default;
   private:
-    simdjson_really_inline iterator(const internal::tape_ref &tape) noexcept;
+    simdjson_inline iterator(const internal::tape_ref &tape) noexcept;
     internal::tape_ref tape;
     friend class array;
   };
@@ -84,6 +80,17 @@ public:
    */
   inline size_t size() const noexcept;
   /**
+   * Get the total number of slots used by this array on the tape.
+   *
+   * Note that this is not the same thing as `size()`, which reports the
+   * number of actual elements within an array (not counting its children).
+   *
+   * Since an element can use 1 or 2 slots on the tape, you can only use this
+   * to figure out the total size of an array (including its children,
+   * recursively) if you know its structure ahead of time.
+   **/
+  inline size_t number_of_slots() const noexcept;
+  /**
    * Get the value associated with the given JSON pointer.  We use the RFC 6901
    * https://tools.ietf.org/html/rfc6901 standard, interpreting the current node
    * as the root of its own JSON document.
@@ -104,7 +111,7 @@ public:
   /**
    * Get the value at the given index. This function has linear-time complexity and
    * is equivalent to the following:
-   * 
+   *
    *    size_t i=0;
    *    for (auto element : *this) {
    *      if (i == index) { return element; }
@@ -113,31 +120,21 @@ public:
    *    return INDEX_OUT_OF_BOUNDS;
    *
    * Avoid calling the at() function repeatedly.
-   * 
+   *
    * @return The value at the given index, or:
    *         - INDEX_OUT_OF_BOUNDS if the array index is larger than an array length
    */
   inline simdjson_result<element> at(size_t index) const noexcept;
 
 private:
-  simdjson_really_inline array(const internal::tape_ref &tape) noexcept;
+  simdjson_inline array(const internal::tape_ref &tape) noexcept;
   internal::tape_ref tape;
   friend class element;
   friend struct simdjson_result<element>;
   template<typename T>
-  friend class simdjson::minifier;
+  friend class simdjson::internal::string_builder;
 };
 
-/**
- * Print JSON to an output stream.
- *
- * By default, the value will be printed minified.
- *
- * @param out The output stream.
- * @param value The value to print.
- * @throw if there is an error with the underlying output stream. simdjson itself will not throw.
- */
-inline std::ostream& operator<<(std::ostream& out, const array &value);
 
 } // namespace dom
 
@@ -145,9 +142,9 @@ inline std::ostream& operator<<(std::ostream& out, const array &value);
 template<>
 struct simdjson_result<dom::array> : public internal::simdjson_result_base<dom::array> {
 public:
-  simdjson_really_inline simdjson_result() noexcept; ///< @private
-  simdjson_really_inline simdjson_result(dom::array value) noexcept; ///< @private
-  simdjson_really_inline simdjson_result(error_code error) noexcept; ///< @private
+  simdjson_inline simdjson_result() noexcept; ///< @private
+  simdjson_inline simdjson_result(dom::array value) noexcept; ///< @private
+  simdjson_inline simdjson_result(error_code error) noexcept; ///< @private
 
   inline simdjson_result<dom::element> at_pointer(std::string_view json_pointer) const noexcept;
   inline simdjson_result<dom::element> at(size_t index) const noexcept;
@@ -159,20 +156,7 @@ public:
 #endif // SIMDJSON_EXCEPTIONS
 };
 
-#if SIMDJSON_EXCEPTIONS
-/**
- * Print JSON to an output stream.
- *
- * By default, the value will be printed minified.
- *
- * @param out The output stream.
- * @param value The value to print.
- * @throw simdjson_error if the result being printed has an error. If there is an error with the
- *        underlying output stream, that error will be propagated (simdjson_error will not be
- *        thrown).
- */
-inline std::ostream& operator<<(std::ostream& out, const simdjson_result<dom::array> &value) noexcept(false);
-#endif
+
 
 } // namespace simdjson
 
