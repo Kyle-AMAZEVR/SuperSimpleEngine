@@ -1,8 +1,8 @@
 # SuperSimpleEngine
-Super Simple DirectX11 / DirectX12 Renderer 
+Super Simple DirectX11 Renderer 
 Only on Windows
 
-![alt tag](https://github.com/ssogal00/SuperSimpleEngine/blob/master/ScreenShot/screenshot.png)
+![alt tag](https://github.com/ssogal00/SuperSimpleEngine/blob/RenderingRefactoring/ScreenShot/screenshot.png)
 
 # How to build
 1. CMake required
